@@ -1,3 +1,9 @@
+import RegistrationForm from "@/components/forms/register-form";
+
 export default function Page() {
-	return <div>Registration</div>; // TODO: 33 minute of video
+	return (
+		<section>
+			<RegistrationForm />
+		</section>
+	);
 }
