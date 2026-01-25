@@ -29,7 +29,7 @@ export default function RegistrationForm() {
 		console.log(event.target);
 		const formData = new FormData(event.target as HTMLFormElement);
 		//TODO Add validation
-		const email = "email@gmail.com";
+		const email = "emailxfdgf3324@gmail.com";
 		const password = "pass34634533";
 		const name = "test";
 
