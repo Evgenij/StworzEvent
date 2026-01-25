@@ -1,0 +1,7 @@
+{
+	"Registration": {
+		"title": "Create an account",
+		"generate_password": "Generate password",
+		"send_email": "Send password to email"
+	}
+}
