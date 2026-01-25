@@ -5,13 +5,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="555bdfb7-7a16-4f23-b360-34497bae8742" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/api/auth/[...all]/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/auth/layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/auth/register/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/auth-client.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components.json" beforeDir="false" afterPath="$PROJECT_DIR$/components.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/messages/pl.json" beforeDir="false" afterPath="$PROJECT_DIR$/messages/pl.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/prisma.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/auth/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/register/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/auth/register/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/example.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/forms/register-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/components/forms/register-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/locale-switcher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/components/locale-switcher.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/preview.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/theme-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/alert-dialog.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/avatar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/badge.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/button-group.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/checkbox.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/combobox.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/dropdown-menu.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/empty.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/field.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/input-group.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/label.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/popover.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/radio-group.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/select.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/separator.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/sheet.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/slider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/spinner.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/switch.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/textarea.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/ui/tooltip.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/ui/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/ui/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/auth/[...all]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/auth/[...all]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/auth-client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/auth-client.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/prisma.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/prisma.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,24 +58,24 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="24" />
+    <option name="cachedIndexableFilesCount" value="81" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Evgenij"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Evgenij&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Evgenij/StworzEvent.git",
-    "accountId": "f81da3ae-d771-433e-ab09-a7090df4d7e6"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Evgenij/StworzEvent.git&quot;,
+    &quot;accountId&quot;: &quot;f81da3ae-d771-433e-ab09-a7090df4d7e6&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -64,7 +103,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "database-01",
+    "git-widget-placeholder": "locale",
     "javascript.preferred.runtime.type.id": "node",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
@@ -80,6 +119,13 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecapSpentCounter">
+    <option name="endsOfQuotaMs" value="1771534800000" />
+    <option name="spentUsd" value="0.03228625" />
+  </component>
+  <component name="RecapUselessUpdatesCounter">
+    <option name="suspendCountdown" value="6" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\UIXER\Desktop\stworzevent\src\lib" />
@@ -121,6 +167,7 @@
       <updated>1769254133725</updated>
       <workItem from="1769254135838" duration="641000" />
       <workItem from="1769254836416" duration="918000" />
+      <workItem from="1769353894561" duration="2602000" />
     </task>
     <servers />
   </component>

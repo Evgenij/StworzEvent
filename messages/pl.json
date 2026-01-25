@@ -1,7 +1,9 @@
 {
 	"Registration": {
 		"title": "Załóż konto",
+		"subtitle": "Wpisz poniżej swój adres e-mail, <lineBreak></lineBreak> aby utworzyć konto",
 		"generate_password": "Wygeneruj hasło",
-		"send_email": "Wyślij hasło na e-mail"
+		"send_email": "Wyślij hasło na e-mail",
+		"button": "Zalogowac się"
 	}
 }

@@ -3,7 +3,7 @@
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/routing"; // Важно: импорт из твоего файла routing!
 import { useParams } from "next/navigation";
-import { SelectValue } from "./ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 // import {
 // 	Select,
 // 	SelectContent,
@@ -28,7 +28,19 @@ export default function LocaleSwitcher() {
 	}
 
 	return (
-		<SelectValue></SelectValue>
+		<ToggleGroup
+			variant="outline"
+			type="single"
+			defaultValue={locale}
+			onValueChange={onLocaleChange}
+		>
+			<ToggleGroupItem value="pl" aria-label="Polski">
+				PL
+			</ToggleGroupItem>
+			<ToggleGroupItem value="en" aria-label="English">
+				EN
+			</ToggleGroupItem>
+		</ToggleGroup>
 		// <Select defaultValue={locale} onValueChange={onLocaleChange}>
 		// 	<SelectTrigger className="w-[120px] bg-background">
 		// 		<SelectValue placeholder="Język" />

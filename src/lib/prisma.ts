@@ -1,17 +1,19 @@
-// lib/prisma.ts
-import { PrismaClient } from "@prisma/client";
-import * as dotenv from "dotenv";
+import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-// Принудительно загружаем .env, если DATABASE_URL не виден
-if (!process.env.DATABASE_URL) {
-	dotenv.config();
-}
+const adapter = new PrismaPg({
+	connectionString: process.env.DATABASE_URL!,
+});
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const globalForPrisma = global as unknown as {
+	prisma: PrismaClient;
+};
 
-export const prisma: PrismaClient =
-	globalForPrisma.prisma || new PrismaClient();
-// export const prisma: PrismaClient =
-// 	globalForPrisma.prisma || new PrismaClient({accelerateUrl: process.env.DATABASE_URL});
+const prisma =
+	globalForPrisma.prisma || new PrismaClient({
+		adapter,
+	});
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+export default prisma;

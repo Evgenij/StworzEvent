@@ -1,4 +1,4 @@
-import { CoverExample } from "@/app/[locale]/components/preview";
+import { CoverExample } from "@/components/preview";
 
 export default function Page() {
 	return <CoverExample />;
