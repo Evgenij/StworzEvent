@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import React from "react";
-import SignOutBtn from "../components/forms/sign-out-btn";
+import SignOutBtn from "../components/sign-out-btn";
 
 export default async function ProfilePage() {
 	const session = await auth.api.getSession({ headers: await headers() });
