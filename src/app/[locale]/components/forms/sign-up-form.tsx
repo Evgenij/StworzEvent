@@ -16,10 +16,13 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
+import { useRouter } from "@/i18n/routing";
+import {PROFILE_ROUTE}  from "@/helpers/routes";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");
 	const [showPassword, setShowPassword] = useState(false);
+	const router = useRouter();
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -42,7 +45,9 @@ export default function SignUpForm() {
 				onError: (ctx) => {
 					console.log(ctx.error.message);
 				},
-				onSuccess: () => {},
+				onSuccess: () => {
+					router.push(PROFILE_ROUTE);
+				},
 			},
 		);
 	}

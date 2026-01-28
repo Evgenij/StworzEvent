@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/auth-client";
 // import useMainRouter from "../useMainRouter";
 import { useRouter } from "@/i18n/routing";
+import {SIGNIN_ROUTE} from "@/helpers/routes";
 
 export default function SignOutBtn() {
 	const router = useRouter();
@@ -17,7 +18,7 @@ export default function SignOutBtn() {
 				//TODO add locale path from useMainRouter
 				onSuccess: () => {
 
-					router.push("/auth/signin");
+					router.push(SIGNIN_ROUTE);
 				},
 			},
 		});

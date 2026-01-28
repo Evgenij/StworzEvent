@@ -5,19 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="555bdfb7-7a16-4f23-b360-34497bae8742" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-in-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/helpers/routes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messages/pl.json" beforeDir="false" afterPath="$PROJECT_DIR$/messages/pl.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/auth/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/register/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/forms/register-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-up-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/input-group.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/input-group.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/auth-client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/auth-client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/auth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-in-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-in-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-out-btn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-out-btn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-up-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/components/forms/sign-up-form.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,10 +85,10 @@
 }]]></component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1771534800000" />
-    <option name="spentUsd" value="0.18188399" />
+    <option name="spentUsd" value="0.20744999" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="1" />
+    <option name="suspendCountdown" value="0" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -142,7 +134,7 @@
       <workItem from="1769254836416" duration="918000" />
       <workItem from="1769353894561" duration="2602000" />
       <workItem from="1769576775158" duration="561000" />
-      <workItem from="1769579121733" duration="3980000" />
+      <workItem from="1769579121733" duration="6272000" />
     </task>
     <servers />
   </component>

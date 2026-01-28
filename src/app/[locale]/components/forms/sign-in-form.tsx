@@ -17,6 +17,7 @@ import {
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 import { useRouter } from "@/i18n/routing";
+import {PROFILE_ROUTE}  from "@/helpers/routes";
 
 export default function SignInForm() {
 	const t = useTranslations("SignInForm");
@@ -44,7 +45,7 @@ export default function SignInForm() {
 				},
 				onSuccess: () => {
 					// TODO change to PROFILE
-					router.push("/profile");
+					router.push(PROFILE_ROUTE);
 				},
 			},
 		);
