@@ -1,0 +1,13 @@
+//@import "globals.css";
+
+@layer base {
+	// Стили только для простых текстовых ссылок
+	a:not([class]),
+	a.link-default {
+		text-decoration: underline;
+
+		&:hover {
+			color: black; // Твой цвет
+		}
+	}
+}

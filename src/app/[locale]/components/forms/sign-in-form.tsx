@@ -17,12 +17,15 @@ import {
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 import { useRouter } from "@/i18n/routing";
-import {PROFILE_ROUTE}  from "@/helpers/routes";
+import { PROFILE_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
+import { Spinner } from "@/components/ui/spinner";
+import { Link } from "@/i18n/routing";
 
 export default function SignInForm() {
 	const t = useTranslations("SignInForm");
 	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
+	const [isPending, setIsPending] = useState(false);
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -38,8 +41,12 @@ export default function SignInForm() {
 				password,
 			},
 			{
-				onRequest: () => {},
-				onResponse: () => {},
+				onRequest: () => {
+					setIsPending(true);
+				},
+				onResponse: () => {
+					setIsPending(false);
+				},
 				onError: (ctx) => {
 					console.log(ctx.error.message);
 				},
@@ -105,9 +112,21 @@ export default function SignInForm() {
 						</InputGroup>
 					</FieldGroup>
 
-					<Button type="submit" size={"lg"} className="w-full">
+					<Button
+						type="submit"
+						size={"lg"}
+						className="w-full"
+						disabled={isPending}
+					>
+						{isPending && <Spinner />}
 						{t("button")}
 					</Button>
+					<p className="text-muted-foreground text-sm text-center mt-2">
+						Don&apos;t have an account?{" "}
+						<Link href={SIGNUP_ROUTE} className="link-default">
+							Sing Up
+						</Link>
+					</p>
 				</form>
 			</main>
 			<footer>{/* <LocaleSwitcher /> */}</footer>

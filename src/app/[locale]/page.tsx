@@ -1,16 +1,33 @@
-import Link from 'next/link'
+import { Button } from "@/components/ui/button";
+import { SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
+import { Link } from "@/i18n/routing";
 
 const links = [
-	{ href: '/', label: 'Home' },
-	{ href: '/ui', label: 'UI' },
-	{ href: '/auth/register', label: 'Registration' },
-	{ href: '/Login', label: 'Login' },
-]
+	{
+		label: "Sign In",
+		href: SIGNIN_ROUTE,
+	},
+	{
+		label: "Sign Up",
+		href: SIGNUP_ROUTE,
+	},
+];
 
 export default function Page() {
-	return <div>{
-		<ol>
-			{links.map(({ href, label }) => <li key={href}><Link href={`pl/${href}`}>{label}</Link></li>)}
-		</ol>
-	}</div>;
+	return (
+		<div className="flex flex-col items-center justify-center gap-3 h-full">
+			<h1 className="text-4xl font-bold">HOME</h1>
+			<nav className="flex items-center justify-center gap-3">
+				{links.map((link) => {
+					return (
+						<Link key={link.href} href={`pl/${link.href}`}>
+							<Button variant={"outline"} key={link.href}>
+								{link.label}
+							</Button>
+						</Link>
+					);
+				})}
+			</nav>
+		</div>
+	);
 }

@@ -16,13 +16,15 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
-import { useRouter } from "@/i18n/routing";
-import {PROFILE_ROUTE}  from "@/helpers/routes";
+import { Link, useRouter } from "@/i18n/routing";
+import { PROFILE_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
+	const [isPending, setIsPending] = useState(false);
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -40,8 +42,12 @@ export default function SignUpForm() {
 				password,
 			},
 			{
-				onRequest: () => {},
-				onResponse: () => {},
+				onRequest: () => {
+					setIsPending(true);
+				},
+				onResponse: () => {
+					setIsPending(false);
+				},
 				onError: (ctx) => {
 					console.log(ctx.error.message);
 				},
@@ -106,9 +112,21 @@ export default function SignUpForm() {
 						</InputGroup>
 					</FieldGroup>
 
-					<Button type="submit" size={"lg"} className="w-full">
+					<Button
+						type="submit"
+						size={"lg"}
+						className="w-full"
+						disabled={isPending}
+					>
+						{isPending && <Spinner />}
 						{t("button")}
 					</Button>
+					<p className="text-muted-foreground text-sm text-center mt-2">
+						Already have an account?{" "}
+						<Link href={SIGNIN_ROUTE} className="link-default">
+							Sing In{" "}
+						</Link>
+					</p>
 				</form>
 			</main>
 			<footer>{/* <LocaleSwitcher /> */}</footer>

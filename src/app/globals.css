@@ -22,6 +22,7 @@
 	--color-accent: var(--accent);
 	--color-accent-foreground: var(--accent-foreground);
 	--color-destructive: var(--destructive);
+	--color-link: var(--link);
 	--color-destructive-foreground: var(--destructive-foreground);
 	--color-border: var(--border);
 	--color-input: var(--input);
@@ -49,11 +50,6 @@
 }
 
 :root {
-	/* --size-lg: 40px;
-	--size-default: 36px;
-	--size-sm: 32px;
-	--size-xs: 28px; */
-
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.141 0.005 285.823);
 	--card: oklch(1 0 0);
@@ -69,6 +65,7 @@
 	--accent: oklch(0.967 0.001 286.375);
 	--accent-foreground: oklch(0.21 0.006 285.885);
 	--destructive: oklch(57.096% 0.21836 26.159);
+	--link: oklch(63.164% 0.19824 260.689);
 	--border: oklch(0.92 0.004 286.32);
 	--input: oklch(0.92 0.004 286.32);
 	--ring: oklch(0.705 0.015 286.067);
@@ -129,4 +126,14 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	/* body a:not([class]),
+	a.link-default {
+		text-decoration: underline;
+	}
+
+	body a:not([class]),
+	a.link-default :hover {
+		color: black;
+	} */
 }

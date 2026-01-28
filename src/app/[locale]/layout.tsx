@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Poppins } from "next/font/google";
 import "../globals.css";
+import "@/app/base.scss";
 
 const fontPoppins = Poppins({
 	subsets: ["latin"],
