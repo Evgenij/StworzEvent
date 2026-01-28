@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="555bdfb7-7a16-4f23-b360-34497bae8742" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="81" />
+    <option name="cachedIndexableFilesCount" value="79" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -75,6 +75,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editing.templates",
     "to.speed.mode.migration.done": "true",
     "ts.external.directory.path": "C:\\Users\\UIXER\\Desktop\\stworzevent\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
@@ -82,10 +83,10 @@
 }]]></component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1771534800000" />
-    <option name="spentUsd" value="0.0737225" />
+    <option name="spentUsd" value="0.124527246" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="5" />
+    <option name="suspendCountdown" value="4" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -129,6 +130,7 @@
       <workItem from="1769254135838" duration="641000" />
       <workItem from="1769254836416" duration="918000" />
       <workItem from="1769353894561" duration="2602000" />
+      <workItem from="1769576775158" duration="561000" />
     </task>
     <servers />
   </component>
