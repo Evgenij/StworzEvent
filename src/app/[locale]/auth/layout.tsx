@@ -16,7 +16,7 @@ export default function RootLayout({
 			<section className="w-2/3 h-full flex justify-center items-center bg-accent">
 				1
 			</section>
-			<aside className="w-1/3 min-w-[500px] h-full flex justify-center items-center p-6">
+			<aside className="w-1/3 min-w-[500px] h-full flex justify-center items-center p-6 ">
 				{children}
 			</aside>
 		</main>

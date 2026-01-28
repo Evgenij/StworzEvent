@@ -1,10 +1,8 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Header } from "../header/header";
-import LocaleSwitcher from "../locale-switcher";
 import { Button } from "@/components/ui/button";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { FieldGroup } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -15,13 +13,12 @@ import {
 	IconEyeClosed,
 	IconLock,
 	IconMail,
-	IconSearch,
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
 
-export default function RegistrationForm() {
-	const t = useTranslations("Registration");
+export default function SignUpForm() {
+	const t = useTranslations("SignUpForm");
 	const [showPassword, setShowPassword] = useState(false);
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
@@ -29,8 +26,8 @@ export default function RegistrationForm() {
 		console.log(event.target);
 		const formData = new FormData(event.target as HTMLFormElement);
 		//TODO Add validation
-		const email = "emailxfdgf3324@gmail.com";
-		const password = "pass34634533";
+		const email = String(formData.get("email"));
+		const password = String(formData.get("password"));
 		const name = "test";
 
 		await signUp.email(
@@ -104,7 +101,7 @@ export default function RegistrationForm() {
 						</InputGroup>
 					</FieldGroup>
 
-					<Button type="submit" size={"default"} className="w-full">
+					<Button type="submit" size={"lg"} className="w-full">
 						{t("button")}
 					</Button>
 				</form>
