@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shadcn/ui/button";
 import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
 

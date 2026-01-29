@@ -1,24 +1,27 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Header } from "../header/header";
-import { Button } from "@/components/ui/button";
-import { FieldGroup } from "@/components/ui/field";
+import { Button } from "@/shadcn/ui/button";
+import { FieldGroup } from "@/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/ui/input-group";
+} from "@/shadcn/ui/input-group";
 import {
 	IconEye,
 	IconEyeClosed,
+	IconHeart,
 	IconLock,
 	IconMail,
+	IconUser,
 } from "@tabler/icons-react";
 import { useState } from "react";
-import { signUp } from "@/lib/auth-client";
 import { Link, useRouter } from "@/i18n/routing";
-import { PROFILE_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
-import { Spinner } from "@/components/ui/spinner";
+import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { Spinner } from "@/shadcn/ui/spinner";
+import { signUpEmailAction } from "@/actions/sign-up-email.action";
+import { toast } from "sonner";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");
@@ -28,34 +31,102 @@ export default function SignUpForm() {
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		console.log(event.target);
-		const formData = new FormData(event.target as HTMLFormElement);
-		//TODO Add validation
-		const email = String(formData.get("email"));
-		const password = String(formData.get("password"));
-		const name = "test";
 
-		await signUp.email(
-			{
-				name,
-				email,
-				password,
-			},
-			{
-				onRequest: () => {
-					setIsPending(true);
-				},
-				onResponse: () => {
-					setIsPending(false);
-				},
-				onError: (ctx) => {
-					console.log(ctx.error.message);
-				},
-				onSuccess: () => {
-					router.push(PROFILE_ROUTE);
-				},
-			},
-		);
+		setIsPending(true);
+
+		const formData = new FormData(event.target as HTMLFormElement);
+		const { error } = await signUpEmailAction(formData);
+
+		if (error) {
+			//console.log(error);
+			toast.error(error, {
+				//icon: <IconEye />,
+				//description: "Sunday, December 03, 2023 at 9:00 AM",
+				// action: {
+				// 	label: "Close",
+				// 	onClick: () => console.log("Undo"),
+				// },
+				// classNames: {
+				// 	description: "!text-foreground/70",
+				// },
+			});
+
+			// toast.error(error, {
+			// 	position: "top-center",
+			// 	description: "Sunday, December 03, 2023 at 9:00 AM",
+			// 	icon: <IconEye className="h-4 w-4" />,
+			// 	action: {
+			// 		label: "Undo",
+			// 		onClick: () => console.log("Undo"),
+			// 	},
+			// 	className:
+			// 		"bg-blue-400 text-card-foreground border-border [&>[data-description]]:text-card-foreground/80",
+			// 	// classNames: {
+			// 	// 	description: "text-blue-500",
+			// 	// },
+			// });
+			// toast("Event has been created", {
+			// 	description: "Sunday, December 03, 2023 at 9:00 AM",
+			// 	action: {
+			// 		label: "Undo",
+			// 		onClick: () => console.log("Undo"),
+			// 	},
+			// 	classNames: {
+			// 		description: "!text-foreground/80",
+			// 	},
+			// });
+			// toast.custom((t) => (
+			// 	<div className="bg-gradient-to-r from-pink-500 to-violet-500 text-white p-4 rounded-lg shadow-lg">
+			// 		<div className="flex items-center gap-2">
+			// 			<IconHeart className="h-5 w-5" />
+			// 			<div>
+			// 				<div className="font-semibold">Custom Toast</div>
+			// 				<div className="text-sm opacity-90">
+			// 					Built with your own JSX
+			// 				</div>
+			// 			</div>
+			// 			<button
+			// 				type="button"
+			// 				className="ml-auto bg-white/20 hover:bg-white/30 rounded px-2 py-1 text-xs"
+			// 				onClick={() => toast.dismiss(t)}
+			// 			>
+			// 				Close
+			// 			</button>
+			// 		</div>
+			// 	</div>
+			// ));
+			setIsPending(false);
+		} else {
+			toast.success("Udalo sie!");
+			router.push(SIGNIN_ROUTE);
+		}
+
+		//TODO Add validation
+		// const email = String(formData.get("email"));
+		// const password = String(formData.get("password"));
+		// const name = "test";
+
+		// await signUp.email(
+		// 	{
+		// 		name,
+		// 		email,
+		// 		password,
+		// 	},
+		// 	{
+		// 		onRequest: () => {
+		// 			setIsPending(true);
+		// 		},
+		// 		onResponse: () => {
+		// 			setIsPending(false);
+		// 		},
+		// 		onError: (ctx) => {
+		// 			console.log(ctx.error.message);
+		// 		},
+		// 		onSuccess: () => {
+		// 			router.push(PROFILE_ROUTE);
+		// 		},
+		// 	},
+		// );
 	}
 
 	return (
@@ -73,7 +144,6 @@ export default function SignUpForm() {
 							</span>
 						),
 					})}
-					{/* Wpisz poniżej swój adres e-mail, <br /> aby utworzyć konto. */}
 				</p>
 			</header>
 			<main>
@@ -83,6 +153,16 @@ export default function SignUpForm() {
 					className="flex flex-col gap-3"
 				>
 					<FieldGroup>
+						<InputGroup>
+							<InputGroupInput
+								placeholder="name"
+								type="name"
+								name="name"
+							/>
+							<InputGroupAddon>
+								<IconUser />
+							</InputGroupAddon>
+						</InputGroup>
 						<InputGroup>
 							<InputGroupInput
 								placeholder="name@example.com"

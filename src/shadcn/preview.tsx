@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { Example, ExampleWrapper } from "../components/example";
+import { Example, ExampleWrapper } from "../shadcn/example";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -15,16 +15,16 @@ import {
 	AlertDialogMedia,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "../components/ui/alert-dialog";
+} from "../shadcn/ui/alert-dialog";
 import {
 	Avatar,
 	AvatarFallback,
 	AvatarGroup,
 	AvatarImage,
-} from "../components/ui/avatar";
-import { Badge } from "../components/ui/badge";
-import { Button } from "../components/ui/button";
-import { ButtonGroup } from "../components/ui/button-group";
+} from "../shadcn/ui/avatar";
+import { Badge } from "../shadcn/ui/badge";
+import { Button } from "../shadcn/ui/button";
+import { ButtonGroup } from "../shadcn/ui/button-group";
 import {
 	Card,
 	CardAction,
@@ -33,8 +33,8 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "../components/ui/card";
-import { Checkbox } from "../components/ui/checkbox";
+} from "../shadcn/ui/card";
+import { Checkbox } from "../shadcn/ui/checkbox";
 import {
 	Combobox,
 	ComboboxContent,
@@ -42,7 +42,7 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-} from "../components/ui/combobox";
+} from "../shadcn/ui/combobox";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -59,7 +59,7 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
+} from "../shadcn/ui/dropdown-menu";
 import {
 	Empty,
 	EmptyContent,
@@ -67,7 +67,7 @@ import {
 	EmptyHeader,
 	EmptyMedia,
 	EmptyTitle,
-} from "../components/ui/empty";
+} from "../shadcn/ui/empty";
 import {
 	Field,
 	FieldContent,
@@ -78,8 +78,8 @@ import {
 	FieldSeparator,
 	FieldSet,
 	FieldTitle,
-} from "../components/ui/field";
-import { Input } from "../components/ui/input";
+} from "../shadcn/ui/field";
+import { Input } from "../shadcn/ui/input";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -87,7 +87,7 @@ import {
 	InputGroupInput,
 	InputGroupText,
 	InputGroupTextarea,
-} from "../components/ui/input-group";
+} from "../shadcn/ui/input-group";
 import {
 	Item,
 	ItemActions,
@@ -95,8 +95,8 @@ import {
 	ItemDescription,
 	ItemMedia,
 	ItemTitle,
-} from "../components/ui/item";
-import { Label } from "../components/ui/label";
+} from "../shadcn/ui/item";
+import { Label } from "../shadcn/ui/label";
 import {
 	Popover,
 	PopoverContent,
@@ -104,8 +104,8 @@ import {
 	PopoverHeader,
 	PopoverTitle,
 	PopoverTrigger,
-} from "../components/ui/popover";
-import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
+} from "../shadcn/ui/popover";
+import { RadioGroup, RadioGroupItem } from "../shadcn/ui/radio-group";
 import {
 	Select,
 	SelectContent,
@@ -113,8 +113,8 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "../components/ui/select";
-import { Separator } from "../components/ui/separator";
+} from "../shadcn/ui/select";
+import { Separator } from "../shadcn/ui/separator";
 import {
 	Sheet,
 	SheetClose,
@@ -124,16 +124,12 @@ import {
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-} from "../components/ui/sheet";
-import { Slider } from "../components/ui/slider";
-import { Spinner } from "../components/ui/spinner";
-import { Switch } from "../components/ui/switch";
-import { Textarea } from "../components/ui/textarea";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from "../components/ui/tooltip";
+} from "../shadcn/ui/sheet";
+import { Slider } from "../shadcn/ui/slider";
+import { Spinner } from "../shadcn/ui/spinner";
+import { Switch } from "../shadcn/ui/switch";
+import { Textarea } from "../shadcn/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../shadcn/ui/tooltip";
 import {
 	IconMinus,
 	IconPlus,

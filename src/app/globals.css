@@ -126,14 +126,4 @@
 	body {
 		@apply bg-background text-foreground;
 	}
-
-	/* body a:not([class]),
-	a.link-default {
-		text-decoration: underline;
-	}
-
-	body a:not([class]),
-	a.link-default :hover {
-		color: black;
-	} */
 }

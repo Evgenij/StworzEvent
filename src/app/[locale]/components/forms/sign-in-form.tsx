@@ -1,13 +1,13 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Header } from "../header/header";
-import { Button } from "@/components/ui/button";
-import { FieldGroup } from "@/components/ui/field";
+import { Button } from "@/shadcn/ui/button";
+import { FieldGroup } from "@/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/ui/input-group";
+} from "@/shadcn/ui/input-group";
 import {
 	IconEye,
 	IconEyeClosed,
@@ -15,11 +15,12 @@ import {
 	IconMail,
 } from "@tabler/icons-react";
 import { useState } from "react";
-import { signIn } from "@/lib/auth-client";
 import { useRouter } from "@/i18n/routing";
 import { PROFILE_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@/shadcn/ui/spinner";
 import { Link } from "@/i18n/routing";
+import { signInEmailAction } from "@/actions/sign-in-email.action";
+import { toast } from "sonner";
 
 export default function SignInForm() {
 	const t = useTranslations("SignInForm");
@@ -29,33 +30,17 @@ export default function SignInForm() {
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		console.log(event.target);
+		setIsPending(true);
 		const formData = new FormData(event.target as HTMLFormElement);
-		//TODO Add validation
-		const email = String(formData.get("email"));
-		const password = String(formData.get("password"));
+		const { error } = await signInEmailAction(formData);
 
-		await signIn.email(
-			{
-				email,
-				password,
-			},
-			{
-				onRequest: () => {
-					setIsPending(true);
-				},
-				onResponse: () => {
-					setIsPending(false);
-				},
-				onError: (ctx) => {
-					console.log(ctx.error.message);
-				},
-				onSuccess: () => {
-					// TODO change to PROFILE
-					router.push(PROFILE_ROUTE);
-				},
-			},
-		);
+		if (error) {
+			toast.error(error);
+			setIsPending(false);
+		} else {
+			toast.success("Udalo sie!");
+			router.push(PROFILE_ROUTE);
+		}
 	}
 
 	return (

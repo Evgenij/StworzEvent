@@ -11,3 +11,13 @@
 		}
 	}
 }
+
+li.cn-toast[data-sonner-toast] {
+	button[aria-label="Close toast"] {
+		&:hover {
+			svg {
+				stroke: white;
+			}
+		}
+	}
+}

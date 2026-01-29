@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shadcn/ui/button";
 import { SIGNIN_ROUTE, SIGNUP_ROUTE, UI_ROUTE } from "@/helpers/routes";
 import { Link } from "@/i18n/routing";
 
