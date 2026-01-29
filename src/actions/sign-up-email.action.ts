@@ -1,5 +1,6 @@
 "use server";
-import { auth } from "@/lib/auth";
+import { auth, ErrorCode } from "@/lib/auth";
+import { APIError } from "better-auth/api";
 
 export async function signUpEmailAction(formData: FormData) {
 	const name = formData.get("name") as string;
@@ -16,8 +17,31 @@ export async function signUpEmailAction(formData: FormData) {
 
 		return { error: null };
 	} catch (error: any) {
-		if (error instanceof Error) {
-			return { error: "Oops! Something went wrong" };
+		if (error instanceof APIError) {
+			const errCode = error.body
+				? (error.body.code as ErrorCode)
+				: "UNKNOWN";
+
+			console.log(errCode);
+
+			switch (errCode) {
+				default:
+					return { error: "Oops! Something went wrong..." };
+				case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
+					return {
+						error: "User with this email already exists. ",
+						description: `Use another email`,
+					};
+				case "INVALID_EMAIL":
+					return { error: "Invalid email address" };
+				case "PASSWORD_TOO_SHORT":
+					return {
+						error: "Password too short",
+						description: "Min length is 6 characters",
+					};
+			}
+
+			return { error: error.message };
 		}
 
 		return { error: "Internal Server Error" };

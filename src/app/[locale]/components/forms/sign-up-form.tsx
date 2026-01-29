@@ -35,20 +35,20 @@ export default function SignUpForm() {
 		setIsPending(true);
 
 		const formData = new FormData(event.target as HTMLFormElement);
-		const { error } = await signUpEmailAction(formData);
+		const error = await signUpEmailAction(formData);
 
 		if (error) {
-			//console.log(error);
-			toast.error(error, {
+			console.log(error);
+			toast.error(error.error, {
 				//icon: <IconEye />,
-				//description: "Sunday, December 03, 2023 at 9:00 AM",
+				description: error.description,
 				// action: {
 				// 	label: "Close",
 				// 	onClick: () => console.log("Undo"),
 				// },
-				// classNames: {
-				// 	description: "!text-foreground/70",
-				// },
+				classNames: {
+					description: "!text-foreground/70",
+				},
 			});
 
 			// toast.error(error, {
