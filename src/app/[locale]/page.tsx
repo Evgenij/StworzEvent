@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE, SIGNUP_ROUTE, UI_ROUTE } from "@/helpers/routes";
 import { Link } from "@/i18n/routing";
 
 const links = [
@@ -10,6 +10,10 @@ const links = [
 	{
 		label: "Sign Up",
 		href: SIGNUP_ROUTE,
+	},
+	{
+		label: "UI",
+		href: UI_ROUTE,
 	},
 ];
 
