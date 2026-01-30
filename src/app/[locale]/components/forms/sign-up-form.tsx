@@ -37,9 +37,9 @@ export default function SignUpForm() {
 		const formData = new FormData(event.target as HTMLFormElement);
 		const error = await signUpEmailAction(formData);
 
-		if (error) {
+		if (error.message) {
 			console.log(error);
-			toast.error(error.error, {
+			toast.error(error.message, {
 				//icon: <IconEye />,
 				description: error.description,
 				// action: {

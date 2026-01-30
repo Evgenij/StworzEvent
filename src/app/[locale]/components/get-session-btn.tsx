@@ -12,10 +12,18 @@ function GetSessionBtn() {
 
 	const href = session ? PROFILE_ROUTE : SIGNIN_ROUTE;
 
+	console.log(session);
+
 	return (
 		<div className="flex flex-col gap-4 items-center">
 			{session && (
 				<h2 className="text-2xl">
+					<span
+						data-role={session.user.role}
+						className="text-xs p-2 py-1 text-white rounded-full animate-pulse data-[role=USER]:bg-blue-500 data-[role=ADMIN]:bg-zinc-900"
+					>
+						{session.user.role}
+					</span>
 					Welcome back, <strong>{session.user.name}</strong>
 				</h2>
 			)}

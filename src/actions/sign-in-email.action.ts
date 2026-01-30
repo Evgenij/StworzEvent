@@ -5,10 +5,10 @@ import { headers } from "next/headers";
 
 export async function signInEmailAction(formData: FormData) {
 	const email = formData.get("email") as string;
-	if (!email) return { error: "Email is required" };
+	if (!email) return { message: "Email is required" };
 
 	const password = formData.get("password") as string;
-	if (!password) return { error: "Password is required" };
+	if (!password) return { message: "Password is required" };
 
 	try {
 		await auth.api.signInEmail({
@@ -36,12 +36,12 @@ export async function signInEmailAction(formData: FormData) {
 		// 	});
 		// }
 
-		return { error: null };
+		return { message: null };
 	} catch (error: any) {
 		if (error instanceof APIError) {
-			return { error: error.message };
+			return { message: error.message };
 		}
 
-		return { error: "Internal Server Error" };
+		return { message: "Internal Server Error" };
 	}
 }

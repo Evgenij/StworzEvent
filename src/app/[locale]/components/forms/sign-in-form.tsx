@@ -32,10 +32,10 @@ export default function SignInForm() {
 		event.preventDefault();
 		setIsPending(true);
 		const formData = new FormData(event.target as HTMLFormElement);
-		const { error } = await signInEmailAction(formData);
+		const error = await signInEmailAction(formData);
 
-		if (error) {
-			toast.error(error);
+		if (error.message) {
+			toast.error(error.message);
 			setIsPending(false);
 		} else {
 			toast.success("Udalo sie!");

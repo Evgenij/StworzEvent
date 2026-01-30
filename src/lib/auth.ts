@@ -1,10 +1,8 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-// If your Prisma file is located elsewhere, you can change the path
 import prisma from "@/lib/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { createAuthMiddleware } from "better-auth/api";
-import { SIGNUP_ROUTE } from "@/helpers/routes";
 import { normalizeName } from "./utils";
 
 export const auth = betterAuth({
@@ -20,7 +18,7 @@ export const auth = betterAuth({
 		before: createAuthMiddleware(async (ctx) => {
 			if (ctx.path === "/sign-up/email") {
 				const name = normalizeName(ctx.body?.name || "");
-
+				//TODO show error sonner
 				return {
 					context: {
 						...ctx,
@@ -38,6 +36,16 @@ export const auth = betterAuth({
 	// 		generateId: false, // disabling 3TTPkuoYfDzYkTdm8kX1N4UdOuCAHg9S id like this
 	// 	},
 	// },
+	user: {
+		additionalFields: {
+			role: {
+				type: ["USER", "ADMIN"], // Better Auth должен знать, что в БД это строка
+				required: false, // ЭТО УБЕРЕТ ОШИБКУ В Action
+				defaultValue: "USER",
+				input: false, // Это скроет поле из клиентских методов типа signUp
+			},
+		},
+	},
 	plugins: [nextCookies()],
 	session: {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
