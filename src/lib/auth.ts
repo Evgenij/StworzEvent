@@ -3,6 +3,9 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 // If your Prisma file is located elsewhere, you can change the path
 import prisma from "@/lib/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { createAuthMiddleware } from "better-auth/api";
+import { SIGNUP_ROUTE } from "@/helpers/routes";
+import { normalizeName } from "./utils";
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
@@ -12,6 +15,23 @@ export const auth = betterAuth({
 		enabled: true,
 		minPasswordLength: 6,
 		autoSignIn: false, // optional
+	},
+	hooks: {
+		before: createAuthMiddleware(async (ctx) => {
+			if (ctx.path === "/sign-up/email") {
+				const name = normalizeName(ctx.body?.name || "");
+
+				return {
+					context: {
+						...ctx,
+						body: {
+							...ctx.body,
+							name,
+						},
+					},
+				};
+			}
+		}),
 	},
 	// advanced: {
 	// 	database: {
