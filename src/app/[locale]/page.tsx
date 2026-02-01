@@ -1,5 +1,10 @@
 import { Button } from "@/shadcn/ui/button";
-import { SIGNIN_ROUTE, SIGNUP_ROUTE, UI_ROUTE } from "@/helpers/routes";
+import {
+	ADMIN_DASHBOARD_ROUTE,
+	SIGNIN_ROUTE,
+	SIGNUP_ROUTE,
+	UI_ROUTE,
+} from "@/helpers/routes";
 import { Link } from "@/i18n/routing";
 import GetSessionBtn from "./components/get-session-btn";
 
@@ -13,8 +18,12 @@ const links = [
 		href: SIGNUP_ROUTE,
 	},
 	{
-		label: "UI",
+		label: "UI components",
 		href: UI_ROUTE,
+	},
+	{
+		label: "Admin Dashboard",
+		href: ADMIN_DASHBOARD_ROUTE,
 	},
 ];
 

@@ -3,7 +3,12 @@ import { headers } from "next/headers";
 import React from "react";
 import SignOutBtn from "../components/sign-out-btn";
 import { Link, redirect } from "@/i18n/routing";
-import { HOME_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
+import {
+	ADMIN_DASHBOARD_ROUTE,
+	HOME_ROUTE,
+	SIGNIN_ROUTE,
+} from "@/helpers/routes";
+import { Button } from "@/shadcn/ui/button";
 
 export default async function ProfilePage({
 	params,
@@ -18,10 +23,23 @@ export default async function ProfilePage({
 	if (!session) redirect({ href: SIGNIN_ROUTE, locale });
 
 	return (
-		<div>
-			<Link href={HOME_ROUTE}>Go home</Link>
+		<div className="p-6 flex flex-col gap-4">
+			<header className="flex gap-3">
+				<Link href={HOME_ROUTE}>
+					<Button variant={"outline"}>Home</Button>
+				</Link>
+
+				{session?.user.role === "ADMIN" && (
+					<Link href={ADMIN_DASHBOARD_ROUTE}>
+						<Button variant={"outline"}>Admin dashboard</Button>
+					</Link>
+				)}
+
+				<SignOutBtn />
+			</header>
+			<hr />
+
 			<pre className="text-sm">{JSON.stringify(session, null, 2)}</pre>
-			<SignOutBtn />
 		</div>
 	);
 }
