@@ -4,11 +4,29 @@ import prisma from "@/lib/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { createAuthMiddleware } from "better-auth/api";
 import { normalizeName } from "./utils";
+import { UserRole } from "@prisma/client";
+import { admin } from "better-auth/plugins";
+import { ac, roles } from "@/lib/permissions";
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
+	socialProviders: {
+		google: {
+			clientId: process.env.GOOGLE_CLIENT_ID as string,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		},
+		facebook: {
+			clientId: process.env.FACEBOOK_CLIENT_ID as string,
+			clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
+		},
+	},
+	account: {
+		accountLinking: {
+			enabled: true,
+		},
+	},
 	emailAndPassword: {
 		enabled: true,
 		minPasswordLength: 6,
@@ -36,17 +54,40 @@ export const auth = betterAuth({
 	// 		generateId: false, // disabling 3TTPkuoYfDzYkTdm8kX1N4UdOuCAHg9S id like this
 	// 	},
 	// },
+	databaseHooks: {
+		user: {
+			create: {
+				before: async (user) => {
+					const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(";");
+					console.log("USER EMAIL: ", user.email, ADMIN_EMAILS);
+					if (ADMIN_EMAILS?.includes(user.email)) {
+						return { data: { ...user, role: UserRole.ADMIN } };
+					}
+
+					return { data: user };
+				},
+			},
+		},
+	},
 	user: {
 		additionalFields: {
 			role: {
-				type: ["USER", "ADMIN"], // Better Auth должен знать, что в БД это строка
+				type: ["USER", "ADMIN"] as Array<UserRole>, // Better Auth должен знать, что в БД это строка
 				required: false, // ЭТО УБЕРЕТ ОШИБКУ В Action
 				defaultValue: "USER",
 				input: false, // Это скроет поле из клиентских методов типа signUp
 			},
 		},
 	},
-	plugins: [nextCookies()],
+	plugins: [
+		nextCookies(),
+		admin({
+			defaultRole: UserRole.USER,
+			adminRoles: [UserRole.ADMIN],
+			ac,
+			roles,
+		}),
+	],
 	session: {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
 	},

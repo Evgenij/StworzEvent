@@ -30,10 +30,7 @@ export default async function RootLayout({
 	// Получаем сообщения для текущего языка
 	const messages = await getMessages();
 	return (
-		<html
-			lang={locale}
-			className={`${fontPoppins.variable} h-screen bg-background`}
-		>
+		<html lang={locale} className={`${fontPoppins.variable} h-screen`}>
 			<body className="antialiased h-full">
 				<NextIntlClientProvider messages={messages}>
 					<Toaster />

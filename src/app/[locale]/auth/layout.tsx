@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ReturnBtn from "../components/return-btn";
 import { HOME_ROUTE } from "@/helpers/routes";
+import Image from "next/image";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -14,11 +15,24 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<main className="h-full flex bg">
-			<section className="w-2/3 h-full flex justify-center items-center bg-accent">
-				1
+		<main
+			className="h-full flex bg"
+			style={{
+				backgroundImage: "url(/images/bg/sign-in-bg.png)",
+				backgroundRepeat: "no-repeat",
+				backgroundSize: "cover",
+				backgroundPosition: "center",
+			}}
+		>
+			<section className="w-2/3 h-full flex justify-center items-center">
+				<Image
+					src="/logos/logo_white.svg"
+					alt="logo_white"
+					width={457}
+					height={103}
+				/>
 			</section>
-			<aside className="w-1/3 min-w-[500px] h-full flex flex-col justify-center items-center p-6 ">
+			<aside className="w-1/3 min-w-[500px] h-full flex flex-col justify-center items-center p-6 bg-background">
 				{children}
 
 				<ReturnBtn href={HOME_ROUTE} label="back" />

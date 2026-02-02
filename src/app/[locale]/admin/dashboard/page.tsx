@@ -18,7 +18,12 @@ async function AdminDashboard({ params }: { params: { locale: string } }) {
 	});
 
 	if (!session) redirect({ href: SIGNIN_ROUTE, locale });
-	const users = await prisma.user.findMany();
+	const { users } = await auth.api.listUsers({
+		headers: await headers(),
+		query: {
+			sortBy: "role",
+		},
+	});
 
 	return (
 		<section className="h-full flex flex-col gap-8 p-8">

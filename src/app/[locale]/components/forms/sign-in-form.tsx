@@ -21,6 +21,7 @@ import { Spinner } from "@/shadcn/ui/spinner";
 import { Link } from "@/i18n/routing";
 import { signInEmailAction } from "@/actions/sign-in-email.action";
 import { toast } from "sonner";
+import SignInOAuthBtn from "../sign-in-oauth-btn";
 
 export default function SignInForm() {
 	const t = useTranslations("SignInForm");
@@ -112,6 +113,10 @@ export default function SignInForm() {
 							Sing Up
 						</Link>
 					</p>
+					<hr className="my-4" />
+
+					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
+					<SignInOAuthBtn provider="google"></SignInOAuthBtn>
 				</form>
 			</main>
 			<footer>{/* <LocaleSwitcher /> */}</footer>

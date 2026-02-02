@@ -3,6 +3,7 @@ const ADMIN_ROUTE = "/admin";
 
 export const SIGNIN_ROUTE = `${AUTH_ROUTE}/signin`;
 export const SIGNUP_ROUTE = `${AUTH_ROUTE}/signup`;
+export const AUTH_ERROR_ROUTE = `${AUTH_ROUTE}/error`;
 
 export const HOME_ROUTE = "/";
 export const PROFILE_ROUTE = "/profile";
