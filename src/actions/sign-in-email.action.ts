@@ -15,27 +15,6 @@ export async function signInEmailAction(formData: FormData) {
 			body: { email, password },
 			headers: await headers(),
 		});
-
-		// const setCookieHeader = res.headers.get("set-cookie");
-		// if (setCookieHeader) {
-		// 	const cookie = parseSetCookieHeader(setCookieHeader);
-		// 	const cookieStore = await cookies();
-
-		// 	const [key, cookieAttributes] = [...cookie.entries()][0];
-		// 	const value = cookieAttributes.value;
-		// 	const maxAge = cookieAttributes.maxAge ?? undefined;
-		// 	const path = cookieAttributes.path;
-		// 	const httpOnly = cookieAttributes.httponly;
-		// 	const sameSite = cookieAttributes.samesite;
-
-		// 	cookieStore.set(key, decodeURIComponent(value), {
-		// 		maxAge,
-		// 		path,
-		// 		httpOnly,
-		// 		sameSite,
-		// 	});
-		// }
-
 		return { message: null };
 	} catch (error: any) {
 		if (error instanceof APIError) {

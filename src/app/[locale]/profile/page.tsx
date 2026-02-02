@@ -9,6 +9,8 @@ import {
 	SIGNIN_ROUTE,
 } from "@/helpers/routes";
 import { Button } from "@/shadcn/ui/button";
+import { sendEmailAction } from "@/actions/send-email.action";
+import BtnEmail from "../components/btn-email";
 
 export default async function ProfilePage({
 	params,
@@ -37,6 +39,8 @@ export default async function ProfilePage({
 
 				<SignOutBtn />
 			</header>
+			<hr />
+			<BtnEmail />
 			<hr />
 
 			<pre className="text-sm">{JSON.stringify(session, null, 2)}</pre>
