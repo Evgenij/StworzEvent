@@ -8,6 +8,7 @@ import { UserRole } from "@prisma/client";
 import { admin } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
+import { AUTH_VERIFY_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
@@ -32,21 +33,32 @@ export const auth = betterAuth({
 		enabled: true,
 		minPasswordLength: 6,
 		autoSignIn: false, // optional
-		requireEmailVerification: true,
+		//requireEmailVerification: true,
 	},
 	emailVerification: {
 		sendOnSignUp: true,
-		expiresIn: 60 * 60,
-		enabled: true,
+		expiresIn: 60 * 60, // 1 hour
+		// expiresIn: 5, // 5 seconds
+		//enabled: true,
 		autoSignInAfterVerification: true,
 		sendVerificationEmail: async ({ user, url }) => {
+			const link = new URL(url);
+			link.searchParams.set("callbackURL", PROFILE_ROUTE);
+
 			// send email to user
 			await sendEmailAction({
 				to: user.email,
-				subject: "Verify your email",
+				subject: "Potwierdź adres e-mail",
+				user: {
+					name: user.name,
+				},
 				meta: {
-					description: "Please verify your email address",
-					link: String(url),
+					link: String(link),
+					icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
+					header: "Potwierdź adres e-mail",
+					description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
+							Prosimy o potwierdzenie adresu e-mail, klikając w
+							poniższy link.`,
 				},
 			});
 		},
@@ -68,6 +80,7 @@ export const auth = betterAuth({
 			}
 		}),
 	},
+
 	// advanced: {
 	// 	database: {
 	// 		generateId: false, // disabling 3TTPkuoYfDzYkTdm8kX1N4UdOuCAHg9S id like this

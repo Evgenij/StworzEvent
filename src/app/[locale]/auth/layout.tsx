@@ -32,9 +32,8 @@ export default function RootLayout({
 					height={103}
 				/>
 			</section>
-			<aside className="w-1/3 min-w-[500px] h-full flex flex-col justify-center items-center p-6 bg-background">
+			<aside className="w-1/3 min-w-[500px] h-full flex flex-col gap-9 justify-center items-center p-6 bg-background">
 				{children}
-
 				<ReturnBtn href={HOME_ROUTE} label="back" />
 			</aside>
 		</main>

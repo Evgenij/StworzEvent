@@ -40,6 +40,11 @@ export default async function ProfilePage({
 				<SignOutBtn />
 			</header>
 			<hr />
+			{session?.user.emailVerified ? (
+				<p className="text-green-600">Email is verified!</p>
+			) : (
+				<p className="text-destructive">Email do not verified...</p>
+			)}
 			<BtnEmail />
 			<hr />
 

@@ -8,10 +8,15 @@ function BtnEmail() {
 	const sendEmail = async () => {
 		await sendEmailAction({
 			to: "evgeniu.ermolenko@gmail.com",
-			subject: "Test email",
+			subject: "Potwierdź adres e-mail",
+			user: { name: "Name" },
 			meta: {
 				link: "google.com",
-				description: "Test email from StworzEvent",
+				icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
+				header: "Potwierdź adres e-mail",
+				description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
+							Prosimy o potwierdzenie adresu e-mail, klikając w
+							poniższy link.`,
 			},
 		});
 	};

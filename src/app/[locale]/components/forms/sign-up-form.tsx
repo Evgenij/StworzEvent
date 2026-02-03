@@ -98,7 +98,13 @@ export default function SignUpForm() {
 			// ));
 			setIsPending(false);
 		} else {
-			toast.success("Udalo sie!");
+			toast.success("Rejestracja zakończona!", {
+				description:
+					"Na Twój adres e-mail wysłano SMS-a w celu potwierdzenia adresu.",
+				classNames: {
+					description: "!text-foreground/70",
+				},
+			});
 			router.push(SIGNIN_ROUTE);
 		}
 

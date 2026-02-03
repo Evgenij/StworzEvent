@@ -5,20 +5,18 @@ import transporter from "@/lib/nodemailer";
 interface Props {
 	to: string;
 	subject: string;
+	user: {
+		name: string;
+	};
 	meta: {
+		header: string;
+		icon: string;
 		description: string;
 		link: string;
 	};
 }
 
-const styles = {
-	main: "background: #f5f5f5; padding: 20px; font-family: Arial, sans-serif; text-align: center; box-sizing: border-box; width: 100%; height: 100%;",
-	container:
-		"margin: 0 auto; max-width: 500px; background: white; border-radius: 30px;",
-	button: "background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;",
-};
-
-export async function sendEmailAction({ to, subject, meta }: Props) {
+export async function sendEmailAction({ to, subject, meta, user }: Props) {
 	const mailOptions = {
 		from: '"StworzEvent.pl" <no-reply@stworzevent.pl>',
 		to,
@@ -60,7 +58,7 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 				<tr>
 					<td>
 						<img
-							src="https://stworzevent.vercel.app/images/mails/img-mail.png"
+							src="${meta.icon}"
 							alt="logo"
 							height="100"
 						/>
@@ -68,12 +66,12 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 				</tr>
 				<tr>
 					<td>
-						<h1>Potwierdź adres e-mail</h1>
+						<h1>${meta.header}</h1>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<h2 style="margin-bottom: 20px">Witam, Maria!</h2>
+						<h2 style="margin-bottom: 20px">Witam, ${user.name}!</h2>
 					</td>
 				</tr>
 				<tr>
@@ -86,10 +84,7 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 								margin-bottom: 30px;
 							"
 						>
-							Dziękujemy za rejestrację na stronie StworzEvent.pl!
-							<br />
-							Prosimy o potwierdzenie adresu e-mail, klikając w
-							poniższy link.
+							${meta.description}
 						</p>
 					</td>
 				</tr>

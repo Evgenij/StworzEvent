@@ -4,6 +4,8 @@ const ADMIN_ROUTE = "/admin";
 export const SIGNIN_ROUTE = `${AUTH_ROUTE}/signin`;
 export const SIGNUP_ROUTE = `${AUTH_ROUTE}/signup`;
 export const AUTH_ERROR_ROUTE = `${AUTH_ROUTE}/error`;
+export const AUTH_VERIFY_ROUTE = `${AUTH_ROUTE}/verify`;
+export const AUTH_VERIFY_SUCCESS_ROUTE = `${AUTH_ROUTE}/verify/success`;
 
 export const HOME_ROUTE = "/";
 export const PROFILE_ROUTE = "/profile";

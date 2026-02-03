@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 import {
 	ADMIN_DASHBOARD_ROUTE,
+	AUTH_VERIFY_ROUTE,
 	PROFILE_ROUTE,
 	SIGNIN_ROUTE,
 } from "./helpers/routes";
@@ -34,6 +35,7 @@ export async function proxy(req: NextRequest) {
 			pathWithoutLocale === route ||
 			pathWithoutLocale.startsWith(`${route}/`),
 	);
+	const isVerifyRoute = pathWithoutLocale.startsWith(AUTH_VERIFY_ROUTE);
 
 	const pathname = nextUrl.pathname;
 	const segments = pathname.split("/");
@@ -41,7 +43,7 @@ export async function proxy(req: NextRequest) {
 	const currentLocale = routing.locales.includes(segments[1] as any)
 		? segments[1]
 		: routing.defaultLocale;
-	console.log("middleware locale:", currentLocale);
+	//console.log("middleware locale:", currentLocale);
 
 	// 2. Если залогинен и пытается зайти на /auth/... (включая /pl/auth/...)
 	if (isLoggedIn && isAuthRoute) {
@@ -53,10 +55,17 @@ export async function proxy(req: NextRequest) {
 	}
 
 	// 3. Если НЕ залогинен и пытается зайти на защищенный роут
-	if (!isLoggedIn && isProtectedRoute) {
+	// if (!isLoggedIn && isProtectedRoute) {
+	// 	const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
+	// 	return NextResponse.redirect(
+	// 		new URL(`/${locale}${SIGNIN_ROUTE}`, req.url),
+	// 	);
+	// }
+
+	if (isLoggedIn && isAuthRoute && !isVerifyRoute) {
 		const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
 		return NextResponse.redirect(
-			new URL(`/${locale}${SIGNIN_ROUTE}`, req.url),
+			new URL(`/${locale}${PROFILE_ROUTE}`, req.url),
 		);
 	}
 
