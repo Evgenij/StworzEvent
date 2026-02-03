@@ -60,7 +60,7 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 				<tr>
 					<td>
 						<img
-							src="/send-email-pop-up.svg"
+							src="https://stworzevent.vercel.app/images/mails/img-mail.png"
 							alt="logo"
 							height="100"
 						/>
@@ -140,7 +140,7 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 				<tr>
 					<td align="left" valign="middle">
 						<img
-							src="/logo_text_white.svg"
+							src="https://stworzevent.vercel.app/images/mails/logo_text_white.png"
 							alt="logo"
 							height="23"
 							width="158"
@@ -151,7 +151,7 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 							href="https://www.facebook.com/groups/stworzevent/"
 							target="_blank"
 							><img
-								src="/facebook.svg"
+								src="https://stworzevent.vercel.app/images/mails/img-facebook.png"
 								alt="logo"
 								height="30"
 								width="30"
