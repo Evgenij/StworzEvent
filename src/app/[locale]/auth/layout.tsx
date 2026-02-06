@@ -24,7 +24,7 @@ export default function RootLayout({
 				backgroundPosition: "center",
 			}}
 		>
-			<section className="w-2/3 h-full flex justify-center items-center">
+			<section className="w-2/3 h-full flex p-10 justify-center items-center">
 				<Image
 					src="/logos/logo_white.svg"
 					alt="logo_white"
@@ -32,9 +32,8 @@ export default function RootLayout({
 					height={103}
 				/>
 			</section>
-			<aside className="w-1/3 min-w-[500px] h-full flex flex-col gap-9 justify-center items-center p-6 bg-background">
+			<aside className="w-1/3 min-w-[450px] h-full flex flex-col gap-9 justify-center items-center p-6 bg-background">
 				{children}
-				<ReturnBtn href={HOME_ROUTE} label="back" />
 			</aside>
 		</main>
 	);

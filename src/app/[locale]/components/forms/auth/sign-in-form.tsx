@@ -1,8 +1,8 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { Header } from "../header/header";
+import { Header } from "#/components/header/header";
 import { Button } from "@/shadcn/ui/button";
-import { FieldGroup } from "@/shadcn/ui/field";
+import { FieldDescription, FieldGroup } from "@/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -16,12 +16,16 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import { PROFILE_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
+import {
+	FORGOT_PASSWORD_ROUTE,
+	PROFILE_ROUTE,
+	SIGNUP_ROUTE,
+} from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
 import { Link } from "@/i18n/routing";
 import { signInEmailAction } from "@/actions/sign-in-email.action";
 import { toast } from "sonner";
-import SignInOAuthBtn from "../sign-in-oauth-btn";
+import SignInOAuthBtn from "#/components/sign-in-oauth-btn";
 
 export default function SignInForm() {
 	const t = useTranslations("SignInForm");
@@ -45,7 +49,7 @@ export default function SignInForm() {
 	}
 
 	return (
-		<div className="flex flex-col gap-10">
+		<div className="flex flex-col gap-8">
 			<header className="flex flex-col gap-2 items-center">
 				<Header as={"h2"}>{t("title")}</Header>
 				{/*<p className="text-muted-foreground text-center text-sm">*/}
@@ -62,7 +66,12 @@ export default function SignInForm() {
 				{/*	/!* Wpisz poniżej swój adres e-mail, <br /> aby utworzyć konto. *!/*/}
 				{/*</p>*/}
 			</header>
-			<main>
+			<main className="flex flex-col gap-5">
+				<div className="oauth-btns flex flex-col gap-1">
+					<SignInOAuthBtn provider="google"></SignInOAuthBtn>
+					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
+				</div>
+
 				<form
 					action=""
 					onSubmit={submitHandler}
@@ -96,6 +105,14 @@ export default function SignInForm() {
 								{showPassword ? <IconEyeClosed /> : <IconEye />}
 							</InputGroupAddon>
 						</InputGroup>
+						<FieldDescription>
+							<Link
+								href={FORGOT_PASSWORD_ROUTE}
+								className="link-default"
+							>
+								Zapomnialem hasla
+							</Link>
+						</FieldDescription>
 					</FieldGroup>
 
 					<Button
@@ -114,9 +131,6 @@ export default function SignInForm() {
 						</Link>
 					</p>
 					<hr className="my-4" />
-
-					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
-					<SignInOAuthBtn provider="google"></SignInOAuthBtn>
 				</form>
 			</main>
 			<footer>{/* <LocaleSwitcher /> */}</footer>

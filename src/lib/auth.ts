@@ -1,16 +1,17 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { createAuthMiddleware } from "better-auth/api";
 import { normalizeName } from "./utils";
 import { UserRole } from "@prisma/client";
-import { admin } from "better-auth/plugins";
+import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { AUTH_VERIFY_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
+import { send } from "process";
 
-export const auth = betterAuth({
+const options = {
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
@@ -34,6 +35,21 @@ export const auth = betterAuth({
 		minPasswordLength: 6,
 		autoSignIn: false, // optional
 		//requireEmailVerification: true,
+		sendResetPassword: async ({ user, url }) => {
+			await sendEmailAction({
+				to: user.email,
+				subject: "Reset hasla",
+				meta: {
+					header: "Resetowanie hasła",
+					subheader: `Hej, ${user.name}`,
+					description:
+						"Aby odzyskać hasło, kliknij przycisk poniżej.",
+					icon: "https://stworzevent.vercel.app/images/mails/img-reset-password.png",
+					link: url,
+					btnText: "Zresetuj hasło",
+				},
+			});
+		},
 	},
 	emailVerification: {
 		sendOnSignUp: true,
@@ -49,31 +65,33 @@ export const auth = betterAuth({
 			await sendEmailAction({
 				to: user.email,
 				subject: "Potwierdź adres e-mail",
-				user: {
-					name: user.name,
-				},
 				meta: {
-					link: String(link),
-					icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
 					header: "Potwierdź adres e-mail",
+					subheader: `Witam, ${user.name}!`,
 					description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
 							Prosimy o potwierdzenie adresu e-mail, klikając w
 							poniższy link.`,
+					icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
+					link: String(link),
+					btnText: "Potwierdź adres e-mail",
 				},
 			});
 		},
 	},
 	hooks: {
 		before: createAuthMiddleware(async (ctx) => {
-			if (ctx.path === "/sign-up/email") {
-				const name = normalizeName(ctx.body?.name || "");
+			if (
+				ctx.path === "/sign-up/email" ||
+				"/api/auth/sign-in/magic-link" ||
+				"/update-user"
+			) {
 				//TODO show error sonner
 				return {
 					context: {
 						...ctx,
 						body: {
 							...ctx.body,
-							name,
+							name: normalizeName(ctx.body?.name || ""),
 						},
 					},
 				};
@@ -119,11 +137,48 @@ export const auth = betterAuth({
 			ac,
 			roles,
 		}),
+		magicLink({
+			sendMagicLink: async ({ email, url }) => {
+				await sendEmailAction({
+					to: email,
+					subject: "Magic link",
+					meta: {
+						header: "Magic link",
+						subheader: `Hej!`,
+						description: `Kliknij w poniższy link, aby się zalogować.`,
+						icon: "https://stworzevent.vercel.app/images/mails/img-magic-link.png",
+						link: url,
+						btnText: "Zaloguj się",
+					},
+				});
+			},
+		}),
 	],
 	session: {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
+		cookieCache: {
+			enabled: true,
+			maxAge: 5 * 60, // 5 minutes
+		},
 	},
 	trustedOrigins: ["http://localhost:3001"],
+} satisfies BetterAuthOptions;
+
+export const auth = betterAuth({
+	...options,
+	plugins: [
+		...(options.plugins || []),
+		customSession(async ({ session, user }) => {
+			return {
+				...session,
+				user: {
+					...user,
+					testMessage: "!!!",
+					role: user.role,
+				},
+			};
+		}, options),
+	],
 });
 
 export type ErrorCode = keyof typeof auth.$ERROR_CODES | "UNKNOWN";

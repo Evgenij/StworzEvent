@@ -7,47 +7,59 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/shadcn/ui/input-group";
-import { IconMail } from "@tabler/icons-react";
+import {
+	IconEye,
+	IconEyeClosed,
+	IconLock,
+	IconMail,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import { AUTH_VERIFY_ROUTE, AUTH_VERIFY_SUCCESS_ROUTE } from "@/helpers/routes";
+import {
+	AUTH_VERIFY_ROUTE,
+	AUTH_VERIFY_SUCCESS_ROUTE,
+	FORGOT_PASSWORD_SUCCESS_ROUTE,
+	RESET_PASSWORD_ROUTE,
+	SIGNIN_ROUTE,
+} from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
 import { toast } from "sonner";
-import { sendVerificationEmail } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
-export default function VerificationEmailForm() {
+export default function ResetPasswordForm({ token }: { token: string }) {
 	const t = useTranslations("SignInForm"); //  TODO !!!
 	const router = useRouter();
 	const [isPending, setIsPending] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		setIsPending(true);
 		const formData = new FormData(event.target as HTMLFormElement);
 
-		const email = String(formData.get("email"));
+		const passwordInit = String(formData.get("passwordInit"));
+		const password = String(formData.get("password"));
 
-		if (!email) return toast.error("Brak adresu email");
+		if (!password) return toast.error("Brak wartosci hasla");
+		if (passwordInit !== password)
+			return toast.error("Hasla nie sa identyczne");
 
-		await sendVerificationEmail({
-			email,
-			// callbackURL: AUTH_VERIFY_ROUTE,
+		await authClient.resetPassword({
+			newPassword: password,
+			token: token,
 			fetchOptions: {
 				onRequest: () => {
 					setIsPending(true);
 				},
 				onResponse: () => {
 					setIsPending(false);
-
-					// router.push(SIGNUP_ROUTE);
 				},
 				onError: (err) => {
 					setIsPending(false);
 					toast.error("Wystąpił błąd! Spróbuj ponownie.");
 				},
 				onSuccess: () => {
-					toast.success("Wiadomość weryfikacyjna została wysłana!");
-					router.push(AUTH_VERIFY_SUCCESS_ROUTE);
+					toast.success("Haslo zostalo zmienione!");
+					router.push(SIGNIN_ROUTE); // TODO route to profile
 				},
 			},
 		});
@@ -63,12 +75,29 @@ export default function VerificationEmailForm() {
 				<FieldGroup>
 					<InputGroup>
 						<InputGroupInput
-							placeholder="name@example.com"
-							type="email"
-							name="email"
+							placeholder="wpisz haslo"
+							type={showPassword ? "text" : "password"}
+							name="passwordInit"
 						/>
 						<InputGroupAddon>
-							<IconMail />
+							<IconLock />
+						</InputGroupAddon>
+						<InputGroupAddon
+							align={"inline-end"}
+							className="cursor-pointer"
+							onClick={() => setShowPassword(!showPassword)}
+						>
+							{showPassword ? <IconEyeClosed /> : <IconEye />}
+						</InputGroupAddon>
+					</InputGroup>
+					<InputGroup>
+						<InputGroupInput
+							placeholder="powtorz haslo"
+							type="password"
+							name="password"
+						/>
+						<InputGroupAddon>
+							<IconLock />
 						</InputGroupAddon>
 					</InputGroup>
 				</FieldGroup>
@@ -81,7 +110,7 @@ export default function VerificationEmailForm() {
 				>
 					{isPending && <Spinner />}
 					{/* {t("button")} */}
-					wyślij ponownie e-mail weryfikacyjny
+					Save password
 				</Button>
 			</form>
 		</div>

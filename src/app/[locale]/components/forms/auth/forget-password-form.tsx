@@ -10,12 +10,17 @@ import {
 import { IconMail } from "@tabler/icons-react";
 import { useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import { AUTH_VERIFY_ROUTE, AUTH_VERIFY_SUCCESS_ROUTE } from "@/helpers/routes";
+import {
+	AUTH_VERIFY_ROUTE,
+	AUTH_VERIFY_SUCCESS_ROUTE,
+	FORGOT_PASSWORD_SUCCESS_ROUTE,
+	RESET_PASSWORD_ROUTE,
+} from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
 import { toast } from "sonner";
-import { sendVerificationEmail } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
-export default function VerificationEmailForm() {
+export default function ForgetPasswordForm() {
 	const t = useTranslations("SignInForm"); //  TODO !!!
 	const router = useRouter();
 	const [isPending, setIsPending] = useState(false);
@@ -29,9 +34,9 @@ export default function VerificationEmailForm() {
 
 		if (!email) return toast.error("Brak adresu email");
 
-		await sendVerificationEmail({
-			email,
-			// callbackURL: AUTH_VERIFY_ROUTE,
+		await authClient.requestPasswordReset({
+			email: email,
+			redirectTo: RESET_PASSWORD_ROUTE,
 			fetchOptions: {
 				onRequest: () => {
 					setIsPending(true);
@@ -46,8 +51,10 @@ export default function VerificationEmailForm() {
 					toast.error("Wystąpił błąd! Spróbuj ponownie.");
 				},
 				onSuccess: () => {
-					toast.success("Wiadomość weryfikacyjna została wysłana!");
-					router.push(AUTH_VERIFY_SUCCESS_ROUTE);
+					toast.success(
+						"Link do resetowania hasła został wysłany na adres e-mail.",
+					);
+					router.push(FORGOT_PASSWORD_SUCCESS_ROUTE);
 				},
 			},
 		});
@@ -81,7 +88,7 @@ export default function VerificationEmailForm() {
 				>
 					{isPending && <Spinner />}
 					{/* {t("button")} */}
-					wyślij ponownie e-mail weryfikacyjny
+					Wyślij link resetujący
 				</Button>
 			</form>
 		</div>

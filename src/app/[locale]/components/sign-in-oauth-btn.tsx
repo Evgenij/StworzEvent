@@ -3,14 +3,11 @@
 import { AUTH_ERROR_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
 import { signIn } from "@/lib/auth-client";
 import { Button } from "@/shadcn/ui/button";
-import {
-	IconBrandFacebookFilled,
-	IconBrandGoogleFilled,
-} from "@tabler/icons-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import FacebookIcon from "@/assets/icons/facebook.svg";
 import GoogleIcon from "@/assets/icons/google.svg";
+import { useTranslations } from "next-intl";
 
 interface Props {
 	provider: "facebook" | "google";
@@ -18,6 +15,7 @@ interface Props {
 }
 
 function SignInOAuthBtn({ provider, signUp }: Props) {
+	const t = useTranslations("SignInForm");
 	const [isPending, setIsPending] = useState(false);
 	const action = signUp ? "Up" : "In";
 	const providerName = provider.replace(/\b\w/g, (char) =>
@@ -49,6 +47,8 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 			type="button"
 			disabled={isPending}
 			onClick={handleClick}
+			className="w-full"
+			size={"lg"}
 		>
 			{provider === "facebook" ? (
 				<img src={FacebookIcon.src} height={20} width={20}></img>

@@ -5,18 +5,17 @@ import transporter from "@/lib/nodemailer";
 interface Props {
 	to: string;
 	subject: string;
-	user: {
-		name: string;
-	};
 	meta: {
 		header: string;
+		subheader: string;
 		icon: string;
 		description: string;
 		link: string;
+		btnText: string;
 	};
 }
 
-export async function sendEmailAction({ to, subject, meta, user }: Props) {
+export async function sendEmailAction({ to, subject, meta }: Props) {
 	const mailOptions = {
 		from: '"StworzEvent.pl" <no-reply@stworzevent.pl>',
 		to,
@@ -71,7 +70,7 @@ export async function sendEmailAction({ to, subject, meta, user }: Props) {
 				</tr>
 				<tr>
 					<td>
-						<h2 style="margin-bottom: 20px">Witam, ${user.name}!</h2>
+						<h2 style="margin-bottom: 20px">${meta.subheader}</h2>
 					</td>
 				</tr>
 				<tr>
@@ -104,7 +103,7 @@ export async function sendEmailAction({ to, subject, meta, user }: Props) {
 								border-radius: 12px;
 								max-width: fit-content;
 							"
-							>Potwierdzam adres e-mail</a
+							>${meta.btnText}</a
 						>
 					</td>
 				</tr>

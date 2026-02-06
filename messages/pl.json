@@ -6,8 +6,9 @@
 		"button": "Zarejestrować się"
 	},
 	"SignInForm": {
-		"title": "Cześć ponownie",
+		"title": "Witamy ponownie! 👋",
 		"subtitle": "Wpisz poniżej swój adres e-mail, <lineBreak></lineBreak> aby utworzyć konto",
-		"button": "Zalogowac się"
+		"button": "Zalogowac się",
+		"oauth": "Kontu z Google"
 	}
 }
