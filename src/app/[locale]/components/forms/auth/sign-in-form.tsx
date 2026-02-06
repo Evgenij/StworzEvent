@@ -26,12 +26,44 @@ import { Link } from "@/i18n/routing";
 import { signInEmailAction } from "@/actions/sign-in-email.action";
 import { toast } from "sonner";
 import SignInOAuthBtn from "#/components/sign-in-oauth-btn";
+import { Switch } from "@/shadcn/ui/switch";
+
+type SignInState = {
+	email: string;
+	auth: {
+		useMagicLink: boolean;
+		password?: string;
+	};
+};
 
 export default function SignInForm() {
 	const t = useTranslations("SignInForm");
 	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
 	const [isPending, setIsPending] = useState(false);
+	const [useMagicLink, setUseMagicLink] = useState(false);
+	const [value, setValue] = useState("");
+
+	const [formData, setFormData] = useState<SignInState>({
+		email: "",
+		auth: {
+			useMagicLink: false,
+			password: "",
+		},
+	});
+
+	const handleAuthChange = (
+		field: "password" | "useMagicLink",
+		value: string | boolean,
+	) => {
+		setFormData((prev) => ({
+			...prev,
+			auth: {
+				...prev.auth,
+				[field]: value,
+			},
+		}));
+	};
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -52,67 +84,108 @@ export default function SignInForm() {
 		<div className="flex flex-col gap-8">
 			<header className="flex flex-col gap-2 items-center">
 				<Header as={"h2"}>{t("title")}</Header>
-				{/*<p className="text-muted-foreground text-center text-sm">*/}
-				{/*	/!* {t("subtitle")} *!/*/}
-				{/*	{t.rich("subtitle", {*/}
-				{/*		lineBreak: () => <br />,*/}
-				{/*		// Можно даже стилизовать части текста:*/}
-				{/*		important: (chunks) => (*/}
-				{/*			<span className="text-primary font-bold">*/}
-				{/*				{chunks}*/}
-				{/*			</span>*/}
-				{/*		),*/}
-				{/*	})}*/}
-				{/*	/!* Wpisz poniżej swój adres e-mail, <br /> aby utworzyć konto. *!/*/}
-				{/*</p>*/}
 			</header>
-			<main className="flex flex-col gap-5">
-				<div className="oauth-btns flex flex-col gap-1">
+			<main className="flex flex-col gap-4">
+				<div className="oauth-btns flex flex-col gap-2">
 					<SignInOAuthBtn provider="google"></SignInOAuthBtn>
 					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
+				</div>
+				<div className="flex gap-3 items-center text-muted-foreground text-sm">
+					<div className="h-[1px] w-full bg-muted"></div>
+					<span>{t("divider")}</span>
+					<div className="h-[1px] w-full bg-muted"></div>
 				</div>
 
 				<form
 					action=""
 					onSubmit={submitHandler}
-					className="flex flex-col gap-3"
+					className="flex flex-col gap-4"
 				>
+					<div className="magic-link flex items-center gap-2">
+						{useMagicLink}
+						<Switch
+							id="magic-link"
+							checked={useMagicLink}
+							onCheckedChange={() => {
+								setUseMagicLink(!useMagicLink);
+								handleAuthChange(
+									"useMagicLink",
+									!formData.auth.useMagicLink,
+								);
+							}}
+						/>
+						<label
+							htmlFor="magic-link"
+							className="flex items-center gap-2 cursor-pointer text-sm"
+						>
+							Zaloguj się za pomocą “Magic link”
+						</label>
+					</div>
+					<pre className="w-full">
+						{JSON.stringify(formData, null, 2)}
+					</pre>
 					<FieldGroup>
 						<InputGroup>
 							<InputGroupInput
-								placeholder="name@example.com"
+								placeholder={t("placeholders.mail")}
 								type="email"
 								name="email"
+								value={formData.email}
+								onChange={(e) =>
+									setFormData((prev) => ({
+										...prev,
+										email: e.target.value,
+									}))
+								}
 							/>
 							<InputGroupAddon>
 								<IconMail />
 							</InputGroupAddon>
 						</InputGroup>
-						<InputGroup>
-							<InputGroupInput
-								placeholder="wpisz haslo"
-								type={showPassword ? "text" : "password"}
-								name="password"
-							/>
-							<InputGroupAddon>
-								<IconLock />
-							</InputGroupAddon>
-							<InputGroupAddon
-								align={"inline-end"}
-								className="cursor-pointer"
-								onClick={() => setShowPassword(!showPassword)}
-							>
-								{showPassword ? <IconEyeClosed /> : <IconEye />}
-							</InputGroupAddon>
-						</InputGroup>
-						<FieldDescription>
-							<Link
-								href={FORGOT_PASSWORD_ROUTE}
-								className="link-default"
-							>
-								Zapomnialem hasla
-							</Link>
-						</FieldDescription>
+						{!useMagicLink && (
+							<div className="password flex flex-col gap-1">
+								<InputGroup>
+									<InputGroupInput
+										placeholder={t("placeholders.password")}
+										type={
+											showPassword ? "text" : "password"
+										}
+										name="password"
+										value={formData.auth.password}
+										onChange={(e) =>
+											handleAuthChange(
+												"password",
+												e.target.value,
+											)
+										}
+									/>
+									<InputGroupAddon>
+										<IconLock />
+									</InputGroupAddon>
+									<InputGroupAddon
+										align={"inline-end"}
+										className="cursor-pointer"
+										onClick={() =>
+											setShowPassword(!showPassword)
+										}
+									>
+										{showPassword ? (
+											<IconEyeClosed />
+										) : (
+											<IconEye />
+										)}
+									</InputGroupAddon>
+								</InputGroup>
+								<FieldDescription className="ml-3">
+									<Link
+										href={FORGOT_PASSWORD_ROUTE}
+										className="link-default simple-text"
+									>
+										{t("forgotPassword")}
+									</Link>
+								</FieldDescription>
+							</div>
+						)}
 					</FieldGroup>
 
 					<Button
@@ -122,15 +195,16 @@ export default function SignInForm() {
 						disabled={isPending}
 					>
 						{isPending && <Spinner />}
-						{t("button")}
+						{useMagicLink
+							? t("button.magicLink")
+							: t("button.signIn")}
 					</Button>
-					<p className="text-muted-foreground text-sm text-center mt-2">
-						Don&apos;t have an account?{" "}
+					<p className="text-muted-foreground text-sm text-center">
+						{t("no-account")}{" "}
 						<Link href={SIGNUP_ROUTE} className="link-default">
-							Sing Up
+							{t("signUp")}
 						</Link>
 					</p>
-					<hr className="my-4" />
 				</form>
 			</main>
 			<footer>{/* <LocaleSwitcher /> */}</footer>

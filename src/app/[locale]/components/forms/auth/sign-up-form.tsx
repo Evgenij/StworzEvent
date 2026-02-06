@@ -141,7 +141,6 @@ export default function SignUpForm() {
 			<header className="flex flex-col gap-2 items-center">
 				<Header as={"h2"}>{t("title")}</Header>
 				<p className="text-muted-foreground text-center text-sm">
-					{/* {t("subtitle")} */}
 					{t.rich("subtitle", {
 						lineBreak: () => <br />,
 						// Можно даже стилизовать части текста:

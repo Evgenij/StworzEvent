@@ -54,8 +54,8 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 				<img src={FacebookIcon.src} height={20} width={20}></img>
 			) : (
 				<img src={GoogleIcon.src} height={18} width={18}></img>
-			)}{" "}
-			Sign{action} with {providerName}
+			)}
+			{t("oauth")} {providerName}
 		</Button>
 	);
 }
