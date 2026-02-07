@@ -21,3 +21,9 @@ export const normalizeName = (name: string): string => {
 			)
 	);
 };
+
+export const getBaseUrl = () => {
+	if (typeof window !== "undefined") return ""; // в браузере используем относительный путь
+	if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // для Vercel
+	return `http://localhost:3000`; // для локалки
+};

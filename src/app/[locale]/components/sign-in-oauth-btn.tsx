@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import FacebookIcon from "@/assets/icons/facebook.svg";
 import GoogleIcon from "@/assets/icons/google.svg";
 import { useTranslations } from "next-intl";
+import { getBaseUrl } from "@/lib/utils";
 
 interface Props {
 	provider: "facebook" | "google";
@@ -24,8 +25,9 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 	const handleClick = async () => {
 		await signIn.social({
 			provider,
-			callbackURL: PROFILE_ROUTE,
-			errorCallbackURL: AUTH_ERROR_ROUTE, //TODO create page with error of auth
+			// callbackURL: PROFILE_ROUTE,
+			callbackURL: `${getBaseUrl()}/profile`,
+			// errorCallbackURL: AUTH_ERROR_ROUTE, //TODO create page with error of auth
 			fetchOptions: {
 				onRequest() {
 					setIsPending(true);
