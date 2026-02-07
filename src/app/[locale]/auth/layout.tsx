@@ -18,7 +18,7 @@ export default function RootLayout({
 		<main
 			className="h-full flex bg"
 			style={{
-				backgroundImage: "url(/images/bg/sign-in-bg.png)",
+				backgroundImage: "url(/images/bg/sign-in-bg.webp)",
 				backgroundRepeat: "no-repeat",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
