@@ -15,6 +15,10 @@ import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { AUTH_VERIFY_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
 
+const vercelUrl = process.env.VERCEL_URL
+	? `https://${process.env.VERCEL_URL}`
+	: null;
+
 const options = {
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
@@ -190,6 +194,7 @@ const options = {
 	trustedOrigins: [
 		process.env.BETTER_AUTH_URL as string, // Это подтянет https://stworzevent.vercel.app на продакшене
 		"http://localhost:3000",
+		...(vercelUrl ? [vercelUrl] : []),
 	],
 } satisfies BetterAuthOptions;
 
