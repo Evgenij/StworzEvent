@@ -14,20 +14,24 @@ enum UserRole {
 }
 
 model User {
-  id            String        @id
+  id            String   @id
   name          String
+  surname       String
   email         String
-  emailVerified Boolean       @default(false)
-  role          UserRole      @default(USER)
-  banned        Boolean?      @default(false)
-  banReason     String?
-  banExpires    DateTime?
+  emailVerified Boolean  @default(false)
+  role          UserRole @default(USER)
   image         String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  organization  Organization?
+
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions     Session[]
+  accounts     Account[]
+  organization Organization?
 
   @@unique([email])
   @@map("users")

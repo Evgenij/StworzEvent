@@ -1,26 +1,48 @@
 {
+	"Errors": {
+		"nameMin2": "Imie musi mieć przynajmniej 2 znaki",
+		"surnameMin2": "Nazwisko musi mieć przynajmniej 2 znaki",
+		"passwordMin6": "Hasło musi mieć przynajmniej 6 znaki",
+		"passwordMax20": "Hasło musi mieć przynajmniej 20 znakow",
+		"passwordsDontMatch": "Hasła nie są identyczne",
+		"invalidEmail": "Nieprawidłowy adres e-mail"
+	},
+	"Auth": {
+		"divider": "lub",
+		"placeholders": {
+			"name": "Imie",
+			"surname": "Nazwisko",
+			"mail": "poczta@example.com",
+			"password": "wpisz haslo"
+		},
+		"oauth": "Kontynuuj z"
+	},
 	"SignUpForm": {
 		"title": "Załóż konto",
 		"subtitle": "Wpisz poniżej swój adres e-mail, <lineBreak></lineBreak> aby utworzyć konto",
 		"generatePassword": "Wygeneruj hasło",
-		"button": "Zarejestrować się"
+		"fields": {
+			"name": "Imie"
+		},
+		"have-account": "Masz już konto?",
+		"button": "Zarejestrować się",
+		"signIn": "Zaloguj się",
+		"politics": "Klikając, wyrażasz zgodę na nasze<lineBreak></lineBreak><linkConditionals>Warunki świadczenia usług</linkConditionals> i <politics>Politykę prywatności</politics>",
+		"successMessage": {
+			"header": "Rejestracja przebiegła pomyślnie",
+			"text": "Wysłaliśmy wiadomość e-mail w celu potwierdzenia Twojego adresu e-mail"
+		}
 	},
 	"SignInForm": {
 		"title": "Witamy ponownie! 👋",
 		"subtitle": "Wpisz poniżej swój adres e-mail, <lineBreak></lineBreak> aby utworzyć konto",
-		"divider": "lub",
-		"placeholders": {
-			"mail": "poczta@example.com",
-			"password": "wpisz haslo"
-		},
 		"forgotPassword": "Nie pamietam hasla",
 		"no-account": "Nie masz konta?",
 		"signUp": "Zarejestruj się",
-		"magicLinkText": "Zaloguj się za pomocą “Magic link”",
+		"useMagicLink": "Zaloguj się za pomocą “Magic link”",
 		"button": {
 			"signIn": "Zalogowac się",
 			"magicLink": "Wyślij magic link"
-		},
-		"oauth": "Kontynuuj z"
+		}
 	}
 }

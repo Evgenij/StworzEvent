@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import { Header } from "#/components/header/header";
 import { Button } from "@/shadcn/ui/button";
-import { FieldGroup } from "@/shadcn/ui/field";
+import { Field, FieldError, FieldGroup } from "@/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -11,135 +11,180 @@ import {
 import {
 	IconEye,
 	IconEyeClosed,
-	IconHeart,
 	IconLock,
 	IconMail,
 	IconUser,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { Link, useRouter } from "@/i18n/routing";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import {
+	CONDITIONALS_ROUTE,
+	POLITICS_ROUTE,
+	PROFILE_ROUTE,
+	SIGNIN_ROUTE,
+} from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
-import { signUpEmailAction } from "@/actions/sign-up-email.action";
+import { signUpEmailAction } from "@/actions/auth/sign-up-email.action";
 import { toast } from "sonner";
 import SignInOAuthBtn from "#/components/sign-in-oauth-btn";
+import z from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import SuccessMessage from "../success-message";
+import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");
+	const tAuth = useTranslations("Auth");
+	const tErrors = useTranslations("Errors");
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
 	const [isPending, setIsPending] = useState(false);
 
-	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
+	const formSchema = z.object({
+		user: z.object({
+			name: z.string().min(2, tErrors("nameMin2")),
+			surname: z.string().min(2, tErrors("surnameMin2")),
+		}),
+		email: z.string().email(tErrors("invalidEmail")),
+		password: z
+			.string()
+			.min(6, tErrors("passwordMin6"))
+			.max(20, tErrors("passwordMax20")),
+	});
 
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			user: {
+				name: "",
+				surname: "",
+			},
+			email: "",
+			password: "",
+		},
+	});
+
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		// Do something with the form values.
 		setIsPending(true);
 
-		const formData = new FormData(event.target as HTMLFormElement);
-		const error = await signUpEmailAction(formData);
+		startTransition(async () => {
+			// Создаем FormData из валидных данных
+			const formData = new FormData();
 
-		if (error.message) {
-			console.log(error);
-			toast.error(error.message, {
-				//icon: <IconEye />,
-				description: error.description,
-				// action: {
-				// 	label: "Close",
-				// 	onClick: () => console.log("Undo"),
-				// },
-				classNames: {
-					description: "!text-foreground/70",
-				},
-			});
+			formData.append("name", data.user.name);
+			formData.append("surname", data.user.surname);
+			formData.append("email", data.email);
+			formData.append("password", data.password);
 
-			// toast.error(error, {
-			// 	position: "top-center",
-			// 	description: "Sunday, December 03, 2023 at 9:00 AM",
-			// 	icon: <IconEye className="h-4 w-4" />,
-			// 	action: {
-			// 		label: "Undo",
-			// 		onClick: () => console.log("Undo"),
-			// 	},
-			// 	className:
-			// 		"bg-blue-400 text-card-foreground border-border [&>[data-description]]:text-card-foreground/80",
-			// 	// classNames: {
-			// 	// 	description: "text-blue-500",
-			// 	// },
-			// });
-			// toast("Event has been created", {
-			// 	description: "Sunday, December 03, 2023 at 9:00 AM",
-			// 	action: {
-			// 		label: "Undo",
-			// 		onClick: () => console.log("Undo"),
-			// 	},
-			// 	classNames: {
-			// 		description: "!text-foreground/80",
-			// 	},
-			// });
-			// toast.custom((t) => (
-			// 	<div className="bg-gradient-to-r from-pink-500 to-violet-500 text-white p-4 rounded-lg shadow-lg">
-			// 		<div className="flex items-center gap-2">
-			// 			<IconHeart className="h-5 w-5" />
-			// 			<div>
-			// 				<div className="font-semibold">Custom Toast</div>
-			// 				<div className="text-sm opacity-90">
-			// 					Built with your own JSX
-			// 				</div>
-			// 			</div>
-			// 			<button
-			// 				type="button"
-			// 				className="ml-auto bg-white/20 hover:bg-white/30 rounded px-2 py-1 text-xs"
-			// 				onClick={() => toast.dismiss(t)}
-			// 			>
-			// 				Close
-			// 			</button>
-			// 		</div>
-			// 	</div>
-			// ));
-			setIsPending(false);
-		} else {
-			toast.success("Rejestracja zakończona!", {
-				description:
-					"Na Twój adres e-mail wysłano SMS-a w celu potwierdzenia adresu.",
-				classNames: {
-					description: "!text-foreground/70",
-				},
-			});
-			router.push(SIGNIN_ROUTE);
-		}
+			const result = await signUpEmailAction(formData);
 
-		//TODO Add validation
-		// const email = String(formData.get("email"));
-		// const password = String(formData.get("password"));
-		// const name = "test";
+			if (result.success === false) {
+				// 1. Показываем общий Toast
+				if (result.message) toast.error(result.message);
 
-		// await signUp.email(
-		// 	{
-		// 		name,
-		// 		email,
-		// 		password,
-		// 	},
-		// 	{
-		// 		onRequest: () => {
-		// 			setIsPending(true);
-		// 		},
-		// 		onResponse: () => {
-		// 			setIsPending(false);
-		// 		},
-		// 		onError: (ctx) => {
-		// 			console.log(ctx.error.message);
-		// 		},
-		// 		onSuccess: () => {
-		// 			router.push(PROFILE_ROUTE);
-		// 		},
-		// 	},
-		// );
-	}
+				// 2. Раскидываем ошибки по полям формы
+				// if (result.errors) {
+				// 	Object.entries(result.errors).forEach(
+				// 		([field, messages]) => {
+				// 			form.setError(field as keyof FormValues, {
+				// 				type: "server",
+				// 				message: messages[0], // Берем первую ошибку из массива
+				// 			});
+				// 		},
+				// 	);
+				// }
+			} else {
+				const result = await signInEmailAction(formData);
+
+				if (result.success === false) {
+					// 1. Показываем общий Toast
+					if (result.message) toast.error(result.message);
+				} else {
+					setIsPending(false);
+					toast.success(t("successMessage.header"), {
+						//icon: <IconEye />,
+						description: t("successMessage.text"),
+						// action: {
+						// 	label: "Close",
+						// 	onClick: () => console.log("Undo"),
+						// },
+						classNames: {
+							description: "!text-foreground/70",
+						},
+					});
+					router.push(PROFILE_ROUTE);
+				}
+			}
+		});
+	};
+
+	// 	toast.error(error.message, {
+	// 		//icon: <IconEye />,
+	// 		description: error.description,
+	// 		// action: {
+	// 		// 	label: "Close",
+	// 		// 	onClick: () => console.log("Undo"),
+	// 		// },
+	// 		classNames: {
+	// 			description: "!text-foreground/70",
+	// 		},
+	// 	});
+
+	// toast.error(error, {
+	// 	position: "top-center",
+	// 	description: "Sunday, December 03, 2023 at 9:00 AM",
+	// 	icon: <IconEye className="h-4 w-4" />,
+	// 	action: {
+	// 		label: "Undo",
+	// 		onClick: () => console.log("Undo"),
+	// 	},
+	// 	className:
+	// 		"bg-blue-400 text-card-foreground border-border [&>[data-description]]:text-card-foreground/80",
+	// 	// classNames: {
+	// 	// 	description: "text-blue-500",
+	// 	// },
+	// });
+
+	// toast("Event has been created", {
+	// 	description: "Sunday, December 03, 2023 at 9:00 AM",
+	// 	action: {
+	// 		label: "Undo",
+	// 		onClick: () => console.log("Undo"),
+	// 	},
+	// 	classNames: {
+	// 		description: "!text-foreground/80",
+	// 	},
+	// });
+
+	// toast.custom((t) => (
+	// 	<div className="bg-gradient-to-r from-pink-500 to-violet-500 text-white p-4 rounded-lg shadow-lg">
+	// 		<div className="flex items-center gap-2">
+	// 			<IconHeart className="h-5 w-5" />
+	// 			<div>
+	// 				<div className="font-semibold">Custom Toast</div>
+	// 				<div className="text-sm opacity-90">
+	// 					Built with your own JSX
+	// 				</div>
+	// 			</div>
+	// 			<button
+	// 				type="button"
+	// 				className="ml-auto bg-white/20 hover:bg-white/30 rounded px-2 py-1 text-xs"
+	// 				onClick={() => toast.dismiss(t)}
+	// 			>
+	// 				Close
+	// 			</button>
+	// 		</div>
+	// 	</div>
+	// ));
 
 	return (
-		<div className="flex flex-col gap-10">
-			<header className="flex flex-col gap-2 items-center">
-				<Header as={"h2"}>{t("title")}</Header>
+		<div className="flex flex-col gap-9">
+			<header className="flex flex-col gap-3 items-center">
+				<Header as={"h2"} className="text-center">
+					{t("title")}
+				</Header>
 				<p className="text-muted-foreground text-center text-sm">
 					{t.rich("subtitle", {
 						lineBreak: () => <br />,
@@ -152,50 +197,156 @@ export default function SignUpForm() {
 					})}
 				</p>
 			</header>
-			<main>
+
+			<main className="flex flex-col gap-4">
+				<div className="oauth-btns flex flex-col gap-2">
+					<SignInOAuthBtn provider="google"></SignInOAuthBtn>
+					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
+				</div>
+				<div className="flex gap-3 items-center text-muted-foreground text-sm">
+					<div className="h-[1px] w-full bg-muted"></div>
+					<span>{tAuth("divider")}</span>
+					<div className="h-[1px] w-full bg-muted"></div>
+				</div>
 				<form
-					action=""
-					onSubmit={submitHandler}
-					className="flex flex-col gap-3"
+					id="sign-up-form"
+					className="flex flex-col gap-4"
+					onSubmit={form.handleSubmit(onSubmit)}
 				>
 					<FieldGroup>
-						<InputGroup>
-							<InputGroupInput
-								placeholder="name"
-								type="name"
-								name="name"
+						<div className="flex gap-2">
+							<Controller
+								name="user.name"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<InputGroup>
+											<InputGroupAddon>
+												<IconUser />
+											</InputGroupAddon>
+											<InputGroupInput
+												{...field}
+												id="name"
+												name="name"
+												aria-invalid={
+													fieldState.invalid
+												}
+												placeholder={tAuth(
+													"placeholders.name",
+												)}
+												autoComplete="on"
+												type="text"
+											/>
+										</InputGroup>
+										{fieldState.invalid && (
+											<FieldError
+												errors={[fieldState.error]}
+											/>
+										)}
+									</Field>
+								)}
 							/>
-							<InputGroupAddon>
-								<IconUser />
-							</InputGroupAddon>
-						</InputGroup>
-						<InputGroup>
-							<InputGroupInput
-								placeholder="name@example.com"
-								type="email"
-								name="email"
+							<Controller
+								name="user.surname"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												id="surname"
+												name="surname"
+												aria-invalid={
+													fieldState.invalid
+												}
+												placeholder={tAuth(
+													"placeholders.surname",
+												)}
+												autoComplete="on"
+												type="text"
+											/>
+										</InputGroup>
+										{fieldState.invalid && (
+											<FieldError
+												errors={[fieldState.error]}
+											/>
+										)}
+									</Field>
+								)}
 							/>
-							<InputGroupAddon>
-								<IconMail />
-							</InputGroupAddon>
-						</InputGroup>
-						<InputGroup>
-							<InputGroupInput
-								placeholder="wpisz haslo"
-								type={showPassword ? "text" : "password"}
-								name="password"
-							/>
-							<InputGroupAddon>
-								<IconLock />
-							</InputGroupAddon>
-							<InputGroupAddon
-								align={"inline-end"}
-								className="cursor-pointer"
-								onClick={() => setShowPassword(!showPassword)}
-							>
-								{showPassword ? <IconEyeClosed /> : <IconEye />}
-							</InputGroupAddon>
-						</InputGroup>
+						</div>
+						<Controller
+							name="email"
+							control={form.control}
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											aria-invalid={fieldState.invalid}
+											placeholder={tAuth(
+												"placeholders.mail",
+											)}
+											type="email"
+											name={field.name}
+											autoComplete="on"
+										/>
+										<InputGroupAddon>
+											<IconMail />
+										</InputGroupAddon>
+									</InputGroup>
+									{fieldState.invalid && (
+										<FieldError
+											errors={[fieldState.error]}
+										/>
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							name="password"
+							control={form.control}
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											aria-invalid={fieldState.invalid}
+											placeholder={tAuth(
+												"placeholders.password",
+											)}
+											type={
+												showPassword
+													? "text"
+													: "password"
+											}
+											name="password"
+										/>
+										<InputGroupAddon>
+											<IconLock />
+										</InputGroupAddon>
+										<InputGroupAddon
+											align={"inline-end"}
+											className="cursor-pointer"
+											onClick={() =>
+												setShowPassword(!showPassword)
+											}
+										>
+											{showPassword ? (
+												<IconEyeClosed />
+											) : (
+												<IconEye />
+											)}
+										</InputGroupAddon>
+									</InputGroup>
+									{fieldState.invalid && (
+										<FieldError
+											errors={[fieldState.error]}
+										/>
+									)}
+								</Field>
+							)}
+						/>
 					</FieldGroup>
 
 					<Button
@@ -207,19 +358,35 @@ export default function SignUpForm() {
 						{isPending && <Spinner />}
 						{t("button")}
 					</Button>
-					<p className="text-muted-foreground text-sm text-center mt-2">
-						Already have an account?{" "}
+					<p className="text-muted-foreground text-sm text-center">
+						{t("have-account")}{" "}
 						<Link href={SIGNIN_ROUTE} className="link-default">
-							Sing In{" "}
+							{t("signIn")}
 						</Link>
 					</p>
-					<hr className="my-4" />
-
-					<SignInOAuthBtn signUp provider="facebook"></SignInOAuthBtn>
-					<SignInOAuthBtn signUp provider="google"></SignInOAuthBtn>
+					<p className="text-muted-foreground text-sm text-center">
+						{t.rich("politics", {
+							lineBreak: () => <br />, // Добавь этот обработчик
+							linkConditionals: (chunks) => (
+								<Link
+									href={CONDITIONALS_ROUTE}
+									className="link-default underline"
+								>
+									{chunks}
+								</Link>
+							),
+							politics: (chunks) => (
+								<Link
+									href={POLITICS_ROUTE}
+									className="link-default underline"
+								>
+									{chunks}
+								</Link>
+							),
+						})}
+					</p>
 				</form>
 			</main>
-			<footer>{/* <LocaleSwitcher /> */}</footer>
 		</div>
 	);
 }

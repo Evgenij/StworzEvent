@@ -1,4 +1,9 @@
-import { betterAuth, BetterAuthOptions } from "better-auth";
+import {
+	betterAuth,
+	BetterAuthOptions,
+	FacebookProfile,
+	GoogleProfile,
+} from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
 import { nextCookies } from "better-auth/next-js";
@@ -9,7 +14,6 @@ import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { AUTH_VERIFY_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
-import { send } from "process";
 
 const options = {
 	database: prismaAdapter(prisma, {
@@ -19,10 +23,27 @@ const options = {
 		google: {
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+			mapProfileToUser: (profile: GoogleProfile) => {
+				console.log("Google profile:", profile);
+				return {
+					name: profile.given_name,
+					surname: profile.family_name, // Маппим фамилию из Google
+					email: profile.email,
+				};
+			},
 		},
 		facebook: {
 			clientId: process.env.FACEBOOK_CLIENT_ID as string,
 			clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
+			mapProfileToUser: (profile: FacebookProfile) => {
+				//const [firstName, ...lastNameParts] = profile.name.split(" ");
+				//console.log("Facebook profile:", profile);
+				return {
+					name: profile.name.split(" ")[0],
+					surname: profile.name.split(" ")[1], // Маппим фамилию из FB
+					email: profile.email,
+				};
+			},
 		},
 	},
 	account: {
@@ -121,6 +142,10 @@ const options = {
 	},
 	user: {
 		additionalFields: {
+			surname: {
+				type: "string",
+				required: true, // или true, если это обязательно
+			},
 			role: {
 				type: ["USER", "ADMIN"] as Array<UserRole>, // Better Auth должен знать, что в БД это строка
 				required: false, // ЭТО УБЕРЕТ ОШИБКУ В Action

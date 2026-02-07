@@ -1069,7 +1069,7 @@ function SmallFormExample() {
 							</DropdownMenuTrigger>
 							<DropdownMenuContent
 								align="end"
-								className="style-maia:w-56 style-mira:w-48 style-nova:w-48 style-vega:w-56 style-lyra:w-48"
+								className="w-max style-maia:w-56 style-mira:w-48 style-nova:w-48 style-vega:w-56 style-lyra:w-48"
 							>
 								<DropdownMenuGroup>
 									<DropdownMenuLabel>File</DropdownMenuLabel>

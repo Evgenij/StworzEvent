@@ -15,9 +15,8 @@ interface Props {
 }
 
 function SignInOAuthBtn({ provider, signUp }: Props) {
-	const t = useTranslations("SignInForm");
+	const tAuth = useTranslations("Auth");
 	const [isPending, setIsPending] = useState(false);
-	const action = signUp ? "Up" : "In";
 	const providerName = provider.replace(/\b\w/g, (char) =>
 		char.toUpperCase(),
 	);
@@ -55,7 +54,7 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 			) : (
 				<img src={GoogleIcon.src} height={18} width={18}></img>
 			)}
-			{t("oauth")} {providerName}
+			{tAuth("oauth")} {providerName}
 		</Button>
 	);
 }

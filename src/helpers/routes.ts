@@ -1,5 +1,7 @@
 const AUTH_ROUTE = "/auth";
 const ADMIN_ROUTE = "/admin";
+export const CONDITIONALS_ROUTE = "/conditionals";
+export const POLITICS_ROUTE = "/politics";
 
 export const SIGNIN_ROUTE = `${AUTH_ROUTE}/signin`;
 export const SIGNUP_ROUTE = `${AUTH_ROUTE}/signup`;

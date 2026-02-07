@@ -5,7 +5,7 @@ import {
 	SIGNUP_ROUTE,
 	UI_ROUTE,
 } from "@/helpers/routes";
-import { Link } from "@/i18n/routing";
+import { Link, redirect } from "@/i18n/routing";
 import GetSessionBtn from "./components/get-session-btn";
 
 const links = [
@@ -27,23 +27,26 @@ const links = [
 	},
 ];
 
-export default function Page() {
-	return (
-		<div className="flex flex-col items-center justify-center gap-10 h-full">
-			<section>
-				<GetSessionBtn />
-			</section>
-			<nav className="flex items-center justify-center gap-3">
-				{links.map((link) => {
-					return (
-						<Link key={link.href} href={`pl/${link.href}`}>
-							<Button variant={"outline"} key={link.href}>
-								{link.label}
-							</Button>
-						</Link>
-					);
-				})}
-			</nav>
-		</div>
-	);
+export default async function Page({ params }: { params: { locale: string } }) {
+	const { locale } = await params;
+	redirect({ href: SIGNIN_ROUTE, locale: locale });
+	return null;
+	//return (
+	// <div className="flex flex-col items-center justify-center gap-10 h-full">
+	// 	<section>
+	// 		<GetSessionBtn />
+	// 	</section>
+	// 	<nav className="flex items-center justify-center gap-3">
+	// 		{links.map((link) => {
+	// 			return (
+	// 				<Link key={link.href} href={`pl/${link.href}`}>
+	// 					<Button variant={"outline"} key={link.href}>
+	// 						{link.label}
+	// 					</Button>
+	// 				</Link>
+	// 			);
+	// 		})}
+	// 	</nav>
+	// </div>
+	//);
 }
