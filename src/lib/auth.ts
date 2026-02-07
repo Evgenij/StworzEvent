@@ -54,6 +54,7 @@ const options = {
 	account: {
 		accountLinking: {
 			enabled: true,
+			trustedProviders: ["google", "facebook"],
 		},
 	},
 	emailAndPassword: {
