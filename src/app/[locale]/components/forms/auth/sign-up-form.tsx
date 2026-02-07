@@ -30,7 +30,6 @@ import SignInOAuthBtn from "#/components/sign-in-oauth-btn";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import SuccessMessage from "../success-message";
 import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 
 export default function SignUpForm() {
@@ -102,7 +101,6 @@ export default function SignUpForm() {
 					// 1. Показываем общий Toast
 					if (result.message) toast.error(result.message);
 				} else {
-					setIsPending(false);
 					toast.success(t("successMessage.header"), {
 						//icon: <IconEye />,
 						description: t("successMessage.text"),
@@ -117,67 +115,9 @@ export default function SignUpForm() {
 					router.push(PROFILE_ROUTE);
 				}
 			}
+			setIsPending(false);
 		});
 	};
-
-	// 	toast.error(error.message, {
-	// 		//icon: <IconEye />,
-	// 		description: error.description,
-	// 		// action: {
-	// 		// 	label: "Close",
-	// 		// 	onClick: () => console.log("Undo"),
-	// 		// },
-	// 		classNames: {
-	// 			description: "!text-foreground/70",
-	// 		},
-	// 	});
-
-	// toast.error(error, {
-	// 	position: "top-center",
-	// 	description: "Sunday, December 03, 2023 at 9:00 AM",
-	// 	icon: <IconEye className="h-4 w-4" />,
-	// 	action: {
-	// 		label: "Undo",
-	// 		onClick: () => console.log("Undo"),
-	// 	},
-	// 	className:
-	// 		"bg-blue-400 text-card-foreground border-border [&>[data-description]]:text-card-foreground/80",
-	// 	// classNames: {
-	// 	// 	description: "text-blue-500",
-	// 	// },
-	// });
-
-	// toast("Event has been created", {
-	// 	description: "Sunday, December 03, 2023 at 9:00 AM",
-	// 	action: {
-	// 		label: "Undo",
-	// 		onClick: () => console.log("Undo"),
-	// 	},
-	// 	classNames: {
-	// 		description: "!text-foreground/80",
-	// 	},
-	// });
-
-	// toast.custom((t) => (
-	// 	<div className="bg-gradient-to-r from-pink-500 to-violet-500 text-white p-4 rounded-lg shadow-lg">
-	// 		<div className="flex items-center gap-2">
-	// 			<IconHeart className="h-5 w-5" />
-	// 			<div>
-	// 				<div className="font-semibold">Custom Toast</div>
-	// 				<div className="text-sm opacity-90">
-	// 					Built with your own JSX
-	// 				</div>
-	// 			</div>
-	// 			<button
-	// 				type="button"
-	// 				className="ml-auto bg-white/20 hover:bg-white/30 rounded px-2 py-1 text-xs"
-	// 				onClick={() => toast.dismiss(t)}
-	// 			>
-	// 				Close
-	// 			</button>
-	// 		</div>
-	// 	</div>
-	// ));
 
 	return (
 		<div className="flex flex-col gap-9">

@@ -69,6 +69,7 @@ export default function SignInForm() {
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		// Do something with the form values.
 		console.log(data);
+		setIsPending(true);
 
 		startTransition(async () => {
 			// Создаем FormData из валидных данных
@@ -98,6 +99,7 @@ export default function SignInForm() {
 				toast.success("Zalogowano!");
 				router.push(PROFILE_ROUTE);
 			}
+			setIsPending(false);
 		});
 	};
 
