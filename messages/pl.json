@@ -2,7 +2,7 @@
 	"Errors": {
 		"nameMin2": "Imie musi mieć przynajmniej 2 znaki",
 		"surnameMin2": "Nazwisko musi mieć przynajmniej 2 znaki",
-		"passwordMin6": "Hasło musi mieć przynajmniej 6 znaki",
+		"passwordMin6": "Hasło musi mieć przynajmniej 6 znakow",
 		"passwordMax20": "Hasło musi mieć przynajmniej 20 znakow",
 		"passwordsDontMatch": "Hasła nie są identyczne",
 		"invalidEmail": "Nieprawidłowy adres e-mail"

@@ -187,7 +187,10 @@ const options = {
 			maxAge: 5 * 60, // 5 minutes
 		},
 	},
-	trustedOrigins: ["http://localhost:3001"],
+	trustedOrigins: [
+		process.env.BETTER_AUTH_URL as string, // Это подтянет https://stworzevent.vercel.app на продакшене
+		"http://localhost:3000",
+	],
 } satisfies BetterAuthOptions;
 
 export const auth = betterAuth({
