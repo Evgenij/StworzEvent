@@ -1,7 +1,48 @@
 {
-	"Registration": {
+	"Errors": {
+		"nameMin2": "Name must be at least 2 characters long",
+		"surnameMin2": "Surname must be at least 2 characters long",
+		"passwordMin6": "Password must be at least 6 characters long",
+		"passwordMax20": "Password must be no more than 20 characters long",
+		"passwordsDontMatch": "Passwords do not match",
+		"invalidEmail": "Invalid email address"
+	},
+	"Auth": {
+		"divider": "or",
+		"placeholders": {
+			"name": "First name",
+			"surname": "Last name",
+			"mail": "email@example.com",
+			"password": "enter password"
+		},
+		"oauth": "Continue with"
+	},
+	"SignUpForm": {
 		"title": "Create an account",
-		"generate_password": "Generate password",
-		"send_email": "Send password to email"
+		"subtitle": "Enter your email address below <lineBreak></lineBreak> to create an account",
+		"generatePassword": "Generate password",
+		"fields": {
+			"name": "First name"
+		},
+		"have-account": "Already have an account?",
+		"button": "Sign up",
+		"signIn": "Sign in",
+		"politics": "By clicking, you agree to our <lineBreak></lineBreak><linkConditionals>Terms of Service</linkConditionals> and <politics>Privacy Policy</politics>",
+		"successMessage": {
+			"header": "Registration successful",
+			"text": "We have sent an email to verify your email address"
+		}
+	},
+	"SignInForm": {
+		"title": "Welcome back! 👋",
+		"subtitle": "Enter your email address below <lineBreak></lineBreak> to sign in to your account",
+		"forgotPassword": "Forgot password?",
+		"no-account": "Don't have an account?",
+		"signUp": "Sign up",
+		"useMagicLink": "Log in with “Magic link”",
+		"button": {
+			"signIn": "Sign in",
+			"magicLink": "Send magic link"
+		}
 	}
 }

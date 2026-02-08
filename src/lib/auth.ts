@@ -29,7 +29,6 @@ const options = {
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
 			mapProfileToUser: (profile: GoogleProfile) => {
-				console.log("Google profile:", profile);
 				return {
 					name: profile.given_name,
 					surname: profile.family_name, // Маппим фамилию из Google

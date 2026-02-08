@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import React from "react";
 import SignOutBtn from "#/components/sign-out-btn";
-import { Link, redirect } from "@/i18n/routing";
+import { Link, redirect, useRouter } from "@/i18n/routing";
 import {
 	ADMIN_DASHBOARD_ROUTE,
 	HOME_ROUTE,
@@ -22,8 +22,9 @@ export default async function ProfilePage({
 	const { locale } = await params;
 	const session = await auth.api.getSession({ headers: await headers() });
 
-	// hardcode - locale pl
-	if (!session) redirect({ href: SIGNIN_ROUTE, locale });
+	if (!session) {
+		redirect({ href: SIGNIN_ROUTE, locale });
+	}
 
 	return (
 		<div className="p-6 flex flex-col gap-4">
