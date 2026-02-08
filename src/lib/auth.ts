@@ -14,6 +14,8 @@ import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { AUTH_VERIFY_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
+import { redirect } from "@/i18n/routing";
+import { getLocale } from "next-intl/server";
 
 const vercelUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -64,12 +66,12 @@ const options = {
 		sendResetPassword: async ({ user, url }) => {
 			await sendEmailAction({
 				to: user.email,
-				subject: "Reset hasla",
+				subject: "Resetowanie hasła do Twojego konta",
 				meta: {
 					header: "Resetowanie hasła",
 					subheader: `Hej, ${user.name}`,
 					description:
-						"Aby odzyskać hasło, kliknij przycisk poniżej.",
+						"Otrzymaliśmy prośbę o zresetowanie hasła. Jeśli to Ty, kliknij poniższy przycisk, aby ustawić nowe hasło. Jeśli to nie Ty, po prostu zignoruj tę wiadomość.",
 					icon: "https://stworzevent.vercel.app/images/mails/img-reset-password.png",
 					link: url,
 					btnText: "Zresetuj hasło",
@@ -171,14 +173,14 @@ const options = {
 			sendMagicLink: async ({ email, url }) => {
 				await sendEmailAction({
 					to: email,
-					subject: "Magic link",
+					subject: "Twój Magic link do logowania ✨",
 					meta: {
-						header: "Magic link",
-						subheader: `Hej!`,
-						description: `Kliknij w poniższy link, aby się zalogować.`,
+						header: "Prawie u celu!",
+						subheader: "Hej, to znowu Ty! 😉",
+						description: `Zamiast walczyć z hasłem, po prostu kliknij w ten przycisk. Magia dzieje się w tle.`,
 						icon: "https://stworzevent.vercel.app/images/mails/img-magic-link.png",
 						link: url,
-						btnText: "Zaloguj się",
+						btnText: "Wchodzę!",
 					},
 				});
 			},

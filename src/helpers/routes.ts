@@ -5,7 +5,7 @@ export const POLITICS_ROUTE = "/politics";
 
 export const SIGNIN_ROUTE = `${AUTH_ROUTE}/signin`;
 export const SIGNUP_ROUTE = `${AUTH_ROUTE}/signup`;
-export const FORGOT_PASSWORD_ROUTE = `${AUTH_ROUTE}/forget-password`;
+export const FORGET_PASSWORD_ROUTE = `${AUTH_ROUTE}/forget-password`;
 export const FORGOT_PASSWORD_SUCCESS_ROUTE = `${AUTH_ROUTE}/forget-password/success`;
 export const RESET_PASSWORD_ROUTE = `${AUTH_ROUTE}/reset-password`;
 export const AUTH_ERROR_ROUTE = `${AUTH_ROUTE}/error`;

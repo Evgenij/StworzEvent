@@ -65,7 +65,7 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 				</tr>
 				<tr>
 					<td>
-						<h1>${meta.header}</h1>
+						<h1 style="margin-top: 0">${meta.header}</h1>
 					</td>
 				</tr>
 				<tr>

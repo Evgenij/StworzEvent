@@ -42,14 +42,14 @@ export default function SignUpForm() {
 
 	const formSchema = z.object({
 		user: z.object({
-			name: z.string().min(2, tErrors("nameMin2")),
-			surname: z.string().min(2, tErrors("surnameMin2")),
+			name: z.string().min(2, tErrors("nameMin")),
+			surname: z.string().min(2, tErrors("surnameMin")),
 		}),
 		email: z.string().email(tErrors("invalidEmail")),
 		password: z
 			.string()
-			.min(6, tErrors("passwordMin6"))
-			.max(20, tErrors("passwordMax20")),
+			.min(6, tErrors("passwordMin"))
+			.max(25, tErrors("passwordMax")),
 	});
 
 	const form = useForm<z.infer<typeof formSchema>>({

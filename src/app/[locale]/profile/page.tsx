@@ -9,7 +9,6 @@ import {
 	SIGNIN_ROUTE,
 } from "@/helpers/routes";
 import { Button } from "@/shadcn/ui/button";
-import BtnEmail from "#/components/btn-email";
 import { Header } from "#/components/header/header";
 import UpdateUserForm from "../components/forms/update-user-form";
 
@@ -64,7 +63,7 @@ export default async function ProfilePage({
 							Email do not verified...
 						</p>
 					)}
-					{!session?.user.emailVerified && <BtnEmail />}
+					{/* {!session?.user.emailVerified && <BtnEmail />} */}
 				</div>
 			</div>
 			<hr />

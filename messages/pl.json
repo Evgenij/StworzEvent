@@ -1,9 +1,16 @@
 {
 	"Errors": {
-		"nameMin2": "Imie musi mieć przynajmniej 2 znaki",
-		"surnameMin2": "Nazwisko musi mieć przynajmniej 2 znaki",
-		"passwordMin6": "Hasło musi mieć przynajmniej 6 znakow",
-		"passwordMax20": "Hasło musi mieć maksymalnie 20 znakow",
+		"auth": {
+			"INVALID_EMAIL_OR_PASSWORD": "Email lub hasło są nieprawidłowe",
+			"USER_NOT_FOUND": "Nie znaleziono użytkownika o tym adresie",
+			"INVALID_TOKEN": "Twój link wygasł lub jest nieprawidłowy",
+			"PASSWORD_TOO_SHORT": "Hasło jest zbyt krótkie",
+			"default": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie"
+		},
+		"nameMin": "Imie musi mieć przynajmniej 2 znaki",
+		"surnameMin": "Nazwisko musi mieć przynajmniej 2 znaki",
+		"passwordMin": "Hasło musi mieć przynajmniej 6 znakow",
+		"passwordMax": "Hasło musi mieć maksymalnie 25 znakow",
 		"passwordsDontMatch": "Hasła nie są identyczne",
 		"invalidEmail": "Nieprawidłowy adres e-mail"
 	},
@@ -21,9 +28,6 @@
 		"title": "Załóż konto",
 		"subtitle": "Wpisz poniżej swój adres e-mail, <lineBreak></lineBreak> aby utworzyć konto",
 		"generatePassword": "Wygeneruj hasło",
-		"fields": {
-			"name": "Imie"
-		},
 		"have-account": "Masz już konto?",
 		"button": "Zarejestrować się",
 		"signIn": "Zaloguj się",
@@ -43,6 +47,39 @@
 		"button": {
 			"signIn": "Zalogowac się",
 			"magicLink": "Wyślij magic link"
+		}
+	},
+	"ForgetPasswordForm": {
+		"title": "Resetowanie hasła 🤔",
+		"subtitle": "Wpisz poniżej swój adres e-mail,<lineBreak></lineBreak>aby otrzymać link do resetowania hasła.",
+		"button": "Zresetuj hasło",
+		"errorOfReset": "Wystąpił błąd! Spróbuj ponownie.",
+		"rememberPassword": "Pamiętasz hasla?",
+		"signIn": "Zaloguj się",
+		"success": {
+			"title": "Sprawdź pocztę 📧",
+			"subtitle": "Wysłaliśmy link do resetowania hasła,<lineBreak></lineBreak>na Twój adres e-mail.",
+			"button": "Wrócić"
+		}
+	},
+	"ResetPasswordForm": {
+		"title": "Ustaw nowe hasło 🔐",
+		"subtitle": "Wprowadź nowe, silne hasło poniżej, <lineBreak></lineBreak> aby zabezpieczyć swoje konto.",
+		"fields": {
+			"password": "Nowe hasło",
+			"confirmPassword": "Powtórz nowe hasło"
+		},
+		"placeholders": {
+			"password": "Wpisz nowe hasło",
+			"confirmPassword": "Powtórz nowe hasło"
+		},
+		"button": "Zapisz i zaloguj się",
+		"backToLogin": "Pamiętasz hasło?",
+		"signIn": "Zaloguj się",
+		"successMessage": "Haslo zostalo zmienione!",
+		"resendLink": {
+			"text": "Poproś o nowy link do zmiany hasła",
+			"button": "Ponownie"
 		}
 	}
 }

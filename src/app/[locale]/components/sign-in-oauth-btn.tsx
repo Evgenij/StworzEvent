@@ -26,7 +26,7 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 		await signIn.social({
 			provider,
 			// callbackURL: PROFILE_ROUTE,
-			callbackURL: `${getBaseUrl()}/profile`,
+			callbackURL: `${getBaseUrl()}${PROFILE_ROUTE}`,
 			// errorCallbackURL: AUTH_ERROR_ROUTE, //TODO create page with error of auth
 			fetchOptions: {
 				onRequest() {

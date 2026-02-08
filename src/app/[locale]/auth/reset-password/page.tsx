@@ -5,7 +5,7 @@ import ReturnBtn from "#/components/return-btn";
 import { SIGNIN_ROUTE } from "@/helpers/routes";
 
 interface PageProps {
-	searchParams: Promise<{ token: string }>;
+	searchParams: Promise<{ token: string; email: string }>;
 }
 
 const ResetPasswordPage = async ({ searchParams }: PageProps) => {
@@ -21,12 +21,7 @@ const ResetPasswordPage = async ({ searchParams }: PageProps) => {
 	}
 
 	return (
-		<div className="flex flex-col gap-6">
-			<header className="flex flex-col gap-2">
-				<Header as={"h2"}>Reset password</Header>{" "}
-				<p className="text-muted-foreground">Enter your new password</p>
-			</header>
-
+		<div className="max-w-[350px] w-full flex flex-col gap-5">
 			<ResetPasswordForm token={token} />
 		</div>
 	);
