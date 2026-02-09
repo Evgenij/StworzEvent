@@ -15,6 +15,7 @@ import {
 	SidebarRail,
 	SidebarSeparator,
 } from "@/shadcn/ui/sidebar";
+import { UserType } from "@/types/user";
 
 // This is sample data.
 const data = {
@@ -40,8 +41,11 @@ const data = {
 };
 
 export function SidebarRight({
+	user,
 	...props
-}: React.ComponentProps<typeof Sidebar>) {
+}: React.ComponentProps<typeof Sidebar> & {
+	user: UserType;
+}) {
 	return (
 		<Sidebar
 			collapsible="none"
@@ -49,7 +53,7 @@ export function SidebarRight({
 			{...props}
 		>
 			<SidebarHeader className="border-sidebar-border h-16 border-b">
-				<NavUser user={data.user} />
+				<NavUser user={user} />
 			</SidebarHeader>
 			<SidebarContent>
 				<DatePicker />

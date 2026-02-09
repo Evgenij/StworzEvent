@@ -37,7 +37,9 @@ const ProfileLayout = async ({
 
 	if (!session) {
 		redirect({ href: SIGNIN_ROUTE, locale });
+		return null;
 	}
+
 	return (
 		<SidebarProvider>
 			<SidebarLeft />
@@ -66,7 +68,7 @@ const ProfileLayout = async ({
 					<div className="bg-muted/50 mx-auto h-[100vh] w-full max-w-3xl rounded-xl" /> */}
 				</div>
 			</SidebarInset>
-			<SidebarRight />
+			<SidebarRight user={session?.user} />
 		</SidebarProvider>
 	);
 };

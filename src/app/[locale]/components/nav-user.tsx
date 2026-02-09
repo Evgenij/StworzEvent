@@ -25,17 +25,12 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/shadcn/ui/sidebar";
+import { UserType } from "@/types/user";
 
-export function NavUser({
-	user,
-}: {
-	user: {
-		name: string;
-		email: string;
-		avatar: string;
-	};
-}) {
+export function NavUser({ user }: { user: UserType }) {
 	const { isMobile } = useSidebar();
+
+	console.log(user);
 
 	return (
 		<SidebarMenu>
@@ -48,8 +43,8 @@ export function NavUser({
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
 								<AvatarImage
-									src={user.avatar}
-									alt={user.name}
+									src={user.image ?? undefined}
+									alt={user.name ?? undefined}
 								/>
 								<AvatarFallback className="rounded-lg">
 									CN
@@ -76,8 +71,8 @@ export function NavUser({
 							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 								<Avatar className="h-8 w-8 rounded-lg">
 									<AvatarImage
-										src={user.avatar}
-										alt={user.name}
+										src={user.image ?? undefined}
+										alt={user.name ?? undefined}
 									/>
 									<AvatarFallback className="rounded-lg">
 										CN
