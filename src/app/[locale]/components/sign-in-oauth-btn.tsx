@@ -1,6 +1,6 @@
 "use client";
 
-import { AUTH_ERROR_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
+import { AUTH_ERROR_ROUTE, DASHBOARD_ROUTE } from "@/helpers/routes";
 import { signIn } from "@/lib/auth-client";
 import { Button } from "@/shadcn/ui/button";
 import React, { useState } from "react";
@@ -25,8 +25,8 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 	const handleClick = async () => {
 		await signIn.social({
 			provider,
-			// callbackURL: PROFILE_ROUTE,
-			callbackURL: `${getBaseUrl()}${PROFILE_ROUTE}`,
+			// callbackURL: DASHBOARD_ROUTE,
+			callbackURL: `${getBaseUrl()}${DASHBOARD_ROUTE}`,
 			// errorCallbackURL: AUTH_ERROR_ROUTE, //TODO create page with error of auth
 			fetchOptions: {
 				onRequest() {

@@ -22,7 +22,7 @@ import {
 	AUTH_VERIFY_ROUTE,
 	AUTH_VERIFY_SUCCESS_ROUTE,
 	FORGET_PASSWORD_ROUTE,
-	PROFILE_ROUTE,
+	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
 } from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";

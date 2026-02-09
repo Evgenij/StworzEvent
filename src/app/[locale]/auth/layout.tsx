@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import ReturnBtn from "../components/return-btn";
-import { HOME_ROUTE } from "@/helpers/routes";
 import Image from "next/image";
 
 export const metadata: Metadata = {

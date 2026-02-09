@@ -13,7 +13,7 @@ import { UserRole } from "@prisma/client";
 import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
-import { AUTH_VERIFY_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
+import { AUTH_VERIFY_ROUTE, DASHBOARD_ROUTE } from "@/helpers/routes";
 import { redirect } from "@/i18n/routing";
 import { getLocale } from "next-intl/server";
 
@@ -87,7 +87,7 @@ const options = {
 		autoSignInAfterVerification: true,
 		sendVerificationEmail: async ({ user, url }) => {
 			const link = new URL(url);
-			link.searchParams.set("callbackURL", PROFILE_ROUTE);
+			link.searchParams.set("callbackURL", DASHBOARD_ROUTE);
 
 			// send email to user
 			await sendEmailAction({

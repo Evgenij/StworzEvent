@@ -1,5 +1,6 @@
 const AUTH_ROUTE = "/auth";
 const ADMIN_ROUTE = "/admin";
+const PROFILE_ROUTE = "/profile";
 export const CONDITIONALS_ROUTE = "/conditionals";
 export const POLITICS_ROUTE = "/politics";
 
@@ -13,8 +14,8 @@ export const AUTH_VERIFY_ROUTE = `${AUTH_ROUTE}/verify`;
 export const AUTH_VERIFY_SUCCESS_ROUTE = `${AUTH_ROUTE}/verify/success`;
 
 export const HOME_ROUTE = "/";
-export const PROFILE_ROUTE = "/profile";
+export const DASHBOARD_ROUTE = `${PROFILE_ROUTE}/dashboard`;
 export const UI_ROUTE = "/ui";
 
 export const ADMIN_DASHBOARD_ROUTE = `${ADMIN_ROUTE}/dashboard`;
-// export { AUTH_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE, PROFILE_ROUTE, HOME_ROUTE, UI_ROUTE};
+// export { AUTH_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE, DASHBOARD_ROUTE, HOME_ROUTE, UI_ROUTE};

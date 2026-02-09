@@ -5,13 +5,13 @@ import { getSessionCookie } from "better-auth/cookies";
 import {
 	ADMIN_DASHBOARD_ROUTE,
 	AUTH_VERIFY_ROUTE,
-	PROFILE_ROUTE,
+	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
 } from "./helpers/routes";
 
 // export default createMiddleware(routing);
 const intlMiddleware = createMiddleware(routing);
-const protectedRoutes = [PROFILE_ROUTE, ADMIN_DASHBOARD_ROUTE];
+const protectedRoutes = [DASHBOARD_ROUTE, ADMIN_DASHBOARD_ROUTE];
 
 export async function proxy(req: NextRequest) {
 	// const { nextUrl } = req;
@@ -50,7 +50,7 @@ export async function proxy(req: NextRequest) {
 		// Редиректим на профиль с сохранением текущей локали
 		const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
 		return NextResponse.redirect(
-			new URL(`/${locale}${PROFILE_ROUTE}`, req.url),
+			new URL(`/${locale}${DASHBOARD_ROUTE}`, req.url),
 		);
 	}
 
@@ -65,7 +65,7 @@ export async function proxy(req: NextRequest) {
 	if (isLoggedIn && isAuthRoute && !isVerifyRoute) {
 		const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
 		return NextResponse.redirect(
-			new URL(`/${locale}${PROFILE_ROUTE}`, req.url),
+			new URL(`/${locale}${DASHBOARD_ROUTE}`, req.url),
 		);
 	}
 

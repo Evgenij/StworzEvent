@@ -5,8 +5,8 @@ const transporter = nodemailer.createTransport({
 	port: 465,
 	secure: true,
 	auth: {
-		user: "contact@stworzevent.pl",
-		pass: "Fp-D)VCFO-gZ2xC6",
+		user: process.env.MAIL_NAME,
+		pass: process.env.MAIL_PASSWORD,
 	},
 	tls: {
 		rejectUnauthorized: false, // иногда нужно на shared-хостинге

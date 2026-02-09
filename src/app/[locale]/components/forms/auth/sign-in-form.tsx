@@ -31,7 +31,7 @@ import { startTransition, useMemo, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import {
 	FORGET_PASSWORD_ROUTE,
-	PROFILE_ROUTE,
+	DASHBOARD_ROUTE,
 	SIGNUP_ROUTE,
 } from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
@@ -116,13 +116,13 @@ export default function SignInForm() {
 				await signIn.magicLink({
 					email: data.email,
 					name: data.email.split("@")[0],
-					callbackURL: `${getBaseUrl()}${PROFILE_ROUTE}`,
+					callbackURL: `${getBaseUrl()}${DASHBOARD_ROUTE}`,
 					fetchOptions: {
 						onError(error) {
 							toast.success(error.error.message);
 						},
 						onSuccess: () => {
-							toast.success("Email is sent");
+							toast.success("Email is sent"); // TODO change to show message - no toast
 							//if (ref.current) ref.current.open = false;
 						},
 					},
@@ -147,7 +147,7 @@ export default function SignInForm() {
 					// }
 				} else {
 					toast.success("Zalogowano!");
-					router.push(PROFILE_ROUTE);
+					router.push(DASHBOARD_ROUTE);
 				}
 			}
 

@@ -20,7 +20,7 @@ import { Link, useRouter } from "@/i18n/routing";
 import {
 	CONDITIONALS_ROUTE,
 	POLITICS_ROUTE,
-	PROFILE_ROUTE,
+	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
 } from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
@@ -112,7 +112,7 @@ export default function SignUpForm() {
 							description: "!text-foreground/70",
 						},
 					});
-					router.push(PROFILE_ROUTE);
+					router.push(DASHBOARD_ROUTE);
 				}
 			}
 			setIsPending(false);
