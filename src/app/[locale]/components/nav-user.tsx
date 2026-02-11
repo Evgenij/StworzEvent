@@ -26,6 +26,10 @@ import {
 	useSidebar,
 } from "@/shadcn/ui/sidebar";
 import { UserType } from "@/types/user";
+import { UserRole } from "@prisma/client";
+import { IconClipboardData } from "@tabler/icons-react";
+import { Link } from "@/i18n/routing";
+import { ADMIN_DASHBOARD_ROUTE } from "@/helpers/routes";
 
 export function NavUser({ user }: { user: UserType }) {
 	const { isMobile } = useSidebar();
@@ -97,6 +101,17 @@ export function NavUser({ user }: { user: UserType }) {
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
+							{user.role === UserRole.ADMIN && (
+								<Link
+									href={ADMIN_DASHBOARD_ROUTE}
+									className="default"
+								>
+									<DropdownMenuItem>
+										<IconClipboardData />
+										Admin panel
+									</DropdownMenuItem>
+								</Link>
+							)}
 							<DropdownMenuItem>
 								<BadgeCheck />
 								Account

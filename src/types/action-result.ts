@@ -1,5 +1,6 @@
-export type ActionResult = {
+export type ActionResult<T = undefined> = {
 	success: boolean;
-	message?: string; // Общее сообщение (например, для Toast)
-	errors?: Record<string, string[]>; // Ошибки полей (email: ["Неверный формат"])
+	message?: string;
+	errors?: Record<string, string[]>;
+	data?: T;
 };

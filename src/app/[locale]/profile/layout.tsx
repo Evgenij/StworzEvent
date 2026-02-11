@@ -18,6 +18,7 @@ import {
 	BreadcrumbPage,
 } from "@/shadcn/ui/breadcrumb";
 import { SidebarRight } from "#/components/sidebar-right";
+import { UserRole } from "@prisma/client";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -68,7 +69,12 @@ const ProfileLayout = async ({
 					<div className="bg-muted/50 mx-auto h-[100vh] w-full max-w-3xl rounded-xl" /> */}
 				</div>
 			</SidebarInset>
-			<SidebarRight user={session?.user} />
+			<SidebarRight
+				user={{
+					...session.user,
+					role: session.user.role ?? UserRole.USER,
+				}}
+			/>
 		</SidebarProvider>
 	);
 };

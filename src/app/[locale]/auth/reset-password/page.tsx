@@ -20,11 +20,7 @@ const ResetPasswordPage = async ({ searchParams }: PageProps) => {
 		);
 	}
 
-	return (
-		<div className="max-w-[350px] w-full flex flex-col gap-5">
-			<ResetPasswordForm token={token} />
-		</div>
-	);
+	return <ResetPasswordForm token={token} />;
 };
 
 export default ResetPasswordPage;

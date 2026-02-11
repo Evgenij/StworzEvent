@@ -13,9 +13,7 @@ import { UserRole } from "@prisma/client";
 import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
-import { AUTH_VERIFY_ROUTE, DASHBOARD_ROUTE } from "@/helpers/routes";
-import { redirect } from "@/i18n/routing";
-import { getLocale } from "next-intl/server";
+import { DASHBOARD_ROUTE } from "@/helpers/routes";
 
 const vercelUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -83,27 +81,29 @@ const options = {
 		sendOnSignUp: true,
 		expiresIn: 60 * 60, // 1 hour
 		// expiresIn: 5, // 5 seconds
-		//enabled: true,
 		autoSignInAfterVerification: true,
 		sendVerificationEmail: async ({ user, url }) => {
 			const link = new URL(url);
 			link.searchParams.set("callbackURL", DASHBOARD_ROUTE);
 
-			// send email to user
-			await sendEmailAction({
-				to: user.email,
-				subject: "Potwierdź adres e-mail",
-				meta: {
-					header: "Potwierdź adres e-mail",
-					subheader: `Witam, ${user.name}!`,
-					description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
-							Prosimy o potwierdzenie adresu e-mail, klikając w
-							poniższy link.`,
-					icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
-					link: String(link),
-					btnText: "Potwierdź adres e-mail",
-				},
-			});
+			try {
+				// send email to user
+				await sendEmailAction({
+					to: user.email,
+					subject: "Potwierdź adres e-mail",
+					meta: {
+						header: "Potwierdź adres e-mail",
+						subheader: `Witam, ${user.name}!`,
+						description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
+							Prosimy o potwierdzenie adresu e-mail, klikając w poniższy link.`,
+						icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
+						link: String(link),
+						btnText: "Potwierdź adres e-mail",
+					},
+				});
+			} catch (error) {
+				console.error("Error sending verification email:", error);
+			}
 		},
 	},
 	hooks: {
@@ -138,6 +138,7 @@ const options = {
 				before: async (user) => {
 					const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(";");
 					console.log("USER EMAIL: ", user.email, ADMIN_EMAILS);
+
 					if (ADMIN_EMAILS?.includes(user.email)) {
 						return { data: { ...user, role: UserRole.ADMIN } };
 					}

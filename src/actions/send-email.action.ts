@@ -1,6 +1,8 @@
 "use server";
 
 import transporter from "@/lib/nodemailer";
+import { ActionResult } from "@/types/action-result";
+import { handleActionError, success } from "@/lib/action-utils";
 
 interface Props {
 	to: string;
@@ -15,7 +17,11 @@ interface Props {
 	};
 }
 
-export async function sendEmailAction({ to, subject, meta }: Props) {
+export async function sendEmailAction({
+	to,
+	subject,
+	meta,
+}: Props): Promise<ActionResult> {
 	const mailOptions = {
 		from: '"StworzEvent.pl" <no-reply@stworzevent.pl>',
 		to,
@@ -160,10 +166,8 @@ export async function sendEmailAction({ to, subject, meta }: Props) {
 	try {
 		await transporter.sendMail(mailOptions);
 
-		return { success: true };
-	} catch (error) {
-		console.error("Error sending email:", error);
-
-		return { success: false, error: "Failed to send email" };
+		return success();
+	} catch (error: any) {
+		return handleActionError(error);
 	}
 }
