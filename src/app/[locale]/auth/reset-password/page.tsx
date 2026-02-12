@@ -4,9 +4,9 @@ import ResetPasswordForm from "#/components/forms/auth/reset-password-form";
 import ReturnBtn from "#/components/return-btn";
 import { SIGNIN_ROUTE } from "@/helpers/routes";
 
-interface PageProps {
-	searchParams: Promise<{ token: string; email: string }>;
-}
+type PageProps = {
+	searchParams: Promise<{ token: string }>;
+};
 
 const ResetPasswordPage = async ({ searchParams }: PageProps) => {
 	const token = (await searchParams).token;

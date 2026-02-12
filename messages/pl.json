@@ -69,10 +69,6 @@
 			"password": "Nowe hasło",
 			"confirmPassword": "Powtórz nowe hasło"
 		},
-		"placeholders": {
-			"password": "Wpisz nowe hasło",
-			"confirmPassword": "Powtórz nowe hasło"
-		},
 		"button": "Zapisz i zaloguj się",
 		"backToLogin": "Pamiętasz hasło?",
 		"signIn": "Zaloguj się",
@@ -81,5 +77,16 @@
 			"text": "Poproś o nowy link do zmiany hasła",
 			"button": "Ponownie"
 		}
+	},
+	"SignUpSpecForm": {
+		"title": "Witamy w StwórzEvent.pl! 🎫",
+		"subtitle": "Twój dostęp został potwierdzony. <lineBreak></lineBreak> Aby zakończyć konfigurację konta, ustaw hasło",
+		"fields": {
+			"password": "Ustaw hasło",
+			"confirmPassword": "Powtórz hasło"
+		},
+		"sendPassword": "Wyślij hasło na e-mail",
+		"button": "Aktywuj konto i zaloguj się",
+		"politics": "Klikając, wyrażasz zgodę na nasze<lineBreak></lineBreak><linkConditionals>Warunki świadczenia usług</linkConditionals> i <politics>Politykę prywatności</politics>"
 	}
 }

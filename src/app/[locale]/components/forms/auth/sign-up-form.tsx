@@ -82,18 +82,6 @@ export default function SignUpForm() {
 			if (result.success === false) {
 				// 1. Показываем общий Toast
 				if (result.message) toast.error(result.message);
-
-				// 2. Раскидываем ошибки по полям формы
-				// if (result.errors) {
-				// 	Object.entries(result.errors).forEach(
-				// 		([field, messages]) => {
-				// 			form.setError(field as keyof FormValues, {
-				// 				type: "server",
-				// 				message: messages[0], // Берем первую ошибку из массива
-				// 			});
-				// 		},
-				// 	);
-				// }
 			} else {
 				const result = await signInEmailAction(formData);
 
@@ -102,12 +90,7 @@ export default function SignUpForm() {
 					if (result.message) toast.error(result.message);
 				} else {
 					toast.success(t("successMessage.header"), {
-						//icon: <IconEye />,
 						description: t("successMessage.text"),
-						// action: {
-						// 	label: "Close",
-						// 	onClick: () => console.log("Undo"),
-						// },
 						classNames: {
 							description: "!text-foreground/70",
 						},
@@ -306,7 +289,7 @@ export default function SignUpForm() {
 					</p>
 					<p className="text-muted-foreground text-sm text-center">
 						{t.rich("politics", {
-							lineBreak: () => <br />, // Добавь этот обработчик
+							lineBreak: () => <br />,
 							linkConditionals: (chunks) => (
 								<Link
 									href={CONDITIONALS_ROUTE}
