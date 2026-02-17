@@ -8,7 +8,6 @@ import {
 } from "@/shadcn/ui/input-group";
 import { IconMail, IconTrash } from "@tabler/icons-react";
 import React, { useState } from "react";
-import { mails as orgMails } from "../../../../../organizatorsMails";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { TypeMail } from "@/types/enums";
 
@@ -17,9 +16,14 @@ export type Mail = {
 	id: Date | string;
 };
 
+export type Organizer = {
+	name: string;
+	email: Mail;
+};
+
 const AdminDashboard = () => {
 	const [newMail, setNewMail] = useState<Mail>({ value: "", id: new Date() });
-	const [mails, setMails] = useState<Mail[]>(orgMails);
+	const [mails, setMails] = useState<Mail[]>([]);
 
 	const sendMails = async () => {
 		mails.forEach(async (mail) => {
