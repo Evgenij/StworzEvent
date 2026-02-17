@@ -108,7 +108,7 @@ export async function proxy(req: NextRequest) {
 	const redirectTo = (path: string) =>
 		NextResponse.redirect(new URL(`/${currentLocale}${path}`, req.url));
 
-	// Редирект на дашборд только если точно есть сессия
+	// Редирект на дашборд только если точно есть сессия 1
 	if (hasSession && isAuthRoute && !isVerifyRoute) {
 		return redirectTo(DASHBOARD_ROUTE);
 	}
