@@ -1,6 +1,6 @@
 "use client";
 
-import { PROFILE_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
+import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
 import { Link } from "@/i18n/routing";
 import { useSession } from "@/lib/auth-client";
 import { Button } from "@/shadcn/ui/button";
@@ -10,7 +10,7 @@ import React from "react";
 function GetSessionBtn() {
 	const { data: session, isPending } = useSession();
 
-	const href = session ? PROFILE_ROUTE : SIGNIN_ROUTE;
+	const href = session ? DASHBOARD_ROUTE : SIGNIN_ROUTE;
 
 	console.log(session);
 

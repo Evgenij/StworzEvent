@@ -1,31 +1,15 @@
+import { ADMIN_DASHBOARD_ROUTE, HOME_ROUTE } from "@/helpers/routes";
+import { Link } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
+import { Button } from "@/shadcn/ui/button";
 import { headers } from "next/headers";
 import React from "react";
-import SignOutBtn from "#/components/sign-out-btn";
-import { Link, redirect, useRouter } from "@/i18n/routing";
-import {
-	ADMIN_DASHBOARD_ROUTE,
-	HOME_ROUTE,
-	SIGNIN_ROUTE,
-} from "@/helpers/routes";
-import { Button } from "@/shadcn/ui/button";
-import BtnEmail from "#/components/btn-email";
-import { Header } from "#/components/header/header";
-import UpdateUserForm from "../components/forms/update-user-form";
+import SignOutBtn from "../../components/sign-out-btn";
+import { Header } from "../../components/header/header";
+import UpdateUserForm from "../../components/forms/update-user-form";
 
-export default async function ProfilePage({
-	params,
-}: {
-	params: { locale: string };
-}) {
-	// Ждем получения параметров (в Next.js 15 это Promise)
-	const { locale } = await params;
+const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 	const session = await auth.api.getSession({ headers: await headers() });
-
-	if (!session) {
-		redirect({ href: SIGNIN_ROUTE, locale });
-	}
-
 	return (
 		<div className="p-6 flex flex-col gap-4">
 			<header className="flex gap-3">
@@ -64,7 +48,7 @@ export default async function ProfilePage({
 							Email do not verified...
 						</p>
 					)}
-					{!session?.user.emailVerified && <BtnEmail />}
+					{/* {!session?.user.emailVerified && <BtnEmail />} */}
 				</div>
 			</div>
 			<hr />
@@ -81,4 +65,6 @@ export default async function ProfilePage({
 			<pre className="text-xs">{JSON.stringify(session, null, 2)}</pre>
 		</div>
 	);
-}
+};
+
+export default DashboardPage;

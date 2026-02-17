@@ -1,7 +1,7 @@
 import React from "react";
 import VerificationEmailForm from "../../components/forms/verification-email-form";
 import { redirect } from "@/i18n/routing";
-import { PROFILE_ROUTE } from "@/helpers/routes";
+import { DASHBOARD_ROUTE } from "@/helpers/routes";
 
 interface Props {
 	searchParams: Promise<{ error: string }>;
@@ -20,7 +20,7 @@ const VerifyPage = async ({ searchParams, paramsLocale }: Props) => {
 	const { locale } = await paramsLocale;
 	const error = (await searchParams).error;
 
-	if (!error) redirect({ href: PROFILE_ROUTE, locale });
+	if (!error) redirect({ href: DASHBOARD_ROUTE, locale });
 
 	return (
 		<div className="flex flex-col items-center gap-6 max-w-[350px] w-full">

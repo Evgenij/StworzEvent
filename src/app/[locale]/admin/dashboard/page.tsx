@@ -1,58 +1,116 @@
-import React from "react";
-import SignInForm from "#/components/forms/sign-in-form";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "@/i18n/routing";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
-import prisma from "@/lib/prisma";
-import { User } from "@prisma/client";
+"use client";
+
 import { Button } from "@/shadcn/ui/button";
-import { size } from "better-auth";
-import DeleteUserBtn from "../../components/delete-user-btn";
+import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupInput,
+} from "@/shadcn/ui/input-group";
+import { IconMail, IconTrash } from "@tabler/icons-react";
+import React, { useState } from "react";
+import { mails as orgMails } from "../../../../../organizatorsMails";
+import { sendEmailAction } from "@/actions/send-email.action";
+import { TypeMail } from "@/types/enums";
 
-async function AdminDashboard({ params }: { params: { locale: string } }) {
-	// Ждем получения параметров (в Next.js 15 это Promise)
-	const { locale } = await params;
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+export type Mail = {
+	value: string;
+	id: Date | string;
+};
 
-	if (!session) redirect({ href: SIGNIN_ROUTE, locale });
-	const { users } = await auth.api.listUsers({
-		headers: await headers(),
-		query: {
-			sortBy: "role",
-		},
-	});
+const AdminDashboard = () => {
+	const [newMail, setNewMail] = useState<Mail>({ value: "", id: new Date() });
+	const [mails, setMails] = useState<Mail[]>(orgMails);
+
+	const sendMails = async () => {
+		mails.forEach(async (mail) => {
+			await sendEmailAction({
+				type: TypeMail.INVITATION,
+				to: mail.value,
+				subject: "Test",
+				data: {
+					header: "",
+					subheader: "",
+					ticket: {
+						name: "",
+						header: {
+							main: "",
+							subheader: "",
+						},
+						footer: "",
+						btnText: "",
+					},
+					link: "",
+				},
+			});
+		});
+	};
 
 	return (
-		<section className="h-full flex flex-col gap-8 p-8">
-			<h1 className="text-4xl">Admin Dashboard</h1>
-			{session?.user.role !== "ADMIN" ? (
-				<p className="text-red-600">Access denied!</p>
-			) : (
-				<div className="flex flex-col gap-3">
-					<h2 className="text-xl font-medium">
-						Hello, {session.user.email}
-					</h2>
-					<ol>
-						{users.map((user) => {
-							return (
-								<li key={user.id} className="py-1">
-									{user.name}: {user.email}{" "}
-									<DeleteUserBtn
-										userId={user.id}
-										role={user.role}
-									/>
-								</li>
-							);
-						})}
-					</ol>
-				</div>
-			)}
+		<section className="h-full flex flex-col">
+			<div className="flex flex-col gap-3">
+				<section className="flex flex-col gap-4">
+					<header className="flex gap-3">
+						<InputGroup>
+							<InputGroupAddon>
+								<IconMail />
+							</InputGroupAddon>
+							<InputGroupInput
+								name="mail"
+								placeholder="mail"
+								autoComplete="on"
+								type="email"
+								value={newMail.value}
+								onChange={(e) =>
+									setNewMail({
+										value: e.target.value,
+										id: new Date(),
+									})
+								}
+							/>
+						</InputGroup>
+						<Button
+							variant={"outline"}
+							onClick={() => {
+								setMails([...mails, newMail]);
+							}}
+						>
+							Add mail
+						</Button>
+						<Button onClick={sendMails}>Send</Button>
+					</header>
+					<hr />
+					<main className="flex flex-col gap-2">
+						<ol>
+							{mails &&
+								mails.map((mail) => (
+									<li
+										className="flex gap-2 items-center"
+										key={String(mail.id)}
+									>
+										{mail.value}
+										<Button
+											size={"icon-sm"}
+											variant={"destructive"}
+											onClick={() =>
+												setMails(
+													mails.filter(
+														(item) =>
+															mail.id !== item.id,
+													),
+												)
+											}
+										>
+											<IconTrash />
+										</Button>
+									</li>
+								))}
+						</ol>
+					</main>
+				</section>
+			</div>
 			{/* <SignInForm /> */}
 		</section>
 	);
-}
+};
 
 export default AdminDashboard;

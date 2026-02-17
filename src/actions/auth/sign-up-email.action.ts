@@ -1,9 +1,12 @@
 "use server";
-import { handleActionError } from "@/lib/action-utils";
+import { handleActionError, success } from "@/lib/action-utils";
 import { auth, ErrorCode } from "@/lib/auth";
 import { APIError } from "better-auth/api";
+import { ActionResult } from "@/types/action-result";
 
-export async function signUpEmailAction(formData: FormData) {
+export async function signUpEmailAction(
+	formData: FormData,
+): Promise<ActionResult> {
 	const name = formData.get("name") as string;
 	if (!name) return handleActionError(new Error("Name is required"));
 
@@ -21,7 +24,7 @@ export async function signUpEmailAction(formData: FormData) {
 			body: { name, surname, email, password },
 		});
 
-		return { success: true };
+		return success();
 	} catch (error: any) {
 		return handleActionError(error);
 

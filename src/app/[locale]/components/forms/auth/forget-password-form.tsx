@@ -1,29 +1,82 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Button } from "@/shadcn/ui/button";
-import { FieldGroup } from "@/shadcn/ui/field";
+import { Field, FieldError, FieldGroup } from "@/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/shadcn/ui/input-group";
 import { IconMail } from "@tabler/icons-react";
-import { useState } from "react";
-import { useRouter } from "@/i18n/routing";
+import { startTransition, useState } from "react";
+import { Link, useRouter } from "@/i18n/routing";
 import {
 	AUTH_VERIFY_ROUTE,
 	AUTH_VERIFY_SUCCESS_ROUTE,
 	FORGOT_PASSWORD_SUCCESS_ROUTE,
 	RESET_PASSWORD_ROUTE,
+	SIGNIN_ROUTE,
 } from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import z from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Header } from "../../header/header";
 
 export default function ForgetPasswordForm() {
-	const t = useTranslations("SignInForm"); //  TODO !!!
+	const t = useTranslations("ForgetPasswordForm");
+	const tErrors = useTranslations("Errors");
+	const tAuth = useTranslations("Auth");
 	const router = useRouter();
 	const [isPending, setIsPending] = useState(false);
+
+	const formSchema = z.object({
+		email: z.string().email(tErrors("invalidEmail")),
+	});
+
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			email: "",
+		},
+	});
+
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		// Do something with the form values.
+		setIsPending(true);
+
+		startTransition(async () => {
+			// Создаем FormData из валидных данных
+			const formData = new FormData();
+
+			formData.append("email", data.email);
+
+			await authClient.requestPasswordReset({
+				email: data.email,
+				redirectTo: RESET_PASSWORD_ROUTE,
+				fetchOptions: {
+					onRequest: () => {
+						setIsPending(true);
+					},
+					onResponse: () => {
+						setIsPending(false);
+					},
+					onError: (err) => {
+						setIsPending(false);
+						toast.error(tErrors("errorOfReset"));
+					},
+					onSuccess: () => {
+						// toast.success(
+						// 	"Link do resetowania hasła został wysłany na adres e-mail.",
+						// );
+						router.push(FORGOT_PASSWORD_SUCCESS_ROUTE);
+					},
+				},
+			});
+		});
+	};
 
 	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -31,8 +84,6 @@ export default function ForgetPasswordForm() {
 		const formData = new FormData(event.target as HTMLFormElement);
 
 		const email = String(formData.get("email"));
-
-		if (!email) return toast.error("Brak adresu email");
 
 		await authClient.requestPasswordReset({
 			email: email,
@@ -51,9 +102,9 @@ export default function ForgetPasswordForm() {
 					toast.error("Wystąpił błąd! Spróbuj ponownie.");
 				},
 				onSuccess: () => {
-					toast.success(
-						"Link do resetowania hasła został wysłany na adres e-mail.",
-					);
+					// toast.success(
+					// 	"Link do resetowania hasła został wysłany na adres e-mail.",
+					// );
 					router.push(FORGOT_PASSWORD_SUCCESS_ROUTE);
 				},
 			},
@@ -61,36 +112,77 @@ export default function ForgetPasswordForm() {
 	}
 
 	return (
-		<div className="flex flex-col gap-10 w-full">
-			<form
-				action=""
-				onSubmit={submitHandler}
-				className="flex flex-col gap-3"
-			>
-				<FieldGroup>
-					<InputGroup>
-						<InputGroupInput
-							placeholder="name@example.com"
-							type="email"
-							name="email"
-						/>
-						<InputGroupAddon>
-							<IconMail />
-						</InputGroupAddon>
-					</InputGroup>
-				</FieldGroup>
+		<div className="flex flex-col gap-9">
+			<header className="flex flex-col gap-3 items-center">
+				<Header as={"h2"} className="text-center">
+					{t("title")}
+				</Header>
+				<p className="text-muted-foreground text-center text-sm">
+					{t.rich("subtitle", {
+						lineBreak: () => <br />,
+						important: (chunks) => (
+							<span className="text-primary font-bold">
+								{chunks}
+							</span>
+						),
+					})}
+				</p>
+			</header>
 
-				<Button
-					type="submit"
-					size={"lg"}
-					className="w-full"
-					disabled={isPending}
+			<main className="flex flex-col gap-4">
+				<form
+					id="forget-password-form"
+					className="flex flex-col gap-4"
+					onSubmit={form.handleSubmit(onSubmit)}
 				>
-					{isPending && <Spinner />}
-					{/* {t("button")} */}
-					Wyślij link resetujący
-				</Button>
-			</form>
+					<FieldGroup>
+						<Controller
+							name="email"
+							control={form.control}
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											aria-invalid={fieldState.invalid}
+											placeholder={tAuth(
+												"placeholders.mail",
+											)}
+											type="email"
+											name={field.name}
+											autoComplete="on"
+										/>
+										<InputGroupAddon>
+											<IconMail />
+										</InputGroupAddon>
+									</InputGroup>
+									{fieldState.invalid && (
+										<FieldError
+											errors={[fieldState.error]}
+										/>
+									)}
+								</Field>
+							)}
+						/>
+					</FieldGroup>
+
+					<Button
+						type="submit"
+						size={"lg"}
+						className="w-full"
+						disabled={isPending}
+					>
+						{isPending && <Spinner />}
+						{t("button")}
+					</Button>
+					<p className="text-muted-foreground text-sm text-center">
+						{t("rememberPassword")}{" "}
+						<Link href={SIGNIN_ROUTE} className="link-default">
+							{t("signIn")}
+						</Link>
+					</p>
+				</form>
+			</main>
 		</div>
 	);
 }

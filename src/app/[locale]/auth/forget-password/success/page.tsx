@@ -1,7 +1,55 @@
+import { Header } from "#/components/header/header";
+import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { Link } from "@/i18n/routing";
+import { Button } from "@/shadcn/ui/button";
+import { IconChevronLeft } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 const SuccessPage = () => {
-	return <div>SuccessPage</div>;
+	const t = useTranslations("ForgetPasswordForm");
+
+	return (
+		<div className="flex flex-col gap-9">
+			<header className="flex flex-col gap-3 items-center">
+				<Header as={"h2"} className="text-center">
+					{t("success.title")}
+				</Header>
+				<p className="text-muted-foreground text-center text-sm">
+					{t.rich("success.subtitle", {
+						lineBreak: () => <br />,
+						// Можно даже стилизовать части текста:
+						important: (chunks) => (
+							<span className="text-primary font-bold">
+								{chunks}
+							</span>
+						),
+					})}
+				</p>
+			</header>
+
+			<main className="flex flex-col gap-4">
+				<Link href={SIGNIN_ROUTE}>
+					<Button
+						type="submit"
+						variant={"outline"}
+						size={"lg"}
+						className="w-full"
+					>
+						<IconChevronLeft />
+						{t("success.button")}
+					</Button>
+				</Link>
+
+				<p className="text-muted-foreground text-sm text-center">
+					{t("rememberPassword")}{" "}
+					<Link href={SIGNIN_ROUTE} className="link-default">
+						{t("signIn")}
+					</Link>
+				</p>
+			</main>
+		</div>
+	);
 };
 
 export default SuccessPage;

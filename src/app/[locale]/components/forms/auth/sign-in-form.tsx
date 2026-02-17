@@ -10,26 +10,25 @@ import {
 	FieldDescription,
 	FieldError,
 	FieldGroup,
-	FieldLabel,
 } from "@/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-	InputGroupText,
-	InputGroupTextarea,
 } from "@/shadcn/ui/input-group";
 import {
 	IconEye,
 	IconEyeClosed,
+	IconInfoCircle,
+	IconInfoCircleFilled,
 	IconLock,
 	IconMail,
 } from "@tabler/icons-react";
-import { startTransition, useState } from "react";
+import { startTransition, useMemo, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import {
-	FORGOT_PASSWORD_ROUTE,
-	PROFILE_ROUTE,
+	FORGET_PASSWORD_ROUTE,
+	DASHBOARD_ROUTE,
 	SIGNUP_ROUTE,
 } from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
@@ -38,25 +37,57 @@ import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 import { toast } from "sonner";
 import SignInOAuthBtn from "#/components/sign-in-oauth-btn";
 import { Switch } from "@/shadcn/ui/switch";
+import { signIn } from "@/lib/auth-client";
+import { getBaseUrl } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shadcn/ui/tooltip";
 
 export default function SignInForm() {
 	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
 	const [isPending, setIsPending] = useState(false);
 	const [useMagicLink, setUseMagicLink] = useState(false);
-	const [value, setValue] = useState("");
 
 	const t = useTranslations("SignInForm");
 	const tErrors = useTranslations("Errors");
 	const tAuth = useTranslations("Auth");
 
-	const formSchema = z.object({
-		email: z.string().email(tErrors("invalidEmail")),
-		password: z
-			.string()
-			.min(6, tErrors("passwordMin6"))
-			.max(20, tErrors("passwordMax20")),
-	});
+	const formSchema = useMemo(
+		() =>
+			z
+				.object({
+					email: z.string().email(tErrors("invalidEmail")),
+					password: z.string().optional(),
+				})
+				.refine(
+					(data) => {
+						if (!useMagicLink) {
+							return !!(
+								data.password && data.password.length >= 6
+							);
+						}
+						return true;
+					},
+					{
+						message: tErrors("passwordMin"),
+						path: ["password"],
+					},
+				)
+				.refine(
+					(data) => {
+						if (!useMagicLink) {
+							return !!(
+								data.password && data.password.length <= 25
+							);
+						}
+						return true;
+					},
+					{
+						message: tErrors("passwordMax"),
+						path: ["password"],
+					},
+				),
+		[useMagicLink],
+	); // Схема пересчитается, когда изменится useMagicLink
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -64,59 +95,67 @@ export default function SignInForm() {
 			email: "",
 			password: "",
 		},
+		context: { useMagicLink },
 	});
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		// Do something with the form values.
-		console.log(data);
 		setIsPending(true);
 
 		startTransition(async () => {
 			// Создаем FormData из валидных данных
 			const formData = new FormData();
+
 			formData.append("email", data.email);
 			if (data.password) formData.append("password", data.password);
-			if (useMagicLink) formData.append("useMagicLink", "true");
 
-			const result = await signInEmailAction(formData);
-
-			if (result.success === false) {
-				// 1. Показываем общий Toast
-				if (result.message) toast.error(result.message);
-
-				// 2. Раскидываем ошибки по полям формы
-				// if (result.errors) {
-				// 	Object.entries(result.errors).forEach(
-				// 		([field, messages]) => {
-				// 			form.setError(field as keyof FormValues, {
-				// 				type: "server",
-				// 				message: messages[0], // Берем первую ошибку из массива
-				// 			});
-				// 		},
-				// 	);
-				// }
+			if (useMagicLink) {
+				await signIn.magicLink({
+					email: data.email,
+					name: data.email.split("@")[0],
+					callbackURL: `${getBaseUrl()}${DASHBOARD_ROUTE}`,
+					fetchOptions: {
+						onError(error) {
+							toast.success(error.error.message);
+						},
+						onSuccess: () => {
+							toast.success("Email is sent"); // TODO change to show message - no toast
+							//if (ref.current) ref.current.open = false;
+						},
+					},
+				});
 			} else {
-				toast.success("Zalogowano!");
-				router.push(PROFILE_ROUTE);
+				const result = await signInEmailAction(formData);
+
+				if (result.success === false) {
+					// 1. Показываем общий Toast
+					if (result.message) toast.error(result.message);
+
+					// 2. Раскидываем ошибки по полям формы
+					// if (result.errors) {
+					// 	Object.entries(result.errors).forEach(
+					// 		([field, messages]) => {
+					// 			form.setError(field as keyof FormValues, {
+					// 				type: "server",
+					// 				message: messages[0], // Берем первую ошибку из массива
+					// 			});
+					// 		},
+					// 	);
+					// }
+				} else {
+					toast.success("Zalogowano!");
+					router.push(DASHBOARD_ROUTE);
+				}
 			}
+
 			setIsPending(false);
 		});
 	};
 
-	// async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
-	// 	event.preventDefault();
-	// 	setIsPending(true);
-	// 	const formData = new FormData(event.target as HTMLFormElement);
-	// 	const error = await signInEmailAction(formData);
-
-	// 	if (error.message) {
-	// 		toast.error(error.message);
-	// 		setIsPending(false);
-	// 	} else {
-	// 		toast.success("Udalo sie!");
-	// 		router.push(PROFILE_ROUTE);
-	// 	}
-	// }
+	const handleChangeMagicLink = (checked: boolean) => {
+		setUseMagicLink(checked);
+		form.resetField("password");
+	};
 
 	return (
 		<div className="flex flex-col gap-8">
@@ -129,9 +168,9 @@ export default function SignInForm() {
 					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
 				</div>
 				<div className="flex gap-3 items-center text-muted-foreground text-sm">
-					<div className="h-[1px] w-full bg-muted"></div>
+					<div className="h-px w-full bg-muted"></div>
 					<span>{tAuth("divider")}</span>
-					<div className="h-[1px] w-full bg-muted"></div>
+					<div className="h-px w-full bg-muted"></div>
 				</div>
 				{/* <pre className="w-full">{JSON.stringify(form, null, 2)}</pre> */}
 
@@ -144,15 +183,26 @@ export default function SignInForm() {
 						<Switch
 							id="magic-link"
 							checked={useMagicLink}
-							onCheckedChange={() => {
-								setUseMagicLink(!useMagicLink);
-							}}
+							onCheckedChange={(checked) =>
+								handleChangeMagicLink(checked)
+							}
 						/>
 						<label
 							htmlFor="magic-link"
 							className="flex items-center gap-2 cursor-pointer text-sm"
 						>
 							{t("useMagicLink")}
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<IconInfoCircleFilled className="cursor-help size-5 text-gray-400 hover:text-blue-600" />
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>
+										Szybkie logowanie przez e-mail bez
+										wpisywania hasła.
+									</p>
+								</TooltipContent>
+							</Tooltip>
 						</label>
 					</div>
 					<FieldGroup>
@@ -240,7 +290,7 @@ export default function SignInForm() {
 								/>
 								<FieldDescription className="ml-3">
 									<Link
-										href={FORGOT_PASSWORD_ROUTE}
+										href={FORGET_PASSWORD_ROUTE}
 										className="link-default simple-text"
 									>
 										{t("forgotPassword")}

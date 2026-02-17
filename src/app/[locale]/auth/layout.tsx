@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import ReturnBtn from "../components/return-btn";
-import { HOME_ROUTE } from "@/helpers/routes";
 import Image from "next/image";
 
 export const metadata: Metadata = {
@@ -33,7 +31,9 @@ export default function RootLayout({
 				/>
 			</section>
 			<aside className="w-full md:w-1/3 md:min-w-[450px] h-full flex flex-col gap-9 justify-center items-center p-6 bg-background">
-				{children}
+				<section className="max-w-[350px] w-full flex flex-col gap-5">
+					{children}
+				</section>
 			</aside>
 		</main>
 	);

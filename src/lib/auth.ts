@@ -13,7 +13,8 @@ import { UserRole } from "@prisma/client";
 import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
-import { AUTH_VERIFY_ROUTE, PROFILE_ROUTE } from "@/helpers/routes";
+import { DASHBOARD_ROUTE } from "@/helpers/routes";
+import { TypeMail } from "@/types/enums";
 
 const vercelUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -63,13 +64,14 @@ const options = {
 		//requireEmailVerification: true,
 		sendResetPassword: async ({ user, url }) => {
 			await sendEmailAction({
+				type: TypeMail.AUTH,
 				to: user.email,
-				subject: "Reset hasla",
-				meta: {
+				subject: "Resetowanie hasła do Twojego konta",
+				data: {
 					header: "Resetowanie hasła",
 					subheader: `Hej, ${user.name}`,
 					description:
-						"Aby odzyskać hasło, kliknij przycisk poniżej.",
+						"Otrzymaliśmy prośbę o zresetowanie hasła. Jeśli to Ty, kliknij poniższy przycisk, aby ustawić nowe hasło. Jeśli to nie Ty, po prostu zignoruj tę wiadomość.",
 					icon: "https://stworzevent.vercel.app/images/mails/img-reset-password.png",
 					link: url,
 					btnText: "Zresetuj hasło",
@@ -81,27 +83,30 @@ const options = {
 		sendOnSignUp: true,
 		expiresIn: 60 * 60, // 1 hour
 		// expiresIn: 5, // 5 seconds
-		//enabled: true,
 		autoSignInAfterVerification: true,
 		sendVerificationEmail: async ({ user, url }) => {
 			const link = new URL(url);
-			link.searchParams.set("callbackURL", PROFILE_ROUTE);
+			link.searchParams.set("callbackURL", DASHBOARD_ROUTE);
 
-			// send email to user
-			await sendEmailAction({
-				to: user.email,
-				subject: "Potwierdź adres e-mail",
-				meta: {
-					header: "Potwierdź adres e-mail",
-					subheader: `Witam, ${user.name}!`,
-					description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
-							Prosimy o potwierdzenie adresu e-mail, klikając w
-							poniższy link.`,
-					icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
-					link: String(link),
-					btnText: "Potwierdź adres e-mail",
-				},
-			});
+			try {
+				// send email to user
+				await sendEmailAction({
+					type: TypeMail.AUTH,
+					to: user.email,
+					subject: "Potwierdź adres e-mail",
+					data: {
+						header: "Potwierdź adres e-mail",
+						subheader: `Witam, ${user.name}!`,
+						description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
+							Prosimy o potwierdzenie adresu e-mail, klikając w poniższy link.`,
+						icon: "https://stworzevent.vercel.app/images/mails/img-mail.png",
+						link: String(link),
+						btnText: "Potwierdź adres e-mail",
+					},
+				});
+			} catch (error) {
+				console.error("Error sending verification email:", error);
+			}
 		},
 	},
 	hooks: {
@@ -136,6 +141,7 @@ const options = {
 				before: async (user) => {
 					const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(";");
 					console.log("USER EMAIL: ", user.email, ADMIN_EMAILS);
+
 					if (ADMIN_EMAILS?.includes(user.email)) {
 						return { data: { ...user, role: UserRole.ADMIN } };
 					}
@@ -170,15 +176,16 @@ const options = {
 		magicLink({
 			sendMagicLink: async ({ email, url }) => {
 				await sendEmailAction({
+					type: TypeMail.AUTH,
 					to: email,
-					subject: "Magic link",
-					meta: {
-						header: "Magic link",
-						subheader: `Hej!`,
-						description: `Kliknij w poniższy link, aby się zalogować.`,
+					subject: "Twój Magic link do logowania ✨",
+					data: {
+						header: "Prawie u celu!",
+						subheader: "Hej, to znowu Ty! 😉",
+						description: `Zamiast walczyć z hasłem, po prostu kliknij w ten przycisk. Magia dzieje się w tle.`,
 						icon: "https://stworzevent.vercel.app/images/mails/img-magic-link.png",
 						link: url,
-						btnText: "Zaloguj się",
+						btnText: "Wchodzę!",
 					},
 				});
 			},

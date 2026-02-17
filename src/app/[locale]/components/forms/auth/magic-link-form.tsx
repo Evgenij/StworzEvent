@@ -1,6 +1,6 @@
 "use client";
 
-import { PROFILE_ROUTE } from "@/helpers/routes";
+import { DASHBOARD_ROUTE } from "@/helpers/routes";
 import { signIn } from "@/lib/auth-client";
 import { email } from "better-auth";
 import React, { useRef } from "react";
@@ -19,7 +19,7 @@ const MagicLinkForm = () => {
 			await signIn.magicLink({
 				email: email,
 				name: email.split("@")[0],
-				callbackURL: PROFILE_ROUTE,
+				callbackURL: DASHBOARD_ROUTE,
 				fetchOptions: {
 					onError(error) {
 						toast.success(error.error.message);

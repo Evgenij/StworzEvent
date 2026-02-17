@@ -20,7 +20,7 @@ import { Link, useRouter } from "@/i18n/routing";
 import {
 	CONDITIONALS_ROUTE,
 	POLITICS_ROUTE,
-	PROFILE_ROUTE,
+	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
 } from "@/helpers/routes";
 import { Spinner } from "@/shadcn/ui/spinner";
@@ -42,14 +42,14 @@ export default function SignUpForm() {
 
 	const formSchema = z.object({
 		user: z.object({
-			name: z.string().min(2, tErrors("nameMin2")),
-			surname: z.string().min(2, tErrors("surnameMin2")),
+			name: z.string().min(2, tErrors("nameMin")),
+			surname: z.string().min(2, tErrors("surnameMin")),
 		}),
 		email: z.string().email(tErrors("invalidEmail")),
 		password: z
 			.string()
-			.min(6, tErrors("passwordMin6"))
-			.max(20, tErrors("passwordMax20")),
+			.min(6, tErrors("passwordMin"))
+			.max(25, tErrors("passwordMax")),
 	});
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -82,18 +82,6 @@ export default function SignUpForm() {
 			if (result.success === false) {
 				// 1. Показываем общий Toast
 				if (result.message) toast.error(result.message);
-
-				// 2. Раскидываем ошибки по полям формы
-				// if (result.errors) {
-				// 	Object.entries(result.errors).forEach(
-				// 		([field, messages]) => {
-				// 			form.setError(field as keyof FormValues, {
-				// 				type: "server",
-				// 				message: messages[0], // Берем первую ошибку из массива
-				// 			});
-				// 		},
-				// 	);
-				// }
 			} else {
 				const result = await signInEmailAction(formData);
 
@@ -102,17 +90,12 @@ export default function SignUpForm() {
 					if (result.message) toast.error(result.message);
 				} else {
 					toast.success(t("successMessage.header"), {
-						//icon: <IconEye />,
 						description: t("successMessage.text"),
-						// action: {
-						// 	label: "Close",
-						// 	onClick: () => console.log("Undo"),
-						// },
 						classNames: {
 							description: "!text-foreground/70",
 						},
 					});
-					router.push(PROFILE_ROUTE);
+					router.push(DASHBOARD_ROUTE);
 				}
 			}
 			setIsPending(false);
@@ -144,9 +127,9 @@ export default function SignUpForm() {
 					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
 				</div>
 				<div className="flex gap-3 items-center text-muted-foreground text-sm">
-					<div className="h-[1px] w-full bg-muted"></div>
+					<div className="h-px w-full bg-muted"></div>
 					<span>{tAuth("divider")}</span>
-					<div className="h-[1px] w-full bg-muted"></div>
+					<div className="h-px w-full bg-muted"></div>
 				</div>
 				<form
 					id="sign-up-form"
@@ -306,7 +289,7 @@ export default function SignUpForm() {
 					</p>
 					<p className="text-muted-foreground text-sm text-center">
 						{t.rich("politics", {
-							lineBreak: () => <br />, // Добавь этот обработчик
+							lineBreak: () => <br />,
 							linkConditionals: (chunks) => (
 								<Link
 									href={CONDITIONALS_ROUTE}
