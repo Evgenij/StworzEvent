@@ -26,7 +26,7 @@ const AdminDashboard = () => {
 			await sendEmailAction({
 				type: TypeMail.INVITATION,
 				to: mail.value,
-				subject: "Test",
+				subject: "Testing",
 				data: {
 					header: "",
 					subheader: "",
