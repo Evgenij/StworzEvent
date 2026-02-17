@@ -24,7 +24,7 @@ const options = {
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
-	// baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+	baseURL: process.env.BETTER_AUTH_URL, // || "http://localhost:3000",
 	socialProviders: {
 		google: {
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -203,6 +203,7 @@ const options = {
 		"http://localhost:3000",
 		...(vercelUrl ? [vercelUrl] : []),
 	],
+	secret: process.env.BETTER_AUTH_SECRET as string,
 } satisfies BetterAuthOptions;
 
 export const auth = betterAuth({
