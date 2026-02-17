@@ -81,9 +81,10 @@ const protectedRoutes = [DASHBOARD_ROUTE, ADMIN_DASHBOARD_ROUTE];
 
 export async function proxy(req: NextRequest) {
 	const { nextUrl } = req;
-	console.log("Cookies:", req.cookies);
+
+	// Проверяем cookie
 	const sessionCookie = getSessionCookie(req);
-	const isLoggedIn = !!sessionCookie;
+	const hasSession = Boolean(sessionCookie); // Только если реально есть cookie
 
 	const segments = nextUrl.pathname.split("/");
 	const currentLocale = routing.locales.includes(segments[1] as any)
@@ -107,18 +108,17 @@ export async function proxy(req: NextRequest) {
 	const redirectTo = (path: string) =>
 		NextResponse.redirect(new URL(`/${currentLocale}${path}`, req.url));
 
-	// Если залогинен и пытается зайти на /auth/* (кроме verify) → редирект на дашборд
-	if (isLoggedIn && isAuthRoute && !isVerifyRoute) {
+	// Редирект на дашборд только если точно есть сессия
+	if (hasSession && isAuthRoute && !isVerifyRoute) {
 		return redirectTo(DASHBOARD_ROUTE);
 	}
 
-	// Если не залогинен и пытается зайти на защищённый роут → редирект на вход
-	if (!isLoggedIn && isProtectedRoute) {
+	// Редирект на вход если путь защищён и точно нет сессии
+	if (!hasSession && isProtectedRoute) {
 		return redirectTo(SIGNIN_ROUTE);
 	}
 
-	// Если пользователь на главной (/) и не залогинен → НЕ редиректим
-	// Всё остальное обрабатывается intlMiddleware
+	// Главная страница / оставляем как есть
 	return intlMiddleware(req);
 }
 
