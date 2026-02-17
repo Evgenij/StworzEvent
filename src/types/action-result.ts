@@ -1,6 +1,3 @@
-export type ActionResult<T = undefined> = {
-	success: boolean;
-	message?: string;
-	errors?: Record<string, string[]>;
-	data?: T;
-};
+export type ActionResult<T = null> =
+	| { success: true; data: T }
+	| { success: false; message: string; errors?: Record<string, string[]> };

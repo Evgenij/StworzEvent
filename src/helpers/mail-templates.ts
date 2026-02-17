@@ -229,7 +229,7 @@ export const invitationMail = (data: InvitationMailsProps) => {
 													color: #000000;
 												"
 											>
-												Dzień dobry!
+												${data.header}
 											</h1>
 										</td>
 									</tr>
@@ -245,9 +245,7 @@ export const invitationMail = (data: InvitationMailsProps) => {
 													font-weight: 500;
 												"
 											>
-												Zostałeś wybrany jako jeden z
-												pierwszych organizatorów
-												testujących platformę.
+												${data.subheader}
 											</p>
 										</td>
 									</tr>
@@ -283,7 +281,7 @@ export const invitationMail = (data: InvitationMailsProps) => {
 																	font-weight: bold;
 																"
 															>
-																StworzEvent.pl –
+																${data.ticket.name} –
 																<span
 																	style="
 																		color: #ff7a1a;

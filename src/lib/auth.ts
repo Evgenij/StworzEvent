@@ -15,6 +15,7 @@ import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { DASHBOARD_ROUTE } from "@/helpers/routes";
 import { TypeMail } from "@/types/enums";
+import { hashPassword, verifyPassword } from "@/lib/hashPassword";
 
 const vercelUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -62,6 +63,10 @@ const options = {
 		minPasswordLength: 6,
 		autoSignIn: false, // optional
 		//requireEmailVerification: true,
+		password: {
+			hash: hashPassword,
+			verify: verifyPassword,
+		},
 		sendResetPassword: async ({ user, url }) => {
 			await sendEmailAction({
 				type: TypeMail.AUTH,

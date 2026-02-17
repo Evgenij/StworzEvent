@@ -1,15 +1,26 @@
 import { ActionResult } from "@/types/action-result";
 
-export function handleActionError(error: any): ActionResult {
-	if (error.body?.code === "VALIDATION_ERROR") {
+type ErrorWithBody = {
+	body?: {
+		code?: string;
+		message?: string;
+		data?: Record<string, string[]>;
+	};
+	message?: string;
+};
+
+export function handleActionError(error: unknown): ActionResult<never> {
+	const err = error as ErrorWithBody;
+
+	if (err.body?.code === "VALIDATION_ERROR") {
 		return {
 			success: false,
 			message: "Błąd walidacji danych",
-			errors: error.body.data,
+			errors: err.body.data,
 		};
 	}
 
-	const code = error?.body?.code as string | undefined;
+	const code = err.body?.code;
 	if (code) {
 		const codeMessages: Record<string, string> = {
 			USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL:
@@ -20,28 +31,29 @@ export function handleActionError(error: any): ActionResult {
 			TOKEN_EXPIRED: "Token wygasł",
 			EMAIL_NOT_FOUND: "Nie znaleziono adresu e-mail",
 		};
+
 		return {
 			success: false,
 			message:
 				codeMessages[code] ||
-				error.body?.message ||
+				err.body?.message ||
 				"Wystąpił nieoczekiwany błąd",
 		};
 	}
 
 	return {
 		success: false,
-		message: error.message || "Wystąpił nieoczekiwany błąd",
+		message: err.message || "Wystąpił nieoczekiwany błąd",
 	};
 }
 
-export function success<T = undefined>(data?: T): ActionResult<T> {
+export function success<T>(data: T): ActionResult<T> {
 	return { success: true, data };
 }
 
 export function fail(
-	message?: string,
+	message: string,
 	errors?: Record<string, string[]>,
-): ActionResult {
+): ActionResult<never> {
 	return { success: false, message, errors };
 }

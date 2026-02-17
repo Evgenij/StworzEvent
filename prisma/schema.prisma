@@ -22,6 +22,9 @@ model User {
   role          UserRole @default(USER)
   image         String?
 
+  inviteToken   String?   @unique // Генерируй случайную строку (UUID)
+  inviteExpires DateTime? // Срок годности ссылки
+
   banned     Boolean?  @default(false)
   banReason  String?
   banExpires DateTime?
@@ -71,6 +74,7 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
+  @@unique([providerId, accountId])
   @@index([userId])
   @@map("accounts")
 }

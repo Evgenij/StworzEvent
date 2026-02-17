@@ -10,8 +10,11 @@ import { IconMail, IconTrash } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { TypeMail } from "@/types/enums";
+import { listOrganizers } from "@/mocks";
+import { getBaseUrl } from "@/lib/utils";
+import { SIGNUP_SPECIAL_ROUTE } from "@/helpers/routes";
 
-export type Mail = {
+type Mail = {
 	value: string;
 	id: Date | string;
 };
@@ -22,31 +25,37 @@ export type Organizer = {
 };
 
 const AdminDashboard = () => {
-	const [newMail, setNewMail] = useState<Mail>({ value: "", id: new Date() });
-	const [mails, setMails] = useState<Mail[]>([]);
+	const [organizers, setOrganizers] = useState<Organizer[]>(listOrganizers);
+
+	const baseUrl = getBaseUrl();
+	const setupUrl = new URL(`${baseUrl}${SIGNUP_SPECIAL_ROUTE}`);
 
 	const sendMails = async () => {
-		mails.forEach(async (mail) => {
-			await sendEmailAction({
+		for (const organizer of organizers) {
+			//setupUrl.searchParams.append("token", organizer.inviteToken); TODO token from DB
+			await await sendEmailAction({
 				type: TypeMail.INVITATION,
-				to: mail.value,
-				subject: "Testing",
+				to: organizer.email.value,
+				subject:
+					"Twoje zaproszenie do zamkniętej wersji beta StworzEvent.pl",
 				data: {
-					header: "",
-					subheader: "",
+					header: "Dzień dobry!",
+					subheader:
+						"Zostałeś wybrany jako jeden z pierwszych organizatorów testujących platformę.",
 					ticket: {
-						name: "",
+						name: "StworzEvent.pl",
 						header: {
-							main: "",
-							subheader: "",
+							main: "Oficjalnie ruszamy z etapem zamkniętych testów beta StworzEvent.pl.",
+							subheader:
+								"Twoje konto jest już gotowe do działania.",
 						},
-						footer: "",
-						btnText: "",
+						footer: "Pozostał ostatni krok — potwierdzenie konta i ustawienie hasła dostępu.",
+						btnText: "Wejdź do platformy",
 					},
-					link: "",
+					link: `${process.env.NEXT_PUBLIC_API_URL}?name${organizer.name}`,
 				},
 			});
-		});
+		}
 	};
 
 	return (
@@ -54,37 +63,11 @@ const AdminDashboard = () => {
 			<div className="flex flex-col gap-3">
 				<section className="flex flex-col gap-4">
 					<header className="flex gap-3">
-						<InputGroup>
-							<InputGroupAddon>
-								<IconMail />
-							</InputGroupAddon>
-							<InputGroupInput
-								name="mail"
-								placeholder="mail"
-								autoComplete="on"
-								type="email"
-								value={newMail.value}
-								onChange={(e) =>
-									setNewMail({
-										value: e.target.value,
-										id: new Date(),
-									})
-								}
-							/>
-						</InputGroup>
-						<Button
-							variant={"outline"}
-							onClick={() => {
-								setMails([...mails, newMail]);
-							}}
-						>
-							Add mail
-						</Button>
 						<Button onClick={sendMails}>Send</Button>
 					</header>
 					<hr />
 					<main className="flex flex-col gap-2">
-						<ol>
+						{/* <ol>
 							{mails &&
 								mails.map((mail) => (
 									<li
@@ -108,7 +91,7 @@ const AdminDashboard = () => {
 										</Button>
 									</li>
 								))}
-						</ol>
+						</ol> */}
 					</main>
 				</section>
 			</div>

@@ -35,15 +35,14 @@ import {
 	AlertDescription,
 	AlertTitle,
 } from "@/shadcn/ui/alert";
-import { Switch } from "@/shadcn/ui/switch";
 import { Checkbox } from "@/shadcn/ui/checkbox";
+import { UserDTO } from "@/types/DTOs/user.dto";
 
-type SignUpSpecProps = {
-	name: string;
-	email: string;
+type Props = {
+	user: UserDTO;
 };
 
-export default function SignUpSpecForm({ email, name }: SignUpSpecProps) {
+export default function SignUpSpecForm({ user }: Props) {
 	const t = useTranslations("SignUpSpecForm");
 	const tErrors = useTranslations("Errors");
 	const router = useRouter();
@@ -130,7 +129,6 @@ export default function SignUpSpecForm({ email, name }: SignUpSpecProps) {
 		<div className="flex flex-col gap-9">
 			<header className="flex flex-col gap-3 items-center">
 				<Header as={"h2"} className="text-center">
-					{name ? `${name}, ` : ""}
 					{t("title")}
 				</Header>
 				<p className="text-muted-foreground text-center text-sm">
@@ -147,7 +145,7 @@ export default function SignUpSpecForm({ email, name }: SignUpSpecProps) {
 			</header>
 
 			<main className="flex flex-col gap-4">
-				{email}
+				{user.email}
 				<form
 					id="reset-password-form"
 					className="flex flex-col gap-4"
