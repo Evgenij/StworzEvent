@@ -54,13 +54,13 @@ export async function proxy(req: NextRequest) {
 		);
 	}
 
-	// 3. Если НЕ залогинен и пытается зайти на защищенный роут
-	// if (!isLoggedIn && isProtectedRoute) {
-	// 	const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
-	// 	return NextResponse.redirect(
-	// 		new URL(`/${locale}${SIGNIN_ROUTE}`, req.url),
-	// 	);
-	// }
+	//3. Если НЕ залогинен и пытается зайти на защищенный роут
+	if (!isLoggedIn && isProtectedRoute) {
+		const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
+		return NextResponse.redirect(
+			new URL(`/${locale}${SIGNIN_ROUTE}`, req.url),
+		);
+	}
 
 	if (isLoggedIn && isAuthRoute && !isVerifyRoute) {
 		const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
