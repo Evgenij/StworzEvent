@@ -10,6 +10,7 @@ import { IconMail, IconTrash } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { mails as orgMails } from "../../../../../organizatorsMails";
 import { sendEmailAction } from "@/actions/send-email.action";
+import { TypeMail } from "@/types/enums";
 
 export type Mail = {
 	value: string;
@@ -23,15 +24,22 @@ const AdminDashboard = () => {
 	const sendMails = async () => {
 		mails.forEach(async (mail) => {
 			await sendEmailAction({
+				type: TypeMail.INVITATION,
 				to: mail.value,
 				subject: "Test",
-				meta: {
-					btnText: "btn",
-					header: "Header",
-					description: "desc",
-					icon: "icon",
-					subheader: "subheader",
-					link: "google.com",
+				data: {
+					header: "",
+					subheader: "",
+					ticket: {
+						name: "",
+						header: {
+							main: "",
+							subheader: "",
+						},
+						footer: "",
+						btnText: "",
+					},
+					link: "",
 				},
 			});
 		});

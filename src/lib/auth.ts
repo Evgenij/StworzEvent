@@ -14,6 +14,7 @@ import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { DASHBOARD_ROUTE } from "@/helpers/routes";
+import { TypeMail } from "@/types/enums";
 
 const vercelUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -63,9 +64,10 @@ const options = {
 		//requireEmailVerification: true,
 		sendResetPassword: async ({ user, url }) => {
 			await sendEmailAction({
+				type: TypeMail.AUTH,
 				to: user.email,
 				subject: "Resetowanie hasła do Twojego konta",
-				meta: {
+				data: {
 					header: "Resetowanie hasła",
 					subheader: `Hej, ${user.name}`,
 					description:
@@ -89,9 +91,10 @@ const options = {
 			try {
 				// send email to user
 				await sendEmailAction({
+					type: TypeMail.AUTH,
 					to: user.email,
 					subject: "Potwierdź adres e-mail",
-					meta: {
+					data: {
 						header: "Potwierdź adres e-mail",
 						subheader: `Witam, ${user.name}!`,
 						description: `Dziękujemy za rejestrację na stronie StworzEvent.pl! <br />
@@ -173,9 +176,10 @@ const options = {
 		magicLink({
 			sendMagicLink: async ({ email, url }) => {
 				await sendEmailAction({
+					type: TypeMail.AUTH,
 					to: email,
 					subject: "Twój Magic link do logowania ✨",
-					meta: {
+					data: {
 						header: "Prawie u celu!",
 						subheader: "Hej, to znowu Ty! 😉",
 						description: `Zamiast walczyć z hasłem, po prostu kliknij w ten przycisk. Magia dzieje się w tle.`,

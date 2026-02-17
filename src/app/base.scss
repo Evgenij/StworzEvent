@@ -20,7 +20,7 @@
 		}
 	}
 
-	svg.tabler-icon.tabler-icon-check {
+	button[role="checkbox"] svg.tabler-icon.tabler-icon-check {
 		stroke: white;
 		stroke-width: 3;
 	}

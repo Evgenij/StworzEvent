@@ -127,9 +127,9 @@ export default function SignUpForm() {
 					<SignInOAuthBtn provider="facebook"></SignInOAuthBtn>
 				</div>
 				<div className="flex gap-3 items-center text-muted-foreground text-sm">
-					<div className="h-[1px] w-full bg-muted"></div>
+					<div className="h-px w-full bg-muted"></div>
 					<span>{tAuth("divider")}</span>
-					<div className="h-[1px] w-full bg-muted"></div>
+					<div className="h-px w-full bg-muted"></div>
 				</div>
 				<form
 					id="sign-up-form"
