@@ -18,7 +18,7 @@ export async function signInEmailAction(
 			body: { email, password },
 			headers: await headers(),
 		});
-		return success();
+		return success(null);
 	} catch (error: any) {
 		return handleActionError(error);
 	}

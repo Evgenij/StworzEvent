@@ -3,8 +3,12 @@
 		"auth": {
 			"INVALID_EMAIL_OR_PASSWORD": "Email lub hasło są nieprawidłowe",
 			"USER_NOT_FOUND": "Nie znaleziono użytkownika o tym adresie",
-			"INVALID_TOKEN": "Twój link wygasł lub jest nieprawidłowy",
+			"INVALID_TOKEN": "Twój link jest nieprawidłowy",
+			"EXPIRED_TOKEN": "Twój link wygasł",
+			"INVALID_OR_EXPIRED_TOKEN": "Twój link wygasł lub jest nieprawidłowy",
 			"PASSWORD_TOO_SHORT": "Hasło jest zbyt krótkie",
+			"USER_ALREADY_EXISTS": "Użytkownik już zarejestrowany",
+			"USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "Użytkownik już istnieje. Wprowadź inny email.",
 			"default": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie"
 		},
 		"nameMin": "Imie musi mieć przynajmniej 2 znaki",
@@ -78,7 +82,7 @@
 			"button": "Ponownie"
 		}
 	},
-	"SignUpSpecForm": {
+	"SignUpInviteForm": {
 		"title": "Witamy w StwórzEvent.pl! 🎫",
 		"subtitle": "Twój dostęp został potwierdzony. <lineBreak></lineBreak> Aby zakończyć konfigurację konta, ustaw hasło",
 		"fields": {
@@ -87,6 +91,10 @@
 		},
 		"sendPassword": "Wyślij hasło na e-mail",
 		"button": "Aktywuj konto i zaloguj się",
-		"politics": "Klikając, wyrażasz zgodę na nasze<lineBreak></lineBreak><linkConditionals>Warunki świadczenia usług</linkConditionals> i <politics>Politykę prywatności</politics>"
+		"politics": "Klikając, wyrażasz zgodę na nasze<lineBreak></lineBreak><linkConditionals>Warunki świadczenia usług</linkConditionals> i <politics>Politykę prywatności</politics>",
+		"successMessage": {
+			"header": "Rejestracja przebiegła pomyślnie",
+			"text": "Wysłaliśmy wiadomość e-mail w celu potwierdzenia Twojego adresu e-mail"
+		}
 	}
 }

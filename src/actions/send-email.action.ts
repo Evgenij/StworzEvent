@@ -6,6 +6,8 @@ import { handleActionError, success } from "@/lib/action-utils";
 import {
 	authMail,
 	AuthMailsProps,
+	codeMail,
+	CodeMailsProps,
 	invitationMail,
 	InvitationMailsProps,
 } from "@/helpers/mail-templates";
@@ -13,7 +15,8 @@ import { TypeMail } from "@/types/enums";
 
 type EmailData =
 	| { type: TypeMail.INVITATION; data: InvitationMailsProps }
-	| { type: TypeMail.AUTH; data: AuthMailsProps };
+	| { type: TypeMail.AUTH; data: AuthMailsProps }
+	| { type: TypeMail.CODE; data: CodeMailsProps };
 
 export async function sendEmailAction({
 	type,
@@ -27,7 +30,9 @@ export async function sendEmailAction({
 		case TypeMail.INVITATION:
 			htmlContent = invitationMail(data);
 			break;
-
+		case TypeMail.CODE:
+			htmlContent = codeMail(data);
+			break;
 		case TypeMail.AUTH:
 		default:
 			htmlContent = authMail(data);
@@ -42,7 +47,7 @@ export async function sendEmailAction({
 			html: htmlContent,
 		});
 
-		return success();
+		return success(null);
 	} catch (error: any) {
 		return handleActionError(error);
 	}

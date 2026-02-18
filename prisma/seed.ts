@@ -9,7 +9,13 @@ async function main() {
 	await prisma.user.deleteMany();
 
 	// Создание данных
-	const user = await prisma.user.upsert({
+
+	// 7 дней * 24 часа * 60 минут * 60 секунд * 1000 миллисекунд
+	const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
+	const tokensExpires = new Date(Date.now() + SEVEN_DAYS_IN_MS);
+
+	// INVITATIONS
+	await prisma.invitation.upsert({
 		where: { email: "yevhenii.uixer@gmail.com" },
 		update: {},
 		create: {
@@ -17,32 +23,10 @@ async function main() {
 			name: "Yevhenii",
 			surname: "Yermolenko",
 			email: "yevhenii.uixer@gmail.com",
-			role: "ADMIN",
+			token: uuidv4(),
+			expiresAt: tokensExpires,
 		},
 	});
-
-	await prisma.account.upsert({
-		where: {
-			providerId_accountId: {
-				providerId: "credential",
-				accountId: user.email,
-			},
-		},
-		update: {},
-		create: {
-			id: uuidv4(),
-			userId: user.id,
-			accountId: user.email,
-			providerId: "credential",
-			password: await hashPassword("password"),
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		},
-	});
-
-	// 7 дней * 24 часа * 60 минут * 60 секунд * 1000 миллисекунд
-	const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
-	const tokensExpires = new Date(Date.now() + SEVEN_DAYS_IN_MS);
 
 	// Создание данных
 	const organizer = await prisma.user.upsert({
@@ -54,8 +38,6 @@ async function main() {
 			surname: "Yermolenko",
 			email: "evgeniu.ermolenko@gmail.com",
 			role: "ORGANIZER",
-			inviteToken: uuidv4(),
-			inviteExpires: tokensExpires,
 		},
 	});
 
@@ -72,7 +54,7 @@ async function main() {
 			userId: organizer.id,
 			accountId: organizer.email,
 			providerId: "credential",
-			password: await hashPassword("04072026"),
+			password: await hashPassword("password"),
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		},

@@ -22,9 +22,6 @@ model User {
   role          UserRole @default(USER)
   image         String?
 
-  inviteToken   String?   @unique // Генерируй случайную строку (UUID)
-  inviteExpires DateTime? // Срок годности ссылки
-
   banned     Boolean?  @default(false)
   banReason  String?
   banExpires DateTime?
@@ -92,6 +89,23 @@ model Verification {
 }
 
 // My tables ----------------------------------------------------------
+
+model Invitation {
+  id String @id
+
+  email String @unique
+  token String @unique
+
+  name    String
+  surname String
+
+  isAccepted Boolean @default(false)
+
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("invitations")
+}
 
 model Organization {
   id   String @id

@@ -1,4 +1,5 @@
 import { ActionResult } from "@/types/action-result";
+import { CodeError } from "@/types/enums";
 
 type ErrorWithBody = {
 	body?: {
@@ -53,6 +54,7 @@ export function success<T>(data: T): ActionResult<T> {
 
 export function fail(
 	message: string,
+	code?: CodeError,
 	errors?: Record<string, string[]>,
 ): ActionResult<never> {
 	return { success: false, message, errors };

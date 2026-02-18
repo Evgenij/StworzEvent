@@ -1,18 +1,11 @@
 "use client";
 
 import { Button } from "@/shadcn/ui/button";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupInput,
-} from "@/shadcn/ui/input-group";
-import { IconMail, IconTrash } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { TypeMail } from "@/types/enums";
-import { listOrganizers } from "@/mocks";
-import { getBaseUrl } from "@/lib/utils";
-import { SIGNUP_SPECIAL_ROUTE } from "@/helpers/routes";
+import { SIGNUP_INVITE_ROUTE } from "@/helpers/routes";
+import { Invitation } from "@prisma/client";
 
 type Mail = {
 	value: string;
@@ -25,17 +18,41 @@ export type Organizer = {
 };
 
 const AdminDashboard = () => {
-	const [organizers, setOrganizers] = useState<Organizer[]>(listOrganizers);
+	const [invites, setInvites] = useState<Invitation[]>([]);
+	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
 
-	const baseUrl = getBaseUrl();
-	const setupUrl = new URL(`${baseUrl}${SIGNUP_SPECIAL_ROUTE}`);
+	useEffect(() => {
+		const fetchInvites = async () => {
+			try {
+				const res = await fetch("/api/invites");
+				const data = await res.json();
+				if (!res.ok)
+					throw new Error(data.error || "Failed to fetch invites");
+				setInvites(data);
+			} catch (err: any) {
+				setError(err.message);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchInvites();
+	}, []);
 
 	const sendMails = async () => {
-		for (const organizer of organizers) {
-			//setupUrl.searchParams.append("token", organizer.inviteToken); TODO token from DB
-			await await sendEmailAction({
+		for (const invite of invites) {
+			const inviteUrl = new URL(
+				SIGNUP_INVITE_ROUTE,
+				process.env.NEXT_PUBLIC_API_URL,
+			);
+			inviteUrl.searchParams.set("token", invite.token);
+
+			console.log(inviteUrl.toString());
+
+			await sendEmailAction({
 				type: TypeMail.INVITATION,
-				to: organizer.email.value,
+				to: invite.email,
 				subject:
 					"Twoje zaproszenie do zamkniętej wersji beta StworzEvent.pl",
 				data: {
@@ -52,7 +69,7 @@ const AdminDashboard = () => {
 						footer: "Pozostał ostatni krok — potwierdzenie konta i ustawienie hasła dostępu.",
 						btnText: "Wejdź do platformy",
 					},
-					link: `${process.env.NEXT_PUBLIC_API_URL}?name${organizer.name}`,
+					link: inviteUrl.toString(),
 				},
 			});
 		}
@@ -67,31 +84,21 @@ const AdminDashboard = () => {
 					</header>
 					<hr />
 					<main className="flex flex-col gap-2">
-						{/* <ol>
-							{mails &&
-								mails.map((mail) => (
+						<ol>
+							{invites &&
+								invites.map((invite) => (
 									<li
 										className="flex gap-2 items-center"
-										key={String(mail.id)}
+										key={String(invite.id)}
 									>
-										{mail.value}
-										<Button
-											size={"icon-sm"}
-											variant={"destructive"}
-											onClick={() =>
-												setMails(
-													mails.filter(
-														(item) =>
-															mail.id !== item.id,
-													),
-												)
-											}
-										>
-											<IconTrash />
-										</Button>
+										{invite.name} {invite.surname}:
+										{invite.email} -{" "}
+										{invite.isAccepted
+											? "Accepted"
+											: "Not Accepted"}
 									</li>
 								))}
-						</ol> */}
+						</ol>
 					</main>
 				</section>
 			</div>

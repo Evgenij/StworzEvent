@@ -22,7 +22,7 @@ export async function deleteUserAction({
 	try {
 		await prisma.user.delete({ where: { id: userId, role: "USER" } });
 		revalidatePath(ADMIN_DASHBOARD_ROUTE);
-		return success();
+		return success(null);
 	} catch (error: any) {
 		return handleActionError(error);
 	}

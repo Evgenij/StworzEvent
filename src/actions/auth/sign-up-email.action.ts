@@ -24,7 +24,7 @@ export async function signUpEmailAction(
 			body: { name, surname, email, password },
 		});
 
-		return success();
+		return success(null);
 	} catch (error: any) {
 		return handleActionError(error);
 
