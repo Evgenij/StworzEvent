@@ -6,6 +6,11 @@ import { sendEmailAction } from "@/actions/send-email.action";
 import { TypeMail } from "@/types/enums";
 import { SIGNUP_INVITE_ROUTE } from "@/helpers/routes";
 import { Invitation } from "@prisma/client";
+import { getInvitesAction } from "@/actions/invites/get-invites.action";
+import useSWR from "swr";
+import { getInvites } from "@/services/invites.service";
+import { apiFetcher } from "@/app/api/fetcher";
+import { API_ROUTES } from "@/app/api/apiRoutes";
 
 type Mail = {
 	value: string;
@@ -17,30 +22,23 @@ export type Organizer = {
 	email: Mail;
 };
 
+// ─── Типы для типизации SWR ──────────────────────────────────────────────────
+interface FetchError extends Error {
+	code?: string;
+	details?: Record<string, string[]>;
+}
+
 const AdminDashboard = () => {
-	const [invites, setInvites] = useState<Invitation[]>([]);
-	const [error, setError] = useState<string | null>(null);
-	const [loading, setLoading] = useState<boolean>(true);
+	//const [invites, setInvites] = useState<Invitation[]>([]);
 
-	useEffect(() => {
-		const fetchInvites = async () => {
-			try {
-				const res = await fetch("/api/invites");
-				const data = await res.json();
-				if (!res.ok)
-					throw new Error(data.error || "Failed to fetch invites");
-				setInvites(data);
-			} catch (err: any) {
-				setError(err.message);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchInvites();
-	}, []);
+	const {
+		data: invites,
+		error,
+		isLoading,
+	} = useSWR<Invitation[]>(API_ROUTES.invites, apiFetcher);
 
 	const sendMails = async () => {
+		if (!invites) return;
 		for (const invite of invites) {
 			const inviteUrl = new URL(
 				SIGNUP_INVITE_ROUTE,
@@ -84,6 +82,8 @@ const AdminDashboard = () => {
 					</header>
 					<hr />
 					<main className="flex flex-col gap-2">
+						{isLoading && <p>Loading...</p>}
+						{error && <p>Error: {error.message}</p>}
 						<ol>
 							{invites &&
 								invites.map((invite) => (

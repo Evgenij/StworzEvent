@@ -40,6 +40,7 @@ import { Switch } from "@/shadcn/ui/switch";
 import { signIn } from "@/lib/auth-client";
 import { getBaseUrl } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shadcn/ui/tooltip";
+import { ErrorCode } from "@/types/error-code";
 
 export default function SignInForm() {
 	const router = useRouter();
@@ -55,8 +56,13 @@ export default function SignInForm() {
 		() =>
 			z
 				.object({
-					email: z.string().email(tErrors("invalidEmail")),
-					password: z.string().optional(),
+					email: z
+						.string()
+						.min(1, { message: tErrors("emailRequired") })
+						.trim()
+						.email(tErrors("invalidEmail"))
+						.trim(),
+					password: z.string().trim().optional(),
 				})
 				.refine(
 					(data) => {
@@ -86,6 +92,7 @@ export default function SignInForm() {
 						path: ["password"],
 					},
 				),
+
 		[useMagicLink],
 	); // Схема пересчитается, когда изменится useMagicLink
 
@@ -99,62 +106,74 @@ export default function SignInForm() {
 	});
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		if (isPending) return;
+
 		// Do something with the form values.
 		setIsPending(true);
 
 		startTransition(async () => {
-			// Создаем FormData из валидных данных
-			const formData = new FormData();
+			try {
+				if (useMagicLink) {
+					// Magic Link — отдельная логика (не через ActionResult)
+					const { error } = await signIn.magicLink({
+						email: data.email,
+						name: data.email.split("@")[0] || "User",
+						callbackURL: `${getBaseUrl()}${DASHBOARD_ROUTE}`,
+					});
 
-			formData.append("email", data.email);
-			if (data.password) formData.append("password", data.password);
-
-			if (useMagicLink) {
-				await signIn.magicLink({
-					email: data.email,
-					name: data.email.split("@")[0],
-					callbackURL: `${getBaseUrl()}${DASHBOARD_ROUTE}`,
-					fetchOptions: {
-						onError(error) {
-							toast.success(error.error.message);
-						},
-						onSuccess: () => {
-							toast.success("Email is sent"); // TODO change to show message - no toast
-							//if (ref.current) ref.current.open = false;
-						},
-					},
-				});
-			} else {
-				const result = await signInEmailAction(formData);
-
-				if (result.success === false) {
-					// 1. Показываем общий Toast
-					if (result.message) toast.error(result.message);
-
-					// 2. Раскидываем ошибки по полям формы
-					// if (result.errors) {
-					// 	Object.entries(result.errors).forEach(
-					// 		([field, messages]) => {
-					// 			form.setError(field as keyof FormValues, {
-					// 				type: "server",
-					// 				message: messages[0], // Берем первую ошибку из массива
-					// 			});
-					// 		},
-					// 	);
-					// }
+					if (error) {
+						toast.error(
+							error.message || tErrors("magicLinkFailed"),
+						);
+					} else {
+						toast.success(t("magicLinkSent"));
+						// Можно показать модалку / текст "проверьте почту"
+					}
 				} else {
-					toast.success("Zalogowano!");
-					router.push(DASHBOARD_ROUTE);
-				}
-			}
+					// Обычный email + password
+					form.clearErrors();
+					const formData = new FormData();
+					formData.append("email", data.email);
+					if (data.password)
+						formData.append("password", data.password);
 
-			setIsPending(false);
+					const result = await signInEmailAction(formData);
+
+					if (result.success) {
+						toast.success(t("loginSuccess"));
+						router.push(DASHBOARD_ROUTE);
+						router.refresh(); // на всякий случай обновляем сессию
+					} else {
+						if (result.code === ErrorCode.INVALID_PASSWORD) {
+							form.setError("password", {
+								type: "manual",
+								message: tErrors("auth.INVALID_PASSWORD"),
+							});
+						} else if (result.code === ErrorCode.USER_NOT_FOUND) {
+							form.setError("email", {
+								type: "manual",
+								message: tErrors("auth.USER_NOT_FOUND"),
+							});
+						} else {
+							toast.error(tErrors("auth.default"));
+						}
+					}
+				}
+			} catch (error) {
+				console.error("Sign in error:", error);
+				toast.error(tErrors("unexpectedError"));
+			} finally {
+				setIsPending(false);
+			}
 		});
 	};
 
-	const handleChangeMagicLink = (checked: boolean) => {
+	const handleMagicLinkToggle = (checked: boolean) => {
 		setUseMagicLink(checked);
-		form.resetField("password");
+		if (checked) {
+			form.resetField("password");
+			form.clearErrors("password");
+		}
 	};
 
 	return (
@@ -184,7 +203,7 @@ export default function SignInForm() {
 							id="magic-link"
 							checked={useMagicLink}
 							onCheckedChange={(checked) =>
-								handleChangeMagicLink(checked)
+								handleMagicLinkToggle(checked)
 							}
 						/>
 						<label

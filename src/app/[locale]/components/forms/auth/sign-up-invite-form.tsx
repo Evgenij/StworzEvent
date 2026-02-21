@@ -1,7 +1,13 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Button } from "@/shadcn/ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/shadcn/ui/field";
+import {
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+} from "@/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -39,7 +45,6 @@ export default function SignUpInviteForm({ token }: { token: string }) {
 	const tErrors = useTranslations("Errors");
 	const router = useRouter();
 	const [isPending, setIsPending] = useState(false);
-	const [sendingPassword, setSendingPassword] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [tokenIsInvalid, setTokenIsInvalid] = useState(false);
 
@@ -70,41 +75,54 @@ export default function SignUpInviteForm({ token }: { token: string }) {
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		setIsPending(true);
+
 		startTransition(async () => {
-			const result = await acceptInvitationAction(
-				token,
-				data.confirmPassword,
-			);
+			try {
+				const result = await acceptInvitationAction(
+					token,
+					data.confirmPassword,
+				);
 
-			if (!result.success) {
-				setIsPending(false);
-				setTokenIsInvalid(true);
+				if (!result.success) {
+					if (
+						result.code === "INVALID_TOKEN" ||
+						result.code === "TOKEN_EXPIRED"
+					) {
+						setTokenIsInvalid(true);
+						toast.error(tErrors(`auth.${result.code}`));
+					} else if (
+						result.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL"
+					) {
+						toast.error(tErrors("auth.userAlreadyExists"));
+					} else {
+						// другие коды или дефолт
+						toast.error(
+							tErrors("auth.default") || "Coś poszło nie tak",
+						);
+					}
+					setIsPending(false);
+					return;
+				}
 
-				toast.error(tErrors(`auth.${result.message}`));
-				return;
+				// Успешная регистрация → сразу логиним
+				const formData = new FormData();
+				formData.append("email", result.data.user.email);
+				formData.append("password", data.password);
+
+				const signInResult = await signInEmailAction(formData);
+
+				if (!signInResult.success) {
+					toast.error(tErrors("auth.signInFailed"));
+				} else {
+					toast.success(t("successMessage.header"), {
+						description: t("successMessage.text"),
+						classNames: { description: "!text-foreground/70" },
+					});
+					router.push(DASHBOARD_ROUTE);
+				}
+			} catch (error) {
+				console.log(error);
 			}
-
-			const formData = new FormData();
-
-			formData.append("email", result.data.user.email);
-			formData.append("password", data.confirmPassword);
-
-			const signInResult = await signInEmailAction(formData);
-
-			if (!signInResult.success) {
-				// 1. Показываем общий Toast
-				if (signInResult.message) toast.error(signInResult.message);
-			} else {
-				toast.success(t("successMessage.header"), {
-					description: t("successMessage.text"),
-					classNames: {
-						description: "!text-foreground/70",
-					},
-				});
-				router.push(DASHBOARD_ROUTE);
-			}
-
-			setIsPending(false);
 		});
 	};
 
@@ -118,7 +136,6 @@ export default function SignUpInviteForm({ token }: { token: string }) {
 			shouldDirty: true,
 			shouldTouch: true,
 		});
-		setSendingPassword(true);
 	};
 
 	return (
@@ -252,6 +269,7 @@ export default function SignUpInviteForm({ token }: { token: string }) {
 											errors={[fieldState.error]}
 										/>
 									)}
+									<FieldDescription>fgdfgd</FieldDescription>
 								</Field>
 							)}
 						/>

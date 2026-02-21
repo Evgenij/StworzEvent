@@ -1,5 +1,6 @@
 import { hashPassword } from "@/lib/hashPassword";
 import prisma from "@/lib/prisma";
+import { listOrganizers } from "@/mocks";
 import { v4 as uuidv4 } from "uuid";
 
 async function main() {
@@ -10,12 +11,31 @@ async function main() {
 
 	// Создание данных
 
-	// 7 дней * 24 часа * 60 минут * 60 секунд * 1000 миллисекунд
-	const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
-	const tokensExpires = new Date(Date.now() + SEVEN_DAYS_IN_MS);
-
 	// INVITATIONS
-	await prisma.invitation.upsert({
+
+	for (const invitation of listOrganizers) {
+		await prisma.invitation.upsert({
+			where: { email: invitation.email },
+			update: {},
+			create: invitation,
+		});
+	}
+
+	// await prisma.invitation.upsert({
+	// 	where: { email: "evgeniu.ermolenko@gmail.com" },
+	// 	update: {},
+	// 	create: {
+	// 		id: uuidv4(),
+	// 		name: "Yevhenii",
+	// 		surname: "Yermolenko",
+	// 		email: "evgeniu.ermolenko@gmail.com",
+	// 		token: uuidv4(),
+	// 		expiresAt: tokensExpires,
+	// 	},
+	// });
+
+	// Создание администратора
+	const admin = await prisma.user.upsert({
 		where: { email: "yevhenii.uixer@gmail.com" },
 		update: {},
 		create: {
@@ -23,21 +43,7 @@ async function main() {
 			name: "Yevhenii",
 			surname: "Yermolenko",
 			email: "yevhenii.uixer@gmail.com",
-			token: uuidv4(),
-			expiresAt: tokensExpires,
-		},
-	});
-
-	// Создание данных
-	const organizer = await prisma.user.upsert({
-		where: { email: "evgeniu.ermolenko@gmail.com" },
-		update: {},
-		create: {
-			id: uuidv4(),
-			name: "Yevhenii",
-			surname: "Yermolenko",
-			email: "evgeniu.ermolenko@gmail.com",
-			role: "ORGANIZER",
+			role: "ADMIN",
 		},
 	});
 
@@ -45,14 +51,14 @@ async function main() {
 		where: {
 			providerId_accountId: {
 				providerId: "credential",
-				accountId: organizer.email,
+				accountId: admin.email,
 			},
 		},
 		update: {},
 		create: {
 			id: uuidv4(),
-			userId: organizer.id,
-			accountId: organizer.email,
+			userId: admin.id,
+			accountId: admin.email,
 			providerId: "credential",
 			password: await hashPassword("password"),
 			createdAt: new Date(),

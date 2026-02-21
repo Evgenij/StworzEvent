@@ -1,60 +1,71 @@
 "use server";
-import { handleActionError, success } from "@/lib/action-utils";
-import { auth, ErrorCode } from "@/lib/auth";
+import { ApiError } from "@/error/api-error";
+import { auth } from "@/lib/auth";
+import prisma from "@/lib/prisma";
+import { safeAction } from "@/lib/safe-action";
+import { ErrorCode } from "@/types/error-code";
 import { APIError } from "better-auth/api";
-import { ActionResult } from "@/types/action-result";
 
-export async function signUpEmailAction(
-	formData: FormData,
-): Promise<ActionResult> {
-	const name = formData.get("name") as string;
-	if (!name) return handleActionError(new Error("Name is required"));
+export const signUpEmailAction = safeAction(async (formData: FormData) => {
+	const name = formData.get("name")?.toString()?.trim() as string;
+	if (!name)
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+			name: ["Imię jest wymagane"],
+		});
 
-	const surname = formData.get("surname") as string;
-	if (!surname) return handleActionError(new Error("Surname is required"));
+	const surname = formData.get("surname")?.toString()?.trim() as string;
+	if (!surname)
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+			surname: ["Nazwisko jest wymagane"],
+		});
 
 	const email = formData.get("email") as string;
-	if (!email) return handleActionError(new Error("Email is required"));
+	if (!email)
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+			email: ["Email jest wymagany"],
+		});
 
 	const password = formData.get("password") as string;
-	if (!password) return handleActionError(new Error("Password is required"));
+	if (!password)
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+			password: ["Hasło jest wymagane"],
+		});
+
+	const user = await prisma.user.findUnique({
+		where: { email },
+	});
+
+	if (user) {
+		throw new ApiError(ErrorCode.USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL, {
+			email: ["Użytkownik z tym adresem email już istnieje"],
+		});
+	}
 
 	try {
 		await auth.api.signUpEmail({
 			body: { name, surname, email, password },
 		});
 
-		return success(null);
-	} catch (error: any) {
-		return handleActionError(error);
+		return {
+			message: "User created successfully",
+		};
+	} catch (err: unknown) {
+		if (err instanceof APIError) {
+			const baCode = err.body?.code || err.status || "";
 
-		// if (error instanceof APIError) {
-		// 	const errCode = error.body
-		// 		? (error.body.code as ErrorCode)
-		// 		: "UNKNOWN";
+			if (baCode === "INVALID_EMAIL_OR_PASSWORD" || err.status === 401) {
+				throw new ApiError(ErrorCode.INVALID_PASSWORD, {
+					password: [ErrorCode.INVALID_PASSWORD],
+				});
+			}
 
-		// 	console.error("SignUp Error code: ", errCode);
+			// неизвестный код от Better Auth
+			throw new ApiError(ErrorCode.INTERNAL_ERROR, {
+				general: [err.message || "Błąd autoryzacji"],
+			});
+		}
 
-		// 	switch (errCode) {
-		// 		case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
-		// 			return {
-		// 				message: "User with this email already exists. ",
-		// 				description: `Use another email`,
-		// 			};
-		// 		case "INVALID_EMAIL":
-		// 			return { message: "Invalid email address" };
-		// 		case "PASSWORD_TOO_SHORT":
-		// 			return {
-		// 				message: "Password too short",
-		// 				description: "Min length is 6 characters",
-		// 			};
-		// 		default:
-		// 			return { message: "Oops! Something went wrong..." };
-		// 	}
-
-		// 	//return { message: error.message };
-		// }
-
-		// return { message: "Internal Server Error" };
+		// совсем чужая ошибка
+		throw err;
 	}
-}
+});

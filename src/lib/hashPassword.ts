@@ -1,3 +1,5 @@
+"use server";
+
 import { hash, verify, type Options } from "@node-rs/argon2";
 
 const options: Options = {

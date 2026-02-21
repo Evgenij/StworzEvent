@@ -1,10 +1,12 @@
-import { CodeError } from "./enums";
+import { ErrorCode } from "./error-code";
 
-export type ActionResult<T = null> =
-	| { success: true; data: T }
+export type ActionResult<T> =
+	| {
+			success: true;
+			data: T;
+	  }
 	| {
 			success: false;
-			code?: CodeError;
-			message: string;
+			code: ErrorCode;
 			errors?: Record<string, string[]>;
 	  };
