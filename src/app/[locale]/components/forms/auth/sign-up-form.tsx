@@ -31,6 +31,7 @@ import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
+import { ErrorCode } from "@/types/error-code";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");
@@ -69,36 +70,55 @@ export default function SignUpForm() {
 		setIsPending(true);
 
 		startTransition(async () => {
-			// Создаем FormData из валидных данных
-			const formData = new FormData();
+			try {
+				// Создаем FormData из валидных данных
+				const formData = new FormData();
 
-			formData.append("name", data.user.name);
-			formData.append("surname", data.user.surname);
-			formData.append("email", data.email);
-			formData.append("password", data.password);
+				formData.append("name", data.user.name);
+				formData.append("surname", data.user.surname);
+				formData.append("email", data.email);
+				formData.append("password", data.password);
 
-			const result = await signUpEmailAction(formData);
+				const result = await signUpEmailAction(formData);
 
-			if (result.success === false) {
-				// 1. Показываем общий Toast
-				if (result.message) toast.error(result.message);
-			} else {
-				const result = await signInEmailAction(formData);
+				if (!result.success) {
+					if (
+						result.code ===
+						ErrorCode.USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL
+					) {
+						form.setError("email", {
+							type: "manual",
+							message: tErrors(
+								"auth.USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL",
+							),
+						});
+					}
+					return;
+				}
 
-				if (result.success === false) {
-					// 1. Показываем общий Toast
-					if (result.message) toast.error(result.message);
+				console.log(result);
+
+				// Успех регистрации → автоматический логин
+				const signInResult = await signInEmailAction(formData);
+
+				if (!signInResult.success) {
+					toast.error(
+						tErrors(`auth.${signInResult.code}`) ||
+							tErrors("auth.signInFailed"),
+					);
 				} else {
 					toast.success(t("successMessage.header"), {
 						description: t("successMessage.text"),
-						classNames: {
-							description: "!text-foreground/70",
-						},
+						classNames: { description: "!text-foreground/70" },
 					});
 					router.push(DASHBOARD_ROUTE);
 				}
+			} catch (error) {
+				console.error("Sign up error:", error);
+				toast.error(tErrors("unexpectedError"));
+			} finally {
+				setIsPending(false);
 			}
-			setIsPending(false);
 		});
 	};
 

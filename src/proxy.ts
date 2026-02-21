@@ -13,10 +13,8 @@ import {
 const intlMiddleware = createMiddleware(routing);
 const protectedRoutes = [DASHBOARD_ROUTE, ADMIN_DASHBOARD_ROUTE];
 
+//--------------------------
 export async function proxy(req: NextRequest) {
-	// const { nextUrl } = req;
-	// const sessionCookie = getSessionCookie(req);
-
 	const { nextUrl } = req;
 	const sessionCookie = getSessionCookie(req);
 	const isLoggedIn = !!sessionCookie;
@@ -54,7 +52,7 @@ export async function proxy(req: NextRequest) {
 		);
 	}
 
-	// 3. Если НЕ залогинен и пытается зайти на защищенный роут
+	///3. Если НЕ залогинен и пытается зайти на защищенный роут
 	// if (!isLoggedIn && isProtectedRoute) {
 	// 	const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
 	// 	return NextResponse.redirect(
@@ -62,12 +60,12 @@ export async function proxy(req: NextRequest) {
 	// 	);
 	// }
 
-	if (isLoggedIn && isAuthRoute && !isVerifyRoute) {
-		const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
-		return NextResponse.redirect(
-			new URL(`/${locale}${DASHBOARD_ROUTE}`, req.url),
-		);
-	}
+	// if (isLoggedIn && isAuthRoute && !isVerifyRoute) {
+	// 	const locale = nextUrl.pathname.split("/")[1] || routing.defaultLocale;
+	// 	return NextResponse.redirect(
+	// 		new URL(`/${locale}${DASHBOARD_ROUTE}`, req.url),
+	// 	);
+	// }
 
 	// return res;
 	return intlMiddleware(req);
@@ -77,3 +75,51 @@ export const config = {
 	// Расширяем matcher, чтобы он ловил всё, что нам нужно
 	matcher: ["/", "/(pl|en)/:path*", "/((?!api|_next|_vercel|.*\\..*).*)"],
 };
+
+// export async function proxy(req: NextRequest) {
+// 	const { nextUrl } = req;
+
+// 	// Проверяем cookie
+// 	const sessionCookie = getSessionCookie(req);
+// 	const hasSession = Boolean(sessionCookie); // Только если реально есть cookie
+
+// 	const segments = nextUrl.pathname.split("/");
+// 	const currentLocale = routing.locales.includes(segments[1] as any)
+// 		? segments[1]
+// 		: routing.defaultLocale;
+
+// 	const pathWithoutLocale =
+// 		nextUrl.pathname.replace(
+// 			new RegExp(`^/(${routing.locales.join("|")})`),
+// 			"",
+// 		) || "/";
+
+// 	const isAuthRoute = pathWithoutLocale.startsWith("/auth");
+// 	const isVerifyRoute = pathWithoutLocale.startsWith(AUTH_VERIFY_ROUTE);
+// 	const isProtectedRoute = protectedRoutes.some(
+// 		(route) =>
+// 			pathWithoutLocale === route ||
+// 			pathWithoutLocale.startsWith(`${route}/`),
+// 	);
+
+// 	const redirectTo = (path: string) =>
+// 		NextResponse.redirect(new URL(`/${currentLocale}${path}`, req.url));
+
+// 	// Редирект на дашборд только если точно есть сессия 1
+// 	if (hasSession && isAuthRoute && !isVerifyRoute) {
+// 		return redirectTo(DASHBOARD_ROUTE);
+// 	}
+
+// 	// Редирект на вход если путь защищён и точно нет сессии
+// 	if (!hasSession && isProtectedRoute) {
+// 		return redirectTo(SIGNIN_ROUTE);
+// 	}
+
+// 	// Главная страница / оставляем как есть
+// 	return intlMiddleware(req);
+// }
+
+// Настройка matcher для всех нужных маршрутов
+// export const config = {
+// 	matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+// };

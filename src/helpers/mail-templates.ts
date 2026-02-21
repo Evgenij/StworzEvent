@@ -22,6 +22,21 @@ export type InvitationMailsProps = {
 	link: string;
 };
 
+export type CodeMailsProps = {
+	header: string;
+	subheader: string;
+	ticket: {
+		name: string;
+		header: {
+			main: string;
+			subheader: string;
+		};
+		footer: string;
+		btnText: string;
+	};
+	link: string;
+};
+
 export const authMail = (data: AuthMailsProps) => {
 	return `
       <div
@@ -229,7 +244,7 @@ export const invitationMail = (data: InvitationMailsProps) => {
 													color: #000000;
 												"
 											>
-												Dzień dobry!
+												${data.header}
 											</h1>
 										</td>
 									</tr>
@@ -245,9 +260,7 @@ export const invitationMail = (data: InvitationMailsProps) => {
 													font-weight: 500;
 												"
 											>
-												Zostałeś wybrany jako jeden z
-												pierwszych organizatorów
-												testujących platformę.
+												${data.subheader}
 											</p>
 										</td>
 									</tr>
@@ -283,7 +296,7 @@ export const invitationMail = (data: InvitationMailsProps) => {
 																	font-weight: bold;
 																"
 															>
-																StworzEvent.pl –
+																${data.ticket.name} –
 																<span
 																	style="
 																		color: #ff7a1a;
@@ -387,7 +400,334 @@ export const invitationMail = (data: InvitationMailsProps) => {
 																			"
 																		>
 																			<a
-																				href="#"
+																				href="${data.link}"
+																				target="_blank"
+																				style="
+																					display: inline-block;
+																					padding: 12px
+																						20px;
+																					font-size: 16px;
+																					font-weight: bold;
+																					color: #ffffff;
+																					text-decoration: none;
+																				"
+																				>Wejdź
+																				do
+																				platformy</a
+																			>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+
+									<tr>
+										<td style="padding: 24px 0 20px 0">
+											<p
+												style="
+													margin: 0 0 12px 0;
+													font-size: 16px;
+													font-weight: bold;
+													color: #000000;
+												"
+											>
+												Od czego zacząć?
+											</p>
+											<ul
+												style="
+													margin: 0;
+													padding: 0 0 0 24px;
+													color: #333333;
+													font-size: 15px;
+													line-height: 1.6;
+												"
+											>
+												<li style="margin-bottom: 4px">
+													Sprawdź swój dashboard.
+												</li>
+												<li style="margin-bottom: 4px">
+													Spróbuj stworzyć pierwsze
+													testowe wydarzenie.
+												</li>
+												<li>
+													Jeśli coś nie działa albo
+													masz pytania — odpowiedz na
+													tego maila. Jesteśmy tutaj.
+												</li>
+											</ul>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="
+												padding: 20px 0;
+												border-top: 1px solid #eeeeee;
+											"
+										>
+											<p
+												style="
+													margin: 0 0 10px 0;
+													font-size: 15px;
+													color: #000000;
+												"
+											>
+												Witamy w zespole pierwszych
+												organizatorów!
+											</p>
+											<p
+												style="
+													margin: 0;
+													font-size: 15px;
+													font-weight: bold;
+													color: #000000;
+												"
+											>
+												Z poważaniem, Zespół
+												StworzEvent.pl 🚀
+											</p>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>`;
+};
+
+export const codeMail = (data: CodeMailsProps) => {
+	return `<div
+			style="
+				background: #f5f5f5;
+				font-family: Arial, sans-serif;
+				text-align: center;
+				box-sizing: border-box;
+				width: 100%;
+				height: 100%;
+			"
+		>
+			<table
+				role="presentation"
+				border="0"
+				cellspacing="0"
+				cellpadding="0"
+				style="
+					background-color: #ffffff;
+					max-width: 500px;
+					margin: 0 auto;
+					padding: 30px;
+					height: 100%;
+				"
+			>
+				<tbody>
+					<tr>
+						<td align="center" style="padding: 20px 0">
+							<table
+								role="presentation"
+								border="0"
+								cellspacing="0"
+								cellpadding="0"
+								style="
+									width: 500px;
+									margin: 0 auto;
+									text-align: left;
+								"
+							>
+								<tbody>
+									<tr>
+										<td
+											style="
+												padding: 0 0 20px 0;
+												border-bottom: 1px solid #eeeeee;
+												height: 30px;
+											"
+										>
+											<img
+												src="https://stworzevent.vercel.app/images/mails/logo_text_black.png"
+												alt="StworzEvent.pl"
+												width="180"
+												style="
+													display: block;
+													border: 0;
+												"
+											/>
+										</td>
+									</tr>
+
+									<tr>
+										<td style="padding: 32px 0 16px 0">
+											<h1
+												style="
+													margin: 0;
+													font-size: 28px;
+													font-weight: bold;
+													color: #000000;
+												"
+											>
+												${data.header}
+											</h1>
+										</td>
+									</tr>
+
+									<tr>
+										<td style="padding: 0 0 30px 0">
+											<p
+												style="
+													margin: 0;
+													font-size: 16px;
+													line-height: 1.4;
+													color: #000000;
+													font-weight: 500;
+												"
+											>
+												${data.subheader}
+											</p>
+										</td>
+									</tr>
+
+									<tr>
+										<td>
+											<table
+												role="presentation"
+												width="100%"
+												border="0"
+												cellspacing="0"
+												cellpadding="0"
+												style="
+													background-color: #e9e9e9;
+													border-radius: 16px;
+													overflow: hidden;
+												"
+											>
+												<tbody>
+													<tr>
+														<td
+															style="
+																background-color: #000000;
+																padding: 16px
+																	20px;
+															"
+														>
+															<p
+																style="
+																	margin: 0;
+																	color: #ffffff;
+																	font-size: 16px;
+																	font-weight: bold;
+																"
+															>
+																${data.ticket.name} –
+																<span
+																	style="
+																		color: #ff7a1a;
+																	"
+																	>Beta
+																	test</span
+																>
+															</p>
+														</td>
+													</tr>
+													<tr>
+														<td
+															style="
+																padding: 20px;
+																background-color: rgb(
+																	243,
+																	243,
+																	243
+																);
+															"
+														>
+															<p
+																style="
+																	margin: 0 0
+																		15px 0;
+																	font-size: 16px;
+																	font-weight: bold;
+																	color: #000000;
+																"
+															>
+																Oficjalnie
+																ruszamy z etapem
+																zamkniętych
+																testów beta
+																StworzEvent.pl.
+															</p>
+															<p
+																style="
+																	margin: 0;
+																	font-size: 16px;
+																	color: #000000;
+																"
+															>
+																Twoje konto jest
+																już gotowe do
+																działania.
+															</p>
+														</td>
+													</tr>
+													<tr>
+														<td
+															style="
+																border-bottom: 2px
+																	dashed #fff;
+																font-size: 0;
+																line-height: 0;
+															"
+														>
+															&nbsp;
+														</td>
+													</tr>
+													<tr>
+														<td
+															style="
+																padding: 20px;
+																background-color: rgb(
+																	243,
+																	243,
+																	243
+																);
+															"
+														>
+															<p
+																style="
+																	margin: 0 0
+																		20px 0;
+																	font-size: 15px;
+																	color: #000000;
+																"
+															>
+																Pozostał ostatni
+																krok —
+																potwierdzenie
+																konta i
+																ustawienie hasła
+																dostępu.
+															</p>
+															<table
+																role="presentation"
+																border="0"
+																cellspacing="0"
+																cellpadding="0"
+															>
+																<tbody>
+																	<tr>
+																		<td
+																			align="center"
+																			bgcolor="#ff7a1a"
+																			style="
+																				border-radius: 12px;
+																			"
+																		>
+																			<a
+																				href="${data.link}"
 																				target="_blank"
 																				style="
 																					display: inline-block;

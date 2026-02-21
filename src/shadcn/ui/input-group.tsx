@@ -123,6 +123,9 @@ function InputGroupInput({
 			data-slot="input-group-control"
 			className={cn(
 				"rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent flex-1",
+				"[&:-webkit-autofill]:!bg-background [&:-webkit-autofill]:!text-foreground",
+				"[&:-webkit-autofill]:!shadow-[inset_0_0_0_30px_hsl(var(--background))]",
+				"[&:-internal-autofill-selected]:!bg-background",
 				className,
 			)}
 			{...props}

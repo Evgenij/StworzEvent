@@ -4,7 +4,7 @@ import "@/app/base.scss";
 import { SIGNIN_ROUTE } from "@/helpers/routes";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import { redirect } from "@/i18n/routing";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
 	title: "Admin panel",
@@ -23,9 +23,13 @@ export default async function AdminLayout({
 		headers: await headers(),
 	});
 
+	// if (!session) {
+	// 	redirect({ href: SIGNIN_ROUTE, locale });
+	// 	return null;
+	// }
+
 	if (!session) {
-		redirect({ href: SIGNIN_ROUTE, locale });
-		return null;
+		throw redirect(`/${locale}${SIGNIN_ROUTE}`);
 	}
 
 	return (
