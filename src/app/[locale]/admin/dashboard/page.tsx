@@ -1,14 +1,11 @@
 "use client";
 
 import { Button } from "@/shadcn/ui/button";
-import React, { useEffect, useState } from "react";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { TypeMail } from "@/types/enums";
 import { SIGNUP_INVITE_ROUTE } from "@/helpers/routes";
 import { Invitation } from "@prisma/client";
-import { getInvitesAction } from "@/actions/invites/get-invites.action";
 import useSWR from "swr";
-import { getInvites } from "@/services/invites.service";
 import { apiFetcher } from "@/app/api/fetcher";
 import { API_ROUTES } from "@/app/api/apiRoutes";
 

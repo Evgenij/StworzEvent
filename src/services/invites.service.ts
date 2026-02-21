@@ -5,18 +5,7 @@ import { safeAction } from "@/lib/safe-action";
 import { ErrorCode } from "@/types/error-code";
 import { APIError } from "better-auth/api";
 
-// ────────────────────────────────────────────────
-// Получение списка приглашений (для админа / менеджера)
-// ────────────────────────────────────────────────
-export const getInvites = safeAction(async () => {
-	const invitations = await prisma.invitation.findMany({
-		orderBy: { createdAt: "desc" },
-	});
-
-	return invitations;
-});
-
-export const acceptInvitation = safeAction(
+export const acceptInvitationService = safeAction(
 	async (token: string, password: string) => {
 		try {
 			const invitation = await prisma.invitation.findUnique({
