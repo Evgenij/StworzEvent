@@ -101,6 +101,8 @@
 		"sendPassword": "Wyślij hasło na e-mail",
 		"button": "Aktywuj konto i zaloguj się",
 		"politics": "Klikając, wyrażasz zgodę na nasze<lineBreak></lineBreak><linkConditionals>Warunki świadczenia usług</linkConditionals> i <politics>Politykę prywatności</politics>",
+		"copyPassword": "Skopiować hasło",
+		"successCopy": "Hasło zostało skopiowane do schowka",
 		"successMessage": {
 			"header": "Rejestracja przebiegła pomyślnie",
 			"text": "Wysłaliśmy wiadomość e-mail w celu potwierdzenia Twojego adresu e-mail"

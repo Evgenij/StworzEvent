@@ -15,6 +15,11 @@ import {
 } from "@/shadcn/ui/input-group";
 import {
 	IconAlertTriangleFilled,
+	IconCircleCheckFilled,
+	IconCopy,
+	IconCopyCheck,
+	IconCopyCheckFilled,
+	IconCopyXFilled,
 	IconEye,
 	IconEyeClosed,
 	IconLock,
@@ -47,6 +52,7 @@ export default function SignUpInviteForm({ token }: { token: string }) {
 	const [isPending, setIsPending] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [tokenIsInvalid, setTokenIsInvalid] = useState(false);
+	const [passwordIsCopied, setPasswordIsCopied] = useState(false);
 
 	const formSchema = z
 		.object({
@@ -136,6 +142,14 @@ export default function SignUpInviteForm({ token }: { token: string }) {
 			shouldDirty: true,
 			shouldTouch: true,
 		});
+	};
+
+	const copyPassword = () => {
+		navigator.clipboard.writeText(password);
+		setPasswordIsCopied(true);
+		setTimeout(() => {
+			setPasswordIsCopied(false);
+		}, 3000);
 	};
 
 	return (
@@ -269,7 +283,29 @@ export default function SignUpInviteForm({ token }: { token: string }) {
 											errors={[fieldState.error]}
 										/>
 									)}
-									<FieldDescription>fgdfgd</FieldDescription>
+									<FieldDescription
+										className={cn(
+											"flex items-center justify-end text-sm gap-1 cursor-pointer group",
+											confirmPassword === "" &&
+												"opacity-50 cursor-not-allowed",
+										)}
+										onClick={copyPassword}
+									>
+										{passwordIsCopied
+											? t("successCopy")
+											: t("copyPassword")}
+										{passwordIsCopied ? (
+											<IconCircleCheckFilled
+												size={18}
+												className="text-green-500"
+											/>
+										) : (
+											<IconCopy
+												size={18}
+												className="group-hover:text-blue-500"
+											/>
+										)}
+									</FieldDescription>
 								</Field>
 							)}
 						/>
