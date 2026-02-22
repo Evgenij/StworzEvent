@@ -7,6 +7,10 @@ import React from "react";
 import SignOutBtn from "../../components/sign-out-btn";
 import { Header } from "../../components/header/header";
 import UpdateUserForm from "../../components/forms/update-user-form";
+import useSWR from "swr";
+import { API_ROUTES } from "@/app/api/apiRoutes";
+import { apiFetcher } from "@/app/api/fetcher";
+import EventsList from "../../components/events";
 
 const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 	const session = await auth.api.getSession({ headers: await headers() });
@@ -27,16 +31,18 @@ const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 				<SignOutBtn />
 			</header>
 			<hr />
+			<EventsList />
+			<hr />
 			<div className="flex gap-3">
 				<div className="image">
 					{session?.user.image ? (
 						<img
 							src={session?.user.image}
 							alt="User image"
-							className="size-[80px] bg-muted-foreground rounded-full object-cover"
+							className="size-20 bg-muted-foreground rounded-full object-cover"
 						/>
 					) : (
-						<div className="size-[80px] bg-muted-foreground rounded-full text-white flex justify-center items-center text-lg font-bold">
+						<div className="size-20 bg-muted-foreground rounded-full text-white flex justify-center items-center text-lg font-bold">
 							{session?.user.name.slice(0, 2)}
 						</div>
 					)}

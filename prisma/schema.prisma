@@ -140,8 +140,8 @@ model User {
 
   sessions            Session[]
   accounts            Account[]
-  organization        Organization?        @relation(fields: [organizationId], references: [id])
-  organizationMembers OrganizationMembers?
+  organization        Organization?         @relation(fields: [organizationId], references: [id])
+  organizationMembers OrganizationMembers[]
   organizationId      String?
 
   @@unique([email])
@@ -231,7 +231,7 @@ model Event {
   // orders  Orders[]
 
   organizationId String       @map("organization_id")
-  organizations  Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
 
   @@map("events")
 }
@@ -306,11 +306,11 @@ model OrganizationMembers {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  userId         String @unique @map("user_id")
+  userId         String @map("user_id")
   organizationId String @map("organization_id")
 
   memberRole    MemberRole   @default(OWNER) @map("member_role")
-  users         User         @relation(fields: [userId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
   organizations Organization @relation(fields: [organizationId], references: [id])
 
   @@index([userId], name: "idx_organization_members_user_id")
