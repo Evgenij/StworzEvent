@@ -107,5 +107,19 @@
 			"header": "Rejestracja przebiegła pomyślnie",
 			"text": "Wysłaliśmy wiadomość e-mail w celu potwierdzenia Twojego adresu e-mail"
 		}
+	},
+	"SidebarLeft": {
+		"user": {
+			"dashboard": "Strona główna",
+			"notifications": "Powiadomienia"
+		},
+		"organizer": {
+			"dashboard": "Strona główna",
+			"notifications": "Powiadomienia"
+		},
+		"admin": {
+			"dashboard": "Dashboard",
+			"notifications": "Powiadomienia"
+		}
 	}
 }

@@ -19,12 +19,6 @@ export type Organizer = {
 	email: Mail;
 };
 
-// ─── Типы для типизации SWR ──────────────────────────────────────────────────
-interface FetchError extends Error {
-	code?: string;
-	details?: Record<string, string[]>;
-}
-
 const AdminDashboard = () => {
 	//const [invites, setInvites] = useState<Invitation[]>([]);
 

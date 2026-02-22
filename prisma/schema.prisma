@@ -13,25 +13,136 @@ enum UserRole {
   ADMIN
 }
 
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+  UNPAID
+}
+
+enum MemberRole {
+  OWNER
+  MANAGER
+  STAFF
+  FINANCE
+  VIEWER
+  SUPPORT
+  MARKETING
+  API_CLIENT
+}
+
+enum FeatureKey {
+  CREATE_EVENTS
+  SELL_TICKETS
+  ANALYTICS
+  CUSTOM_BRANDING
+  TEAM_MEMBERS
+  API_ACCESS
+  NO_PLATFORM_FEE
+  IMPORT_DB_USERS
+}
+
+enum EventStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  SALES_OPEN
+  SALES_PAUSED
+  SALES_CLOSED
+  LIVE
+  COMPLETED
+  CANCELLED
+  ARCHIVED
+  BLOCKED
+  UNPUBLISHED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentStatus {
+  CREATED
+  PENDING
+  REQUIRES_ACTION
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  EXPIRED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum Currency {
+  PLN
+  USD
+  EUR
+  UAH
+}
+
+enum Country {
+  PL
+  US
+  UK
+  UA
+  DE
+  FR
+  IT
+  ES
+  CA
+  AU
+  NZ
+}
+
+enum VatStatus {
+  ACTIVE
+  EXEMPT
+  UNREGISTERED
+  CANCELLED
+}
+
+enum EmployeeCountRange {
+  MICRO // < 10 osób
+  SMALL // 10–49
+  MEDIUM // 50–249
+  LARGE // 250+
+}
+
+enum AddressType {
+  REGISTERED // siedziba / adres rejestrowy
+  BILLING // do faktur
+  SHIPPING // do wysyłek
+  BRANCH // oddział / filia
+  CORRESPONDENCE // do korespondencji
+}
+
 model User {
-  id            String   @id
-  name          String
-  surname       String
-  email         String
-  emailVerified Boolean  @default(false)
-  role          UserRole @default(USER)
-  image         String?
+  id            String   @id @default(uuid())
+  name          String   @map("name")
+  surname       String   @map("surname")
+  email         String   @map("email")
+  emailVerified Boolean  @default(false) @map("email_verified")
+  role          UserRole @default(USER) @map("user_role")
+  image         String?  @map("image")
 
-  banned     Boolean?  @default(false)
-  banReason  String?
-  banExpires DateTime?
+  banned     Boolean?  @default(false) @map("banned")
+  banReason  String?   @map("ban_reason")
+  banExpires DateTime? @map("ban_expires")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
-  sessions     Session[]
-  accounts     Account[]
-  organization Organization?
+  sessions            Session[]
+  accounts            Account[]
+  organization        Organization?        @relation(fields: [organizationId], references: [id])
+  organizationMembers OrganizationMembers?
+  organizationId      String?
 
   @@unique([email])
   @@map("users")
@@ -56,7 +167,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(uuid())
   accountId             String
   providerId            String
   userId                String
@@ -77,7 +188,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(uuid())
   identifier String
   value      String
   expiresAt  DateTime
@@ -91,7 +202,7 @@ model Verification {
 // My tables ----------------------------------------------------------
 
 model Invitation {
-  id String @id
+  id String @id @default(uuid())
 
   email String @unique
   token String @unique
@@ -107,26 +218,102 @@ model Invitation {
   @@map("invitations")
 }
 
+model Event {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title    String      @map("title")
+  startsAt DateTime    @map("starts_at")
+  status   EventStatus @default(DRAFT) @map("status")
+
+  // tickets Tickets[]
+  // orders  Orders[]
+
+  organizationId String       @map("organization_id")
+  organizations  Organization @relation(fields: [organizationId], references: [id])
+
+  @@map("events")
+}
+
 model Organization {
-  id   String @id
-  name String
+  id   String @id @default(uuid())
   slug String @unique
 
-  ownerId String @unique
-  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  // ── polska identyfikacja firmy ───────────────────────────────────────
+  nip   String? @unique // 10 cyfr, bez myślników, unikalne
+  regon String? @unique // 9 lub 14 cyfr
+  krs   String? @unique // 10 cyfr – tylko spółki rejestrowane w KRS
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // ── forma prawna (kluczowe przy fakturach, KSeF, umowach B2B) ─────────
+  legalForm     String? // "osoba fizyczna", "sp. z o.o.", "S.A.", "sp.k.", "sp.j.", "stowarzyszenie"...
+  legalFormCode String? // np. kod GUS / REGON: "019", "091", "092"...
+
+  // ── status VAT i KSeF (obowiązkowy B2B od 2026/2027) ──────────────────
+  vatStatus   VatStatus? @default(ACTIVE)
+  ksefEnabled Boolean    @default(false) // czy wystawia faktury przez KSeF
+  vatId       String? // "PL" + NIP (czasami osobno)
+
+  // ── pozostałe przydatne pola ─────────────────────────────────────────
+  website String?
+  phone   String?
+  email   String? // oficjalny e-mail firmy
+
+  // statystyki / compliance
+  employeeCountRange EmployeeCountRange? // mikro / małe / średnie / duże
+  industry           String? // branża / PKD opisowo
+  mainPkdCode        String? // np. "62.01.Z"
+
+  //ownerId String @unique
+  //owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // subscriptions         Subscriptions[]
+  events                Event[]
+  organizationMembers   OrganizationMembers[]
+  organizationAddresses OrganizationAddress[]
+  // usages              Usages[]
+  users                 User[]
 
   @@map("organizations")
 }
 
-model Event {
-  id   String @id
-  name String
+model OrganizationAddress {
+  id   String      @id @default(uuid())
+  type AddressType // BILLING, SHIPPING, REGISTERED, BRANCH...
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // ── adres siedziby (bardzo często wymagany w fakturach, KSeF, ePUAP) ──
+  street          String
+  buildingNumber  String
+  apartmentNumber String?
+  zipCode         String
+  city            String
+  voivodeship     String? // województwo – przydatne w raportach
+  country         String  @default("PL")
 
-  @@map("events")
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  // ewentualnie userId jeśli adres prywatny użytkownika
+
+  @@map("addresses")
+}
+
+model OrganizationMembers {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId         String @unique @map("user_id")
+  organizationId String @map("organization_id")
+
+  memberRole    MemberRole   @default(OWNER) @map("member_role")
+  users         User         @relation(fields: [userId], references: [id])
+  organizations Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([userId], name: "idx_organization_members_user_id")
+  @@index([organizationId], name: "idx_organization_members_organization_id")
+  @@map("organization_members")
 }

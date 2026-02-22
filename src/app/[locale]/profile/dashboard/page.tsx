@@ -10,6 +10,7 @@ import UpdateUserForm from "../../components/forms/update-user-form";
 
 const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 	const session = await auth.api.getSession({ headers: await headers() });
+
 	return (
 		<div className="p-6 flex flex-col gap-4">
 			<header className="flex gap-3">
@@ -52,17 +53,19 @@ const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 				</div>
 			</div>
 			<hr />
-			<div className="flex flex-col gap-3">
+			{/* <div className="flex flex-col gap-3">
 				<Header as={"h3"}>Update user</Header>
 				<UpdateUserForm
 					name={session?.user.name}
 					image={session?.user.image}
 				/>
-			</div>
+			</div> */}
 
 			<hr />
 
-			<pre className="text-xs">{JSON.stringify(session, null, 2)}</pre>
+			{/* <pre className="text-xs w-full">
+				{JSON.stringify(session, null, 2)}
+			</pre> */}
 		</div>
 	);
 };

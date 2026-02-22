@@ -1,47 +1,73 @@
-import React from "react";
-import { type LucideIcon } from "lucide-react";
+"use client";
+
+import { ChevronRight, type LucideIcon } from "lucide-react";
 
 import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/shadcn/ui/collapsible";
+import {
 	SidebarGroup,
-	SidebarGroupContent,
+	SidebarGroupLabel,
 	SidebarMenu,
-	SidebarMenuBadge,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	SidebarMenuSub,
+	SidebarMenuSubButton,
+	SidebarMenuSubItem,
 } from "@/shadcn/ui/sidebar";
 
 export function NavSecondary({
 	items,
-	...props
 }: {
 	items: {
 		title: string;
 		url: string;
-		icon: LucideIcon;
-		badge?: React.ReactNode;
+		icon?: LucideIcon;
+		isActive?: boolean;
+		items?: {
+			title: string;
+			url: string;
+		}[];
 	}[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}) {
 	return (
-		<SidebarGroup {...props}>
-			<SidebarGroupContent>
-				<SidebarMenu>
-					{items.map((item) => (
-						<SidebarMenuItem key={item.title}>
-							<SidebarMenuButton asChild>
-								<a href={item.url}>
-									<item.icon />
+		<SidebarGroup>
+			<SidebarGroupLabel>Platform</SidebarGroupLabel>
+			<SidebarMenu>
+				{items.map((item) => (
+					<Collapsible
+						key={item.title}
+						asChild
+						defaultOpen={item.isActive}
+						className="group/collapsible"
+					>
+						<SidebarMenuItem>
+							<CollapsibleTrigger asChild>
+								<SidebarMenuButton tooltip={item.title}>
+									{item.icon && <item.icon />}
 									<span>{item.title}</span>
-								</a>
-							</SidebarMenuButton>
-							{item.badge && (
-								<SidebarMenuBadge>
-									{item.badge}
-								</SidebarMenuBadge>
-							)}
+									<ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+								</SidebarMenuButton>
+							</CollapsibleTrigger>
+							<CollapsibleContent>
+								<SidebarMenuSub>
+									{item.items?.map((subItem) => (
+										<SidebarMenuSubItem key={subItem.title}>
+											<SidebarMenuSubButton asChild>
+												<a href={subItem.url}>
+													<span>{subItem.title}</span>
+												</a>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+									))}
+								</SidebarMenuSub>
+							</CollapsibleContent>
 						</SidebarMenuItem>
-					))}
-				</SidebarMenu>
-			</SidebarGroupContent>
+					</Collapsible>
+				))}
+			</SidebarMenu>
 		</SidebarGroup>
 	);
 }
