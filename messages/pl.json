@@ -108,14 +108,37 @@
 			"text": "Wysłaliśmy wiadomość e-mail w celu potwierdzenia Twojego adresu e-mail"
 		}
 	},
+	"EventStatus": {
+		"DRAFT": "Szkic",
+		"REVIEW": "W trakcie weryfikacji",
+		"PUBLISHED": "Opublikowany",
+		"SALES_OPEN": "Sprzedaż otwarta",
+		"SALES_PAUSED": "Sprzedaż wstrzymana",
+		"SALES_CLOSED": "Sprzedaż zamknięta",
+		"LIVE": "Live",
+		"COMPLETED": "Zakończony",
+		"CANCELLED": "Anulowany",
+		"ARCHIVED": "Zarchiwizowany",
+		"BLOCKED": "Zablokowany",
+		"UNPUBLISHED": "Wycofany z publikacji"
+	},
+	"PageTitles": {
+		"dashboard": "Panel główny",
+		"notifications": "Powiadomienia",
+		"settings": "Ustawienia",
+		"events": "Wydarzenia",
+		"default": ""
+	},
 	"SidebarLeft": {
 		"user": {
-			"dashboard": "Strona główna",
+			"dashboard": "Panel główny",
 			"notifications": "Powiadomienia"
 		},
 		"organizer": {
-			"dashboard": "Strona główna",
-			"notifications": "Powiadomienia"
+			"dashboard": "Panel główny",
+			"events": "Wydarzenia",
+			"notifications": "Powiadomienia",
+			"settings": "Ustawienia"
 		},
 		"admin": {
 			"dashboard": "Dashboard",

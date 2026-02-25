@@ -5,44 +5,49 @@ import { apiFetcher } from "@/app/api/fetcher";
 import { Button } from "@/shadcn/ui/button";
 import React from "react";
 import useSWR from "swr";
+import EventItem from "./events/event";
+import { Event } from "@prisma/client";
+import { ApiResponse } from "@/types/api-pesponse";
 
 const EventsList = () => {
 	const {
 		data: events,
 		error,
 		isLoading,
+		isValidating,
 		mutate,
-	} = useSWR(
-		[
-			API_ROUTES.events,
-			{ organizationId: "2020802e-34af-4d0e-a83f-43d76f122930" },
-		],
-		([url, params]) =>
-			apiFetcher(url, {
-				params,
-			}),
-	);
+	} = useSWR<ApiResponse<Event[]>>(API_ROUTES.events.list, apiFetcher);
 
-	if (isLoading) return <div>Loading...</div>;
+	if (isLoading || isValidating)
+		return (
+			<>
+				<Button onClick={() => mutate()} disabled={isValidating}>
+					{isValidating ? "Refreshing..." : "Refresh events"}
+				</Button>
+				<div>Loading...</div>
+			</>
+		);
 	if (error)
 		return (
 			<>
-				<Button onClick={() => mutate()}>Refresh events</Button>
+				<Button onClick={() => mutate()} disabled={isValidating}>
+					{isValidating ? "Refreshing..." : "Refresh events"}
+				</Button>
 				<div>Error: {error.message}</div>
 			</>
 		);
-	if (!events) return <div>No events found</div>;
+	if (!events?.success || !events?.data) return <div>No events found</div>;
+
+	console.log(events);
 
 	return (
 		<div className="flex flex-col gap-4">
-			<Button onClick={() => mutate()}>Refresh events</Button>
-			<pre>{JSON.stringify(events, null, 2)}</pre>
-			{/* {events.data.map((event) => (
-				<div key={event.id} className="border p-4 rounded-md">
-					<h3 className="text-lg font-bold">{event.name}</h3>
-					<p>{event.description}</p>
-				</div>
-			))} */}
+			<Button onClick={() => mutate()} disabled={isValidating}>
+				{isValidating ? "Refreshing..." : "Refresh events"}
+			</Button>
+			{events.data.map((event) => (
+				<EventItem key={event.id} event={event} />
+			))}
 		</div>
 	);
 };

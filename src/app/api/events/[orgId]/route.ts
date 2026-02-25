@@ -7,23 +7,14 @@ import { MemberRole, Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
 export const GET = withApiHandler(async (req: Request) => {
+	const { searchParams } = new URL(req.url);
+	const organizationId = searchParams.get("organizationId");
+
 	const session = await auth.api.getSession({ headers: await headers() });
 
 	if (!session) {
 		throw new ApiError(ErrorCode.UNAUTHORIZED);
 	}
-
-	const organizationId = await prisma.organizationMembers.findFirst({
-		where: {
-			userId: session.user.id,
-			memberRole: MemberRole.OWNER,
-		},
-		select: {
-			organizationId: true,
-		},
-	});
-
-	console.log(organizationId);
 
 	const where: Prisma.EventWhereInput = {
 		organization: {
@@ -34,7 +25,7 @@ export const GET = withApiHandler(async (req: Request) => {
 	};
 
 	if (organizationId) {
-		where.organizationId = organizationId.organizationId;
+		where.organizationId = organizationId;
 	}
 
 	const events = await prisma.event.findMany({ where });

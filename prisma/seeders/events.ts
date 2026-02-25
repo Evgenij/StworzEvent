@@ -8,18 +8,22 @@ export const createEvents = async (
 	console.log("🔥 Creating events ---------------------");
 
 	const allStatuses = Object.values(EventStatus) as EventStatus[];
+	const COUNT = 30;
 
-	for (const [index, status] of allStatuses.entries()) {
+	for (let index = 0; index < COUNT; index++) {
+		const randomStatus =
+			allStatuses[Math.floor(Math.random() * allStatuses.length)];
+
 		console.log(`➕ create event: event-id-${index + 1}`);
 		await prisma.event.upsert({
 			where: { id: `event-id-${index + 1}` },
-			update: {}, // ничего не обновляем при нахождении
+			update: {},
 			create: {
 				id: `event-id-${index + 1}`,
 				organizationId: organization.id,
 				title: `Test Event ${index + 1}`,
 				startsAt: new Date(),
-				status: status,
+				status: randomStatus,
 			},
 		});
 	}

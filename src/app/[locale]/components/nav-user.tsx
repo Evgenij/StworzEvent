@@ -27,14 +27,29 @@ import {
 } from "@/shadcn/ui/sidebar";
 import { UserType } from "@/types/user";
 import { UserRole } from "@prisma/client";
-import { IconClipboardData } from "@tabler/icons-react";
-import { Link } from "@/i18n/routing";
-import { ADMIN_DASHBOARD_ROUTE } from "@/helpers/routes";
+import { IconClipboardData, IconLogout } from "@tabler/icons-react";
+import { Link, useRouter } from "@/i18n/routing";
+import { ADMIN_DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
+import { signOut } from "@/lib/auth-client";
 
 export function NavUser({ user }: { user: UserType }) {
 	const { isMobile } = useSidebar();
+	const router = useRouter();
 
 	//console.log(user);
+
+	async function handleSignOut() {
+		await signOut({
+			fetchOptions: {
+				onError: (ctx) => {
+					console.log(ctx.error.message);
+				},
+				onSuccess: () => {
+					router.push(SIGNIN_ROUTE);
+				},
+			},
+		});
+	}
 
 	return (
 		<SidebarMenu>
@@ -126,8 +141,8 @@ export function NavUser({ user }: { user: UserType }) {
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
-							<LogOut />
+						<DropdownMenuItem onClick={handleSignOut}>
+							<IconLogout />
 							Log out
 						</DropdownMenuItem>
 					</DropdownMenuContent>

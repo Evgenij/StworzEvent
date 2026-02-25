@@ -1,28 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-	AudioWaveform,
-	Blocks,
-	BookOpen,
-	Bot,
-	Calendar,
-	Command,
-	Frame,
-	GalleryVerticalEnd,
-	Home,
-	Inbox,
-	LifeBuoy,
-	LifeBuoyIcon,
-	MessageCircleQuestion,
-	PieChart,
-	Search,
-	Send,
-	Settings2,
-	Sparkles,
-	SquareTerminal,
-	Trash2,
-} from "lucide-react";
 
 import { NavFavorites } from "./nav-favorites";
 import { NavSecondary } from "./nav-secondary";
@@ -37,11 +15,40 @@ import {
 	SidebarRail,
 	SidebarSeparator,
 } from "@/shadcn/ui/sidebar";
-import { IconLifebuoy, IconLoader, IconSend } from "@tabler/icons-react";
+import {
+	IconBook,
+	IconBrandAppgallery,
+	IconCalendarEvent,
+	IconCommand,
+	IconHome,
+	IconLifebuoy,
+	IconLoader,
+	IconRobot,
+	IconSend,
+	IconSettings,
+	IconSettings2,
+	IconSmartHome,
+	IconTerminal,
+	IconWaveSine,
+} from "@tabler/icons-react";
 import { NavMain } from "./nav-main";
-import { DASHBOARD_ROUTE } from "@/helpers/routes";
+import {
+	DASHBOARD_ROUTE,
+	EVENTS_ROUTE,
+	NOTIFICATIONS_ROUTE,
+	SETTINGS_ROUTE,
+} from "@/helpers/routes";
 import { useTranslations } from "next-intl";
 import { useUser } from "@/hooks/use-user";
+import { User, UserRole } from "@prisma/client";
+
+type SidebarUser = {
+	id: string;
+	name: string;
+	email: string;
+	role: UserRole;
+	image?: string | null;
+};
 
 function SidebarFallback() {
 	return (
@@ -54,22 +61,12 @@ function SidebarFallback() {
 	);
 }
 
-export function SidebarLeft({
+function SidebarInner({
+	role,
 	...props
-}: React.ComponentProps<typeof Sidebar>) {
-	const { user, isOrganizer, isLoading } = useUser();
+}: React.ComponentProps<typeof Sidebar> & { role: string }) {
+	const t = useTranslations(`SidebarLeft.${role.toLowerCase()}`);
 
-	console.log(user);
-
-	const t = useTranslations(
-		`SidebarLeft.${String(user?.role).toLowerCase()}`,
-	);
-
-	if (isLoading) {
-		return <SidebarFallback />;
-	}
-
-	// This is sample data.
 	const data = {
 		user: {
 			name: "shadcn",
@@ -79,17 +76,17 @@ export function SidebarLeft({
 		teams: [
 			{
 				name: "Acme Inc",
-				logo: GalleryVerticalEnd,
+				logo: IconBrandAppgallery,
 				plan: "Enterprise",
 			},
 			{
 				name: "Acme Corp.",
-				logo: AudioWaveform,
+				logo: IconWaveSine,
 				plan: "Startup",
 			},
 			{
 				name: "Evil Corp.",
-				logo: Command,
+				logo: IconCommand,
 				plan: "Free",
 			},
 		],
@@ -107,21 +104,31 @@ export function SidebarLeft({
 			{
 				title: t("dashboard"),
 				url: DASHBOARD_ROUTE,
-				icon: Home,
+				icon: IconSmartHome,
 				isActive: true,
 			},
 			{
-				title: t("notifications"),
-				url: "#",
-				icon: Inbox,
-				badge: "10",
+				title: t("events"),
+				url: EVENTS_ROUTE,
+				icon: IconCalendarEvent,
 			},
+			{
+				title: t("settings"),
+				url: SETTINGS_ROUTE,
+				icon: IconSettings2,
+			},
+			// {
+			// 	title: t("notifications"),
+			// 	url: NOTIFICATIONS_ROUTE,
+			// 	icon: Inbox,
+			// 	badge: "10",
+			// },
 		],
 		navSecondary: [
 			{
 				title: "Playground",
 				url: "#",
-				icon: SquareTerminal,
+				icon: IconTerminal,
 				isActive: true,
 				items: [
 					{
@@ -141,7 +148,7 @@ export function SidebarLeft({
 			{
 				title: "Models",
 				url: "#",
-				icon: Bot,
+				icon: IconRobot,
 				items: [
 					{
 						title: "Genesis",
@@ -160,7 +167,7 @@ export function SidebarLeft({
 			{
 				title: "Documentation",
 				url: "#",
-				icon: BookOpen,
+				icon: IconBook,
 				items: [
 					{
 						title: "Introduction",
@@ -183,7 +190,7 @@ export function SidebarLeft({
 			{
 				title: "Settings",
 				url: "#",
-				icon: Settings2,
+				icon: IconSettings2,
 				items: [
 					{
 						title: "General",
@@ -221,25 +228,221 @@ export function SidebarLeft({
 	};
 
 	return (
-		<>
-			<React.Suspense fallback={<SidebarFallback />}>
-				<Sidebar className="border-r-0" {...props}>
-					<SidebarHeader>
-						<TeamSwitcher teams={data.teams} />
-						<NavMain items={data.navMain} />
-					</SidebarHeader>
-					<SidebarContent>
-						<NavSecondary items={data.navSecondary} />
-						{/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
-					</SidebarContent>
-					<SidebarFooter className="p-0">
-						<NavAdditional
-							items={data.navAdditional}
-							className="mt-auto"
-						/>
-					</SidebarFooter>
-				</Sidebar>
-			</React.Suspense>
-		</>
+		<Sidebar className="border-r-0" {...props}>
+			<SidebarHeader>
+				<TeamSwitcher teams={data.teams} />
+				<NavMain items={data.navMain} />
+			</SidebarHeader>
+			<SidebarContent>
+				<NavSecondary items={data.navSecondary} />
+				{/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+			</SidebarContent>
+			<SidebarFooter className="p-0">
+				<NavAdditional items={data.navAdditional} className="mt-auto" />
+			</SidebarFooter>
+		</Sidebar>
 	);
 }
+
+export function SidebarLeft({
+	user,
+	...props
+}: React.ComponentProps<typeof Sidebar> & { user: SidebarUser }) {
+	// const { user, isLoading } = useUser();
+
+	if (!user?.role) {
+		return <SidebarFallback />;
+	}
+
+	return <SidebarInner role={user.role} {...props} />;
+}
+
+// export function SidebarLeft({
+// 	...props
+// }: React.ComponentProps<typeof Sidebar>) {
+// 	const { user, isOrganizer, isLoading } = useUser();
+
+// 	console.log(user);
+
+// 	const t = useTranslations(
+// 		`SidebarLeft.${String(user?.role).toLowerCase()}`,
+// 	);
+
+// 	if (isLoading) {
+// 		return <SidebarFallback />;
+// 	}
+
+// 	// This is sample data.
+// 	const data = {
+// 		user: {
+// 			name: "shadcn",
+// 			email: "m@example.com",
+// 			avatar: "/avatars/shadcn.jpg",
+// 		},
+// 		teams: [
+// 			{
+// 				name: "Acme Inc",
+// 				logo: GalleryVerticalEnd,
+// 				plan: "Enterprise",
+// 			},
+// 			{
+// 				name: "Acme Corp.",
+// 				logo: AudioWaveform,
+// 				plan: "Startup",
+// 			},
+// 			{
+// 				name: "Evil Corp.",
+// 				logo: Command,
+// 				plan: "Free",
+// 			},
+// 		],
+// 		navMain: [
+// 			// {
+// 			// 	title: "Search",
+// 			// 	url: "#",
+// 			// 	icon: Search,
+// 			// },
+// 			// {
+// 			// 	title: "Ask AI",
+// 			// 	url: "#",
+// 			// 	icon: Sparkles,
+// 			// },
+// 			{
+// 				title: t("dashboard"),
+// 				url: DASHBOARD_ROUTE,
+// 				icon: Home,
+// 				isActive: true,
+// 			},
+// 			{
+// 				title: t("notifications"),
+// 				url: "#",
+// 				icon: Inbox,
+// 				badge: "10",
+// 			},
+// 		],
+// 		navSecondary: [
+// 			{
+// 				title: "Playground",
+// 				url: "#",
+// 				icon: SquareTerminal,
+// 				isActive: true,
+// 				items: [
+// 					{
+// 						title: "History",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Starred",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Settings",
+// 						url: "#",
+// 					},
+// 				],
+// 			},
+// 			{
+// 				title: "Models",
+// 				url: "#",
+// 				icon: Bot,
+// 				items: [
+// 					{
+// 						title: "Genesis",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Explorer",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Quantum",
+// 						url: "#",
+// 					},
+// 				],
+// 			},
+// 			{
+// 				title: "Documentation",
+// 				url: "#",
+// 				icon: BookOpen,
+// 				items: [
+// 					{
+// 						title: "Introduction",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Get Started",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Tutorials",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Changelog",
+// 						url: "#",
+// 					},
+// 				],
+// 			},
+// 			{
+// 				title: "Settings",
+// 				url: "#",
+// 				icon: Settings2,
+// 				items: [
+// 					{
+// 						title: "General",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Team",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Billing",
+// 						url: "#",
+// 					},
+// 					{
+// 						title: "Limits",
+// 						url: "#",
+// 					},
+// 				],
+// 			},
+// 		],
+// 		navAdditional: [
+// 			{
+// 				title: "Support",
+// 				url: "#",
+// 				icon: IconLifebuoy,
+// 				active: false,
+// 			},
+// 			{
+// 				title: "Feedback",
+// 				url: "#",
+// 				icon: IconSend,
+// 				active: false,
+// 			},
+// 		],
+// 	};
+
+// 	return (
+// 		<>
+// 			<React.Suspense fallback={<SidebarFallback />}>
+// 				<Sidebar className="border-r-0" {...props}>
+// 					<SidebarHeader>
+// 						<TeamSwitcher teams={data.teams} />
+// 						<NavMain items={data.navMain} />
+// 					</SidebarHeader>
+// 					<SidebarContent>
+// 						<NavSecondary items={data.navSecondary} />
+// 						{/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+// 					</SidebarContent>
+// 					<SidebarFooter className="p-0">
+// 						<NavAdditional
+// 							items={data.navAdditional}
+// 							className="mt-auto"
+// 						/>
+// 					</SidebarFooter>
+// 				</Sidebar>
+// 			</React.Suspense>
+// 		</>
+// 	);
+// }

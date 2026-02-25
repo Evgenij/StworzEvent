@@ -43,8 +43,6 @@ const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 				<SignOutBtn />
 			</header>
 			<hr />
-			<EventsList />
-			<hr />
 			<div className="flex gap-3">
 				<div className="image">
 					{session?.user.image ? (
@@ -78,8 +76,6 @@ const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 					image={session?.user.image}
 				/>
 			</div> */}
-
-			<hr />
 
 			{/* <pre className="text-xs w-full">
 				{JSON.stringify(session, null, 2)}

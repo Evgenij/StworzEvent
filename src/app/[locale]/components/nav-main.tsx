@@ -1,12 +1,13 @@
 "use client";
 
-import { type LucideIcon } from "lucide-react";
-
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/shadcn/ui/sidebar";
+import { Badge } from "@/shadcn/ui/badge";
+import { TablerIcon } from "@tabler/icons-react";
+import { Link } from "@/i18n/routing";
 
 export function NavMain({
 	items,
@@ -14,8 +15,9 @@ export function NavMain({
 	items: {
 		title: string;
 		url: string;
-		icon: LucideIcon;
+		icon: TablerIcon;
 		isActive?: boolean;
+		badge?: string;
 	}[];
 }) {
 	return (
@@ -23,10 +25,15 @@ export function NavMain({
 			{items.map((item) => (
 				<SidebarMenuItem key={item.title}>
 					<SidebarMenuButton asChild isActive={item.isActive}>
-						<a href={item.url}>
+						<Link href={item.url}>
 							<item.icon />
 							<span>{item.title}</span>
-						</a>
+							{item.badge && (
+								<Badge className="bg-red-600 text-white">
+									{item.badge}
+								</Badge>
+							)}
+						</Link>
 					</SidebarMenuButton>
 				</SidebarMenuItem>
 			))}

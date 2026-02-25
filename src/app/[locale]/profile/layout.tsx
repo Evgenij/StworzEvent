@@ -22,6 +22,7 @@ import {
 import { SidebarRight } from "#/components/sidebar-right";
 import { UserRole } from "@prisma/client";
 import { useUser } from "@/hooks/use-user";
+import Breadcrumbs from "../components/breadcrumbs";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -46,7 +47,12 @@ const ProfileLayout = async ({
 
 	return (
 		<SidebarProvider>
-			<SidebarLeft />
+			<SidebarLeft
+				user={{
+					...session.user,
+					role: session.user.role ?? UserRole.USER,
+				}}
+			/>
 			<SidebarInset>
 				<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
 					<SidebarTrigger className="-ml-1" />
@@ -54,7 +60,8 @@ const ProfileLayout = async ({
 						orientation="vertical"
 						className="mr-2 data-[orientation=vertical]:h-14"
 					/>
-					<Breadcrumb>
+					<Breadcrumbs />
+					{/* <Breadcrumb>
 						<BreadcrumbList>
 							<BreadcrumbItem className="hidden md:block">
 								<BreadcrumbLink href="#">
@@ -66,7 +73,7 @@ const ProfileLayout = async ({
 								<BreadcrumbPage>Data Fetching</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
-					</Breadcrumb>
+					</Breadcrumb> */}
 				</header>
 				<main className="flex flex-1 flex-col gap-4 p-6">
 					{children}
