@@ -12,13 +12,13 @@ export const signInEmailAction = safeAction(async (formData: FormData) => {
 	const password = formData.get("password")?.toString();
 
 	if (!email) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 401, {
 			email: ["Email jest wymagany"],
 		});
 	}
 
 	if (!password) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 401, {
 			password: ["Hasło jest wymagane"],
 		});
 	}
@@ -28,7 +28,7 @@ export const signInEmailAction = safeAction(async (formData: FormData) => {
 	});
 
 	if (!user) {
-		throw new ApiError(ErrorCode.USER_NOT_FOUND, {
+		throw new ApiError(ErrorCode.USER_NOT_FOUND, 401, {
 			email: ["Nie znaleziono użytkownika z tym adresem email"],
 		});
 	}
@@ -45,13 +45,13 @@ export const signInEmailAction = safeAction(async (formData: FormData) => {
 			const baCode = err.body?.code || err.status || "";
 
 			if (baCode === "INVALID_EMAIL_OR_PASSWORD" || err.status === 401) {
-				throw new ApiError(ErrorCode.INVALID_PASSWORD, {
+				throw new ApiError(ErrorCode.INVALID_PASSWORD, 401, {
 					password: [ErrorCode.INVALID_PASSWORD],
 				});
 			}
 
 			// неизвестный код от Better Auth
-			throw new ApiError(ErrorCode.INTERNAL_ERROR, {
+			throw new ApiError(ErrorCode.INTERNAL_ERROR, 500, {
 				general: [err.message || "Błąd autoryzacji"],
 			});
 		}

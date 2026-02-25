@@ -45,13 +45,13 @@ export const acceptInvitationService = safeAction(
 					baCode === "INVALID_EMAIL_OR_PASSWORD" ||
 					err.status === 401
 				) {
-					throw new ApiError(ErrorCode.INVALID_PASSWORD, {
+					throw new ApiError(ErrorCode.INVALID_PASSWORD, 401, {
 						password: [ErrorCode.INVALID_PASSWORD],
 					});
 				}
 
 				// неизвестный код от Better Auth
-				throw new ApiError(ErrorCode.INTERNAL_ERROR, {
+				throw new ApiError(ErrorCode.INTERNAL_ERROR, 500, {
 					general: [err.message || "Błąd autoryzacji"],
 				});
 			}
