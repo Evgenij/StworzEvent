@@ -14,7 +14,7 @@ export const authClient = createAuthClient({
 		process.env.NEXT_PUBLIC_API_URL ??
 		(process.env.NEXT_PUBLIC_VERCEL_URL
 			? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-			: "http://localhost:3000"),
+			: "http://localhost:3000"), //test
 	plugins: [
 		inferAdditionalFields<typeof auth>(),
 		adminClient({ ac, roles }),
