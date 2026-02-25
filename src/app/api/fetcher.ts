@@ -19,7 +19,8 @@ export async function apiFetcher<T>(
 			).toString()}`
 		: "";
 
-	const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/api${url}${query}`;
+	//const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/api${url}${query}`;
+	const fullUrl = `/api${url}${query}`;
 
 	const res = await fetch(fullUrl, {
 		method,
