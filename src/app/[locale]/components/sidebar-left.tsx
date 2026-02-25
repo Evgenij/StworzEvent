@@ -58,6 +58,9 @@ export function SidebarLeft({
 	...props
 }: React.ComponentProps<typeof Sidebar>) {
 	const { user, isOrganizer, isLoading } = useUser();
+
+	console.log(user);
+
 	const t = useTranslations(
 		`SidebarLeft.${String(user?.role).toLowerCase()}`,
 	);
