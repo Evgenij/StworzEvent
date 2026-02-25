@@ -135,11 +135,18 @@ const options = {
 		}),
 	},
 
-	// advanced: {
-	// 	database: {
-	// 		generateId: false, // disabling 3TTPkuoYfDzYkTdm8kX1N4UdOuCAHg9S id like this
-	// 	},
-	// },
+	advanced: {
+		cookiePrefix: "better-auth",
+		cookies: {
+			session_token: {
+				attributes: {
+					sameSite: "lax",
+					secure: true,
+					// НЕ указывай domain — тогда кука будет только для текущего домена
+				},
+			},
+		},
+	},
 	databaseHooks: {
 		user: {
 			create: {
