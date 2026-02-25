@@ -15,7 +15,7 @@ const EventsList = () => {
 	} = useSWR(
 		[
 			API_ROUTES.events,
-			{ organizationId: "9d552df1-3a55-4ece-8abc-cb3b0a58afc5" },
+			{ organizationId: "2020802e-34af-4d0e-a83f-43d76f122930" },
 		],
 		([url, params]) =>
 			apiFetcher(url, {

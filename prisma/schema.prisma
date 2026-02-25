@@ -313,6 +313,7 @@ model OrganizationMembers {
   user          User         @relation(fields: [userId], references: [id])
   organizations Organization @relation(fields: [organizationId], references: [id])
 
+  @@unique([userId, organizationId], name: "user_organization_unique")
   @@index([userId], name: "idx_organization_members_user_id")
   @@index([organizationId], name: "idx_organization_members_organization_id")
   @@map("organization_members")

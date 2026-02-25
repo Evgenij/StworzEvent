@@ -30,8 +30,10 @@ export const createOrganizations = async (
 	console.log("➕ create organization_members");
 	await prisma.organizationMembers.upsert({
 		where: {
-			organizationId: organization.id,
-			userId: organizer.id,
+			user_organization_unique: {
+				userId: organizer.id,
+				organizationId: organization.id,
+			},
 		},
 		update: {},
 		create: {

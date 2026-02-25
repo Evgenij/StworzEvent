@@ -121,5 +121,19 @@
 			"dashboard": "Dashboard",
 			"notifications": "Powiadomienia"
 		}
+	},
+	"Profile": {
+		"Dashboard": {
+			"header": "Hej,",
+			"notifications": "Powiadomienia"
+		},
+		"organizer": {
+			"dashboard": "Strona główna",
+			"notifications": "Powiadomienia"
+		},
+		"admin": {
+			"dashboard": "Dashboard",
+			"notifications": "Powiadomienia"
+		}
 	}
 }

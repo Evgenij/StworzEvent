@@ -5,18 +5,30 @@ import { Button } from "@/shadcn/ui/button";
 import { headers } from "next/headers";
 import React from "react";
 import SignOutBtn from "../../components/sign-out-btn";
-import { Header } from "../../components/header/header";
-import UpdateUserForm from "../../components/forms/update-user-form";
-import useSWR from "swr";
-import { API_ROUTES } from "@/app/api/apiRoutes";
-import { apiFetcher } from "@/app/api/fetcher";
 import EventsList from "../../components/events";
+import { Typography } from "../../components/typography/typography";
+import { Blockquote } from "../../components/typography/blockquote";
+import { getTranslations } from "next-intl/server";
 
 const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 	const session = await auth.api.getSession({ headers: await headers() });
+	const t = await getTranslations("Profile.Dashboard");
 
 	return (
-		<div className="p-6 flex flex-col gap-4">
+		<div className="flex justify-start flex-col gap-4">
+			<Typography className="text-left" variant="h1">
+				{t("header")} {session?.user.name}
+			</Typography>
+			<Typography className="text-left" variant="h2">
+				gdsfdf
+			</Typography>
+			<Typography className="text-left" variant="h3">
+				gdsfdf
+			</Typography>
+			<Typography className="text-left" variant="h4">
+				gdsfdf
+			</Typography>
+
 			<header className="flex gap-3">
 				<Link href={HOME_ROUTE}>
 					<Button variant={"outline"}>Home</Button>
