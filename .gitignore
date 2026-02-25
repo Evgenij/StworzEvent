@@ -26,4 +26,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Mocks — тестовые данные, не коммитить
+src/mocks/
+src/mocks.ts
+mocks/
+__mocks__/
+*.mock.*
+*.mock.ts
+*.mock.tsx
+
 

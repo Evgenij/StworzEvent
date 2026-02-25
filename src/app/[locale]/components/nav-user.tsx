@@ -34,7 +34,7 @@ import { ADMIN_DASHBOARD_ROUTE } from "@/helpers/routes";
 export function NavUser({ user }: { user: UserType }) {
 	const { isMobile } = useSidebar();
 
-	console.log(user);
+	//console.log(user);
 
 	return (
 		<SidebarMenu>

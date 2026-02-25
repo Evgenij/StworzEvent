@@ -15,10 +15,11 @@ import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { DASHBOARD_ROUTE } from "@/helpers/routes";
 import { TypeMail } from "@/types/enums";
+import { hashPassword, verifyPassword } from "@/lib/hashPassword";
 
 const vercelUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
-	: null;
+	: undefined;
 
 const options = {
 	database: prismaAdapter(prisma, {
@@ -62,6 +63,10 @@ const options = {
 		minPasswordLength: 6,
 		autoSignIn: false, // optional
 		//requireEmailVerification: true,
+		password: {
+			hash: hashPassword,
+			verify: verifyPassword,
+		},
 		sendResetPassword: async ({ user, url }) => {
 			await sendEmailAction({
 				type: TypeMail.AUTH,
@@ -199,9 +204,11 @@ const options = {
 		},
 	},
 	trustedOrigins: [
-		process.env.BETTER_AUTH_URL as string, // Это подтянет https://stworzevent.vercel.app на продакшене
+		process.env.BETTER_AUTH_URL as string,
 		"http://localhost:3000",
 		...(vercelUrl ? [vercelUrl] : []),
+		// Все превью деплои
+		"https://*.vercel.app",
 	],
 	secret: process.env.BETTER_AUTH_SECRET as string,
 } satisfies BetterAuthOptions;

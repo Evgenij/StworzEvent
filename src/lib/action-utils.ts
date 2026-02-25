@@ -1,47 +1,67 @@
-import { ActionResult } from "@/types/action-result";
+// import { ActionResult } from "@/types/action-result";
+// import { ErrorCode } from "@/types/enums";
 
-export function handleActionError(error: any): ActionResult {
-	if (error.body?.code === "VALIDATION_ERROR") {
-		return {
-			success: false,
-			message: "Błąd walidacji danych",
-			errors: error.body.data,
-		};
-	}
+// type ErrorWithBody = {
+// 	body?: {
+// 		code?: string;
+// 		message?: string;
+// 		data?: Record<string, string[]>;
+// 	};
+// 	message?: string;
+// };
 
-	const code = error?.body?.code as string | undefined;
-	if (code) {
-		const codeMessages: Record<string, string> = {
-			USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL:
-				"Użytkownik z tym adresem e-mail już istnieje",
-			INVALID_EMAIL: "Nieprawidłowy adres e-mail",
-			PASSWORD_TOO_SHORT: "Hasło jest zbyt krótkie",
-			INVALID_TOKEN: "Nieprawidłowy token",
-			TOKEN_EXPIRED: "Token wygasł",
-			EMAIL_NOT_FOUND: "Nie znaleziono adresu e-mail",
-		};
-		return {
-			success: false,
-			message:
-				codeMessages[code] ||
-				error.body?.message ||
-				"Wystąpił nieoczekiwany błąd",
-		};
-	}
+// export function handleActionError(error: unknown): ActionResult<never> {
+// 	const err = error as ErrorWithBody;
 
-	return {
-		success: false,
-		message: error.message || "Wystąpił nieoczekiwany błąd",
-	};
-}
+// 	if (err.body?.code === ErrorCode.VALIDATION_ERROR) {
+// 		return {
+// 			success: false,
+// 			code: ErrorCode.VALIDATION_ERROR,
+// 			message: "Błąd walidacji danych",
+// 			errors: err.body.data,
+// 		};
+// 	}
 
-export function success<T = undefined>(data?: T): ActionResult<T> {
-	return { success: true, data };
-}
+// 	const code = err.body?.code;
+// 	if (code) {
+// 		const codeMessages: Record<string, string> = {
+// 			USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL:
+// 				"Użytkownik z tym adresem e-mail już istnieje",
+// 			INVALID_EMAIL: "Nieprawidłowy adres e-mail",
+// 			PASSWORD_TOO_SHORT: "Hasło jest zbyt krótkie",
+// 			INVALID_TOKEN: "Nieprawidłowy token",
+// 			TOKEN_EXPIRED: "Token wygasł",
+// 			EMAIL_NOT_FOUND: "Nie znaleziono adresu e-mail",
+// 			BAD_REQUEST: "Nieprawidłowe żądanie",
+// 			UNAUTHORIZED: "Nieautoryzowany dostęp",
+// 			FORBIDDEN: "Brak uprawnień",
+// 			NOT_FOUND: "Nie znaleziono zasobu",
+// 			INTERNAL_ERROR: "Wewnętrzny błąd serwera",
+// 		};
 
-export function fail(
-	message?: string,
-	errors?: Record<string, string[]>,
-): ActionResult {
-	return { success: false, message, errors };
-}
+// 		return {
+// 			success: false,
+// 			message:
+// 				codeMessages[code as ErrorCode] ||
+// 				err.body?.message ||
+// 				"Wystąpił nieoczekiwany błąd",
+// 		};
+// 	}
+
+// 	return {
+// 		success: false,
+// 		message: err.message || "Wystąpił nieoczekiwany błąd",
+// 	};
+// }
+
+// export function success<T>(data: T): ActionResult<T> {
+// 	return { success: true, data };
+// }
+
+// export function fail(
+// 	message: string,
+// 	code?: ErrorCode,
+// 	errors?: Record<string, string[]>,
+// ): ActionResult<never> {
+// 	return { success: false, message, code, errors };
+// }
