@@ -158,5 +158,16 @@
 			"dashboard": "Dashboard",
 			"notifications": "Powiadomienia"
 		}
+	},
+	"EventsList": {
+		"table": {
+			"caption": "Lista wydarzeń",
+			"header": {
+				"data": "Event",
+				"image": "Obraz",
+				"status": "Status",
+				"action": "Akcja"
+			}
+		}
 	}
 }

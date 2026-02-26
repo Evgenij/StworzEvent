@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 
 import { Calendars } from "./calendars";
 import { DatePicker } from "./date-picker";
-import { NavUser } from "./nav-user";
+import { NavUser } from "./dashboard/nav-user";
 import {
 	Sidebar,
 	SidebarContent,

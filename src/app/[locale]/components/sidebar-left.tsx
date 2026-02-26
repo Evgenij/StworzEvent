@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { NavFavorites } from "./nav-favorites";
-import { NavSecondary } from "./nav-secondary";
+import { NavSecondary } from "./dashboard/nav-secondary";
 import { NavAdditional } from "./nav-additional";
 import { NavWorkspaces } from "./nav-workspaces";
 import { TeamSwitcher } from "./team-switcher";
@@ -12,6 +12,7 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
+	SidebarProvider,
 	SidebarRail,
 	SidebarSeparator,
 } from "@/shadcn/ui/sidebar";
@@ -31,7 +32,7 @@ import {
 	IconTerminal,
 	IconWaveSine,
 } from "@tabler/icons-react";
-import { NavMain } from "./nav-main";
+import { NavMain } from "./dashboard/nav-main";
 import {
 	DASHBOARD_ROUTE,
 	EVENTS_ROUTE,
@@ -228,19 +229,43 @@ function SidebarInner({
 	};
 
 	return (
-		<Sidebar className="border-r-0" {...props}>
-			<SidebarHeader>
-				<TeamSwitcher teams={data.teams} />
-				<NavMain items={data.navMain} />
-			</SidebarHeader>
-			<SidebarContent>
-				<NavSecondary items={data.navSecondary} />
-				{/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
-			</SidebarContent>
-			<SidebarFooter className="p-0">
-				<NavAdditional items={data.navAdditional} className="mt-auto" />
-			</SidebarFooter>
-		</Sidebar>
+		<SidebarProvider>
+			<AppSidebar />
+			<SidebarInset>
+				<header className="flex h-16 shrink-0 items-center gap-2">
+					<div className="flex items-center gap-2 px-4">
+						<SidebarTrigger className="-ml-1" />
+						<Separator
+							orientation="vertical"
+							className="mr-2 data-[orientation=vertical]:h-4"
+						/>
+						<Breadcrumb>
+							<BreadcrumbList>
+								<BreadcrumbItem className="hidden md:block">
+									<BreadcrumbLink href="#">
+										Build Your Application
+									</BreadcrumbLink>
+								</BreadcrumbItem>
+								<BreadcrumbSeparator className="hidden md:block" />
+								<BreadcrumbItem>
+									<BreadcrumbPage>
+										Data Fetching
+									</BreadcrumbPage>
+								</BreadcrumbItem>
+							</BreadcrumbList>
+						</Breadcrumb>
+					</div>
+				</header>
+				<div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+					<div className="grid auto-rows-min gap-4 md:grid-cols-3">
+						<div className="bg-muted/50 aspect-video rounded-xl" />
+						<div className="bg-muted/50 aspect-video rounded-xl" />
+						<div className="bg-muted/50 aspect-video rounded-xl" />
+					</div>
+					<div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+				</div>
+			</SidebarInset>
+		</SidebarProvider>
 	);
 }
 

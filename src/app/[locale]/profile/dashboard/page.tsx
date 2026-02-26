@@ -5,7 +5,7 @@ import { Button } from "@/shadcn/ui/button";
 import { headers } from "next/headers";
 import React from "react";
 import SignOutBtn from "../../components/sign-out-btn";
-import EventsList from "../../components/events";
+import EventsList from "../../components/events/events-list";
 import { Typography } from "../../components/typography/typography";
 import { Blockquote } from "../../components/typography/blockquote";
 import { getTranslations } from "next-intl/server";

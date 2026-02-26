@@ -25,31 +25,17 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/shadcn/ui/sidebar";
-import { UserType } from "@/types/user";
-import { UserRole } from "@prisma/client";
-import { IconClipboardData, IconLogout } from "@tabler/icons-react";
-import { Link, useRouter } from "@/i18n/routing";
-import { ADMIN_DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
-import { signOut } from "@/lib/auth-client";
 
-export function NavUser({ user }: { user: UserType }) {
+export function NavUser({
+	user,
+}: {
+	user: {
+		name: string;
+		email: string;
+		avatar: string;
+	};
+}) {
 	const { isMobile } = useSidebar();
-	const router = useRouter();
-
-	//console.log(user);
-
-	async function handleSignOut() {
-		await signOut({
-			fetchOptions: {
-				onError: (ctx) => {
-					console.log(ctx.error.message);
-				},
-				onSuccess: () => {
-					router.push(SIGNIN_ROUTE);
-				},
-			},
-		});
-	}
 
 	return (
 		<SidebarMenu>
@@ -62,8 +48,8 @@ export function NavUser({ user }: { user: UserType }) {
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
 								<AvatarImage
-									src={user.image ?? undefined}
-									alt={user.name ?? undefined}
+									src={user.avatar}
+									alt={user.name}
 								/>
 								<AvatarFallback className="rounded-lg">
 									CN
@@ -83,15 +69,15 @@ export function NavUser({ user }: { user: UserType }) {
 					<DropdownMenuContent
 						className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
 						side={isMobile ? "bottom" : "right"}
-						align="start"
+						align="end"
 						sideOffset={4}
 					>
 						<DropdownMenuLabel className="p-0 font-normal">
 							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 								<Avatar className="h-8 w-8 rounded-lg">
 									<AvatarImage
-										src={user.image ?? undefined}
-										alt={user.name ?? undefined}
+										src={user.avatar}
+										alt={user.name}
 									/>
 									<AvatarFallback className="rounded-lg">
 										CN
@@ -116,17 +102,6 @@ export function NavUser({ user }: { user: UserType }) {
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
-							{user.role === UserRole.ADMIN && (
-								<Link
-									href={ADMIN_DASHBOARD_ROUTE}
-									className="default"
-								>
-									<DropdownMenuItem>
-										<IconClipboardData />
-										Admin panel
-									</DropdownMenuItem>
-								</Link>
-							)}
 							<DropdownMenuItem>
 								<BadgeCheck />
 								Account
@@ -141,8 +116,8 @@ export function NavUser({ user }: { user: UserType }) {
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={handleSignOut}>
-							<IconLogout />
+						<DropdownMenuItem>
+							<LogOut />
 							Log out
 						</DropdownMenuItem>
 					</DropdownMenuContent>
