@@ -3,9 +3,18 @@ generator client {
   // output   = "../src/generated/prisma"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "erd.pdf" // Файл будет создан в папке prisma
+}
+
 datasource db {
   provider = "postgresql"
 }
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
 
 enum UserRole {
   USER
@@ -85,18 +94,25 @@ enum Currency {
   UAH
 }
 
+enum RefundStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
 enum Country {
-  PL
-  US
-  UK
-  UA
-  DE
-  FR
-  IT
-  ES
-  CA
-  AU
-  NZ
+  COUNTRY_PL
+  COUNTRY_US
+  COUNTRY_UK
+  COUNTRY_UA
+  COUNTRY_DE
+  COUNTRY_FR
+  COUNTRY_IT
+  COUNTRY_ES
+  COUNTRY_CA
+  COUNTRY_AU
+  COUNTRY_NZ
 }
 
 enum VatStatus {
@@ -138,11 +154,15 @@ model User {
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  sessions            Session[]
-  accounts            Account[]
-  organization        Organization?         @relation(fields: [organizationId], references: [id])
-  organizationMembers OrganizationMembers[]
-  organizationId      String?
+  sessions Session[]
+  accounts Account[]
+
+  // Членство в организациях (через join-таблицу — единственная связь)
+  organizationMembers OrganizationMember[]
+
+  // Заказы пользователя
+  orders   Order[]
+  payments Payment[]
 
   @@unique([email])
   @@map("users")
@@ -199,7 +219,9 @@ model Verification {
   @@map("verifications")
 }
 
-// My tables ----------------------------------------------------------
+// ─────────────────────────────────────────────
+// INVITATION
+// ─────────────────────────────────────────────
 
 model Invitation {
   id String @id @default(uuid())
@@ -218,23 +240,9 @@ model Invitation {
   @@map("invitations")
 }
 
-model Event {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  title    String      @map("title")
-  startsAt DateTime    @map("starts_at")
-  status   EventStatus @default(DRAFT) @map("status")
-
-  // tickets Tickets[]
-  // orders  Orders[]
-
-  organizationId String       @map("organization_id")
-  organization   Organization @relation(fields: [organizationId], references: [id])
-
-  @@map("events")
-}
+// ─────────────────────────────────────────────
+// ORGANIZATION
+// ─────────────────────────────────────────────
 
 model Organization {
   id   String @id @default(uuid())
@@ -264,18 +272,14 @@ model Organization {
   industry           String? // branża / PKD opisowo
   mainPkdCode        String? // np. "62.01.Z"
 
-  //ownerId String @unique
-  //owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // subscriptions         Subscriptions[]
   events                Event[]
-  organizationMembers   OrganizationMembers[]
+  organizationMembers   OrganizationMember[]
   organizationAddresses OrganizationAddress[]
   // usages              Usages[]
-  users                 User[]
 
   @@map("organizations")
 }
@@ -291,7 +295,7 @@ model OrganizationAddress {
   zipCode         String
   city            String
   voivodeship     String? // województwo – przydatne w raportach
-  country         String  @default("PL")
+  country         Country @default(COUNTRY_PL)
 
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id])
@@ -301,7 +305,7 @@ model OrganizationAddress {
   @@map("addresses")
 }
 
-model OrganizationMembers {
+model OrganizationMember {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -317,4 +321,240 @@ model OrganizationMembers {
   @@index([userId], name: "idx_organization_members_user_id")
   @@index([organizationId], name: "idx_organization_members_organization_id")
   @@map("organization_members")
+}
+
+// ─────────────────────────────────────────────
+// EVENT CATEGORY
+// ─────────────────────────────────────────────
+
+model EventCategory {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name String  @unique @map("name") // напр. "Концерт", "Конференция"
+  slug String  @unique @map("slug") // напр. "concert", "conference"
+  icon String? @map("icon") // эмодзи или имя иконки
+
+  // Иерархия: подкатегории (напр. Музыка → Рок, Джаз)
+  parentId String?         @map("parent_id")
+  parent   EventCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children EventCategory[] @relation("CategoryHierarchy")
+
+  events EventCategoryOnEvent[]
+
+  @@index([parentId], name: "idx_event_categories_parent_id")
+  @@map("event_categories")
+}
+
+/// Join-таблица для many-to-many: Event ↔ EventCategory
+model EventCategoryOnEvent {
+  eventId    String @map("event_id")
+  categoryId String @map("category_id")
+
+  event    Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  category EventCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, categoryId])
+  @@index([categoryId], name: "idx_event_category_on_event_category_id")
+  @@map("event_categories_on_events")
+}
+
+// ─────────────────────────────────────────────
+// EVENT
+// ─────────────────────────────────────────────
+
+model Event {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title       String      @map("title")
+  description String?     @map("description")
+  startsAt    DateTime    @map("starts_at")
+  status      EventStatus @default(DRAFT) @map("status")
+
+  organizationId String       @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  tickets    Ticket[]
+  orders     Order[]
+  categories EventCategoryOnEvent[]
+
+  @@index([organizationId], name: "idx_events_organization_id")
+  @@index([status], name: "idx_events_status")
+  @@map("events")
+}
+
+// ─────────────────────────────────────────────
+// TICKET
+// ─────────────────────────────────────────────
+
+model Ticket {
+  id        String   @id @default(uuid())
+  eventId   String   @map("event_id")
+  name      String   @map("name")
+  /// Цена в минимальных единицах валюты (гроши, центы)
+  price     Int      @map("price")
+  /// Общее количество билетов (null = безлимитно)
+  quantity  Int?     @map("quantity")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  events     Event       @relation(fields: [eventId], references: [id])
+  orderItems OrderItem[]
+
+  // sold считается через агрегацию OrderItem — не хранится денормализованно
+
+  @@index([eventId], name: "idx_tickets_event_id")
+  @@map("tickets")
+}
+
+// ─────────────────────────────────────────────
+// ORDER
+// ─────────────────────────────────────────────
+
+model Order {
+  id      String @id @default(uuid())
+  eventId String @map("event_id")
+
+  /// Пользователь (null — гостевой заказ)
+  userId String? @map("user_id")
+  /// Email всегда сохраняем (для гостей и зарегистрированных)
+  email  String  @map("email")
+
+  status   OrderStatus @default(PENDING) @map("status")
+  /// Итоговая сумма в минимальных единицах валюты
+  total    Int         @default(0) @map("total")
+  currency Currency    @default(PLN) @map("currency")
+
+  // Данные покупателя (денормализованы для истории)
+  buyerName    String? @map("buyer_name")
+  buyerSurname String? @map("buyer_surname")
+  buyerPhone   String? @map("buyer_phone")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  events     Event       @relation(fields: [eventId], references: [id])
+  user       User?       @relation(fields: [userId], references: [id])
+  payments   Payment[]
+  orderItems OrderItem[]
+
+  @@index([eventId], name: "idx_orders_event_id")
+  @@index([userId], name: "idx_orders_user_id")
+  @@index([status], name: "idx_orders_status")
+  @@map("orders")
+}
+
+// ─────────────────────────────────────────────
+// ORDER ITEM
+// ─────────────────────────────────────────────
+
+model OrderItem {
+  id       String @id @default(uuid())
+  orderId  String @map("order_id")
+  ticketId String @map("ticket_id")
+
+  quantity Int @default(1) @map("quantity")
+  /// Цена на момент покупки (snapshot)
+  price    Int @default(0) @map("price")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  // deletedAt убран — позиции заказа не удаляются мягко,
+  // отмена происходит через OrderStatus
+
+  orders  Order  @relation(fields: [orderId], references: [id])
+  tickets Ticket @relation(fields: [ticketId], references: [id])
+
+  participants Participant[]
+
+  @@index([ticketId], name: "idx_order_item_ticket_id")
+  @@index([orderId], name: "idx_order_item_order_id")
+  @@map("order_items")
+}
+
+// ─────────────────────────────────────────────
+// Participant (кому принадлежит билет - участник)
+// ─────────────────────────────────────────────
+
+model Participant {
+  id          String @id @default(uuid())
+  orderItemId String @map("order_item_id")
+
+  name    String  @map("name")
+  surname String  @map("surname")
+  email   String? @map("email")
+  phone   String? @map("phone")
+
+  /// Уникальный код для QR / чекина
+  checkInCode String    @unique @default(uuid()) @map("check_in_code")
+  checkedInAt DateTime? @map("checked_in_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id])
+
+  @@index([orderItemId], name: "idx_attendees_order_item_id")
+  @@index([checkInCode], name: "idx_attendees_check_in_code")
+  @@map("participants")
+}
+
+// ─────────────────────────────────────────────
+// PAYMENT
+// ─────────────────────────────────────────────
+
+model Payment {
+  id      String  @id @default(uuid())
+  /// Пользователь может быть null (гостевой заказ)
+  userId  String? @map("user_id")
+  orderId String  @map("order_id")
+
+  provider          String?       @map("provider")
+  providerPaymentId String?       @unique @map("provider_payment_id")
+  /// Сумма в минимальных единицах валюты
+  amount            Int           @default(0)
+  currency          Currency      @default(PLN)
+  status            PaymentStatus @default(CREATED) @map("status")
+
+  orders Order @relation(fields: [orderId], references: [id])
+  user   User? @relation(fields: [userId], references: [id])
+
+  refunds Refund[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([orderId], name: "idx_payments_order_id")
+  @@index([status], name: "idx_payments_status")
+  @@index([userId], name: "idx_payments_user_id")
+  @@map("payments")
+}
+
+// ─────────────────────────────────────────────
+// REFUND
+// ─────────────────────────────────────────────
+
+model Refund {
+  id        String @id @default(uuid())
+  paymentId String @map("payment_id")
+
+  /// Сумма возврата в минимальных единицах валюты
+  amount   Int          @map("amount")
+  currency Currency     @default(PLN)
+  reason   String?      @map("reason")
+  status   RefundStatus @default(PENDING) @map("status")
+
+  providerRefundId String? @unique @map("provider_refund_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  payment Payment @relation(fields: [paymentId], references: [id])
+
+  @@index([paymentId], name: "idx_refunds_payment_id")
+  @@map("refunds")
 }

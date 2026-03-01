@@ -87,6 +87,7 @@
 		"dotenv": "^17.2.3",
 		"postcss": "^8.5",
 		"prisma": "^7.4.1",
+		"prisma-erd-generator": "^2.4.2",
 		"react-hook-form": "^7.71.1",
 		"sass": "^1.97.3",
 		"tailwindcss": "^4.1.9",

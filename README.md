@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+<img src="public/logo.png" alt="StworzEvent Logo" width="120" />
 
-First, run the development server:
+# 🎉 StworzEvent.pl
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Platforma do tworzenia i zarządzania wydarzeniami dla profesjonalnych organizatorów**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](#licencja)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[![Status](https://img.shields.io/badge/Status-MVP%20in%20Development-orange?style=flat-square)]()
+[![Launch](https://img.shields.io/badge/Launch-June%202025-blue?style=flat-square)]()
+[![Deploy](https://img.shields.io/badge/Live-stworzevent.pl-green?style=flat-square)](https://stworzevent-yevheniis-projects-6848ffbb.vercel.app)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+</div>
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📖 O projekcie
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**StworzEvent.pl** to nowoczesna platforma webowa dla organizatorów wydarzeń, która wykracza daleko poza zwykłe zarządzanie listą uczestników. Oferuje kompletny zestaw narzędzi do planowania, promocji i kontroli wydarzeń — wszystko w jednym miejscu.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ✨ Kluczowe funkcje
 
-## Deploy on Vercel
+- 📋 **Tworzenie i zarządzanie wydarzeniami** — intuicyjny panel organizatora z pełną kontrolą nad wydarzeniem
+- 📧 **Powiadomienia dla uczestników** — automatyczna wysyłka e-maili i powiadomień do zapisanych uczestników
+- 📲 **Kody QR do wejścia** — generowanie i skanowanie kodów QR dla szybkiej weryfikacji uczestników przy wejściu
+- 📊 **Analityka i statystyki** — szczegółowe dane o frekwencji, rejestracjach i aktywności uczestników
+- 🎟️ **Sprzedaż biletów** *(wkrótce)* — zintegrowany system płatności dla wydarzeń biletowanych
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Stack technologiczny
+
+| Warstwa | Technologia |
+|---|---|
+| **Framework** | [Next.js 15](https://nextjs.org/) (App Router) |
+| **Język** | [TypeScript](https://www.typescriptlang.org/) |
+| **Baza danych** | [PostgreSQL](https://www.postgresql.org/) + [Prisma ORM](https://www.prisma.io/) |
+| **Autentykacja** | [Better Auth](https://www.better-auth.com/) |
+| **i18n** | next-intl (`/messages`) |
+| **UI** | Tailwind CSS + shadcn/ui |
+| **Deploy** | [Vercel](https://vercel.com/) |
+
+---
+
+## 🗺️ Roadmap
+
+Projekt jest aktualnie w fazie aktywnego rozwoju MVP.
+
+| Etap | Status | Termin |
+|---|---|---|
+| 🏗️ Budowa MVP | 🔄 W trakcie | — |
+| 🚀 Launch MVP | ⏳ Planowany | **Czerwiec 2025** |
+| 🎟️ Sprzedaż biletów | 📋 Zaplanowane | Po launchu |
+| 📈 Zaawansowane funkcje | 📋 Zaplanowane | Po launchu |
+
+---
+
+## 🤝 Contributing
+
+Projekt jest aktualnie w fazie MVP i nie przyjmujemy zewnętrznych kontrybucji. Po oficjalnym launchu zasady współpracy zostaną opublikowane tutaj.
+
+Masz pomysł lub znalazłeś błąd? Otwórz [Issue](https://github.com/Evgenij/StworzEvent/issues) — chętnie przeczytamy!
+
+---
+
+## 📄 Licencja
+
+Copyright © 2025 StworzEvent.pl — Wszelkie prawa zastrzeżone.
+
+Kod źródłowy tego projektu jest własnością prywatną i nie może być kopiowany, modyfikowany ani dystrybuowany bez pisemnej zgody właściciela.
+
+---
+
+<div align="center">
+
+Zbudowane z ❤️ przez [Evgenij](https://github.com/Evgenij)
+
+🌐 [stworzevent.pl](https://stworzevent-yevheniis-projects-6848ffbb.vercel.app)
+
+</div>
