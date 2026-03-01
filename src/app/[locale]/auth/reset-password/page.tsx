@@ -1,7 +1,6 @@
 import React from "react";
-import { Header } from "#/components/header/header";
-import ResetPasswordForm from "#/components/forms/auth/reset-password-form";
-import ReturnBtn from "#/components/return-btn";
+import ResetPasswordForm from "@/features/auth/components/forms/reset-password-form";
+import ReturnBtn from "@/features/routing/components/return-btn";
 import { SIGNIN_ROUTE } from "@/helpers/routes";
 
 type PageProps = {

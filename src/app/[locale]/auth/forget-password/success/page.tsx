@@ -1,10 +1,10 @@
-import { Header } from "#/components/header/header";
 import { SIGNIN_ROUTE } from "@/helpers/routes";
 import { Link } from "@/i18n/routing";
-import { Button } from "@/shadcn/ui/button";
+import { Button } from "@/components/shadcn/ui/button";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import React from "react";
+import { Typography } from "@/components/shared/typography/typography";
 
 const SuccessPage = () => {
 	const t = useTranslations("ForgetPasswordForm");
@@ -12,9 +12,10 @@ const SuccessPage = () => {
 	return (
 		<div className="flex flex-col gap-9">
 			<header className="flex flex-col gap-3 items-center">
-				<Header as={"h2"} className="text-center">
+				<Typography variant="h2" className="text-center text-sm">
 					{t("success.title")}
-				</Header>
+				</Typography>
+
 				<p className="text-muted-foreground text-center text-sm">
 					{t.rich("success.subtitle", {
 						lineBreak: () => <br />,

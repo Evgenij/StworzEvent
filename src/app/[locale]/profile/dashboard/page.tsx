@@ -1,14 +1,12 @@
 import { ADMIN_DASHBOARD_ROUTE, HOME_ROUTE } from "@/helpers/routes";
 import { Link } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
-import { Button } from "@/shadcn/ui/button";
 import { headers } from "next/headers";
 import React from "react";
-import SignOutBtn from "../../components/sign-out-btn";
-import EventsList from "../../components/events/events-list";
-import { Typography } from "../../components/typography/typography";
-import { Blockquote } from "../../components/typography/blockquote";
+import { Typography } from "@/components/shared/typography/typography";
+import { Blockquote } from "@/components/shared/typography/blockquote";
 import { getTranslations } from "next-intl/server";
+import { Button } from "@/components/shadcn/ui/button";
 
 const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 	const session = await auth.api.getSession({ headers: await headers() });
@@ -39,8 +37,6 @@ const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 						<Button variant={"outline"}>Admin dashboard</Button>
 					</Link>
 				)}
-
-				<SignOutBtn />
 			</header>
 			<hr />
 			<div className="flex gap-3">

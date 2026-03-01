@@ -1,4 +1,4 @@
-import { Button } from "@/shadcn/ui/button";
+import { Button } from "@/components/shadcn/ui/button";
 import {
 	ADMIN_DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
@@ -6,7 +6,7 @@ import {
 	UI_ROUTE,
 } from "@/helpers/routes";
 import { Link, redirect } from "@/i18n/routing";
-import GetSessionBtn from "./components/get-session-btn";
+import GetSessionBtn from "../../features/auth/components/get-session-btn";
 
 const links = [
 	{

@@ -4,9 +4,10 @@ import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Poppins } from "next/font/google";
-import { Toaster } from "@/shadcn/ui/sonner";
 import "../globals.css";
 import "@/app/base.scss";
+import { QueryProvider } from "@/providers/query-provider";
+import { Toaster } from "@/components/shadcn/ui/sonner";
 
 const fontPoppins = Poppins({
 	subsets: ["latin"],
@@ -32,10 +33,12 @@ export default async function RootLayout({
 	return (
 		<html lang={locale} className={`${fontPoppins.variable} h-screen`}>
 			<body className="antialiased h-full">
-				<NextIntlClientProvider messages={messages}>
-					<Toaster />
-					{children}
-				</NextIntlClientProvider>
+				<QueryProvider>
+					<NextIntlClientProvider messages={messages}>
+						<Toaster />
+						{children}
+					</NextIntlClientProvider>
+				</QueryProvider>
 				<SpeedInsights />
 				<Analytics />
 			</body>

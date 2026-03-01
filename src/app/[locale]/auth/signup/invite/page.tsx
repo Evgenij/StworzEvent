@@ -1,4 +1,4 @@
-import SignUpInviteForm from "@/app/[locale]/components/forms/auth/sign-up-invite-form";
+import SignUpInviteForm from "@/features/auth/components/forms/sign-up-invite-form";
 
 type PageProps = {
 	searchParams: Promise<{ token: string }>;

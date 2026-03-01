@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/shadcn/ui/button";
+import { Button } from "@/components/shadcn/ui/button";
 import { sendEmailAction } from "@/actions/send-email.action";
 import { TypeMail } from "@/types/enums";
 import { SIGNUP_INVITE_ROUTE } from "@/helpers/routes";

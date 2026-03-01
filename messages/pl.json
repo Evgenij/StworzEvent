@@ -1,4 +1,10 @@
 {
+	"Metadata": {
+		"auth": {
+			"title": "Logowanie | StworzEvent.pl",
+			"description": "Zaloguj się do StworzEvent.pl"
+		}
+	},
 	"Errors": {
 		"auth": {
 			"INVALID_EMAIL_OR_PASSWORD": "Email lub hasło są nieprawidłowe",
