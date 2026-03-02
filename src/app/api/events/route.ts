@@ -13,7 +13,7 @@ export const GET = withApiHandler(async (req: Request) => {
 		throw new ApiError(ErrorCode.UNAUTHORIZED);
 	}
 
-	const organizationId = await prisma.organizationMembers.findFirst({
+	const organizationId = await prisma.organizationMember.findFirst({
 		where: {
 			userId: session.user.id,
 			memberRole: MemberRole.OWNER,

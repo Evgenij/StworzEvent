@@ -45,6 +45,7 @@ import {
 } from "@/components/shadcn/ui/tooltip";
 import { ErrorCode } from "@/types/error-code";
 import { Typography } from "@/components/shared/typography/typography";
+import { validateEmailAction } from "@/actions/auth/validate-email.action";
 
 export default function SignInForm() {
 	const router = useRouter();
@@ -136,31 +137,44 @@ export default function SignInForm() {
 				} else {
 					// Обычный email + password
 					form.clearErrors();
-					const formData = new FormData();
-					formData.append("email", data.email);
-					if (data.password)
-						formData.append("password", data.password);
+					// 1. Валидация через server action (без signIn)
+					const validation = await validateEmailAction(
+						data.email,
+						data.password!,
+					);
 
-					const result = await signInEmailAction(formData);
-
-					if (result.success) {
-						toast.success(t("loginSuccess"));
-						router.push(DASHBOARD_ROUTE);
-						router.refresh(); // на всякий случай обновляем сессию
-					} else {
-						if (result.code === ErrorCode.INVALID_PASSWORD) {
-							form.setError("password", {
-								type: "manual",
-								message: tErrors("auth.INVALID_PASSWORD"),
-							});
-						} else if (result.code === ErrorCode.USER_NOT_FOUND) {
+					if (!validation.success) {
+						if (validation.code === ErrorCode.USER_NOT_FOUND) {
 							form.setError("email", {
 								type: "manual",
 								message: tErrors("auth.USER_NOT_FOUND"),
 							});
+						} else if (
+							validation.code === ErrorCode.VALIDATION_ERROR
+						) {
+							toast.error(tErrors("auth.default"));
+						}
+						return;
+					}
+
+					// 2. Авторизация через клиент (куки устанавливаются корректно)
+					const { error } = await signIn.email({
+						email: data.email,
+						password: data.password!,
+						callbackURL: DASHBOARD_ROUTE,
+					});
+
+					if (error) {
+						if (error.code === "INVALID_EMAIL_OR_PASSWORD") {
+							form.setError("password", {
+								type: "manual",
+								message: tErrors("auth.INVALID_PASSWORD"),
+							});
 						} else {
 							toast.error(tErrors("auth.default"));
 						}
+					} else {
+						toast.success(t("loginSuccess"));
 					}
 				}
 			} catch (error) {

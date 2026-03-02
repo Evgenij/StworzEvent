@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import React from "react";
 import { AppSidebar } from "@/features/layout";
 import { SiteHeader } from "@/features/layout";
+import { UserRole } from "@prisma/client";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -29,20 +30,28 @@ const ProfileLayout = async ({
 		return null;
 	}
 
+	console.log(session.user);
+
 	return (
 		<div className="[--header-height:calc(--spacing(14))]">
 			<SidebarProvider className="flex flex-col">
 				<SiteHeader />
 				<div className="flex flex-1">
-					<AppSidebar />
+					<AppSidebar
+						user={{
+							...session.user,
+							role: session.user.role ?? UserRole.USER,
+						}}
+					/>
 					<SidebarInset>
 						<div className="flex flex-1 flex-col gap-4 p-4">
-							<div className="grid auto-rows-min gap-4 md:grid-cols-3">
+							{children}
+							{/* <div className="grid auto-rows-min gap-4 md:grid-cols-3">
 								<div className="bg-muted/50 aspect-video rounded-xl" />
 								<div className="bg-muted/50 aspect-video rounded-xl" />
 								<div className="bg-muted/50 aspect-video rounded-xl" />
 							</div>
-							<div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" />
+							<div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" /> */}
 						</div>
 					</SidebarInset>
 				</div>

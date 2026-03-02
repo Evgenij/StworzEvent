@@ -135,20 +135,36 @@
 		"events": "Wydarzenia",
 		"default": ""
 	},
-	"SidebarLeft": {
+	"Sidebar": {
 		"user": {
+			"groups": [
+				{
+					"name": "Platforma",
+					"icon": "SquareTerminal"
+				}
+			],
 			"dashboard": "Panel główny",
 			"notifications": "Powiadomienia"
 		},
 		"organizer": {
-			"dashboard": "Panel główny",
-			"events": "Wydarzenia",
-			"notifications": "Powiadomienia",
-			"settings": "Ustawienia"
+			"groups": {
+				"main": "Platforma"
+			},
+			"pages": {
+				"dashboard": "Dashboard",
+				"events": "Wydarzenia",
+				"notifications": "Powiadomienia"
+			}
 		},
 		"admin": {
-			"dashboard": "Dashboard",
-			"notifications": "Powiadomienia"
+			"groups": {
+				"main": "Platforma"
+			},
+			"pages": {
+				"dashboard": "Dashboard",
+				"events": "Wydarzenia",
+				"notifications": "Powiadomienia"
+			}
 		}
 	},
 	"Profile": {

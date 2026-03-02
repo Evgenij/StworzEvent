@@ -32,6 +32,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 import { ErrorCode } from "@/types/error-code";
 import { Typography } from "@/components/shared/typography/typography";
+import { signIn } from "@/lib/auth-client";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");
@@ -66,20 +67,19 @@ export default function SignUpForm() {
 	});
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
-		// Do something with the form values.
 		setIsPending(true);
 
 		startTransition(async () => {
 			try {
-				// Создаем FormData из валидных данных
-				const formData = new FormData();
+				form.clearErrors();
 
-				formData.append("name", data.user.name);
-				formData.append("surname", data.user.surname);
-				formData.append("email", data.email);
-				formData.append("password", data.password);
-
-				const result = await signUpEmailAction(formData);
+				// 1. Регистрация через server action
+				const result = await signUpEmailAction({
+					name: data.user.name,
+					surname: data.user.surname,
+					email: data.email,
+					password: data.password,
+				});
 
 				if (!result.success) {
 					if (
@@ -92,26 +92,28 @@ export default function SignUpForm() {
 								"auth.USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL",
 							),
 						});
+					} else {
+						toast.error(tErrors("auth.default"));
 					}
 					return;
 				}
 
-				console.log(result);
+				// 2. Автологин через клиент (куки устанавливаются корректно)
+				const { error } = await signIn.email({
+					email: data.email,
+					password: data.password,
+					callbackURL: DASHBOARD_ROUTE,
+				});
 
-				// Успех регистрации → автоматический логин
-				const signInResult = await signInEmailAction(formData);
-
-				if (!signInResult.success) {
-					toast.error(
-						tErrors(`auth.${signInResult.code}`) ||
-							tErrors("auth.signInFailed"),
-					);
+				if (error) {
+					// Зарегистрировались, но логин не удался → на страницу входа
+					toast.success(t("successMessage.header"));
+					router.push(SIGNIN_ROUTE);
 				} else {
 					toast.success(t("successMessage.header"), {
 						description: t("successMessage.text"),
 						classNames: { description: "!text-foreground/70" },
 					});
-					router.push(DASHBOARD_ROUTE);
 				}
 			} catch (error) {
 				console.error("Sign up error:", error);

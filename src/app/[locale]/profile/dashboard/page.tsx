@@ -7,6 +7,7 @@ import { Typography } from "@/components/shared/typography/typography";
 import { Blockquote } from "@/components/shared/typography/blockquote";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/shadcn/ui/button";
+import { PageHeader } from "@/features/layout";
 
 const DashboardPage = async ({ params }: { params: { locale: string } }) => {
 	const session = await auth.api.getSession({ headers: await headers() });

@@ -1,22 +1,28 @@
-"use client";
-
 import { useSession } from "@/lib/auth-client";
+import { UserType } from "@/types/user";
 import { UserRole } from "@prisma/client";
 import { useMemo } from "react";
 
 export function useUser() {
-	const { data: session, isPending: isSessionLoading } = useSession();
-	const isLoading = isSessionLoading;
+	const { data: session, isPending: isLoading } = useSession();
 
-	//console.log("useUser", JSON.stringify(session));
+	return useMemo(() => {
+		const rawUser = session?.user ?? null;
 
-	return useMemo(
-		() => ({
-			user: session?.user ?? null,
-			isOrganizer: session?.user?.role === UserRole.ORGANIZER,
+		const user: UserType | null = rawUser
+			? {
+					email: rawUser.email,
+					name: rawUser.name,
+					image: rawUser.image,
+					role: rawUser.role as UserRole,
+				}
+			: null;
+
+		return {
+			user,
+			isOrganizer: user?.role === UserRole.ORGANIZER,
 			session,
-			isLoading,
-		}),
-		[session],
-	);
+			isLoading: isLoading || (!user && !!session), // ← фикс race condition
+		};
+	}, [session, isLoading]);
 }

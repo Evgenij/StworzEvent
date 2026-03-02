@@ -27,18 +27,20 @@ import {
 
 export function NavProjects({
 	projects,
+	t,
 }: {
 	projects: {
 		name: string;
 		url: string;
 		icon: LucideIcon;
 	}[];
+	t: (key: string) => string;
 }) {
 	const { isMobile } = useSidebar();
 
 	return (
 		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-			<SidebarGroupLabel>Projects</SidebarGroupLabel>
+			<SidebarGroupLabel>{t("groups.main")}</SidebarGroupLabel>
 			<SidebarMenu>
 				{projects.map((item) => (
 					<SidebarMenuItem key={item.name}>

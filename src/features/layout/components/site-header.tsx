@@ -2,19 +2,12 @@
 
 import { SidebarIcon } from "lucide-react";
 
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbPage,
-	BreadcrumbSeparator,
-} from "@/components/shadcn/ui/breadcrumb";
 import { Button } from "@/components/shadcn/ui/button";
 import { Separator } from "@/components/shadcn/ui/separator";
 import { useSidebar } from "@/components/shadcn/ui/sidebar";
-import { IconSearch } from "@tabler/icons-react";
+import { IconBellRinging, IconPlus } from "@tabler/icons-react";
 import Breadcrumbs from "../../../components/shared/breadcrumbs";
+import { Badge } from "@/components/shadcn/ui/badge";
 
 export default function SiteHeader() {
 	const { toggleSidebar } = useSidebar();
@@ -30,13 +23,27 @@ export default function SiteHeader() {
 				>
 					<SidebarIcon />
 				</Button>
-				<Separator orientation="vertical" className="mr-2 h-4" />
+				<Separator orientation="vertical" className="mr-2 h-14" />
 				<div className="flex w-full justify-between items-center">
 					<Breadcrumbs />
-					<Button>
-						<IconSearch />
-						Search
-					</Button>
+					<div className="flex gap-2">
+						<div className="relative">
+							<Button variant="outline" size="icon">
+								<IconBellRinging />
+								<Badge
+									variant="destructive"
+									className="absolute -top-2 -right-2"
+								>
+									3
+								</Badge>
+							</Button>
+						</div>
+
+						<Button>
+							<IconPlus />
+							Nowe wydarzenie
+						</Button>
+					</div>
 				</div>
 			</div>
 		</header>

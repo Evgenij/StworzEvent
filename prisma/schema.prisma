@@ -3,11 +3,6 @@ generator client {
   // output   = "../src/generated/prisma"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-  output   = "erd.pdf" // Файл будет создан в папке prisma
-}
-
 datasource db {
   provider = "postgresql"
 }
@@ -137,10 +132,15 @@ enum AddressType {
   CORRESPONDENCE // do korespondencji
 }
 
+enum PlanInterval {
+  MONTHLY
+  YEARLY
+}
+
 model User {
   id            String   @id @default(uuid())
   name          String   @map("name")
-  surname       String   @map("surname")
+  surname       String?  @map("surname")
   email         String   @map("email")
   emailVerified Boolean  @default(false) @map("email_verified")
   role          UserRole @default(USER) @map("user_role")
@@ -276,10 +276,12 @@ model Organization {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // subscriptions         Subscriptions[]
-  events                Event[]
-  organizationMembers   OrganizationMember[]
-  organizationAddresses OrganizationAddress[]
+  events                    Event[]
+  organizationMembers       OrganizationMember[]
+  organizationAddresses     OrganizationAddress[]
   // usages              Usages[]
+  organizationSubscriptions OrganizationSubscription[]
+  organizationFeatures      OrganizationFeature[]
 
   @@map("organizations")
 }
@@ -557,4 +559,128 @@ model Refund {
 
   @@index([paymentId], name: "idx_refunds_payment_id")
   @@map("refunds")
+}
+
+// ─────────────────────────────────────────────
+// BILLING — Тарифы и функции
+// ─────────────────────────────────────────────
+
+/// Тариф (Starter, Pro, Business и т.д.)
+model Plan {
+  id          String  @id @default(uuid())
+  name        String  @unique @map("name") // "Starter", "Pro", "Business"
+  slug        String  @unique @map("slug") // "starter", "pro", "business"
+  description String? @map("description")
+  isActive    Boolean @default(true) @map("is_active") // можно скрыть устаревший тариф
+
+  /// Цена в минимальных единицах валюты
+  priceMonthly Int      @map("price_monthly")
+  priceYearly  Int      @map("price_yearly") // обычно дешевле чем 12 * monthly
+  currency     Currency @default(PLN)
+
+  /// ID продукта в Lemon Squeezy
+  lsProductId      String? @map("ls_product_id")
+  lsVariantMonthly String? @map("ls_variant_monthly") // variant для monthly
+  lsVariantYearly  String? @map("ls_variant_yearly") // variant для yearly
+
+  /// Лимиты включённые в тариф
+  maxEvents      Int? @map("max_events") // null = безлимитно
+  maxTeamMembers Int? @map("max_team_members")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  features      PlanFeature[]
+  subscriptions OrganizationSubscription[]
+
+  @@map("plans")
+}
+
+/// Функции включённые в тариф
+model PlanFeature {
+  planId     String     @map("plan_id")
+  featureKey FeatureKey @map("feature_key")
+
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@id([planId, featureKey])
+  @@map("plan_features")
+}
+
+/// Отдельная функция которую можно купить à la carte
+model Feature {
+  id          String     @id @default(uuid())
+  featureKey  FeatureKey @unique @map("feature_key")
+  name        String     @map("name")
+  description String?    @map("description")
+
+  /// Цена разовой покупки (дороже чем в тарифе)
+  price    Int      @map("price")
+  currency Currency @default(PLN)
+
+  /// ID продукта в Lemon Squeezy (one-time purchase)
+  lsProductId String? @map("ls_product_id")
+  lsVariantId String? @map("ls_variant_id")
+
+  isActive Boolean @default(true) @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  organizationFeatures OrganizationFeature[]
+
+  @@map("features")
+}
+
+/// Подписка организации на тариф
+model OrganizationSubscription {
+  id             String @id @default(uuid())
+  organizationId String @map("organization_id")
+  planId         String @map("plan_id")
+
+  status   SubscriptionStatus @default(ACTIVE) @map("status")
+  interval PlanInterval       @default(MONTHLY) @map("interval")
+
+  /// Даты действия подписки
+  currentPeriodStart DateTime  @map("current_period_start")
+  currentPeriodEnd   DateTime  @map("current_period_end")
+  cancelledAt        DateTime? @map("cancelled_at")
+
+  /// Данные из Lemon Squeezy
+  lsSubscriptionId String? @unique @map("ls_subscription_id")
+  lsCustomerId     String? @map("ls_customer_id")
+  lsOrderId        String? @map("ls_order_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  plan         Plan         @relation(fields: [planId], references: [id])
+
+  @@index([organizationId], name: "idx_org_subscriptions_org_id")
+  @@index([status], name: "idx_org_subscriptions_status")
+  @@map("organization_subscriptions")
+}
+
+/// Разово купленная функция для организации (à la carte)
+model OrganizationFeature {
+  id             String @id @default(uuid())
+  organizationId String @map("organization_id")
+  featureId      String @map("feature_id")
+
+  /// До когда действует (null = бессрочно)
+  expiresAt DateTime? @map("expires_at")
+
+  /// Данные из Lemon Squeezy
+  lsOrderId     String? @map("ls_order_id")
+  lsOrderItemId String? @map("ls_order_item_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  feature      Feature      @relation(fields: [featureId], references: [id])
+
+  @@unique([organizationId, featureId], name: "org_feature_unique")
+  @@index([organizationId], name: "idx_org_features_org_id")
+  @@map("organization_features")
 }

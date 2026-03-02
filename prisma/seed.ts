@@ -8,7 +8,7 @@ async function main() {
 
 	// Очистка базы (опционально, но полезно при разработке)
 	await prisma.event.deleteMany();
-	await prisma.organizationMembers.deleteMany();
+	await prisma.organizationMember.deleteMany();
 	await prisma.user.deleteMany();
 	await prisma.organization.deleteMany();
 

@@ -30,20 +30,17 @@ import {
 	useSidebar,
 } from "@/components/shadcn/ui/sidebar";
 import { signOutAction } from "@/features/auth/actions/sign-out";
-import { useRouter } from "@/i18n/routing";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { Link, useRouter } from "@/i18n/routing";
+import { ADMIN_DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
+import { UserType } from "@/types/user";
+import { UserRole } from "@prisma/client";
+import { IconClipboardData } from "@tabler/icons-react";
 
-export function NavUser({
-	user,
-}: {
-	user: {
-		name: string;
-		email: string;
-		avatar: string;
-	};
-}) {
+export function NavUser({ user }: { user: UserType | null }) {
 	const { isMobile } = useSidebar();
 	const router = useRouter();
+
+	if (!user) return null;
 
 	return (
 		<SidebarMenu>
@@ -56,11 +53,12 @@ export function NavUser({
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
 								<AvatarImage
-									src={user.avatar}
-									alt={user.name}
+									src={user.image ?? undefined}
+									alt={user.name ?? undefined}
 								/>
-								<AvatarFallback className="rounded-lg">
-									CN
+								<AvatarFallback>
+									{user.name?.slice(0, 2).toUpperCase() ??
+										"UN"}
 								</AvatarFallback>
 							</Avatar>
 							<div className="grid flex-1 text-left text-sm leading-tight">
@@ -84,11 +82,12 @@ export function NavUser({
 							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 								<Avatar className="h-8 w-8 rounded-lg">
 									<AvatarImage
-										src={user.avatar}
-										alt={user.name}
+										src={user.image ?? undefined}
+										alt={user.name ?? undefined}
 									/>
-									<AvatarFallback className="rounded-lg">
-										CN
+									<AvatarFallback>
+										{user.name?.slice(0, 2).toUpperCase() ??
+											"UN"}
 									</AvatarFallback>
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
@@ -110,6 +109,17 @@ export function NavUser({
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
+							{user.role === UserRole.ADMIN && (
+								<Link
+									href={ADMIN_DASHBOARD_ROUTE}
+									className="default"
+								>
+									<DropdownMenuItem>
+										<IconClipboardData />
+										Admin panel
+									</DropdownMenuItem>
+								</Link>
+							)}
 							<DropdownMenuItem>
 								<BadgeCheck />
 								Account
