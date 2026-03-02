@@ -23,6 +23,8 @@ export const EVENTS_ROUTE = `${PROFILE_ROUTE}/events`;
 export const NOTIFICATIONS_ROUTE = `${PROFILE_ROUTE}/notifications`;
 export const SETTINGS_ROUTE = `${PROFILE_ROUTE}/settings`;
 
+export const NEW_EVENT_ROUTE = `${EVENTS_ROUTE}/new`;
+
 export const UI_ROUTE = "/ui";
 export const ADMIN_DASHBOARD_ROUTE = `${ADMIN_ROUTE}/dashboard`;
 // export { AUTH_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE, DASHBOARD_ROUTE, HOME_ROUTE, UI_ROUTE};

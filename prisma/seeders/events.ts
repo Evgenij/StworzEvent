@@ -8,7 +8,7 @@ export const createEvents = async (
 	console.log("🔥 Creating events ---------------------");
 
 	const allStatuses = Object.values(EventStatus) as EventStatus[];
-	const COUNT = 30;
+	const COUNT = 15;
 
 	for (let index = 0; index < COUNT; index++) {
 		const randomStatus =

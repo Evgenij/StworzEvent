@@ -24,6 +24,25 @@ const Breadcrumbs = () => {
 		(segment) => segment !== "dashboard" && segment !== "profile",
 	);
 
+	const getTitle = (segment: string, prevSegment?: string) => {
+		try {
+			// пробуем "events.new" как вложенный ключ
+			if (prevSegment) {
+				const nested = t.rich(`${prevSegment}.${segment}` as any);
+				if (nested) return nested as string;
+			}
+		} catch {}
+
+		try {
+			// пробуем просто "events.title" или "events" как строку
+			const key = `${segment}.title` as any;
+			if (t.has(key)) return t(key);
+			return t(segment as any);
+		} catch {
+			return segment;
+		}
+	};
+
 	return (
 		<Breadcrumb>
 			<BreadcrumbList>
@@ -34,6 +53,7 @@ const Breadcrumbs = () => {
 				</BreadcrumbItem>
 				{filteredSegments.map((segment, index) => {
 					const isLast = index === filteredSegments.length - 1;
+					const prevSegment = filteredSegments[index - 1]; // ← предыдущий сегмент
 					const href =
 						"/" +
 						segments
@@ -46,11 +66,13 @@ const Breadcrumbs = () => {
 							<BreadcrumbItem>
 								{isLast ? (
 									<BreadcrumbPage>
-										{t(segment)}
+										{getTitle(segment, prevSegment)}
 									</BreadcrumbPage>
 								) : (
 									<BreadcrumbLink asChild>
-										<Link href={href}>{t(segment)}</Link>
+										<Link href={href}>
+											{getTitle(segment, prevSegment)}
+										</Link>
 									</BreadcrumbLink>
 								)}
 							</BreadcrumbItem>

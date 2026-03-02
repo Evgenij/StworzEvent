@@ -598,12 +598,13 @@ model Plan {
 
 /// Функции включённые в тариф
 model PlanFeature {
-  planId     String     @map("plan_id")
-  featureKey FeatureKey @map("feature_key")
+  planId    String @map("plan_id")
+  featureId String @map("feature_id")
 
-  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  plan    Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
 
-  @@id([planId, featureKey])
+  @@id([planId, featureId])
   @@map("plan_features")
 }
 
@@ -627,6 +628,7 @@ model Feature {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  planFeatures         PlanFeature[]
   organizationFeatures OrganizationFeature[]
 
   @@map("features")

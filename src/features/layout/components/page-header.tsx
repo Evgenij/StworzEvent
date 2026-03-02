@@ -7,12 +7,23 @@ import { Typography } from "../../../components/shared/typography/typography";
 
 const PageHeader = () => {
 	const pathname = usePathname();
-	const segment = pathname.split("/").pop(); // последний сегмент маршрута
 	const t = useTranslations("PageTitles");
+
+	const segments = pathname.split("/").filter(Boolean);
+	const last = segments.at(-1) ?? "default";
+	const prev = segments.at(-2);
+
+	const getTitle = () => {
+		if (prev && t.has(`${prev}.${last}` as any))
+			return t(`${prev}.${last}` as any);
+		if (t.has(`${last}.title` as any)) return t(`${last}.title` as any);
+		if (t.has(last as any)) return t(last as any);
+		return t("default");
+	};
 
 	return (
 		<Typography className="text-left" variant="h2">
-			{t(segment ?? "default")}
+			{getTitle()}
 		</Typography>
 	);
 };

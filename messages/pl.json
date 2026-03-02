@@ -132,7 +132,11 @@
 		"dashboard": "Panel główny",
 		"notifications": "Powiadomienia",
 		"settings": "Ustawienia",
-		"events": "Wydarzenia",
+		"events": {
+			"title": "Wydarzenia",
+			"new": "Nowe wydarzenie",
+			"edit": "Edytuj wydarzenie"
+		},
 		"default": ""
 	},
 	"Sidebar": {
@@ -151,9 +155,14 @@
 				"main": "Platforma"
 			},
 			"pages": {
-				"dashboard": "Dashboard",
-				"events": "Wydarzenia",
-				"notifications": "Powiadomienia"
+				"dashboard": "Panel główny",
+				"events": "Wydarzenia"
+			},
+			"actionButton": "Utwórz wydarzenie",
+			"submenu": {
+				"events": {
+					"createEvent": "Utwórz wydarzenie"
+				}
 			}
 		},
 		"admin": {
@@ -163,7 +172,7 @@
 			"pages": {
 				"dashboard": "Dashboard",
 				"events": "Wydarzenia",
-				"notifications": "Powiadomienia"
+				"users": "Users"
 			}
 		}
 	},

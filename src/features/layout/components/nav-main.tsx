@@ -17,6 +17,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "@/components/shadcn/ui/sidebar";
+import { TablerIcon } from "@tabler/icons-react";
 
 export function NavMain({
 	items,
@@ -25,7 +26,7 @@ export function NavMain({
 	items: {
 		title: string;
 		url: string;
-		icon?: LucideIcon;
+		icon?: TablerIcon;
 		isActive?: boolean;
 		items?: {
 			title: string;
