@@ -137,6 +137,19 @@ enum PlanInterval {
   YEARLY
 }
 
+enum SectionType {
+  TEXT
+  IMAGE
+  FAQ
+  VIDEO
+  SPEAKERS
+  CUSTOM
+}
+
+// ─────────────────────────────────────────────
+// AUTH MODELS (better-auth compatible)
+// ─────────────────────────────────────────────
+
 model User {
   id            String   @id @default(uuid())
   name          String   @map("name")
@@ -374,14 +387,17 @@ model Event {
   title       String      @map("title")
   description String?     @map("description")
   startsAt    DateTime    @map("starts_at")
+  endsAt      DateTime?   @map("ends_at")
   status      EventStatus @default(DRAFT) @map("status")
 
   organizationId String       @map("organization_id")
   organization   Organization @relation(fields: [organizationId], references: [id])
 
-  tickets    Ticket[]
-  orders     Order[]
-  categories EventCategoryOnEvent[]
+  tickets          Ticket[]
+  orders           Order[]
+  categories       EventCategoryOnEvent[]
+  eventSections    EventSection[]
+  eventAgendaItems EventAgendaItem[]
 
   @@index([organizationId], name: "idx_events_organization_id")
   @@index([status], name: "idx_events_status")
@@ -685,4 +701,52 @@ model OrganizationFeature {
   @@unique([organizationId, featureId], name: "org_feature_unique")
   @@index([organizationId], name: "idx_org_features_org_id")
   @@map("organization_features")
+}
+
+// ─────────────────────────────────────────────
+// EVENT SECTIONS & AGENDA
+// ─────────────────────────────────────────────
+
+/// Кастомные секции описания мероприятия
+model EventSection {
+  id        String      @id @default(uuid())
+  eventId   String      @map("event_id")
+  type      SectionType @map("type")
+  title     String?     @map("title")
+  /// Текст / markdown / URL — зависит от типа секции
+  content   String?     @map("content")
+  /// Порядок отображения
+  order     Int         @map("order")
+  isVisible Boolean     @default(true) @map("is_visible")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId], name: "idx_event_sections_event_id")
+  @@map("event_sections")
+}
+
+/// Расписание мероприятия (agenda)
+model EventAgendaItem {
+  id          String    @id @default(uuid())
+  eventId     String    @map("event_id")
+  title       String    @map("title")
+  description String?   @map("description")
+  startsAt    DateTime  @map("starts_at")
+  endsAt      DateTime? @map("ends_at")
+  /// Зал / сцена если мероприятие многопоточное
+  location    String?   @map("location")
+  speakerName String?   @map("speaker_name")
+  /// Порядок отображения
+  order       Int       @map("order")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId], name: "idx_event_agenda_event_id")
+  @@map("event_agenda_items")
 }
