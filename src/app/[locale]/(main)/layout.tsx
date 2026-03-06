@@ -11,7 +11,9 @@ const MainLayout = async ({ children, params }: MainLayoutProps) => {
 	return (
 		<>
 			<HeaderWebsite locale={locale} />
-			<main className="container mx-auto px-5">{children}</main>
+			<main className="container mx-auto flex-1 px-6 py-4">
+				{children}
+			</main>
 			<FooterWebsite locale={locale} />
 		</>
 	);
