@@ -3,6 +3,7 @@
 import { Button } from "@/components/shadcn/ui/button";
 import { cn } from "@/lib/utils";
 import { IconBrandFacebook } from "@tabler/icons-react";
+import Link from "next/link";
 import React, { ReactNode } from "react";
 
 type FooterWebsiteProps = {
@@ -32,7 +33,14 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 			<div className="flex flex-col gap-6 py-6">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						StworzEvent.pl
+						<Link href="/">
+							<img
+								src="/logos/logo_text.svg"
+								alt="logo"
+								width={204}
+								height={47}
+							/>
+						</Link>
 					</div>
 					<div className="flex items-center">
 						{socialLinks.map(({ href, label, icon }) => (
@@ -67,7 +75,10 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 			</div>
 
 			<div className="flex items-center justify-between gap-4 border-t py-4 text-muted-foreground text-sm">
-				<p>&copy; {new Date().getFullYear()} efferd</p>
+				<p>
+					&copy; {new Date().getFullYear()}{" "}
+					{process.env.NEXT_PUBLIC_COMPANY_NAME}
+				</p>
 
 				<p className="inline-flex items-center gap-1">
 					<span>Built by</span>

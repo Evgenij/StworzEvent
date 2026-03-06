@@ -5,7 +5,7 @@ import NavLinks from "./nav-links";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
 import { IconLogin, IconUser, IconUserPlus } from "@tabler/icons-react";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
@@ -35,21 +35,24 @@ const HeaderWebsite = ({ locale }: HeaderWebsiteProps) => {
 	return (
 		<header
 			className={cn(
-				"container mx-auto sticky top-0 z-50 w-full border-transparent border-b",
+				"sticky top-0 z-50 w-full border-transparent border-b",
 				{
 					"border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/50":
 						scrolled,
 				},
 			)}
 		>
-			<nav className="mx-auto flex h-14 w-full items-center justify-between px-4">
-				<a
-					className="rounded-md p-2 hover:bg-muted dark:hover:bg-muted/50"
-					href="#"
-				>
-					StworzEvent.pl
-				</a>
-				<div className="hidden items-center gap-2 md:flex">
+			<nav className="container mx-auto flex h-14 w-full items-center justify-between px-4">
+				<Link href="/">
+					<img
+						src="/logos/logo_text.svg"
+						alt="logo"
+						width={140}
+						height={32}
+					/>
+				</Link>
+
+				<div className="hidden md:flex items-center gap-2">
 					{navLinks.map((link) => (
 						<Button
 							asChild
@@ -60,10 +63,15 @@ const HeaderWebsite = ({ locale }: HeaderWebsiteProps) => {
 							<a href={link.href}>{link.label}</a>
 						</Button>
 					))}
-					<Button size="sm" variant="outline">
-						Sign In
+				</div>
+
+				<div className="hidden items-center gap-2 md:flex">
+					<Button size="sm" variant="outline" asChild>
+						<Link href={SIGNIN_ROUTE}>Sign In</Link>
 					</Button>
-					<Button size="sm">Get Started</Button>
+					<Button size="sm" asChild>
+						<Link href={SIGNUP_ROUTE}>Get Started</Link>
+					</Button>
 				</div>
 				<MobileNav />
 			</nav>

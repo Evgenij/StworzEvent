@@ -27,3 +27,6 @@ export const getBaseUrl = () => {
 	if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // для Vercel
 	return `http://localhost:3000`; // для локалки
 };
+
+export const truncate = (str: string, length: number) =>
+	str.length > length ? `${str.slice(0, length)}...` : str;

@@ -44,8 +44,8 @@ import {
 	TooltipTrigger,
 } from "@/components/shadcn/ui/tooltip";
 import { ErrorCode } from "@/types/error-code";
-import { Typography } from "@/components/shared/typography/typography";
 import { validateEmailAction } from "@/actions/auth/validate-email.action";
+import { Typography } from "@/components/shared";
 
 export default function SignInForm() {
 	const router = useRouter();

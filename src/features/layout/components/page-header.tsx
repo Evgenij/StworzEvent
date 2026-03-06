@@ -1,9 +1,9 @@
 "use client";
 
+import { Typography } from "@/components/shared";
 import { usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import React from "react";
-import { Typography } from "../../../components/shared/typography/typography";
 
 const PageHeader = () => {
 	const pathname = usePathname();

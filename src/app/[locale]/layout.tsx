@@ -31,8 +31,8 @@ export default async function RootLayout({
 	// Получаем сообщения для текущего языка
 	const messages = await getMessages();
 	return (
-		<html lang={locale} className={`${fontPoppins.variable}`}>
-			<body className="antialiased flex flex-col">
+		<html lang={locale} className={`${fontPoppins.variable} h-full`}>
+			<body className="antialiased flex h-full flex-col">
 				<QueryProvider>
 					<NextIntlClientProvider messages={messages}>
 						<Toaster />

@@ -1,5 +1,6 @@
 import { EventStatus, Organization, PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
+import { createCategories } from "./eventCategories";
 
 export const createEvents = async (
 	organization: Organization,
@@ -27,4 +28,6 @@ export const createEvents = async (
 			},
 		});
 	}
+
+	await createCategories(prisma);
 };

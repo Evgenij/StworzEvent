@@ -31,8 +31,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 import { ErrorCode } from "@/types/error-code";
-import { Typography } from "@/components/shared/typography/typography";
 import { signIn } from "@/lib/auth-client";
+import { Typography } from "@/components/shared";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");

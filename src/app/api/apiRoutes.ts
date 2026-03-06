@@ -3,6 +3,6 @@ export const API_ROUTES = {
 	events: {
 		list: "/events",
 		create: "/events/create",
-		listByOrg: (orgId: string) => `/events/${orgId}`,
+		listById: (id: string) => `/events/${id}`,
 	},
 };

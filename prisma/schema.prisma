@@ -386,7 +386,7 @@ model Event {
 
   coverImage  String?     @map("cover_image")
   title       String      @map("title")
-  description String?     @map("description")
+  description Json?       @map("description")
   startsAt    DateTime    @map("starts_at")
   endsAt      DateTime?   @map("ends_at")
   status      EventStatus @default(DRAFT) @map("status")
