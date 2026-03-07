@@ -10,11 +10,12 @@ export const createOrganizations = async (
 
 	console.log("➕ create organization");
 	const organization = await prisma.organization.upsert({
-		where: { nip: "1234567890" },
+		where: { slug: "test-organization-1" },
 		update: {}, // ничего не обновляем при нахождении
 		create: {
 			id: uuidv4(), // или можно оставить "evgeniu.ermolenko@gmail.com" если хотите
-			slug: "test-organization", // ← ОБЯЗАТЕЛЬНОЕ уникальное поле
+			name: "Test Organization #1", // ← ОБЯЗАТЕЛЬНОЕ уникальное поле
+			slug: "test-organization-1", // ← ОБЯЗАТЕЛЬНОЕ уникальное поле
 			email: "evgeniu.ermolenko@gmail.com", // официальный email организации
 			nip: null,
 			regon: null,

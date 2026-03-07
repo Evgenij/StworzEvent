@@ -255,8 +255,10 @@ model Invitation {
 // ─────────────────────────────────────────────
 
 model Organization {
-  id   String @id @default(uuid())
-  slug String @unique
+  id   String  @id @default(uuid())
+  slug String  @unique
+  name String  @map("name")
+  logo String? @map("logo")
 
   // ── polska identyfikacja firmy ───────────────────────────────────────
   nip   String? @unique // 10 cyfr, bez myślników, unikalne

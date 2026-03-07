@@ -6,6 +6,7 @@ import {
 import EventFAQSection from "@/components/events/page/event-faq";
 import EventSectionsSection from "@/components/events/page/event-sections";
 import { EventMapSection } from "@/components/events/page/map/event-map-wrapper";
+import { EventSidebar } from "@/components/events/page/sidebar";
 import Breadcrumb, {
 	BreadcrumbItem,
 	BreadcrumbLink,
@@ -13,6 +14,7 @@ import Breadcrumb, {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from "@/components/shadcn/ui/breadcrumb";
+import { Button } from "@/components/shadcn/ui/button";
 import { Separator } from "@/components/shadcn/ui/separator";
 import {
 	Tooltip,
@@ -20,9 +22,15 @@ import {
 	TooltipTrigger,
 } from "@/components/shadcn/ui/tooltip";
 import { Typography } from "@/components/shared";
+import { ShareButton } from "@/components/shared/share-button";
 import { MAIN_PAGE_EVENTS_ROUTE } from "@/helpers/routes";
 import prisma from "@/lib/prisma";
 import { truncate } from "@/lib/utils";
+import {
+	IconBookmark,
+	IconBookmarkFilled,
+	IconShare2,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -41,7 +49,13 @@ const EventPage = async ({
 					category: true, // достаём саму категорию из join-таблицы
 				},
 			},
-			organization: true,
+			organization: {
+				include: {
+					_count: {
+						select: { events: true },
+					},
+				},
+			},
 			tickets: true,
 			eventSections: {
 				orderBy: { order: "asc" },
@@ -62,7 +76,7 @@ const EventPage = async ({
 
 	return (
 		<div className="max-w-6xl mx-auto flex flex-col gap-5">
-			<div className="w-full px-5">
+			<div className="w-full flex justify-between items-center px-5">
 				<Breadcrumb>
 					<BreadcrumbList>
 						<BreadcrumbItem>
@@ -106,6 +120,12 @@ const EventPage = async ({
 						</BreadcrumbItem>
 					</BreadcrumbList>
 				</Breadcrumb>
+				<div className="buttons flex gap-2">
+					<Button variant={"outline"} size={"sm"} disabled>
+						<IconBookmark className="size-4" /> Zapisz
+					</Button>
+					<ShareButton title={event.title} />
+				</div>
 			</div>
 			<EventHeroSection image={event.coverImage ?? "/placeholder.jpg"} />
 			<div className="flex w-full gap-6 px-5">
@@ -136,14 +156,7 @@ const EventPage = async ({
 				</div>
 				<Separator orientation="vertical" />
 				<div className="tickets-section min-h-full w-xs shrink-0">
-					<div className="sticky top-20">
-						<Typography
-							variant="h2"
-							className="text-2xl font-bold text-gray-900"
-						>
-							Tickets
-						</Typography>
-					</div>
+					<EventSidebar organization={event.organization} />
 				</div>
 			</div>
 		</div>
