@@ -10,7 +10,7 @@ const MainPage = async ({
 	const { locale } = await params;
 
 	redirect({
-		href: MAIN_PAGE_EVENTS_ROUTE,
+		href: `${MAIN_PAGE_EVENTS_ROUTE}`,
 		locale,
 	});
 

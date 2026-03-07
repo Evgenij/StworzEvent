@@ -6,7 +6,8 @@
 		"build": "prisma generate && next build",
 		"dev": "prisma generate && next dev --turbopack",
 		"seed": "prisma db seed ",
-		"genarate": "prisma generate ",
+		"genarate": "prisma generate",
+		"reset": "npx prisma migrate reset",
 		"lint": "eslint .",
 		"start": "next start",
 		"prisma": {
@@ -56,6 +57,7 @@
 		"@tiptap/pm": "^3.20.1",
 		"@tiptap/react": "^3.20.1",
 		"@tiptap/starter-kit": "^3.20.1",
+		"@types/leaflet": "^1.9.21",
 		"@vercel/analytics": "^1.6.1",
 		"@vercel/speed-insights": "^1.3.1",
 		"autoprefixer": "^10.4.27",
@@ -68,6 +70,7 @@
 		"embla-carousel-react": "latest",
 		"eslint-config-next": "^16.1.6",
 		"input-otp": "latest",
+		"leaflet": "^1.9.4",
 		"lucide-react": "^0.575.0",
 		"next": "^16.1.6",
 		"next-intl": "^4.8.3",
@@ -77,6 +80,7 @@
 		"react": "^19.2.4",
 		"react-day-picker": "latest",
 		"react-dom": "^19.2.4",
+		"react-leaflet": "^5.0.0",
 		"react-resizable-panels": "latest",
 		"recharts": "latest",
 		"shadcn": "latest",
@@ -86,6 +90,7 @@
 		"tailwindcss-animate": "^1.0.7",
 		"uuid": "^13.0.0",
 		"vaul": "latest",
+		"yet-another-react-lightbox": "^3.29.1",
 		"zod": "^4.3.6"
 	},
 	"devDependencies": {

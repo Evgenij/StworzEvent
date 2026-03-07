@@ -11,6 +11,8 @@ async function main() {
 	await prisma.organizationMember.deleteMany();
 	await prisma.user.deleteMany();
 	await prisma.organization.deleteMany();
+	await prisma.eventSection.deleteMany();
+	await prisma.eventFaq.deleteMany();
 
 	// INVITATIONS
 	for (const invitation of listOrganizers) {

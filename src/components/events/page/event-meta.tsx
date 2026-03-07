@@ -1,4 +1,4 @@
-import CalendarMeta from "./calendar-meta";
+import EventMetaItem from "./event-meta-item";
 
 type EventMetaSectionProps = {
 	startsAt: Date;
@@ -40,8 +40,7 @@ const EventMetaSection = ({
 	return (
 		<div className="flex items-start gap-10">
 			{/* Дата */}
-
-			<CalendarMeta
+			<EventMetaItem
 				month={month}
 				day={day.toString()}
 				header={weekday + ", " + date}
@@ -50,8 +49,8 @@ const EventMetaSection = ({
 
 			{/* Место */}
 			{(location || address) && (
-				<CalendarMeta
-					month="mejsce"
+				<EventMetaItem
+					month="miasto"
 					day={location}
 					header={location}
 					subheader={address}

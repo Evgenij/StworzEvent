@@ -1,13 +1,18 @@
 import React from "react";
 
-type CalendarMetaProps = {
+type EventMetaItemProps = {
 	month: string;
 	day: string | null;
 	header: string | null;
 	subheader: string | null;
 };
 
-const CalendarMeta = ({ month, day, header, subheader }: CalendarMetaProps) => {
+const EventMetaItem = ({
+	month,
+	day,
+	header,
+	subheader,
+}: EventMetaItemProps) => {
 	return (
 		<div className="flex items-center gap-4">
 			<div className="flex flex-col items-center border-3 border-gray-200 rounded-md overflow-hidden">
@@ -35,4 +40,4 @@ const CalendarMeta = ({ month, day, header, subheader }: CalendarMetaProps) => {
 	);
 };
 
-export default CalendarMeta;
+export default EventMetaItem;

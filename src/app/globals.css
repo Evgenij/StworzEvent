@@ -1,10 +1,25 @@
 @import "tailwindcss";
-@source "../";
 @plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@source "../";
 
 @custom-variant dark (&:is(.dark *));
+
+.tiptap {
+	h2 {
+		@apply text-xl font-bold mt-6 mb-2;
+	}
+	h3 {
+		@apply text-lg font-semibold mt-4 mb-2;
+	}
+	p {
+		@apply text-base leading-relaxed;
+	}
+	ul {
+		@apply my-2;
+	}
+}
 
 @theme inline {
 	--font-sans: var(--font-sans);

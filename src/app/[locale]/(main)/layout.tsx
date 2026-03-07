@@ -1,5 +1,7 @@
 import { FooterWebsite } from "@/components/layout/footer";
 import { HeaderWebsite } from "@/components/layout/header";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
 type MainLayoutProps = {
 	children: React.ReactNode;
@@ -8,6 +10,7 @@ type MainLayoutProps = {
 
 const MainLayout = async ({ children, params }: MainLayoutProps) => {
 	const { locale } = await params;
+
 	return (
 		<>
 			<HeaderWebsite locale={locale} />

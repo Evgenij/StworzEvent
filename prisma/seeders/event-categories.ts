@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Event, PrismaClient } from "@prisma/client";
 
 const categoriesData = [
 	{ name: "Koncert", slug: "koncert", icon: "🎵" },
@@ -9,7 +9,10 @@ const categoriesData = [
 	{ name: "Biznes", slug: "biznes", icon: "💼" },
 ];
 
-export const createCategories = async (prisma: PrismaClient) => {
+export const createCategories = async (
+	prisma: PrismaClient,
+	events: Event[],
+) => {
 	console.log("🔥 Creating categories events ---------------------");
 
 	// Создаём категории и сохраняем с id
@@ -23,9 +26,6 @@ export const createCategories = async (prisma: PrismaClient) => {
 		categories.push(created);
 		console.log(`➕ create category: ${created.name}`);
 	}
-
-	// Берём все уже созданные события
-	const events = await prisma.event.findMany();
 
 	console.log("🔥 Join events and categories ---------------------");
 	// Привязываем рандомную категорию к каждому событию

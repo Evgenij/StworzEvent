@@ -5,7 +5,7 @@ import NavLinks from "./nav-links";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
 import { IconLogin, IconUser, IconUserPlus } from "@tabler/icons-react";
-import { SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
+import { MAIN_PAGE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
@@ -43,7 +43,7 @@ const HeaderWebsite = ({ locale }: HeaderWebsiteProps) => {
 			)}
 		>
 			<nav className="container mx-auto flex h-14 w-full items-center justify-between px-4">
-				<Link href="/">
+				<Link href={MAIN_PAGE_ROUTE}>
 					<img
 						src="/logos/logo_text.svg"
 						alt="logo"
