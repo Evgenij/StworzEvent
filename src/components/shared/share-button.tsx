@@ -4,6 +4,7 @@ import { Button } from "@/components/shadcn/ui/button";
 import { IconLink, IconPlus, IconShare, IconShare2 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { ButtonGroup } from "../shadcn/ui/button-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../shadcn/ui/tooltip";
 
 type ShareButtonProps = {
 	title: string;
@@ -43,14 +44,21 @@ export const ShareButton = ({ title, url }: ShareButtonProps) => {
 				<IconShare2 className="size-4 group-hover:text-blue-600" />{" "}
 				Udostępnij
 			</Button>
-			<Button
-				variant="outline"
-				size="icon-sm"
-				className="group"
-				onClick={() => handleShare(true)}
-			>
-				<IconLink className=" group-hover:text-primary" />
-			</Button>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="icon-sm"
+						className="group"
+						onClick={() => handleShare(true)}
+					>
+						<IconLink className=" group-hover:text-primary" />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent>
+					<p>Skopiuj link</p>
+				</TooltipContent>
+			</Tooltip>
 		</ButtonGroup>
 	);
 };

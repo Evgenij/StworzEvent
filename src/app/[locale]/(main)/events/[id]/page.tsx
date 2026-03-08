@@ -3,6 +3,7 @@ import {
 	EventHeaderSection,
 	EventHeroSection,
 } from "@/components/events/page";
+import EventAgendaSection from "@/components/events/page/agenda/event-agenda";
 import EventFAQSection from "@/components/events/page/event-faq";
 import EventSectionsSection from "@/components/events/page/event-sections";
 import { EventMapSection } from "@/components/events/page/map/event-map-wrapper";
@@ -24,6 +25,7 @@ import {
 import { Typography } from "@/components/shared";
 import { ShareButton } from "@/components/shared/share-button";
 import { MAIN_PAGE_EVENTS_ROUTE } from "@/helpers/routes";
+import { Link } from "@/i18n/routing";
 import prisma from "@/lib/prisma";
 import { truncate } from "@/lib/utils";
 import {
@@ -31,7 +33,6 @@ import {
 	IconBookmarkFilled,
 	IconShare2,
 } from "@tabler/icons-react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const EventPage = async ({
@@ -63,6 +64,9 @@ const EventPage = async ({
 			eventFaqs: {
 				orderBy: { order: "asc" },
 			},
+			eventAgendaItems: {
+				orderBy: { startsAt: "asc" },
+			},
 		},
 	});
 
@@ -81,10 +85,7 @@ const EventPage = async ({
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link
-									href={MAIN_PAGE_EVENTS_ROUTE}
-									locale={locale}
-								>
+								<Link href={MAIN_PAGE_EVENTS_ROUTE}>
 									Katalog
 								</Link>
 							</BreadcrumbLink>
@@ -92,10 +93,7 @@ const EventPage = async ({
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link
-									href={MAIN_PAGE_EVENTS_ROUTE}
-									locale={locale}
-								>
+								<Link href={MAIN_PAGE_EVENTS_ROUTE}>
 									{categories
 										.filter(
 											(item) => item.parentId === null,
@@ -130,15 +128,27 @@ const EventPage = async ({
 			<EventHeroSection image={event.coverImage ?? "/placeholder.jpg"} />
 			<div className="flex w-full gap-6 px-5">
 				<div className="main-content flex-1 min-w-0 ">
-					<div className="event-data flex flex-col gap-6">
+					<div className="event-data flex flex-col gap-8">
 						<EventHeaderSection
 							title={event.title}
 							categories={categories}
 							locale={locale}
+							dates={{
+								startsAt: event.startsAt,
+								endsAt: event.endsAt,
+							}}
+							location={event.location}
+							address={event.address}
 						/>
 						<EventDescriptionSection
 							description={event.description}
 						/>
+						{event.eventAgendaItems.length > 0 && (
+							<EventAgendaSection
+								items={event.eventAgendaItems}
+								locale={locale}
+							/>
+						)}
 
 						<EventSectionsSection sections={event.eventSections} />
 						{event.eventFaqs.length > 0 && (
@@ -156,7 +166,16 @@ const EventPage = async ({
 				</div>
 				<Separator orientation="vertical" />
 				<div className="tickets-section min-h-full w-xs shrink-0">
-					<EventSidebar organization={event.organization} />
+					<EventSidebar
+						organization={event.organization}
+						locale={locale}
+						dates={{
+							startsAt: event.startsAt,
+							endsAt: event.endsAt,
+						}}
+						location={event.location}
+						address={event.address}
+					/>
 				</div>
 			</div>
 		</div>

@@ -8,12 +8,18 @@ type EventHeaderSectionProps = {
 	title: string;
 	categories: EventCategory[];
 	locale: string;
+	dates: { startsAt: Date; endsAt: Date | null };
+	location: string | null;
+	address: string | null;
 };
 
 const EventHeaderSection = ({
 	title,
 	categories,
 	locale,
+	dates,
+	location,
+	address,
 }: EventHeaderSectionProps) => {
 	return (
 		<header className="flex flex-col items-start justify-center gap-3">
@@ -27,11 +33,11 @@ const EventHeaderSection = ({
 				{title}
 			</Typography>
 			<EventMetaSection
-				startsAt={new Date()}
-				endsAt={new Date()}
-				location="Warsaw"
-				address="ul. Floriańska 5"
-				locale="pl-PL"
+				startsAt={dates.startsAt}
+				endsAt={dates.endsAt}
+				location={location}
+				address={address}
+				locale={locale}
 			/>
 		</header>
 	);

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/shadcn/ui/button";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { IconArrowLeft } from "@tabler/icons-react";
 
 interface ReturnBtnProps {

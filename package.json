@@ -2,6 +2,7 @@
 	"name": "my-v0-project",
 	"version": "0.1.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"build": "prisma generate && next build",
 		"dev": "prisma generate && next dev --turbopack",
@@ -100,6 +101,7 @@
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"dotenv": "^17.3.1",
+		"eslint-plugin-unused-imports": "^4.4.1",
 		"postcss": "^8.5",
 		"prisma": "^7.4.2",
 		"prisma-erd-generator": "^2.4.2",

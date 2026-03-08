@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { createCategories } from "./event-categories";
 import { createSections } from "./event-sections";
 import { createEventFaqs } from "./event-faqs";
+import { createEventAgendaItems } from "./event-agenda";
 
 export const createEvents = async (
 	organization: Organization,
@@ -136,6 +137,7 @@ export const createEvents = async (
 	}
 
 	await createCategories(prisma, events);
+	await createEventAgendaItems(prisma, events);
 	await createSections(prisma, events);
 	await createEventFaqs(prisma, events);
 };

@@ -16,7 +16,7 @@ type HeaderWebsiteProps = {
 
 export const navLinks = [
 	{
-		label: "Features",
+		label: "Wydarzenia",
 		href: "#",
 	},
 	{

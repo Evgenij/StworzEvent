@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/shadcn/ui/button";
+import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { IconBrandFacebook } from "@tabler/icons-react";
-import Link from "next/link";
 import React, { ReactNode } from "react";
 
 type FooterWebsiteProps = {

@@ -5,6 +5,9 @@ import { Link } from "@/i18n/routing";
 import { Organization, Prisma } from "@prisma/client";
 import { IconBasket, IconExternalLink, IconTicket } from "@tabler/icons-react";
 import React from "react";
+import EventMetaItem from "../event-meta-item";
+import { DateFormatter } from "@/helpers/date-formatter";
+import { EventDateRange } from "../event-date-range";
 
 type EventSidebarProps = {
 	organization: Prisma.OrganizationGetPayload<{
@@ -16,7 +19,18 @@ type EventSidebarProps = {
 	}>;
 };
 
-const EventSidebar = ({ organization }: EventSidebarProps) => {
+const EventSidebar = ({
+	organization,
+	locale,
+	dates,
+	location,
+	address,
+}: EventSidebarProps & {
+	locale: string;
+	dates: { startsAt: Date; endsAt: Date | null };
+	location: string | null;
+	address: string | null;
+}) => {
 	return (
 		<aside className="sticky top-20 rounded-xl overflow-hidden border border-sidebar">
 			<header className="bg-sidebar flex items-start justify-between px-4 py-3 text-foreground ">
@@ -34,9 +48,11 @@ const EventSidebar = ({ organization }: EventSidebarProps) => {
 							{organization.name}
 						</Typography>
 						{/* TODO add link to company page */}
-						<span className="text-muted-foreground text-sm">
-							{organization._count?.events || 0} wydarzeń
-						</span>
+						{organization._count?.events && (
+							<span className="text-muted-foreground text-sm">
+								{organization._count?.events} wydarzeń
+							</span>
+						)}
 					</div>
 				</div>
 				<Link
@@ -48,7 +64,37 @@ const EventSidebar = ({ organization }: EventSidebarProps) => {
 				</Link>
 			</header>
 			<main className="flex flex-col gap-4 p-4">
+				<EventDateRange
+					startsAt={dates.startsAt}
+					endsAt={dates.endsAt}
+					locale={locale}
+				/>
+				{/* <EventMetaItem
+					label={{
+						title: DateFormatter.month(dates.startsAt, locale),
+						value: DateFormatter.day(dates.startsAt).toString(),
+					}}
+					header={
+						DateFormatter.weekday(dates.startsAt, locale) +
+						", " +
+						DateFormatter.date(dates.startsAt, locale)
+					}
+					subheader={
+						DateFormatter.time(dates.startsAt, locale) +
+						(dates.endsAt
+							? " - " + DateFormatter.time(dates.endsAt, locale)
+							: "")
+					}
+				/> */}
 				<Separator />
+				<EventMetaItem
+					label={{
+						title: location ? "miasto" : "rodzaj",
+						value: location ? location : "online",
+					}}
+					header={location ? location : "Online wydarzenie"}
+					subheader={address ? address : "link dostępny po zapisaniu"}
+				/>
 				<Separator />
 				<div className="price flex flex-col gap-1">
 					<Typography variant="p" className="font-medium">

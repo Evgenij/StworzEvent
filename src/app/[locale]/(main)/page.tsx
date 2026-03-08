@@ -1,5 +1,6 @@
 import { MAIN_PAGE_EVENTS_ROUTE } from "@/helpers/routes";
-import { redirect } from "@/i18n/routing";
+import { redirect } from "next/navigation";
+
 import React from "react";
 
 const MainPage = async ({
@@ -9,10 +10,12 @@ const MainPage = async ({
 }) => {
 	const { locale } = await params;
 
-	redirect({
-		href: `${MAIN_PAGE_EVENTS_ROUTE}`,
-		locale,
-	});
+	// redirect({
+	// 	href: `${MAIN_PAGE_EVENTS_ROUTE}`,
+	// 	locale,
+	// });
+
+	redirect(`/${locale}${MAIN_PAGE_EVENTS_ROUTE}`);
 
 	return (
 		<>
