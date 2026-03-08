@@ -1,6 +1,6 @@
 import { MemberRole, PrismaClient, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
-import { createEvents } from "./events";
+import { createEvents } from "./events/events";
 
 export const createOrganizations = async (
 	organizer: User,

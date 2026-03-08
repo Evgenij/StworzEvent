@@ -38,12 +38,12 @@ import { notFound } from "next/navigation";
 const EventPage = async ({
 	params,
 }: {
-	params: Promise<{ id: string; locale: string }>;
+	params: Promise<{ slug: string; locale: string }>;
 }) => {
-	const { id, locale } = await params;
+	const { slug, locale } = await params;
 
 	const event = await prisma.event.findUnique({
-		where: { id },
+		where: { slug },
 		include: {
 			categories: {
 				include: {
@@ -57,7 +57,10 @@ const EventPage = async ({
 					},
 				},
 			},
-			tickets: true,
+			tickets: {
+				orderBy: { price: "asc" },
+				take: 1,
+			},
 			eventSections: {
 				orderBy: { order: "asc" },
 			},
@@ -77,6 +80,8 @@ const EventPage = async ({
 	}
 
 	const categories = event?.categories?.map((item) => item.category) || [];
+	const cheapestTicket = event.tickets[0];
+	const price = cheapestTicket.price / 100;
 
 	return (
 		<div className="max-w-6xl mx-auto flex flex-col gap-5">
@@ -167,6 +172,7 @@ const EventPage = async ({
 				<Separator orientation="vertical" />
 				<div className="tickets-section min-h-full w-xs shrink-0">
 					<EventSidebar
+						cheapestTicket={price}
 						organization={event.organization}
 						locale={locale}
 						dates={{

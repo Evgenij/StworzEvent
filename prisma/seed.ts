@@ -7,6 +7,8 @@ async function main() {
 	console.info("🚀 Start seeding...");
 
 	// Очистка базы (опционально, но полезно при разработке)
+
+	await prisma.ticket.deleteMany();
 	await prisma.event.deleteMany();
 	await prisma.organizationMember.deleteMany();
 	await prisma.user.deleteMany();

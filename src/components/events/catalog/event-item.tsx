@@ -13,10 +13,10 @@ const EventItemCatalog = ({ event }: { event: Event }) => {
 			<h2>{event.title}</h2>
 			<Button
 				variant={"outline"}
-				onClick={() => router.push(`/events/${event.id}`)}
+				onClick={() => router.push(`/events/${event.slug}`)}
 				asChild
 			>
-				<Link href={`/events/${event.id}`}>Zobacz więcej</Link>
+				<Link href={`/events/${event.slug}`}>Zobacz więcej</Link>
 			</Button>
 		</div>
 	);

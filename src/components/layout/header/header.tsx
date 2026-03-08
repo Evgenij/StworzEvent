@@ -36,9 +36,12 @@ const HeaderWebsite = ({ locale }: HeaderWebsiteProps) => {
 		<header
 			className={cn(
 				"sticky top-0 z-50 w-full border-transparent border-b",
+				// {
+				// 	"border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/50":
+				// 		scrolled,
+				// },
 				{
-					"border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/50":
-						scrolled,
+					"border-border bg-white": scrolled,
 				},
 			)}
 		>

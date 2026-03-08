@@ -4,6 +4,7 @@ import { createCategories } from "./event-categories";
 import { createSections } from "./event-sections";
 import { createEventFaqs } from "./event-faqs";
 import { createEventAgendaItems } from "./event-agenda";
+import { createTickets } from "./event-tickes";
 
 export const createEvents = async (
 	organization: Organization,
@@ -117,10 +118,11 @@ export const createEvents = async (
 		};
 
 		const event = await prisma.event.upsert({
-			where: { id: `event-id-${index + 1}` },
+			where: { slug: `slug-event-${index + 1}` },
 			update: {},
 			create: {
 				id: `event-id-${index + 1}`,
+				slug: `slug-event-${index + 1}`,
 				location: `Kraków`,
 				address: `Drukarska 8`,
 				lat: 50.06465,
@@ -140,4 +142,5 @@ export const createEvents = async (
 	await createEventAgendaItems(prisma, events);
 	await createSections(prisma, events);
 	await createEventFaqs(prisma, events);
+	await createTickets(prisma, events);
 };

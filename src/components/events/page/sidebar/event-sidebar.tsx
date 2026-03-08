@@ -21,11 +21,13 @@ type EventSidebarProps = {
 
 const EventSidebar = ({
 	organization,
+	cheapestTicket,
 	locale,
 	dates,
 	location,
 	address,
 }: EventSidebarProps & {
+	cheapestTicket: number;
 	locale: string;
 	dates: { startsAt: Date; endsAt: Date | null };
 	location: string | null;
@@ -102,7 +104,7 @@ const EventSidebar = ({
 					</Typography>
 					<div className="price-wrapper flex items-center gap-2">
 						<Typography variant="h2" className="text-primary">
-							145 zl
+							{cheapestTicket} zl
 						</Typography>
 						<Typography
 							variant="h4"
