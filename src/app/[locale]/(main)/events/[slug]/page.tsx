@@ -1,3 +1,4 @@
+import { getAvailableQuantity } from "@/actions/tickets/get-available-quantity.action";
 import {
 	EventDescriptionSection,
 	EventHeaderSection,
@@ -28,6 +29,7 @@ import { MAIN_PAGE_EVENTS_ROUTE } from "@/helpers/routes";
 import { Link } from "@/i18n/routing";
 import prisma from "@/lib/prisma";
 import { truncate } from "@/lib/utils";
+import { TicketWithAvailability } from "@/types/ticket";
 import {
 	IconBookmark,
 	IconBookmarkFilled,
@@ -57,10 +59,7 @@ const EventPage = async ({
 					},
 				},
 			},
-			tickets: {
-				orderBy: { price: "asc" },
-				take: 1,
-			},
+			tickets: true,
 			eventSections: {
 				orderBy: { order: "asc" },
 			},
@@ -76,12 +75,17 @@ const EventPage = async ({
 	if (!event) {
 		notFound();
 	} else {
-		console.log(event);
+		// console.log(event);
 	}
 
 	const categories = event?.categories?.map((item) => item.category) || [];
-	const cheapestTicket = event.tickets[0];
-	const price = cheapestTicket.price / 100;
+
+	const ticketsWithAvailability: TicketWithAvailability[] = await Promise.all(
+		event.tickets.map(async (ticket) => ({
+			...ticket,
+			available: await getAvailableQuantity(ticket.id),
+		})),
+	);
 
 	return (
 		<div className="max-w-6xl mx-auto flex flex-col gap-5">
@@ -172,7 +176,8 @@ const EventPage = async ({
 				<Separator orientation="vertical" />
 				<div className="tickets-section min-h-full w-xs shrink-0">
 					<EventSidebar
-						cheapestTicket={price}
+						event={event}
+						tickets={ticketsWithAvailability}
 						organization={event.organization}
 						locale={locale}
 						dates={{

@@ -35,14 +35,11 @@ const HeaderWebsite = ({ locale }: HeaderWebsiteProps) => {
 	return (
 		<header
 			className={cn(
-				"sticky top-0 z-50 w-full border-transparent border-b",
+				"sticky top-0 z-50 w-full border-transparent border-b bg-white border-border",
 				// {
 				// 	"border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/50":
 				// 		scrolled,
 				// },
-				{
-					"border-border bg-white": scrolled,
-				},
 			)}
 		>
 			<nav className="container mx-auto flex h-14 w-full items-center justify-between px-4">

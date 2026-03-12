@@ -1,13 +1,17 @@
+"use client";
+
 import { Button } from "@/components/shadcn/ui/button";
 import { Separator } from "@/components/shadcn/ui/separator";
 import { Typography } from "@/components/shared";
 import { Link } from "@/i18n/routing";
-import { Organization, Prisma } from "@prisma/client";
+import { Event, Organization, Prisma, Ticket } from "@prisma/client";
 import { IconBasket, IconExternalLink, IconTicket } from "@tabler/icons-react";
-import React from "react";
+import React, { useState } from "react";
 import EventMetaItem from "../event-meta-item";
 import { DateFormatter } from "@/helpers/date-formatter";
 import { EventDateRange } from "../event-date-range";
+import { TicketsDrawer } from "../../tickets/tickets-drawer";
+import { TicketWithAvailability } from "@/types/ticket";
 
 type EventSidebarProps = {
 	organization: Prisma.OrganizationGetPayload<{
@@ -20,19 +24,29 @@ type EventSidebarProps = {
 };
 
 const EventSidebar = ({
+	event,
 	organization,
-	cheapestTicket,
+	tickets,
 	locale,
 	dates,
 	location,
 	address,
 }: EventSidebarProps & {
-	cheapestTicket: number;
+	event: Event;
+	tickets: TicketWithAvailability[];
 	locale: string;
 	dates: { startsAt: Date; endsAt: Date | null };
 	location: string | null;
 	address: string | null;
 }) => {
+	const [drawerOpen, setDrawerOpen] = useState(false);
+
+	const cheapestTicket = tickets.reduce(
+		(min, ticket) => (ticket.price < min.price ? ticket : min),
+		tickets[0],
+	);
+	const price = cheapestTicket.price / 100;
+
 	return (
 		<aside className="sticky top-20 rounded-xl overflow-hidden border border-sidebar">
 			<header className="bg-sidebar flex items-start justify-between px-4 py-3 text-foreground ">
@@ -104,7 +118,7 @@ const EventSidebar = ({
 					</Typography>
 					<div className="price-wrapper flex items-center gap-2">
 						<Typography variant="h2" className="text-primary">
-							{cheapestTicket} zl
+							{price} zl
 						</Typography>
 						<Typography
 							variant="h4"
@@ -114,11 +128,26 @@ const EventSidebar = ({
 						</Typography>
 					</div>
 				</div>
-				<Button size={"lg"} className="w-full">
+				<Button
+					size={"lg"}
+					className="w-full"
+					onClick={() => setDrawerOpen(true)}
+				>
 					<IconBasket className="size-5" />
 					Buy Ticket
 				</Button>
 			</main>
+
+			<TicketsDrawer
+				eventSlug={event.slug}
+				eventId={event.id}
+				open={drawerOpen}
+				onClose={() => setDrawerOpen(false)}
+				tickets={tickets}
+				eventTitle={event.title}
+				eventDate={dates.startsAt.toString()}
+				eventLocation={location}
+			/>
 		</aside>
 	);
 };
