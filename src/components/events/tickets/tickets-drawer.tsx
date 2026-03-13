@@ -10,12 +10,13 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 } from "@/components/shadcn/ui/drawer";
-import { StepSelectTickets } from "./steps/step-select-tickets";
+import { StepSelectTickets } from "./steps/tickets/step-select-tickets";
 import { getActiveReservation } from "@/actions/reservations/get-active-reservation.action";
 import { createReservation } from "@/actions/reservations/create-reservation.action";
 import { TicketWithAvailability } from "@/types/ticket";
 import { cancelReservation } from "@/actions/reservations/cancel-reservation.action";
 import { getTicketsWithAvailability } from "@/actions/tickets/get-tickets-with-availability.action";
+import { DateFormatter } from "@/helpers/date-formatter";
 
 export type SelectedTicket = {
 	ticket: TicketWithAvailability;
@@ -40,17 +41,22 @@ export type OrderForm = {
 };
 
 type TicketsDrawerProps = {
+	locale: string;
 	open: boolean;
 	onClose: () => void;
 	tickets: TicketWithAvailability[];
 	eventId: string;
 	eventSlug: string;
 	eventTitle: string;
-	eventDate: string;
-	eventLocation: string | null;
+	eventDate: Date;
+	eventLocation: {
+		city: string | null;
+		address: string | null;
+	};
 };
 
 export const TicketsDrawer = ({
+	locale,
 	open,
 	onClose,
 	tickets,
@@ -73,6 +79,9 @@ export const TicketsDrawer = ({
 		string | null
 	>(null);
 	const [checkingReservation, setCheckingReservation] = useState(false);
+
+	const startWeekday = DateFormatter.weekday(eventDate, locale);
+	const startDate = DateFormatter.date(eventDate, locale);
 
 	// При открытии Drawer — проверяем есть ли активная резервация
 	useEffect(() => {
@@ -168,8 +177,11 @@ export const TicketsDrawer = ({
 						items={items}
 						setItems={setItems}
 						eventTitle={eventTitle}
-						eventDate={eventDate}
-						eventLocation={eventLocation}
+						eventDate={`${startWeekday}, ${startDate}`}
+						eventLocation={{
+							city: eventLocation.city,
+							address: eventLocation.address,
+						}}
 						onNext={handleNext}
 						loading={loading || checkingReservation}
 						hasActiveReservation={!!activeReservationId}

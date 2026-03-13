@@ -2,8 +2,8 @@
 "use client";
 
 import { Prisma } from "@prisma/client";
-import { StepParticipants } from "@/components/events/tickets/steps/step-participants";
-import { StepConfirmation } from "@/components/events/tickets/steps/step-confirmation";
+import { StepParticipants } from "@/components/events/tickets/steps/participants/step-participants";
+import { StepConfirmation } from "@/components/events/tickets/steps/confirmation/step-confirmation";
 import { useState } from "react";
 import { OrderForm as OrderFormType } from "@/components/events/tickets/tickets-drawer";
 import { useSession } from "@/lib/auth-client";

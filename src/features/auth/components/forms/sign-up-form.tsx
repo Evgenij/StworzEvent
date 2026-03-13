@@ -47,7 +47,7 @@ export default function SignUpForm() {
 			name: z.string().min(2, tErrors("nameMin")),
 			surname: z.string().min(2, tErrors("surnameMin")),
 		}),
-		email: z.string().email(tErrors("invalidEmail")),
+		email: z.email(tErrors("invalidEmail")),
 		password: z
 			.string()
 			.min(6, tErrors("passwordMin"))

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
+import { IMaskInput } from "react-imask";
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
 	return (
@@ -148,6 +149,23 @@ function InputGroupTextarea({
 		/>
 	);
 }
+function InputGroupIMask({
+	className,
+	onAccept,
+	...props
+}: React.ComponentProps<typeof IMaskInput>) {
+	return (
+		<IMaskInput
+			data-slot="input-group-control"
+			className={cn(
+				"rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 flex-1 outline-none py-1 px-2 text-sm",
+				className,
+			)}
+			onAccept={onAccept}
+			{...props}
+		/>
+	);
+}
 
 export {
 	InputGroup,
@@ -156,4 +174,5 @@ export {
 	InputGroupText,
 	InputGroupInput,
 	InputGroupTextarea,
+	InputGroupIMask,
 };

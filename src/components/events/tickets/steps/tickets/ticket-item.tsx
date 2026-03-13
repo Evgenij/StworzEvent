@@ -20,9 +20,9 @@ const TicketItem = ({
 }: TicketItemProps) => {
 	return (
 		<div className="flex items-center justify-between">
-			<div className="flex flex-col gap-0.5">
+			<div className="flex flex-col ">
 				<p className="font-medium">{ticket.name}</p>
-				<p className="text-sm text-primary font-semibold">
+				<p className="text-base text-primary font-semibold">
 					{ticket.price === 0
 						? "Bezpłatny"
 						: `${(ticket.price / 100).toFixed(2)} zł`}
@@ -34,7 +34,7 @@ const TicketItem = ({
 				)}
 			</div>
 
-			<div className="flex items-center gap-3">
+			<div className="flex items-center gap-2">
 				<Button
 					size="icon"
 					variant="outline"
@@ -43,7 +43,9 @@ const TicketItem = ({
 				>
 					<IconMinus className="size-4" />
 				</Button>
-				<span className="w-6 text-center font-medium">{quantity}</span>
+				<span className="w-6 text-center font-semibold">
+					{quantity}
+				</span>
 				<Button
 					size="icon"
 					variant="outline"

@@ -139,14 +139,18 @@ const EventSidebar = ({
 			</main>
 
 			<TicketsDrawer
+				locale={locale}
 				eventSlug={event.slug}
 				eventId={event.id}
 				open={drawerOpen}
 				onClose={() => setDrawerOpen(false)}
 				tickets={tickets}
 				eventTitle={event.title}
-				eventDate={dates.startsAt.toString()}
-				eventLocation={location}
+				eventDate={dates.startsAt}
+				eventLocation={{
+					city: location,
+					address: address,
+				}}
 			/>
 		</aside>
 	);

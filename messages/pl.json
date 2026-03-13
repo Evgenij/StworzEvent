@@ -29,15 +29,18 @@
 		"passwordMax": "Hasło musi mieć maksymalnie 25 znakow",
 		"passwordsDontMatch": "Hasła nie są identyczne",
 		"invalidEmail": "Nieprawidłowy adres e-mail",
-		"emailRequired": "Adres e-mail jest wymagany"
+		"emailRequired": "Adres e-mail jest wymagany",
+		"invalidPhone": "Nieprawidłowy numer telefonu",
+		"phoneMax": "Numer telefonu może mieć maksymalnie 9 cyfr"
 	},
 	"Auth": {
 		"divider": "lub",
 		"placeholders": {
-			"name": "Imie",
-			"surname": "Nazwisko",
+			"name": "Jan",
+			"surname": "Kowalski",
 			"mail": "poczta@example.com",
-			"password": "wpisz haslo"
+			"password": "wpisz haslo",
+			"phone": "111 222 333"
 		},
 		"oauth": "Kontynuuj z"
 	},

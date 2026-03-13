@@ -24,6 +24,10 @@
 		stroke: white;
 		stroke-width: 4;
 	}
+
+	[data-slot="field"]:has([role="checkbox"]) * {
+		cursor: pointer;
+	}
 }
 
 li.cn-toast[data-sonner-toast] {

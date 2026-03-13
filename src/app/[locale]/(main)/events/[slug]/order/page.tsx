@@ -4,6 +4,7 @@ import { getLocale } from "next-intl/server";
 import prisma from "@/lib/prisma";
 import { getActiveReservation } from "@/actions/reservations/get-active-reservation.action";
 import { OrderForm } from "./order-form";
+import { Typography } from "@/components/shared";
 
 type OrderPageProps = {
 	params: Promise<{ slug: string; locale: string }>;
@@ -48,8 +49,11 @@ const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 	}
 
 	return (
-		<div className="max-w-6xl mx-auto px-4 py-8">
-			<h1 className="text-2xl font-bold mb-6">Zamawianie biletów</h1>
+		<div className="flex flex-col gap-6 max-w-6xl mx-auto px-4 d">
+			<div className="py-4 bg-muted  rounded-2xl">
+				<Typography>Zamawianie biletów</Typography>
+			</div>
+
 			<OrderForm
 				reservation={reservation}
 				eventId={event.id}

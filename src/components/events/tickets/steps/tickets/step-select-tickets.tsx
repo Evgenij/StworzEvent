@@ -8,16 +8,22 @@ import {
 	IconPlus,
 	IconClock,
 	IconChevronRight,
+	IconLocation,
+	IconMapPin,
 } from "@tabler/icons-react";
 import TicketItem from "./ticket-item";
-import { SelectedTicket } from "../tickets-drawer";
+import { SelectedTicket } from "../../tickets-drawer";
+import { DateFormatter } from "@/helpers/date-formatter";
 
 type StepSelectTicketsProps = {
 	items: SelectedTicket[];
 	setItems: (items: SelectedTicket[]) => void;
 	eventTitle: string;
 	eventDate: string;
-	eventLocation: string | null;
+	eventLocation: {
+		city: string | null;
+		address: string | null;
+	};
 	onNext: () => void;
 	loading?: boolean;
 	hasActiveReservation?: boolean;
@@ -56,13 +62,19 @@ export const StepSelectTickets = ({
 	return (
 		<div className="flex flex-col gap-4">
 			{/* Краткая инфо */}
-			<div className="flex flex-col gap-1 bg-muted rounded-lg p-3">
-				<p className="font-semibold">{eventTitle}</p>
-				<p className="text-sm text-muted-foreground">{eventDate}</p>
-				{eventLocation && (
-					<p className="text-sm text-muted-foreground">
-						{eventLocation}
-					</p>
+			<div className="flex flex-col bg-muted rounded-lg p-3">
+				<p className="font-semibold text-base">{eventTitle}</p>
+				<p className="text-sm text-muted-foreground capitalize">
+					{eventDate}
+				</p>
+				{eventLocation.city && (
+					<div className="event-location flex items-center gap-1 pt-2">
+						<IconMapPin className="size-4" />
+						<p className="text-sm ">
+							{eventLocation.city}
+							{", " + eventLocation.address}
+						</p>
+					</div>
 				)}
 			</div>
 
@@ -102,7 +114,7 @@ export const StepSelectTickets = ({
 						</p>
 					</div>
 					<div className="bg-muted rounded-lg p-3 text-sm text-muted-foreground">
-						<p className="font-medium text-foreground mb-1">
+						<p className="font-medium text-base text-foreground mb-1">
 							Jak zapłacić?
 						</p>
 						<p>

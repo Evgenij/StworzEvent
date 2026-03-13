@@ -6,7 +6,7 @@ import { Input } from "@/components/shadcn/ui/input";
 import { Label } from "@/components/shadcn/ui/label";
 import { Separator } from "@/components/shadcn/ui/separator";
 import { IconArrowLeft, IconCheck, IconCopy } from "@tabler/icons-react";
-import { SelectedTicket, OrderForm } from "../tickets-drawer";
+import { SelectedTicket, OrderForm } from "../../tickets-drawer";
 import { createOrder } from "@/actions/orders/create-order.action";
 import { useRouter } from "@/i18n/routing";
 import { signUpEmailAction } from "@/actions/auth/sign-up-email.action";
