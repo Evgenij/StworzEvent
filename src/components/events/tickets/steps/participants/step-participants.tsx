@@ -6,16 +6,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/shadcn/ui/button";
-import { IconArrowLeft, IconUsers } from "@tabler/icons-react";
+import {
+	IconArrowLeft,
+	IconPlus,
+	IconUserPlus,
+	IconUsers,
+} from "@tabler/icons-react";
 import { SelectedTicket, OrderForm } from "../../tickets-drawer";
 import { useCountdown } from "@/hooks/use-countdown";
 import { Typography } from "@/components/shared";
 import { orderFormSchema, OrderFormValues } from "@/schemas/order.schema";
-import { buildFlatList } from "@/helpers/build-flat-list";
 import BuyerDetails from "./buyer-details";
 import OrderDetails from "./order-details";
 import ReservationTimer from "./reservation-timer";
 import { ParticipantList } from "./participant-list";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/shadcn/ui/popover";
 
 type StepParticipantsProps = {
 	items: SelectedTicket[];
@@ -64,8 +73,23 @@ export const StepParticipants = ({
 	const buyerIsParticipant = watch("buyerIsParticipant");
 	const buyerTicketGroupIdx = watch("buyerTicketGroupIdx");
 	const buyer = watch("buyer");
-	const flatList = buildFlatList(items);
 
+	const participantsWatch = form.watch("participants");
+	const flatList = participantsWatch.flatMap((group, groupIdx) =>
+		group.items.map((_, participantIdx) => ({
+			ticket: items[groupIdx].ticket,
+			idxInTicket: participantIdx + 1,
+			totalInGroup: group.items.length, // ← актуальное количество из формы
+			globalIdx:
+				participantsWatch
+					.slice(0, groupIdx)
+					.reduce((sum, g) => sum + g.items.length, 0) +
+				participantIdx +
+				1,
+			groupIdx,
+			participantIdx,
+		})),
+	);
 	const copyBuyerEmail = (groupIdx: number, participantIdx: number) => {
 		setValue(
 			`participants.${groupIdx}.items.${participantIdx}.email`,
@@ -102,10 +126,19 @@ export const StepParticipants = ({
 		});
 	};
 
+	// Добавить участника в группу
+	const addParticipant = (groupIdx: number) => {
+		const current = form.getValues(`participants.${groupIdx}.items`);
+		form.setValue(`participants.${groupIdx}.items`, [
+			...current,
+			{ name: "", surname: "", email: "", phone: "" },
+		]);
+	};
+
 	return (
-		<div className="grid grid-cols-[380px_1fr] gap-6 items-start">
+		<main className="grid grid-cols-[380px_1fr] gap-6 items-start">
 			{/* ЛЕВАЯ КОЛОНКА */}
-			<div className="self-start sticky top-18 flex flex-col gap-5">
+			<aside className="self-start sticky top-18 flex flex-col gap-5">
 				<BuyerDetails
 					items={items}
 					form={form}
@@ -127,10 +160,10 @@ export const StepParticipants = ({
 						formatted={formatted}
 					/>
 				</div>
-			</div>
+			</aside>
 
 			{/* ПРАВАЯ КОЛОНКА */}
-			<div className="flex flex-col gap-4 pt-2">
+			<section className="flex flex-col gap-4 pt-2">
 				<Typography
 					variant="h4"
 					className="font-semibold flex gap-2 items-center"
@@ -142,7 +175,6 @@ export const StepParticipants = ({
 				<ParticipantList
 					form={form} // ← передаём всю форму
 					flatList={flatList}
-					items={items}
 					buyerIsParticipant={buyerIsParticipant}
 					buyerTicketGroupIdx={buyerTicketGroupIdx}
 					buyerEmail={buyer.email}
@@ -166,7 +198,7 @@ export const StepParticipants = ({
 						Dalej
 					</Button>
 				</div>
-			</div>
-		</div>
+			</section>
+		</main>
 	);
 };

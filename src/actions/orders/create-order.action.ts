@@ -1,8 +1,10 @@
 // src/actions/orders/create-order.action.ts
 "use server";
 
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { OrderStatus } from "@prisma/client";
+import { headers } from "next/headers";
 
 type ParticipantInput = {
 	name: string;
@@ -30,6 +32,10 @@ type CreateOrderInput = {
 };
 
 export const createOrder = async (input: CreateOrderInput) => {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+
 	// 1. Проверяем доступность билетов
 	for (const item of input.items) {
 		const ticket = await prisma.ticket.findUnique({
@@ -73,6 +79,7 @@ export const createOrder = async (input: CreateOrderInput) => {
 		const order = await tx.order.create({
 			data: {
 				eventId: input.eventId,
+				userId: session?.user.id ?? null,
 				email: input.email,
 				buyerName: input.buyerName,
 				buyerSurname: input.buyerSurname,

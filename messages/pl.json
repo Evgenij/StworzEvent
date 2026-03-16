@@ -203,5 +203,34 @@
 				"action": "Akcja"
 			}
 		}
+	},
+	"EventsCatalog": {
+		"title": "Wydarzenia",
+		"noResults": "Brak wyników",
+		"count": "{shown} z {total} wydarzeń",
+		"emptyTitle": "Nie znaleziono wydarzeń",
+		"emptyHint": "Spróbuj zmienić filtry lub wyczyść wyszukiwanie",
+		"loadMore": "Załaduj więcej",
+		"loading": "Ładowanie...",
+		"filters": {
+			"title": "Filtry",
+			"reset": "Resetuj",
+			"apply": "Zastosuj",
+			"date": "Data",
+			"datePlaceholder": "Wybierz okres",
+			"city": "Miasto",
+			"cityPlaceholder": "Wybierz miasta",
+			"citySearch": "Szukaj miasta...",
+			"cityNotFound": "Nie znaleziono miasta",
+			"citySelected": "{count} miasto wybrane",
+			"price": "Cena",
+			"sort": {
+				"label": "Sortuj",
+				"date_asc": "Najbliższe",
+				"date_desc": "Najpóźniejsze",
+				"price_asc": "Cena: rosnąco",
+				"price_desc": "Cena: malejąco"
+			}
+		}
 	}
 }

@@ -5,13 +5,12 @@ import { TicketWrapper } from "./ticket-wrapper";
 import { ParticipantFormCard } from "./forms/participant-form";
 import { SelectedTicket } from "../../tickets-drawer";
 import { truncate } from "@/lib/utils";
-import { FlatParticipant } from "@/helpers/build-flat-list";
 import { IconTicket, IconUserCheck } from "@tabler/icons-react";
+import { FlatParticipant } from "@/types/flat-participant";
 
 type ParticipantListProps = {
 	form: UseFormReturn<OrderFormValues>;
 	flatList: FlatParticipant[];
-	items: SelectedTicket[];
 	buyerIsParticipant: boolean;
 	buyerTicketGroupIdx: number;
 	buyerEmail: string;
@@ -21,7 +20,6 @@ type ParticipantListProps = {
 export const ParticipantList = ({
 	form,
 	flatList,
-	items,
 	buyerIsParticipant,
 	buyerTicketGroupIdx,
 	buyerEmail,
@@ -48,7 +46,7 @@ export const ParticipantList = ({
 									<span>{flat.ticket.name}</span>
 									<span className="text-muted-foreground font-normal">
 										— bilet {flat.participantIdx + 1}/
-										{items[flat.groupIdx].quantity}
+										{flat.totalInGroup}
 									</span>
 								</div>
 								<div className="grid grid-cols-2 gap-3 text-sm">
@@ -96,7 +94,7 @@ export const ParticipantList = ({
 							groupIdx={flat.groupIdx}
 							participantIdx={flat.participantIdx}
 							ticketName={flat.ticket.name}
-							totalInGroup={items[flat.groupIdx].quantity}
+							totalInGroup={flat.totalInGroup}
 							buyerEmail={buyerEmail}
 							onCopyBuyerEmail={() =>
 								onCopyBuyerEmail(
