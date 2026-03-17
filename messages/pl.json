@@ -137,8 +137,13 @@
 		"settings": "Ustawienia",
 		"events": {
 			"title": "Wydarzenia",
-			"new": "Nowe wydarzenie",
-			"edit": "Edytuj wydarzenie"
+			"new": "Nowe wydarzenie"
+		},
+		"edit": {
+			"title": "Edycja",
+			"details": "Szczegóły wydarzenia",
+			"tickets": "Bilety",
+			"publish": "Publikacja"
 		},
 		"default": ""
 	},
@@ -231,6 +236,90 @@
 				"price_asc": "Cena: rosnąco",
 				"price_desc": "Cena: malejąco"
 			}
+		}
+	},
+	"EventWizard": {
+		"stepOf": "Krok {current} z {total}",
+		"steps": {
+			"basicInfo": "Podstawowe",
+			"details": "Szczegóły",
+			"tickets": "Bilety",
+			"publish": "Publikacja"
+		},
+		"details": {
+			"startsAt": "Data rozpoczęcia",
+			"endsAt": "Data zakończenia",
+			"location": "Miasto",
+			"locationPlaceholder": "np. Warszawa",
+			"address": "Adres",
+			"addressPlaceholder": "np. ul. Marszałkowska 1",
+			"category": "Kategoria",
+			"back": "Wstecz",
+			"next": "Dalej",
+			"saving": "Zapisywanie...",
+			"errors": {
+				"default": "Wystąpił błąd. Spróbuj ponownie."
+			}
+		}
+	},
+	"CreateEvent": {
+		"title": "Nowe wydarzenie",
+		"organization": "Organizacja",
+		"organizationPlaceholder": "Wybierz organizację",
+		"cover": "Zdjęcie główne",
+		"title_field": "Nazwa wydarzenia",
+		"titlePlaceholder": "np. Koncert jazzowy w Warszawie",
+		"description": "Opis",
+		"descriptionPlaceholder": "Opisz swoje wydarzenie...",
+		"startsAt": "Data rozpoczęcia",
+		"endsAt": "Data zakończenia",
+		"location": "Miasto",
+		"locationPlaceholder": "np. Warszawa",
+		"address": "Adres",
+		"addressPlaceholder": "np. ul. Marszałkowska 1",
+		"category": "Kategoria",
+		"status": "Status publikacji",
+		"statusDraft": "Zapisz jako szkic",
+		"statusPublished": "Opublikuj od razu",
+		"submit": "Utwórz wydarzenie",
+		"settingDetails": "Ustaw szczegóły wydarzenia",
+		"saving": "Zapisywanie...",
+		"errors": {
+			"default": "Wystąpił błąd. Spróbuj ponownie."
+		},
+		"ticketsMin": "Dodaj co najmniej jeden bilet",
+		"priceMin": "Cena nie może być ujemna",
+		"quantityMin": "Minimalna liczba miejsc to 1"
+	},
+	"CreateEventErrors": {
+		"min3": "Nazwa musi mieć co najmniej 3 znaki",
+		"max100": "Nazwa może mieć maksymalnie 100 znaków",
+		"min10": "Opis musi mieć co najmniej 10 znaków",
+		"min2": "Miasto musi mieć co najmniej 2 znaki",
+		"min5": "Adres musi mieć co najmniej 5 znaków",
+		"required": "To pole jest wymagane",
+		"invalidUrl": "Nieprawidłowy adres URL",
+		"endsAtAfterStartsAt": "Data zakończenia musi być późniejsza niż data rozpoczęcia"
+	},
+	"tickets": {
+		"ticketNumber": "Bilet #{number}",
+		"name": "Nazwa biletu",
+		"namePlaceholder": "np. Bilet standardowy",
+		"price": "Cena (PLN)",
+		"quantity": "Liczba miejsc",
+		"quantityPlaceholder": "np. 100",
+		"quantityHint": "Zostaw puste dla nieograniczonej liczby",
+		"addTicket": "Dodaj bilet",
+		"back": "Wstecz",
+		"next": "Dalej",
+		"saving": "Zapisywanie...",
+		"saveDraft": "Zapisz szkic",
+		"publish": "Opublikuj wydarzenie",
+		"successPublished": "Wydarzenie zostało opublikowane!",
+		"successDraft": "Wydarzenie zapisane jako szkic",
+		"errors": {
+			"default": "Wystąpił błąd. Spróbuj ponownie.",
+			"deleteFailed": "Nie udało się usunąć biletu."
 		}
 	}
 }

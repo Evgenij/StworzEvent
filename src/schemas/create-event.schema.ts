@@ -1,27 +1,14 @@
 // src/schemas/create-event.schema.ts
-import { EventStatus } from "@prisma/client";
+import { EventStatus, Prisma } from "@prisma/client";
 import { z } from "zod";
 
-export const createEventSchema = z
-	.object({
-		title: z.string().min(3, "min3").max(100, "max100"),
-		description: z.string().min(10, "min10"),
-		coverImage: z.string().url("invalidUrl").optional().or(z.literal("")),
-		startsAt: z.coerce.date(),
-		endsAt: z.coerce.date(),
-		location: z.string().min(2, "min2"), // город
-		address: z.string().min(5, "min5"),
-		categoryId: z.string().min(1, "required"),
+export const createEventSchema = (t: (key: string) => string) =>
+	z.object({
+		title: z.string().min(3, t("min3")).max(100, t("max100")),
+		description: z.custom<Prisma.InputJsonValue>().optional(),
+		coverImage: z.url(t("invalidUrl")).optional().or(z.literal("")),
 		status: z.enum([EventStatus.DRAFT, EventStatus.PUBLISHED]),
-	})
-	.superRefine((data, ctx) => {
-		if (data.endsAt <= data.startsAt) {
-			ctx.addIssue({
-				code: "custom",
-				message: "endsAtAfterStartsAt",
-				path: ["endsAt"],
-			});
-		}
+		organizationId: z.string().min(1, t("required")),
 	});
 
-export type CreateEventInput = z.infer<typeof createEventSchema>;
+export type CreateEventInput = z.infer<ReturnType<typeof createEventSchema>>;

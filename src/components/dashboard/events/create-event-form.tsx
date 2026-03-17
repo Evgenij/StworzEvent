@@ -1,0 +1,197 @@
+"use client";
+
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import {
+	createEventSchema,
+	type CreateEventInput,
+} from "@/schemas/create-event.schema";
+import { createEventAction } from "@/actions/events/create-event.action";
+import { EventStatus } from "@prisma/client";
+import { Label } from "@/components/shadcn/ui/label";
+import { Button } from "@/components/shadcn/ui/button";
+import { Field, FieldError } from "@/components/shadcn/ui/field";
+import {
+	InputGroup,
+	InputGroupInput,
+} from "@/components/shadcn/ui/input-group";
+import { RadioGroup, RadioGroupItem } from "@/components/shadcn/ui/radio-group";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/shadcn/ui/select";
+import { EventCoverUpload } from "./event-cover-upload";
+import { RichTextEditor } from "@/components/shared/rich-text-editor";
+import { IconLoader2 } from "@tabler/icons-react";
+import { toast } from "sonner";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
+
+export function CreateEventForm() {
+	const router = useRouter();
+	const locale = useLocale();
+	const t = useTranslations("CreateEvent");
+	const tErrors = useTranslations("CreateEventErrors");
+
+	const form = useForm<CreateEventInput>({
+		resolver: zodResolver(createEventSchema(tErrors)),
+		defaultValues: {
+			title: "",
+			description: {},
+			coverImage: "",
+			status: EventStatus.DRAFT,
+			organizationId: "",
+		},
+		mode: "onBlur",
+		reValidateMode: "onBlur",
+	});
+
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting },
+	} = form;
+
+	const { data: memberships = [], isLoading: orgsLoading } = useQuery({
+		queryKey: ["my-organizations"],
+		queryFn: () => getMyOrganizations(),
+		staleTime: 1000 * 60 * 5,
+	});
+
+	useEffect(() => {
+		if (memberships.length === 1) {
+			form.setValue("organizationId", memberships[0].organizations.id);
+		}
+	}, [memberships]);
+
+	const onSubmit = async (data: CreateEventInput) => {
+		const result = await createEventAction(data);
+
+		console.log(result);
+
+		if (!result.success) {
+			toast.error(t("errors.default"));
+			return;
+		}
+
+		// ✅ редирект на шаг 2
+		router.push(
+			`/${locale}/profile/events/${result.data.eventId}/edit/details`,
+		);
+	};
+
+	return (
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+			{/* Организация — только если их > 1 */}
+			{memberships.length !== 1 && (
+				<Controller
+					name="organizationId"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<Label>{t("organization")}</Label>
+							<Select
+								value={field.value}
+								onValueChange={field.onChange}
+								disabled={orgsLoading}
+							>
+								<SelectTrigger>
+									<SelectValue
+										placeholder={t(
+											"organizationPlaceholder",
+										)}
+									/>
+								</SelectTrigger>
+								<SelectContent>
+									{memberships.map((m) => (
+										<SelectItem
+											key={m.organizations.id}
+											value={m.organizations.id}
+										>
+											{m.organizations.name}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
+			)}
+
+			{/* Обложка */}
+			<Controller
+				name="coverImage"
+				control={control}
+				render={({ field }) => (
+					<EventCoverUpload
+						value={field.value}
+						onChange={field.onChange}
+						onClear={() => field.onChange("")}
+					/>
+				)}
+			/>
+
+			{/* Название */}
+			<Controller
+				name="title"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<Label>{t("title_field")}</Label>
+						<InputGroup>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("titlePlaceholder")}
+							/>
+						</InputGroup>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
+
+			{/* Описание */}
+			<Controller
+				name="description"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<Label>{t("description")}</Label>
+						<RichTextEditor
+							value={field.value}
+							onChange={field.onChange}
+							disabled={isSubmitting}
+						/>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
+
+			{/* Статус — убрали на шаг 3, но оставляем DRAFT по умолчанию скрыто */}
+
+			<Button type="submit" disabled={isSubmitting} className="w-full">
+				{isSubmitting ? (
+					<>
+						<IconLoader2 className="mr-2 size-4 animate-spin" />
+						{t("saving")}
+					</>
+				) : (
+					t("settingDetails")
+				)}
+			</Button>
+		</form>
+	);
+}

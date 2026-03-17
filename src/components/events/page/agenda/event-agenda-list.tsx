@@ -1,9 +1,7 @@
 "use client";
 import { EventAgendaItem } from "@prisma/client";
-import React, { useState } from "react";
 import EventAgendaListItem from "./event-agenda-item";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/shadcn/ui/button";
 
 const EventAgendaList = ({
 	items,

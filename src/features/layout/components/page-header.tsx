@@ -5,11 +5,23 @@ import { usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import React from "react";
 
+// UUID или cuid — пропускаем как динамический сегмент
+const isDynamicSegment = (segment: string) =>
+	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(
+		segment,
+	) || // UUID
+	/^[a-z0-9]{20,}$/.test(segment); // cuid
+
 const PageHeader = () => {
 	const pathname = usePathname();
 	const t = useTranslations("PageTitles");
 
-	const segments = pathname.split("/").filter(Boolean);
+	// Фильтруем динамические сегменты
+	const segments = pathname
+		.split("/")
+		.filter(Boolean)
+		.filter((s) => !isDynamicSegment(s));
+
 	const last = segments.at(-1) ?? "default";
 	const prev = segments.at(-2);
 

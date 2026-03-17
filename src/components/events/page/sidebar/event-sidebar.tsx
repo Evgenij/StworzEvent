@@ -41,11 +41,14 @@ const EventSidebar = ({
 }) => {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 
-	const cheapestTicket = tickets.reduce(
-		(min, ticket) => (ticket.price < min.price ? ticket : min),
-		tickets[0],
-	);
-	const price = cheapestTicket.price / 100;
+	let price = 0;
+	if (tickets.length) {
+		const cheapestTicket = tickets.reduce(
+			(min, ticket) => (ticket.price < min.price ? ticket : min),
+			tickets[0],
+		);
+		price = cheapestTicket.price / 100;
+	}
 
 	return (
 		<aside className="sticky top-20 rounded-xl overflow-hidden border border-sidebar">

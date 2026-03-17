@@ -11,6 +11,11 @@ const nextConfig = {
 		unoptimized: true,
 	},
 	serverExternalPackages: ["@node-rs/argon2"],
+	transpilePackages: [
+		"@tiptap/extension-bold",
+		"@tiptap/core",
+		"@tiptap/starter-kit",
+	],
 
 	// eslint: {
 	// 	ignoreDuringBuilds: true,

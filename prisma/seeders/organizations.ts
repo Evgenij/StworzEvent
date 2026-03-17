@@ -1,6 +1,7 @@
 import { MemberRole, PrismaClient, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { createEvents } from "./events/events";
+import { slugify } from "@/lib/slugify/slugify";
 
 export const createOrganizations = async (
 	organizer: User,
@@ -13,10 +14,10 @@ export const createOrganizations = async (
 		where: { slug: "test-organization-1" },
 		update: {}, // ничего не обновляем при нахождении
 		create: {
-			id: uuidv4(), // или можно оставить "evgeniu.ermolenko@gmail.com" если хотите
-			name: "Test Organization #1", // ← ОБЯЗАТЕЛЬНОЕ уникальное поле
-			slug: "test-organization-1", // ← ОБЯЗАТЕЛЬНОЕ уникальное поле
-			email: "evgeniu.ermolenko@gmail.com", // официальный email организации
+			id: uuidv4(),
+			name: "UIXER company",
+			slug: slugify("UIXER company"),
+			email: "evgeniu.ermolenko@gmail.com",
 			nip: null,
 			regon: null,
 			krs: null,

@@ -80,12 +80,17 @@ const EventPage = async ({
 
 	const categories = event?.categories?.map((item) => item.category) || [];
 
-	const ticketsWithAvailability: TicketWithAvailability[] = await Promise.all(
-		event.tickets.map(async (ticket) => ({
-			...ticket,
-			available: await getAvailableQuantity(ticket.id),
-		})),
-	);
+	let ticketsWithAvailability: TicketWithAvailability[] = [];
+	if (event.tickets?.length) {
+		ticketsWithAvailability = await Promise.all(
+			event.tickets.map(async (ticket) => ({
+				...ticket,
+				available: await getAvailableQuantity(ticket.id),
+			})),
+		);
+	} else {
+		ticketsWithAvailability = [];
+	}
 
 	return (
 		<div className="max-w-6xl mx-auto flex flex-col gap-5">
@@ -99,19 +104,24 @@ const EventPage = async ({
 								</Link>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
-						<BreadcrumbSeparator />
-						<BreadcrumbItem>
-							<BreadcrumbLink asChild>
-								<Link href={MAIN_PAGE_EVENTS_ROUTE}>
-									{categories
-										.filter(
-											(item) => item.parentId === null,
-										)
-										.map((item) => item.name)
-										.join(" / ")}
-								</Link>
-							</BreadcrumbLink>
-						</BreadcrumbItem>
+						{categories.length > 0 && (
+							<>
+								<BreadcrumbSeparator />
+								<BreadcrumbItem>
+									<BreadcrumbLink asChild>
+										<Link href={MAIN_PAGE_EVENTS_ROUTE}>
+											{categories
+												.filter(
+													(item) =>
+														item.parentId === null,
+												)
+												.map((item) => item.name)
+												.join(" / ")}
+										</Link>
+									</BreadcrumbLink>
+								</BreadcrumbItem>
+							</>
+						)}
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<Tooltip>

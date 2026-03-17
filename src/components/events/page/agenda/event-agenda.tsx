@@ -2,7 +2,6 @@
 
 import { EventAgendaItem } from "@prisma/client";
 import React, { useRef, useState } from "react";
-import EventAgendaListItem from "./event-agenda-item";
 import { Typography } from "@/components/shared";
 import {
 	IconChevronDown,
@@ -12,6 +11,27 @@ import {
 import EventAgendaList from "./event-agenda-list";
 import { Button } from "@/components/shadcn/ui/button";
 import { cn } from "@/lib/utils";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/shadcn/ui/tabs";
+import AgendaToggleButton from "./agenda-toggle-button";
+
+// Группируем items по дате (YYYY-MM-DD)
+const groupByDay = (items: EventAgendaItem[]) => {
+	const groups = new Map<string, EventAgendaItem[]>();
+	items.forEach((item) => {
+		const day = item.startsAt.toISOString().split("T")[0]; // "2026-03-17"
+		if (!groups.has(day)) groups.set(day, []);
+		groups.get(day)!.push(item);
+	});
+	return Array.from(groups.entries()).map(([date, items]) => ({
+		date,
+		items,
+	}));
+};
 
 const EventAgendaSection = ({
 	items,
@@ -21,8 +41,14 @@ const EventAgendaSection = ({
 	locale: string;
 }) => {
 	const [open, setOpen] = useState(false);
-
 	const ref = useRef<HTMLDivElement>(null);
+	const days = groupByDay(items);
+	const isMultiDay = days.length > 1;
+
+	const formatDayLabel = (dateStr: string, idx: number) => {
+		const date = new Date(dateStr);
+		return `Dzień ${idx + 1} · ${date.toLocaleDateString(locale, { day: "numeric", month: "short" })}`;
+	};
 
 	const handleClose = () => {
 		setOpen(false);
@@ -40,25 +66,49 @@ const EventAgendaSection = ({
 				<IconListDetails className="w-6 h-6 text-primary" />
 				<Typography variant="h3">Agenda</Typography>
 			</header>
-			<div className="wrapper w-full">
-				<EventAgendaList items={items} locale={locale} isOpen={open} />
-				<div
-					ref={ref}
-					className={cn(
-						"toggle-wrapper relative h-20 transform -translate-y-full flex items-end justify-center w-full bg-linear-to-t from-white to-transparent border-b rounded-2xl pointer-events-none",
-					)}
-				>
-					<Button
-						className="absolute -bottom-1/2 -translate-y-1/2 pointer-events-auto"
-						variant="outline"
-						onClick={open ? handleClose : () => setOpen(true)}
-					>
-						{!open ? <IconChevronDown /> : <IconChevronUp />}
+			{isMultiDay ? (
+				<Tabs defaultValue={days[0].date} className="w-full">
+					<TabsList className="mb-2">
+						{days.map(({ date }, idx) => (
+							<TabsTrigger key={date} value={date}>
+								{formatDayLabel(date, idx)}
+							</TabsTrigger>
+						))}
+					</TabsList>
 
-						{open ? "Ukryj agendę" : "Pokaż agendę"}
-					</Button>
+					{days.map(({ date, items: dayItems }) => (
+						<TabsContent key={date} value={date}>
+							<div className="wrapper w-full">
+								<EventAgendaList
+									items={dayItems}
+									locale={locale}
+									isOpen={open}
+								/>
+								<AgendaToggleButton
+									open={open}
+									onOpen={() => setOpen(true)}
+									onClose={handleClose}
+									ref={ref}
+								/>
+							</div>
+						</TabsContent>
+					))}
+				</Tabs>
+			) : (
+				<div className="wrapper w-full">
+					<EventAgendaList
+						items={items}
+						locale={locale}
+						isOpen={open}
+					/>
+					<AgendaToggleButton
+						open={open}
+						onOpen={() => setOpen(true)}
+						onClose={handleClose}
+						ref={ref}
+					/>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 };

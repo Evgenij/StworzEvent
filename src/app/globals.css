@@ -144,3 +144,105 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+.tiptap {
+	outline: none;
+	min-height: 7rem;
+	cursor: text;
+}
+
+.tiptap p {
+	margin: 0.25rem 0;
+}
+
+.tiptap h1 {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin: 0.75rem 0 0.25rem;
+}
+
+.tiptap h2 {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin: 0.75rem 0 0.25rem;
+}
+
+.tiptap h3 {
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin: 0.5rem 0 0.25rem;
+}
+
+.tiptap ul,
+.tiptap ol {
+	padding-left: 1.5rem;
+	margin: 0.5rem 0 0.8rem 0;
+}
+
+.tiptap ul {
+	list-style-type: disc;
+}
+
+.tiptap ol {
+	list-style-type: decimal;
+}
+
+.tiptap li {
+	margin: 0.15rem 0;
+}
+
+.tiptap li p {
+	margin: 0;
+}
+
+.tiptap strong {
+	font-weight: 700;
+}
+
+.tiptap em {
+	font-style: italic;
+}
+
+.tiptap s {
+	text-decoration: line-through;
+}
+
+.tiptap u {
+	text-decoration: underline;
+}
+
+.tiptap code {
+	background: hsl(var(--muted));
+	border-radius: 0.25rem;
+	padding: 0.1rem 0.3rem;
+	font-size: 0.875em;
+	font-family: monospace;
+}
+
+.tiptap mark {
+	background-color: hsl(var(--warning) / 0.3);
+	border-radius: 0.15rem;
+	padding: 0 0.1rem;
+}
+
+.tiptap a {
+	color: hsl(var(--primary));
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.tiptap blockquote {
+	border-left: 3px solid hsl(var(--border));
+	padding-left: 1rem;
+	margin: 0.5rem 0;
+	color: hsl(var(--muted-foreground));
+}
+
+/* Пустой редактор — placeholder */
+.tiptap p.is-editor-empty:first-child::before {
+	content: attr(data-placeholder);
+	color: hsl(var(--muted-foreground));
+	pointer-events: none;
+	float: left;
+	height: 0;
+}
