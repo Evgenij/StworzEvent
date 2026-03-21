@@ -3,10 +3,11 @@
 
 import { Prisma } from "@prisma/client";
 import { StepParticipants } from "@/components/events/tickets/steps/participants/step-participants";
-import { StepConfirmation } from "@/components/events/tickets/steps/confirmation/step-confirmation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OrderForm as OrderFormType } from "@/components/events/tickets/tickets-drawer";
 import { useSession } from "@/lib/auth-client";
+import { StepOrderSummary } from "@/components/events/tickets/steps/confirmation/step-order-summary";
+import { StepOrderSuccess } from "@/components/events/tickets/steps/confirmation/step-order-success";
 
 type ReservationWithItems = Prisma.TicketReservationGetPayload<{
 	include: {
@@ -17,59 +18,115 @@ type ReservationWithItems = Prisma.TicketReservationGetPayload<{
 }>;
 
 type OrderFormProps = {
-	reservation: ReservationWithItems;
+	reservation: ReservationWithItems | null;
 	eventId: string;
 	eventSlug: string;
+	completedOrderId?: string;
+	completedTotal?: number;
+	isCompleted?: boolean;
 };
 
 export const OrderForm = ({
 	reservation,
 	eventId,
 	eventSlug,
+	isCompleted = false,
 }: OrderFormProps) => {
-	const [step, setStep] = useState<"participants" | "confirmation">(
-		"participants",
+	const [step, setStep] = useState<"participants" | "summary" | "success">(
+		isCompleted ? "success" : "participants",
 	);
+	const [orderId, setOrderId] = useState<string>("");
+	const [orderTotal, setOrderTotal] = useState<number>(0);
 	const [orderForm, setOrderForm] = useState<OrderFormType | null>(null);
-	const [orderId, setOrderId] = useState<string | null>(null);
+
+	const [buyerData, setBuyerData] = useState<{
+		email: string;
+		name: string;
+		surname: string;
+	} | null>(null);
 
 	const { data: session } = useSession();
 
-	// Преобразуем items резервации в формат TicketItem
-	const ticketItems = reservation.items.map((item) => ({
-		ticket: {
-			...item.ticket,
-			available: null, // резервация уже создана — лимит не важен
-		},
-		quantity: item.quantity,
-	}));
+	const ticketItems =
+		reservation?.items.map((item) => ({
+			ticket: { ...item.ticket, available: null },
+			quantity: item.quantity,
+		})) ?? [];
+
+	useEffect(() => {
+		if (isCompleted) {
+			const saved = sessionStorage.getItem(`order_success_${eventSlug}`);
+			if (saved) {
+				const data = JSON.parse(saved);
+				setOrderId(data.orderId);
+				setOrderTotal(data.total);
+				setBuyerData(data.buyer);
+				setStep("success");
+			}
+		}
+	}, [isCompleted]);
+
+	useEffect(() => {
+		return () => {
+			sessionStorage.removeItem(`order_success_${eventSlug}`);
+		};
+	}, []);
+
+	const handleSuccess = (id: string, total: number) => {
+		const successData = {
+			orderId: id,
+			total,
+			buyer: {
+				email: orderForm!.buyer.email,
+				name: orderForm!.buyer.name,
+				surname: orderForm!.buyer.surname,
+			},
+		};
+		// Сохраняем в sessionStorage
+		sessionStorage.setItem(
+			`order_success_${eventSlug}`,
+			JSON.stringify(successData),
+		);
+
+		setOrderId(id);
+		setOrderTotal(total);
+		setBuyerData(successData.buyer);
+		setStep("success");
+		window.history.replaceState(null, "", `?completed=1`);
+	};
 
 	return (
 		<>
-			{step === "participants" && (
+			{step === "participants" && reservation && (
 				<StepParticipants
 					items={ticketItems}
 					expiresAt={reservation.expiresAt}
 					onBack={() => window.history.back()}
 					onNext={(form) => {
 						setOrderForm(form);
-						setStep("confirmation");
+						setStep("summary");
 					}}
 				/>
 			)}
 
-			{step === "confirmation" && orderForm && (
-				<StepConfirmation
+			{step === "summary" && orderForm && (
+				<StepOrderSummary
 					items={ticketItems}
 					orderForm={orderForm}
 					eventId={eventId}
-					eventSlug={eventSlug}
-					reservationId={reservation.id}
-					orderId={orderId}
-					isLoggedIn={!!session}
-					buyerEmail={orderForm.buyer.email}
+					reservationId={reservation?.id ?? ""}
 					onBack={() => setStep("participants")}
-					onSuccess={(id) => setOrderId(id)}
+					onSuccess={handleSuccess}
+				/>
+			)}
+
+			{step === "success" && (
+				<StepOrderSuccess
+					orderId={orderId}
+					orderTotal={orderTotal}
+					eventSlug={eventSlug}
+					isLoggedIn={!!session}
+					buyerData={buyerData}
 				/>
 			)}
 		</>

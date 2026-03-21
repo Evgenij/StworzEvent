@@ -279,7 +279,7 @@ export function StepTickets({ eventId, initialTickets }: Props) {
 					variant="outline"
 					onClick={() =>
 						router.push(
-							`/${locale}/profile/events/${eventId}/edit/details`,
+							`/${locale}/profile/events/${eventId}/edit/additional`,
 						)
 					}
 				>

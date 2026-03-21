@@ -25,7 +25,6 @@ export const orderFormSchema = (t: (key: string) => string) =>
 					ticketName: z.string(),
 					items: z.array(
 						z.object({
-							// ← без participantSchema
 							name: z.string(),
 							surname: z.string(),
 							email: z.string(),

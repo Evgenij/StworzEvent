@@ -159,9 +159,13 @@ const EventPage = async ({
 							location={event.location}
 							address={event.address}
 						/>
-						<EventDescriptionSection
-							description={event.description}
-						/>
+						{event.description &&
+							Object.keys(event.description as object).length >
+								0 && (
+								<EventDescriptionSection
+									description={event.description}
+								/>
+							)}
 						{event.eventAgendaItems.length > 0 && (
 							<EventAgendaSection
 								items={event.eventAgendaItems}

@@ -141,9 +141,8 @@
 		},
 		"edit": {
 			"title": "Edycja",
-			"details": "Szczegóły wydarzenia",
-			"tickets": "Bilety",
-			"publish": "Publikacja"
+			"additional": "Informacje dodatkowe",
+			"tickets": "Bilety"
 		},
 		"default": ""
 	},
@@ -242,23 +241,111 @@
 		"stepOf": "Krok {current} z {total}",
 		"steps": {
 			"basicInfo": "Podstawowe",
-			"details": "Szczegóły",
-			"tickets": "Bilety",
-			"publish": "Publikacja"
+			"additional": "Dodatkowe",
+			"tickets": "Bilety"
 		},
-		"details": {
-			"startsAt": "Data rozpoczęcia",
-			"endsAt": "Data zakończenia",
-			"location": "Miasto",
-			"locationPlaceholder": "np. Warszawa",
-			"address": "Adres",
-			"addressPlaceholder": "np. ul. Marszałkowska 1",
-			"category": "Kategoria",
+		"tickets": {
+			"ticketNumber": "Bilet #{number}",
+			"name": "Nazwa biletu",
+			"namePlaceholder": "np. Bilet standardowy",
+			"price": "Cena (PLN)",
+			"quantity": "Liczba miejsc",
+			"quantityPlaceholder": "np. 100",
+			"quantityHint": "Zostaw puste dla nieograniczonej liczby",
+			"addTicket": "Dodaj bilet",
 			"back": "Wstecz",
 			"next": "Dalej",
 			"saving": "Zapisywanie...",
+			"saveDraft": "Zapisz szkic",
+			"publish": "Opublikuj wydarzenie",
+			"successPublished": "Wydarzenie zostało opublikowane!",
+			"successDraft": "Wydarzenie zapisane jako szkic",
 			"errors": {
-				"default": "Wystąpił błąd. Spróbuj ponownie."
+				"default": "Wystąpił błąd. Spróbuj ponownie.",
+				"deleteFailed": "Nie udało się usunąć biletu."
+			}
+		},
+		"sections": {
+			"types": {
+				"text": "Tekst",
+				"gallery": "Galeria",
+				"video": "Wideo"
+			},
+			"sectionTitle": "Tytuł sekcji",
+			"sectionTitlePlaceholder": "np. O wydarzeniu",
+			"content": "Treść",
+			"videoUrl": "Link do wideo",
+			"uploadHint": "Przeciągnij lub kliknij aby dodać zdjęcia",
+			"dropHere": "Upuść tutaj...",
+			"save": "Zapisz",
+			"saving": "Zapisywanie...",
+			"saved": "Zapisano",
+			"addSection": "Dodaj sekcję",
+			"altPlaceholder": "Opis zdjęcia (alt)",
+			"errors": {
+				"saveFailed": "Nie udało się zapisać sekcji",
+				"deleteFailed": "Nie udało się usunąć sekcji"
+			},
+			"emptySections": "Brak sekcji. Dodaj pierwszą sekcję poniżej.",
+			"reorderFailed": "Nie udało się zmienić kolejności sekcji."
+		},
+		"agenda": {
+			"title": "Agenda",
+			"newItem": "Nowy punkt",
+			"empty": "Brak punktów agendy. Dodaj pierwszy.",
+			"add": "Dodaj punkt",
+			"title_field": "Tytuł",
+			"titlePlaceholder": "np. Rejestracja uczestników",
+			"description": "Opis",
+			"descriptionPlaceholder": "Krótki opis...",
+			"startsAt": "Początek",
+			"endsAt": "Koniec",
+			"location": "Sala / Scena",
+			"locationPlaceholder": "np. Sala A",
+			"speakerName": "Prelegent",
+			"speakerNamePlaceholder": "np. Jan Kowalski",
+			"save": "Zapisz",
+			"saving": "Zapisywanie...",
+			"saved": "Zapisano",
+			"errors": {
+				"saveFailed": "Nie udało się zapisać punktu",
+				"deleteFailed": "Nie udało się usunąć punktu",
+				"createFailed": "Nie udało się utworzyć punktu"
+			}
+		},
+		"faq": {
+			"title": "FAQ",
+			"newItem": "Nowe pytanie",
+			"empty": "Brak pytań. Dodaj pierwsze.",
+			"add": "Dodaj pytanie",
+			"question": "Pytanie",
+			"questionPlaceholder": "np. Czy mogę zwrócić bilet?",
+			"answer": "Odpowiedź",
+			"answerPlaceholder": "Wpisz odpowiedź...",
+			"save": "Zapisz",
+			"saving": "Zapisywanie...",
+			"saved": "Zapisano",
+			"errors": {
+				"saveFailed": "Nie udało się zapisać pytania",
+				"deleteFailed": "Nie udało się usunąć pytania",
+				"createFailed": "Nie udało się utworzyć pytania"
+			}
+		},
+		"map": {
+			"showMap": "Pokaż mapę na stronie",
+			"showMapHint": "Mapa będzie widoczna dla uczestników",
+			"noAddress": "Brak adresu — uzupełnij w kroku Podstawowe",
+			"findOnMap": "Znajdź na mapie",
+			"dragHint": "Przeciągnij znacznik aby zmienić lokalizację",
+			"noCoords": "Kliknij „Znajdź na mapie” aby wyświetlić lokalizację",
+			"geocodeSuccess": "Lokalizacja znaleziona",
+			"geocodeError": "Nie udało się znaleźć lokalizacji. Sprawdź adres.",
+			"noAddressError": "Uzupełnij adres w kroku Podstawowe",
+			"save": "Zapisz",
+			"saving": "Zapisywanie...",
+			"saved": "Zapisano",
+			"errors": {
+				"saveFailed": "Nie udało się zapisać mapy"
 			}
 		}
 	},
@@ -300,26 +387,5 @@
 		"required": "To pole jest wymagane",
 		"invalidUrl": "Nieprawidłowy adres URL",
 		"endsAtAfterStartsAt": "Data zakończenia musi być późniejsza niż data rozpoczęcia"
-	},
-	"tickets": {
-		"ticketNumber": "Bilet #{number}",
-		"name": "Nazwa biletu",
-		"namePlaceholder": "np. Bilet standardowy",
-		"price": "Cena (PLN)",
-		"quantity": "Liczba miejsc",
-		"quantityPlaceholder": "np. 100",
-		"quantityHint": "Zostaw puste dla nieograniczonej liczby",
-		"addTicket": "Dodaj bilet",
-		"back": "Wstecz",
-		"next": "Dalej",
-		"saving": "Zapisywanie...",
-		"saveDraft": "Zapisz szkic",
-		"publish": "Opublikuj wydarzenie",
-		"successPublished": "Wydarzenie zostało opublikowane!",
-		"successDraft": "Wydarzenie zapisane jako szkic",
-		"errors": {
-			"default": "Wystąpił błąd. Spróbuj ponownie.",
-			"deleteFailed": "Nie udało się usunąć biletu."
-		}
 	}
 }

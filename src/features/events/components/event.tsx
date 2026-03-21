@@ -3,13 +3,14 @@ import { Event } from "@prisma/client";
 import React from "react";
 import StatusBadge from "./status-badge";
 import { TableCell, TableRow } from "@/components/shadcn/ui/table";
+import { Link } from "@/i18n/routing";
 
 const EventItem = ({ event }: { event: Event }) => {
 	return (
 		<>
 			<TableRow>
 				<TableCell className="font-medium w-1/2">
-					{event.title}
+					<Link href={`/events/${event.slug}`}>{event.title}</Link>
 				</TableCell>
 				<TableCell>
 					<StatusBadge status={event.status} />

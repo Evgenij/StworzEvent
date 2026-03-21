@@ -65,8 +65,8 @@ export const StepParticipants = ({
 				})),
 			})),
 		},
-		mode: "onTouched", // ← валидация при потере фокуса
-		reValidateMode: "onChange", // ← но после первой ошибки — сразу реагирует
+		mode: "all", // ← валидация при потере фокуса
+		reValidateMode: "onBlur", // ← но после первой ошибки — сразу реагирует
 	});
 
 	const { watch, handleSubmit, control, setValue } = form;
@@ -126,15 +126,6 @@ export const StepParticipants = ({
 		});
 	};
 
-	// Добавить участника в группу
-	const addParticipant = (groupIdx: number) => {
-		const current = form.getValues(`participants.${groupIdx}.items`);
-		form.setValue(`participants.${groupIdx}.items`, [
-			...current,
-			{ name: "", surname: "", email: "", phone: "" },
-		]);
-	};
-
 	return (
 		<main className="grid grid-cols-[380px_1fr] gap-6 items-start">
 			{/* ЛЕВАЯ КОЛОНКА */}
@@ -190,11 +181,7 @@ export const StepParticipants = ({
 						<IconArrowLeft className="size-4" />
 						Wróć
 					</Button>
-					<Button
-						onClick={handleSubmit(onSubmit)}
-						disabled={!form.formState.isValid}
-						className="flex-1"
-					>
+					<Button onClick={handleSubmit(onSubmit)} className="flex-1">
 						Dalej
 					</Button>
 				</div>

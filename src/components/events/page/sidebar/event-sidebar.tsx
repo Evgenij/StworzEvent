@@ -51,7 +51,7 @@ const EventSidebar = ({
 	}
 
 	return (
-		<aside className="sticky top-20 rounded-xl overflow-hidden border border-sidebar">
+		<aside className="sticky shadow-2xl shadow-black/10 bg-white top-20 rounded-xl overflow-hidden border border-sidebar">
 			<header className="bg-sidebar flex items-start justify-between px-4 py-3 text-foreground ">
 				<div className="company-info flex items-center gap-3">
 					<img

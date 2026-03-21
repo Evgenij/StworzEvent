@@ -8,12 +8,17 @@ import { Typography } from "@/components/shared";
 
 type OrderPageProps = {
 	params: Promise<{ slug: string; locale: string }>;
-	searchParams: Promise<{ reservationId?: string }>;
+	searchParams: Promise<{
+		reservationId?: string;
+		orderId?: string;
+		total?: number;
+		completed?: boolean;
+	}>;
 };
 
 const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 	const { slug } = await params;
-	const { reservationId } = await searchParams;
+	const { reservationId, orderId, total, completed } = await searchParams;
 
 	// Находим мероприятие
 	const event = await prisma.event.findUnique({
@@ -23,6 +28,19 @@ const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 	if (!event) redirect(`/events`);
 
 	let reservation = null;
+
+	if (completed) {
+		return (
+			<div className="max-w-6xl mx-auto px-4 py-8">
+				<OrderForm
+					reservation={null}
+					eventId={event.id}
+					eventSlug={slug}
+					isCompleted={true} // ← новый проп
+				/>
+			</div>
+		);
+	}
 
 	if (reservationId) {
 		// Загружаем резервацию по ID из URL
@@ -34,6 +52,8 @@ const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 				},
 			},
 		});
+
+		console.log(reservation);
 	} else {
 		// Пытаемся восстановить по сессии
 		reservation = await getActiveReservation(event.id);

@@ -106,12 +106,13 @@ export const BuyerForm = ({ form }: BuyerFormProps) => {
 							</InputGroupAddon>
 							<InputGroupIMask
 								mask="000-000-000"
-								value={field.value ?? ""}
+								value={field.value}
 								onAccept={(value) => field.onChange(value)}
 								placeholder="___-___-___"
 								inputRef={field.ref}
 								aria-invalid={fieldState.invalid}
 								onBlur={field.onBlur}
+								onChange={field.onChange}
 							/>
 						</InputGroup>
 						{fieldState.invalid && (

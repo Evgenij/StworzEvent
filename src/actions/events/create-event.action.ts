@@ -45,10 +45,21 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 			status: data.status,
 			slug,
 			organizationId: data.organizationId,
-			startsAt: new Date(0), // заглушка — перезапишется на шаге 2
+			startsAt: new Date(data.startsAt),
+			endsAt: data.endsAt ? new Date(data.endsAt) : null,
+			location: data.location,
+			address: data.address,
+			// categoryId через join таблицу
 		},
 		select: { id: true, slug: true },
 	});
+
+	// категория отдельно
+	if (data.categoryId) {
+		await prisma.eventCategoryOnEvent.create({
+			data: { eventId: event.id, categoryId: data.categoryId },
+		});
+	}
 
 	return { eventId: event.id };
 });

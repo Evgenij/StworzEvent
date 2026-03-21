@@ -15,6 +15,7 @@ import { Button } from "@/components/shadcn/ui/button";
 import { Field, FieldError } from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
+	InputGroupAddon,
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
 import { RadioGroup, RadioGroupItem } from "@/components/shadcn/ui/radio-group";
@@ -27,11 +28,17 @@ import {
 } from "@/components/shadcn/ui/select";
 import { EventCoverUpload } from "./event-cover-upload";
 import { RichTextEditor } from "@/components/shared/rich-text-editor";
-import { IconLoader2 } from "@tabler/icons-react";
+import {
+	IconBuilding,
+	IconCalendar,
+	IconLoader2,
+	IconMapPin,
+} from "@tabler/icons-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
+import { CategoryCombobox } from "./category-combobox";
 
 export function CreateEventForm() {
 	const router = useRouter();
@@ -47,6 +54,11 @@ export function CreateEventForm() {
 			coverImage: "",
 			status: EventStatus.DRAFT,
 			organizationId: "",
+			categoryId: "",
+			startsAt: "",
+			endsAt: "",
+			location: "",
+			address: "",
 		},
 		mode: "onBlur",
 		reValidateMode: "onBlur",
@@ -82,7 +94,7 @@ export function CreateEventForm() {
 
 		// ✅ редирект на шаг 2
 		router.push(
-			`/${locale}/profile/events/${result.data.eventId}/edit/details`,
+			`/${locale}/profile/events/${result.data.eventId}/edit/additional`,
 		);
 	};
 
@@ -161,6 +173,74 @@ export function CreateEventForm() {
 				)}
 			/>
 
+			{/* Даты */}
+			<div className="grid grid-cols-2 gap-4">
+				<Controller
+					name="startsAt"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<Label>{t("startsAt")}</Label>
+							<InputGroup>
+								<InputGroupAddon>
+									<IconCalendar className="size-4" />
+								</InputGroupAddon>
+								<InputGroupInput
+									type="datetime-local"
+									{...field}
+									value={field.value ?? ""}
+									aria-invalid={fieldState.invalid}
+								/>
+							</InputGroup>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
+				<Controller
+					name="endsAt"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<Label>{t("endsAt")}</Label>
+							<InputGroup>
+								<InputGroupAddon>
+									<IconCalendar className="size-4" />
+								</InputGroupAddon>
+								<InputGroupInput
+									type="datetime-local"
+									{...field}
+									value={field.value ?? ""}
+									aria-invalid={fieldState.invalid}
+								/>
+							</InputGroup>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
+			</div>
+
+			{/* Категория */}
+			<Controller
+				name="categoryId"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<Label>{t("category")}</Label>
+						<CategoryCombobox
+							value={field.value}
+							onChange={field.onChange}
+						/>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
+
 			{/* Описание */}
 			<Controller
 				name="description"
@@ -173,6 +253,54 @@ export function CreateEventForm() {
 							onChange={field.onChange}
 							disabled={isSubmitting}
 						/>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
+
+			{/* Город */}
+			<Controller
+				name="location"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<Label>{t("location")}</Label>
+						<InputGroup>
+							<InputGroupAddon>
+								<IconMapPin className="size-4" />
+							</InputGroupAddon>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("locationPlaceholder")}
+							/>
+						</InputGroup>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
+
+			{/* Адрес */}
+			<Controller
+				name="address"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<Label>{t("address")}</Label>
+						<InputGroup>
+							<InputGroupAddon>
+								<IconBuilding className="size-4" />
+							</InputGroupAddon>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("addressPlaceholder")}
+							/>
+						</InputGroup>
 						{fieldState.invalid && (
 							<FieldError errors={[fieldState.error]} />
 						)}

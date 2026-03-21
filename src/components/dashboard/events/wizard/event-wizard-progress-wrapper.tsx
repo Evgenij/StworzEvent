@@ -9,7 +9,7 @@ type Props = {
 
 function getStepFromPathname(pathname: string): 1 | 2 | 3 {
 	if (pathname.includes("/edit/tickets")) return 3;
-	if (pathname.includes("/edit/details")) return 2;
+	if (pathname.includes("/edit/additional")) return 2;
 	return 1;
 }
 

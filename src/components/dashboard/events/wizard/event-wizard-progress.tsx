@@ -14,20 +14,16 @@ type Step = {
 };
 
 const STEPS: Step[] = [
-	{
-		number: 1,
-		labelKey: "basicInfo",
-		path: () => "", // шаг 1 — /new, не имеет eventId пути
-	},
+	{ number: 1, labelKey: "basicInfo", path: () => "" },
 	{
 		number: 2,
-		labelKey: "details",
-		path: (eventId) => `/profile/events/${eventId}/edit/details`,
+		labelKey: "additional",
+		path: (id) => `/profile/events/${id}/edit/additional`,
 	},
 	{
 		number: 3,
 		labelKey: "tickets",
-		path: (eventId) => `/profile/events/${eventId}/edit/tickets`,
+		path: (id) => `/profile/events/${id}/edit/tickets`,
 	},
 ];
 

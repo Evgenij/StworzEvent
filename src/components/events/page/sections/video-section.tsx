@@ -1,8 +1,11 @@
 "use client";
 
 import { EventSection } from "@prisma/client";
-import React, { useState } from "react";
-import { VideoSectionContent } from "../event-sections";
+import React from "react";
+
+type VideoSectionContent = {
+	url: string;
+};
 
 const getYoutubeId = (url: string) => {
 	const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/);
@@ -12,23 +15,16 @@ const getYoutubeId = (url: string) => {
 const EventVideoSection = ({ section }: { section: EventSection }) => {
 	const content = section.content as VideoSectionContent;
 
+	if (!content?.url) return null;
+
 	return (
-		<div className="flex flex-col gap-4">
-			{content.videos.map((video, i) => (
-				<div key={i} className="flex flex-col gap-2">
-					{/* {video.title && (
-						<p className="font-medium">{video.title}</p>
-					)} */}
-					<div className="aspect-video rounded-md overflow-hidden">
-						<iframe
-							src={`https://www.youtube.com/embed/${getYoutubeId(video.url)}`}
-							className="w-full h-full"
-							allowFullScreen
-							allow="autoplay; encrypted-media"
-						/>
-					</div>
-				</div>
-			))}
+		<div className="aspect-video overflow-hidden rounded-md">
+			<iframe
+				src={`https://www.youtube.com/embed/${getYoutubeId(content.url)}`}
+				className="h-full w-full"
+				allowFullScreen
+				allow="autoplay; encrypted-media"
+			/>
 		</div>
 	);
 };
