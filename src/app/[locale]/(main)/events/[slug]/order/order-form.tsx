@@ -66,12 +66,6 @@ export const OrderForm = ({
 		}
 	}, [isCompleted]);
 
-	useEffect(() => {
-		return () => {
-			sessionStorage.removeItem(`order_success_${eventSlug}`);
-		};
-	}, []);
-
 	const handleSuccess = (id: string, total: number) => {
 		const successData = {
 			orderId: id,
@@ -82,6 +76,7 @@ export const OrderForm = ({
 				surname: orderForm!.buyer.surname,
 			},
 		};
+
 		// Сохраняем в sessionStorage
 		sessionStorage.setItem(
 			`order_success_${eventSlug}`,

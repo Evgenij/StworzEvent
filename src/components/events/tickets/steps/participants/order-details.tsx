@@ -1,9 +1,8 @@
 import { Typography } from "@/components/shared";
 import { IconTicket } from "@tabler/icons-react";
-import React from "react";
 import { SelectedTicket } from "../../tickets-drawer";
 import { Separator } from "@/components/shadcn/ui/separator";
-import { cn } from "@/lib/utils";
+import { cn, formatPlnFromGrosze } from "@/lib/utils";
 
 type OrderDetailsProps = {
 	items: SelectedTicket[];
@@ -34,7 +33,9 @@ const OrderDetails = ({ items, total, className }: OrderDetailsProps) => {
 							<span className="font-medium text-foreground">
 								{item.ticket.price === 0
 									? "Bezpłatny"
-									: `${((item.ticket.price * item.quantity) / 100).toFixed(2)} zł`}
+									: formatPlnFromGrosze(
+											item.ticket.price * item.quantity,
+										)}
 							</span>
 						</div>
 					))}
@@ -45,7 +46,7 @@ const OrderDetails = ({ items, total, className }: OrderDetailsProps) => {
 					<span>
 						{total === 0
 							? "Bezpłatne"
-							: `${(total / 100).toFixed(2)} zł`}
+							: formatPlnFromGrosze(total)}
 					</span>
 				</div>
 			</div>

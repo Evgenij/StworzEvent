@@ -1,23 +1,16 @@
-// steps/step-select-tickets.tsx
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/shadcn/ui/button";
 import { Separator } from "@/components/shadcn/ui/separator";
-import {
-	IconMinus,
-	IconPlus,
-	IconClock,
-	IconChevronRight,
-	IconLocation,
-	IconMapPin,
-} from "@tabler/icons-react";
+import { IconClock, IconChevronRight, IconMapPin } from "@tabler/icons-react";
 import TicketItem from "./ticket-item";
 import { SelectedTicket } from "../../tickets-drawer";
-import { DateFormatter } from "@/helpers/date-formatter";
+import { formatPlnFromGrosze } from "@/lib/utils";
 
 type StepSelectTicketsProps = {
 	items: SelectedTicket[];
-	setItems: (items: SelectedTicket[]) => void;
+	setItems: Dispatch<SetStateAction<SelectedTicket[]>>;
 	eventTitle: string;
 	eventDate: string;
 	eventLocation: {
@@ -27,7 +20,7 @@ type StepSelectTicketsProps = {
 	onNext: () => void;
 	loading?: boolean;
 	hasActiveReservation?: boolean;
-	onCancelReservation?: () => void; // ← новый проп
+	onCancelReservation?: () => void;
 	cancelLoading?: boolean;
 };
 
@@ -40,12 +33,12 @@ export const StepSelectTickets = ({
 	onNext,
 	loading = false,
 	hasActiveReservation = false,
-	onCancelReservation, // ← новый проп
+	onCancelReservation,
 	cancelLoading = false,
 }: StepSelectTicketsProps) => {
 	const updateQuantity = (ticketId: string, delta: number) => {
-		setItems(
-			items.map((item) =>
+		setItems((prev) =>
+			prev.map((item) =>
 				item.ticket.id === ticketId
 					? { ...item, quantity: Math.max(0, item.quantity + delta) }
 					: item,
@@ -58,29 +51,27 @@ export const StepSelectTickets = ({
 		0,
 	);
 	const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+	const locationLabel = [eventLocation.city, eventLocation.address]
+		.filter(Boolean)
+		.join(", ");
 
 	return (
 		<div className="flex flex-col gap-4">
-			{/* Краткая инфо */}
 			<div className="flex flex-col bg-muted rounded-lg p-3">
 				<p className="font-semibold text-base">{eventTitle}</p>
 				<p className="text-sm text-muted-foreground capitalize">
 					{eventDate}
 				</p>
-				{eventLocation.city && (
+				{locationLabel && (
 					<div className="event-location flex items-center gap-1 pt-2">
 						<IconMapPin className="size-4" />
-						<p className="text-sm ">
-							{eventLocation.city}
-							{", " + eventLocation.address}
-						</p>
+						<p className="text-sm ">{locationLabel}</p>
 					</div>
 				)}
 			</div>
 
 			<Separator />
 
-			{/* Список билетов — readonly если есть резервация */}
 			<div className="flex flex-col gap-3">
 				{[...items]
 					.sort((a, b) => a.ticket.price - b.ticket.price)
@@ -91,14 +82,13 @@ export const StepSelectTickets = ({
 							quantity={quantity}
 							onIncrement={() => updateQuantity(ticket.id, 1)}
 							onDecrement={() => updateQuantity(ticket.id, -1)}
-							disabled={hasActiveReservation} // ← блокируем кнопки
+							disabled={hasActiveReservation}
 						/>
 					))}
 			</div>
 
 			<Separator />
 
-			{/* Итог */}
 			{totalItems > 0 && (
 				<>
 					<div className="flex items-center justify-between">
@@ -110,7 +100,7 @@ export const StepSelectTickets = ({
 						<p className="text-xl font-bold">
 							{total === 0
 								? "Bezpłatne"
-								: `${(total / 100).toFixed(2)} zł`}
+								: formatPlnFromGrosze(total)}
 						</p>
 					</div>
 					<div className="bg-muted rounded-lg p-3 text-sm text-muted-foreground">
@@ -125,18 +115,6 @@ export const StepSelectTickets = ({
 				</>
 			)}
 
-			{/* Инструкция по оплате */}
-			{/* {total > 0 && (
-				<div className="bg-muted rounded-lg p-3 text-sm text-muted-foreground">
-					<p className="font-medium text-foreground mb-1">
-						Jak zapłacić?
-					</p>
-					<p>Po złożeniu zamówienia otrzymasz numer zamówienia.</p>
-					<p>Prześlij potwierdzenie przelewu organizatorowi.</p>
-				</div>
-			)} */}
-
-			{/* Баннер активной резервации */}
 			{hasActiveReservation && (
 				<div className="flex flex-col gap-2 bg-primary/10 text-primary rounded-lg px-3 py-2 text-sm">
 					<div className="flex items-center gap-2">

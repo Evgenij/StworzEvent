@@ -10,7 +10,7 @@ import { OrderFormValues } from "@/schemas/order.schema";
 import { UseFormReturn } from "react-hook-form";
 
 type BuyerDetailsProps = {
-	form: UseFormReturn<OrderFormValues>; // ← вся форма вместо buyerForm
+	form: UseFormReturn<OrderFormValues>;
 	buyerIsParticipant: boolean;
 	buyerTicketGroupIdx: number;
 	items: SelectedTicket[];
@@ -35,7 +35,7 @@ const BuyerDetails = ({
 				<IconUserHexagon className="size-6 text-primary" />
 				Zamawiający
 			</Typography>
-			<BuyerForm form={form} /> {/* ← form вместо buyerForm */}
+			<BuyerForm form={form} />
 			<Field orientation="horizontal">
 				<Checkbox
 					id="buyerIsParticipant"

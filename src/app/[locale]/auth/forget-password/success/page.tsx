@@ -3,8 +3,7 @@ import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import React from "react";
-import { Typography } from "@/components/shared/typography/typography";
+import Typography from "@/components/shared/typography/typography";
 
 const SuccessPage = () => {
 	const t = useTranslations("ForgetPasswordForm");

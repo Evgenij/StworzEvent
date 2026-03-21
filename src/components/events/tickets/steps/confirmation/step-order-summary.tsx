@@ -1,4 +1,3 @@
-// steps/confirmation/step-order-summary.tsx
 "use client";
 
 import { useState } from "react";
@@ -7,6 +6,7 @@ import { Separator } from "@/components/shadcn/ui/separator";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { SelectedTicket, OrderForm } from "../../tickets-drawer";
 import { createOrder } from "@/actions/orders/create-order.action";
+import { formatPlnFromGrosze } from "@/lib/utils";
 
 type StepOrderSummaryProps = {
 	items: SelectedTicket[];
@@ -26,6 +26,7 @@ export const StepOrderSummary = ({
 	onSuccess,
 }: StepOrderSummaryProps) => {
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const total = items.reduce(
 		(sum, item) => sum + item.ticket.price * item.quantity,
@@ -34,6 +35,7 @@ export const StepOrderSummary = ({
 
 	const handleConfirm = async () => {
 		setLoading(true);
+		setError(null);
 		try {
 			const order = await createOrder({
 				eventId,
@@ -49,11 +51,9 @@ export const StepOrderSummary = ({
 				participants: orderForm.participants,
 			});
 
-			console.log("order ------------------------", order);
-
 			onSuccess(order.id, total);
 		} catch (e) {
-			console.error(e);
+			setError("Nie udało się złożyć zamówienia. Spróbuj ponownie.");
 		} finally {
 			setLoading(false);
 		}
@@ -91,7 +91,9 @@ export const StepOrderSummary = ({
 						<span className="font-medium">
 							{item.ticket.price === 0
 								? "Bezpłatny"
-								: `${((item.ticket.price * item.quantity) / 100).toFixed(2)} zł`}
+								: formatPlnFromGrosze(
+										item.ticket.price * item.quantity,
+									)}
 						</span>
 					</div>
 				))}
@@ -102,11 +104,13 @@ export const StepOrderSummary = ({
 			<div className="flex justify-between font-bold">
 				<span>Razem</span>
 				<span>
-					{total === 0
-						? "Bezpłatne"
-						: `${(total / 100).toFixed(2)} zł`}
+					{total === 0 ? "Bezpłatne" : formatPlnFromGrosze(total)}
 				</span>
 			</div>
+
+			{error && (
+				<p className="text-sm text-destructive text-center">{error}</p>
+			)}
 
 			<div className="flex gap-3">
 				<Button variant="outline" onClick={onBack} className="flex-1">

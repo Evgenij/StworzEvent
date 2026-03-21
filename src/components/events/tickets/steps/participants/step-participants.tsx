@@ -1,17 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/shadcn/ui/button";
-import {
-	IconArrowLeft,
-	IconPlus,
-	IconUserPlus,
-	IconUsers,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconUsers } from "@tabler/icons-react";
 import { SelectedTicket, OrderForm } from "../../tickets-drawer";
 import { useCountdown } from "@/hooks/use-countdown";
 import { Typography } from "@/components/shared";
@@ -20,11 +15,7 @@ import BuyerDetails from "./buyer-details";
 import OrderDetails from "./order-details";
 import ReservationTimer from "./reservation-timer";
 import { ParticipantList } from "./participant-list";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/shadcn/ui/popover";
+import { FlatParticipant } from "@/types/flat-participant";
 
 type StepParticipantsProps = {
 	items: SelectedTicket[];
@@ -45,9 +36,8 @@ export const StepParticipants = ({
 
 	useEffect(() => {
 		if (isExpired) router.back();
-	}, [isExpired]);
+	}, [isExpired, router]);
 
-	// ── Единая форма для всего шага ──
 	const form = useForm<OrderFormValues>({
 		resolver: zodResolver(orderFormSchema(tErrors)),
 		defaultValues: {
@@ -65,31 +55,18 @@ export const StepParticipants = ({
 				})),
 			})),
 		},
-		mode: "all", // ← валидация при потере фокуса
-		reValidateMode: "onBlur", // ← но после первой ошибки — сразу реагирует
+		mode: "all",
+		reValidateMode: "onBlur",
 	});
 
-	const { watch, handleSubmit, control, setValue } = form;
+	const { watch, handleSubmit, setValue } = form;
 	const buyerIsParticipant = watch("buyerIsParticipant");
 	const buyerTicketGroupIdx = watch("buyerTicketGroupIdx");
 	const buyer = watch("buyer");
 
-	const participantsWatch = form.watch("participants");
-	const flatList = participantsWatch.flatMap((group, groupIdx) =>
-		group.items.map((_, participantIdx) => ({
-			ticket: items[groupIdx].ticket,
-			idxInTicket: participantIdx + 1,
-			totalInGroup: group.items.length, // ← актуальное количество из формы
-			globalIdx:
-				participantsWatch
-					.slice(0, groupIdx)
-					.reduce((sum, g) => sum + g.items.length, 0) +
-				participantIdx +
-				1,
-			groupIdx,
-			participantIdx,
-		})),
-	);
+	const participants = watch("participants");
+	const flatList = toFlatParticipantList(items, participants);
+
 	const copyBuyerEmail = (groupIdx: number, participantIdx: number) => {
 		setValue(
 			`participants.${groupIdx}.items.${participantIdx}.email`,
@@ -104,7 +81,6 @@ export const StepParticipants = ({
 	);
 
 	const onSubmit = (data: OrderFormValues) => {
-		// Если покупатель = участник — подставляем его данные в нужный слот
 		const finalParticipants = data.participants.map((group, gi) => ({
 			...group,
 			items: group.items.map((p, pi) => {
@@ -128,7 +104,6 @@ export const StepParticipants = ({
 
 	return (
 		<main className="grid grid-cols-[380px_1fr] gap-6 items-start">
-			{/* ЛЕВАЯ КОЛОНКА */}
 			<aside className="self-start sticky top-18 flex flex-col gap-5">
 				<BuyerDetails
 					items={items}
@@ -145,7 +120,6 @@ export const StepParticipants = ({
 				<div className="order-details px-5 flex flex-col gap-5">
 					<OrderDetails items={items} total={total} />
 					<ReservationTimer
-						expiresAt={expiresAt}
 						isExpired={isExpired}
 						remaining={remaining}
 						formatted={formatted}
@@ -153,7 +127,6 @@ export const StepParticipants = ({
 				</div>
 			</aside>
 
-			{/* ПРАВАЯ КОЛОНКА */}
 			<section className="flex flex-col gap-4 pt-2">
 				<Typography
 					variant="h4"
@@ -164,7 +137,7 @@ export const StepParticipants = ({
 				</Typography>
 
 				<ParticipantList
-					form={form} // ← передаём всю форму
+					form={form}
 					flatList={flatList}
 					buyerIsParticipant={buyerIsParticipant}
 					buyerTicketGroupIdx={buyerTicketGroupIdx}
@@ -189,3 +162,24 @@ export const StepParticipants = ({
 		</main>
 	);
 };
+
+function toFlatParticipantList(
+	items: SelectedTicket[],
+	participants: OrderFormValues["participants"],
+): FlatParticipant[] {
+	let globalIdx = 0;
+
+	return participants.flatMap((group, groupIdx) =>
+		group.items.map((_, participantIdx) => {
+			globalIdx += 1;
+			return {
+				ticket: items[groupIdx].ticket,
+				idxInTicket: participantIdx + 1,
+				totalInGroup: group.items.length,
+				globalIdx,
+				groupIdx,
+				participantIdx,
+			};
+		}),
+	);
+}

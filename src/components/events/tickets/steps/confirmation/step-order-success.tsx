@@ -31,12 +31,16 @@ export const StepOrderSuccess = ({
 	buyerData,
 }: StepOrderSuccessProps) => {
 	const router = useRouter();
+	const buyerEmail = buyerData?.email ?? "";
+	const buyerName = buyerData?.name ?? "";
+	const buyerSurname = buyerData?.surname ?? "";
+
 	const [copied, setCopied] = useState(false);
 	const [password, setPassword] = useState("");
 	const [registerLoading, setRegisterLoading] = useState(false);
 	const [loginLoading, setLoginLoading] = useState(false);
 	const [registered, setRegistered] = useState(false);
-	const [registerError, setRegisterError] = useState<string | null>(null);
+	const [authError, setAuthError] = useState<string | null>(null);
 	const [mode, setMode] = useState<"register" | "login">("register");
 
 	const copyOrderId = async () => {
@@ -47,12 +51,12 @@ export const StepOrderSuccess = ({
 
 	const handleRegister = async () => {
 		setRegisterLoading(true);
-		setRegisterError(null);
+		setAuthError(null);
 		try {
 			const result = await signUpEmailAction({
-				name: buyerData?.name ?? "",
-				surname: buyerData?.surname ?? "",
-				email: buyerData?.email ?? "",
+				name: buyerName,
+				surname: buyerSurname,
+				email: buyerEmail,
 				password,
 			});
 			if (!result.success) {
@@ -60,11 +64,9 @@ export const StepOrderSuccess = ({
 					result.code ===
 					ErrorCode.USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL
 				) {
-					setRegisterError(
-						"Ten adres e-mail jest już zarejestrowany.",
-					);
+					setAuthError("Ten adres e-mail jest już zarejestrowany.");
 				} else {
-					setRegisterError(
+					setAuthError(
 						"Nie udało się założyć konta. Spróbuj ponownie.",
 					);
 				}
@@ -72,7 +74,7 @@ export const StepOrderSuccess = ({
 			}
 			setRegistered(true);
 		} catch {
-			setRegisterError("Nie udało się założyć konta. Spróbuj ponownie.");
+			setAuthError("Nie udało się założyć konta. Spróbuj ponownie.");
 		} finally {
 			setRegisterLoading(false);
 		}
@@ -80,19 +82,19 @@ export const StepOrderSuccess = ({
 
 	const handleLogin = async () => {
 		setLoginLoading(true);
-		setRegisterError(null);
+		setAuthError(null);
 		try {
 			const formData = new FormData();
-			formData.append("email", buyerData?.email ?? "");
+			formData.append("email", buyerEmail);
 			formData.append("password", password);
 			const result = await signInEmailAction(formData);
 			if (!result.success) {
-				setRegisterError("Nieprawidłowe hasło. Spróbuj ponownie.");
+				setAuthError("Nieprawidłowe hasło. Spróbuj ponownie.");
 				return;
 			}
 			setRegistered(true);
 		} catch {
-			setRegisterError("Nie udało się zalogować. Spróbuj ponownie.");
+			setAuthError("Nie udało się zalogować. Spróbuj ponownie.");
 		} finally {
 			setLoginLoading(false);
 		}
@@ -109,7 +111,7 @@ export const StepOrderSuccess = ({
 				<p className="text-muted-foreground text-sm">
 					Potwierdzenie zostanie wysłane na{" "}
 					<span className="font-medium text-foreground">
-						{buyerData?.email ?? ""}
+						{buyerEmail}
 					</span>
 				</p>
 			</div>
@@ -151,7 +153,7 @@ export const StepOrderSuccess = ({
 								<p className="text-sm text-muted-foreground">
 									Załóż konto używając adresu{" "}
 									<span className="font-medium text-foreground">
-										{buyerData?.email ?? ""}
+										{buyerEmail}
 									</span>
 								</p>
 							</div>
@@ -166,14 +168,14 @@ export const StepOrderSuccess = ({
 									placeholder="Minimum 8 znaków"
 								/>
 							</div>
-							{registerError && (
+							{authError && (
 								<div className="flex flex-col gap-2">
 									<p className="text-sm text-destructive">
-										{registerError}
+										{authError}
 									</p>
 									<button
 										onClick={() => {
-											setRegisterError(null);
+											setAuthError(null);
 											setPassword("");
 											setMode("login");
 										}}
@@ -201,7 +203,7 @@ export const StepOrderSuccess = ({
 								<p className="text-sm text-muted-foreground">
 									Wpisz hasło dla{" "}
 									<span className="font-medium text-foreground">
-										{buyerData?.email ?? ""}
+										{buyerEmail}
 									</span>
 								</p>
 							</div>
@@ -216,9 +218,9 @@ export const StepOrderSuccess = ({
 									placeholder="Twoje hasło"
 								/>
 							</div>
-							{registerError && (
+							{authError && (
 								<p className="text-sm text-destructive">
-									{registerError}
+									{authError}
 								</p>
 							)}
 							<Button
@@ -229,7 +231,7 @@ export const StepOrderSuccess = ({
 							</Button>
 							<button
 								onClick={() => {
-									setRegisterError(null);
+									setAuthError(null);
 									setPassword("");
 									setMode("register");
 								}}

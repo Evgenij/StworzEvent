@@ -43,7 +43,7 @@ import { acceptInvitationAction } from "@/actions/auth/accept-invitation.action"
 import { toast } from "sonner";
 import { Alert, AlertTitle } from "@/components/shadcn/ui/alert";
 import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
-import { Typography } from "@/components/shared/typography/typography";
+import Typography from "@/components/shared/typography/typography";
 
 export default function SignUpInviteForm({ token }: { token: string }) {
 	const t = useTranslations("SignUpInviteForm");

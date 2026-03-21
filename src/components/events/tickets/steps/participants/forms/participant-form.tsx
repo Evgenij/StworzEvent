@@ -1,7 +1,11 @@
-// forms/participant-form.tsx
 import { Controller, UseFormReturn } from "react-hook-form";
 import { OrderFormValues } from "@/schemas/order.schema";
-import { Field, FieldError, FieldGroup } from "@/components/shadcn/ui/field";
+import {
+	Field,
+	Field as FieldRow,
+	FieldError,
+	FieldGroup,
+} from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -11,7 +15,6 @@ import {
 } from "@/components/shadcn/ui/input-group";
 import { IconMail, IconPhone, IconTicket, IconUser } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { Field as FieldComp } from "@/components/shadcn/ui/field";
 import { Checkbox } from "@/components/shadcn/ui/checkbox";
 import { Label } from "@/components/shadcn/ui/label";
 
@@ -37,16 +40,11 @@ export const ParticipantFormCard = ({
 	const tAuth = useTranslations("Auth");
 	const { control, watch, setValue } = form;
 
-	const emailValue = watch(
-		`participants.${groupIdx}.items.${participantIdx}.email`,
-	);
-
-	// Базовый путь до участника в форме
 	const base = `participants.${groupIdx}.items.${participantIdx}` as const;
+	const emailValue = watch(`${base}.email`);
 
 	return (
 		<div className="flex flex-col gap-4">
-			{/* Заголовок */}
 			<div className="flex items-center gap-2 text-sm font-semibold">
 				<IconTicket className="size-5 text-primary" />
 				<span>{ticketName}</span>
@@ -157,7 +155,7 @@ export const ParticipantFormCard = ({
 			</FieldGroup>
 
 			{buyerEmail && (
-				<FieldComp orientation="horizontal">
+				<FieldRow orientation="horizontal">
 					<Checkbox
 						id={`copy-email-${groupIdx}-${participantIdx}`}
 						checked={emailValue === buyerEmail}
@@ -177,7 +175,7 @@ export const ParticipantFormCard = ({
 					>
 						Użyj adresu e-mail zamawiającego
 					</Label>
-				</FieldComp>
+				</FieldRow>
 			)}
 		</div>
 	);

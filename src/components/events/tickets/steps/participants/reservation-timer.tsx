@@ -1,10 +1,7 @@
-import { useCountdown } from "@/hooks/use-countdown";
 import { cn } from "@/lib/utils";
 import { IconClock, IconClockExclamation } from "@tabler/icons-react";
-import React from "react";
 
 type ReservationTimerProps = {
-	expiresAt: Date;
 	isExpired: boolean;
 	remaining: number;
 	formatted: string;
@@ -15,7 +12,7 @@ const ReservationTimer = ({
 	remaining,
 	formatted,
 }: ReservationTimerProps) => {
-	const isAlmostExpired = remaining < 3 * 60 * 1000 && !isExpired; // если осталось меньше 3 минут и не истекло
+	const isAlmostExpired = remaining < 3 * 60 * 1000 && !isExpired;
 
 	return (
 		<div

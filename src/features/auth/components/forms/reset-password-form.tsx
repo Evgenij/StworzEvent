@@ -38,7 +38,7 @@ import {
 	AlertDescription,
 	AlertTitle,
 } from "@/components/shadcn/ui/alert";
-import { Typography } from "@/components/shared/typography/typography";
+import Typography from "@/components/shared/typography/typography";
 
 export default function ResetPasswordForm({ token }: { token: string }) {
 	const t = useTranslations("ResetPasswordForm");

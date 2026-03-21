@@ -1,14 +1,14 @@
-import React from "react";
 import { TicketWithAvailability } from "@/types/ticket";
 import { Button } from "@/components/shadcn/ui/button";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { formatPlnFromGrosze } from "@/lib/utils";
 
 type TicketItemProps = {
 	ticket: TicketWithAvailability;
 	quantity: number;
 	onIncrement: () => void;
 	onDecrement: () => void;
-	disabled?: boolean; // ← новый проп
+	disabled?: boolean;
 };
 
 const TicketItem = ({
@@ -16,8 +16,11 @@ const TicketItem = ({
 	quantity,
 	onIncrement,
 	onDecrement,
-	disabled = false, // ← новый проп
+	disabled = false,
 }: TicketItemProps) => {
+	const reachedAvailability =
+		ticket.available !== null ? quantity >= ticket.available : false;
+
 	return (
 		<div className="flex items-center justify-between">
 			<div className="flex flex-col ">
@@ -25,7 +28,7 @@ const TicketItem = ({
 				<p className="text-base text-primary font-semibold">
 					{ticket.price === 0
 						? "Bezpłatny"
-						: `${(ticket.price / 100).toFixed(2)} zł`}
+						: formatPlnFromGrosze(ticket.price)}
 				</p>
 				{ticket.available !== null && (
 					<p className="text-xs text-muted-foreground">
@@ -50,12 +53,7 @@ const TicketItem = ({
 					size="icon"
 					variant="outline"
 					onClick={onIncrement}
-					disabled={
-						disabled ||
-						(ticket.available !== null
-							? quantity >= ticket.available
-							: false)
-					}
+					disabled={disabled || reachedAvailability}
 				>
 					<IconPlus className="size-4" />
 				</Button>

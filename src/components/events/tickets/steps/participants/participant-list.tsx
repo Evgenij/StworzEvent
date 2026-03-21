@@ -1,9 +1,7 @@
-// participant-list.tsx
-import { UseFormReturn, useFieldArray } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import { OrderFormValues } from "@/schemas/order.schema";
 import { TicketWrapper } from "./ticket-wrapper";
 import { ParticipantFormCard } from "./forms/participant-form";
-import { SelectedTicket } from "../../tickets-drawer";
 import { truncate } from "@/lib/utils";
 import { IconTicket, IconUserCheck } from "@tabler/icons-react";
 import { FlatParticipant } from "@/types/flat-participant";
@@ -25,6 +23,8 @@ export const ParticipantList = ({
 	buyerEmail,
 	onCopyBuyerEmail,
 }: ParticipantListProps) => {
+	const buyerData = form.watch("buyer");
+
 	return (
 		<div className="ticket-list flex flex-col gap-3">
 			{flatList.map((flat) => {
@@ -34,7 +34,6 @@ export const ParticipantList = ({
 					flat.participantIdx === 0;
 
 				if (isBuyerSlot) {
-					const buyerData = form.watch("buyer");
 					return (
 						<TicketWrapper
 							id={`#${truncate(flat.ticket.id, 10)}`}
@@ -90,7 +89,7 @@ export const ParticipantList = ({
 						key={`${flat.groupIdx}-${flat.participantIdx}`}
 					>
 						<ParticipantFormCard
-							form={form} // ← передаём форму
+							form={form}
 							groupIdx={flat.groupIdx}
 							participantIdx={flat.participantIdx}
 							ticketName={flat.ticket.name}

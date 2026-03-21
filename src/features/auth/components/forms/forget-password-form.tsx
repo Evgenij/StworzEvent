@@ -23,7 +23,7 @@ import { authClient } from "@/lib/auth-client";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Typography } from "@/components/shared/typography/typography";
+import Typography from "@/components/shared/typography/typography";
 
 export default function ForgetPasswordForm() {
 	const t = useTranslations("ForgetPasswordForm");
