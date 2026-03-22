@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "@/i18n/routing";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE } from "@/consts/routes";
 import { UserRole } from "@prisma/client";
 import { AdminDashboard } from "./components/admin-dashboard";
 import { OrganizerDashboard } from "./components/organizer-dashboard";

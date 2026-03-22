@@ -24,7 +24,7 @@ import {
 	FORGET_PASSWORD_ROUTE,
 	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
-} from "@/helpers/routes";
+} from "@/consts/routes";
 import { Spinner } from "@/components/shadcn/ui/spinner";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";

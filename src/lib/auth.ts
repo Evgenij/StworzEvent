@@ -13,7 +13,7 @@ import { UserRole } from "@prisma/client";
 import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
 import { sendEmailAction } from "@/actions/send-email.action";
-import { DASHBOARD_ROUTE } from "@/helpers/routes";
+import { DASHBOARD_ROUTE } from "@/consts/routes";
 import { TypeMail } from "@/types/enums";
 import { hashPassword, verifyPassword } from "@/lib/hashPassword";
 

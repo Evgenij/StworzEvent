@@ -1,5 +1,5 @@
 import { EventWizardProgressWrapper } from "@/components/dashboard/events/wizard/event-wizard-progress-wrapper";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE } from "@/consts/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";

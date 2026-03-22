@@ -3,7 +3,7 @@ import {
 	DASHBOARD_ROUTE,
 	EVENTS_ROUTE,
 	NEW_EVENT_ROUTE,
-} from "@/helpers/routes";
+} from "@/consts/routes";
 import {
 	IconSmartHome,
 	IconCalendarEvent,

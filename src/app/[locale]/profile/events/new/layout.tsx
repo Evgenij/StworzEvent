@@ -1,13 +1,14 @@
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE } from "@/consts/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { SidebarInset, SidebarProvider } from "@/components/shadcn/ui/sidebar";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import React from "react";
-import { AppSidebar } from "@/features/layout";
+import { AppSidebar, PageHeader } from "@/features/layout";
 import { SiteHeader } from "@/features/layout";
 import { UserRole } from "@prisma/client";
+import { Separator } from "@/components/shadcn/ui/separator";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -29,7 +30,13 @@ const NewEventLayout = async ({
 		return null;
 	}
 
-	return <>{children}</>;
+	return (
+		<div className="flex flex-col gap-5">
+			<PageHeader />
+			<Separator />
+			{children}
+		</div>
+	);
 };
 
 export default NewEventLayout;

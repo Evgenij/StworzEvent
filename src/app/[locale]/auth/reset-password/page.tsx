@@ -1,7 +1,7 @@
 import React from "react";
 import ResetPasswordForm from "@/features/auth/components/forms/reset-password-form";
 import ReturnBtn from "@/features/routing/components/return-btn";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE } from "@/consts/routes";
 
 type PageProps = {
 	searchParams: Promise<{ token: string }>;

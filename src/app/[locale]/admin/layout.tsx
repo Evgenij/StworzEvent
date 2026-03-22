@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import "@/app/base.scss";
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE } from "@/consts/routes";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";

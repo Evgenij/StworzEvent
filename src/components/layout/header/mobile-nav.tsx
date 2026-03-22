@@ -4,6 +4,7 @@ import { Portal, PortalBackdrop } from "./ui/portal";
 import { navLinks } from "./header";
 import { XIcon, MenuIcon } from "lucide-react";
 import { Button } from "@/components/shadcn/ui/button";
+import AuthButtons from "./auth-buttons";
 
 export function MobileNav() {
 	const [open, setOpen] = React.useState(false);
@@ -14,10 +15,10 @@ export function MobileNav() {
 				aria-controls="mobile-menu"
 				aria-expanded={open}
 				aria-label="Toggle menu"
-				className="md:hidden"
+				className="md:hidden rounded-full"
 				onClick={() => setOpen(!open)}
 				size="icon"
-				variant="outline"
+				variant="ghost"
 			>
 				{open ? (
 					<XIcon className="size-4.5" />
@@ -47,12 +48,13 @@ export function MobileNav() {
 								</Button>
 							))}
 						</div>
-						<div className="mt-12 flex flex-col gap-2">
+						<AuthButtons />
+						{/* <div className="mt-12 flex flex-col gap-2">
 							<Button className="w-full" variant="outline">
 								Sign In
 							</Button>
 							<Button className="w-full">Get Started</Button>
-						</div>
+						</div> */}
 					</div>
 				</Portal>
 			)}

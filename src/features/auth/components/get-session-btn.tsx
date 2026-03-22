@@ -1,6 +1,6 @@
 "use client";
 
-import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
+import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/consts/routes";
 import { Link } from "@/i18n/routing";
 import { useSession } from "@/lib/auth-client";
 import { Button } from "@/components/shadcn/ui/button";

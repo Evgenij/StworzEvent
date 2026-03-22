@@ -1,4 +1,4 @@
-import { MAIN_PAGE_EVENTS_ROUTE } from "@/helpers/routes";
+import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
 import { redirect } from "next/navigation";
 
 import React from "react";

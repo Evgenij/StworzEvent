@@ -25,7 +25,7 @@ import {
 } from "@/components/shadcn/ui/tooltip";
 import { Typography } from "@/components/shared";
 import { ShareButton } from "@/components/shared/share-button";
-import { MAIN_PAGE_EVENTS_ROUTE } from "@/helpers/routes";
+import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
 import { Link } from "@/i18n/routing";
 import prisma from "@/lib/prisma";
 import { truncate } from "@/lib/utils";

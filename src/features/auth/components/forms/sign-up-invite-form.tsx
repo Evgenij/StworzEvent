@@ -32,7 +32,7 @@ import {
 	CONDITIONALS_ROUTE,
 	DASHBOARD_ROUTE,
 	POLITICS_ROUTE,
-} from "@/helpers/routes";
+} from "@/consts/routes";
 import { Spinner } from "@/components/shadcn/ui/spinner";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";

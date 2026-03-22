@@ -5,13 +5,16 @@ import NavLinks from "./nav-links";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
 import { IconLogin, IconUser, IconUserPlus } from "@tabler/icons-react";
-import { MAIN_PAGE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/helpers/routes";
+import { MAIN_PAGE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/consts/routes";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
+import AuthButtons from "./auth-buttons";
+import { UserType } from "@/types/user";
 
 type HeaderWebsiteProps = {
 	locale: string;
+	user?: UserType;
 };
 
 export const navLinks = [
@@ -29,21 +32,25 @@ export const navLinks = [
 	},
 ];
 
-const HeaderWebsite = ({ locale }: HeaderWebsiteProps) => {
+const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
 	const scrolled = useScroll(10);
 
 	return (
 		<header
-			className={cn(
-				"sticky top-0 z-50 w-full border-transparent border-b bg-white border-border",
-				// {
-				// 	"border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/50":
-				// 		scrolled,
-				// },
-			)}
+			className={cn("sticky top-0 z-50 w-full border-b border-border", {
+				"p-4 pb-0 border-transparent": scrolled,
+			})}
 		>
-			<nav className="container mx-auto flex h-14 w-full items-center justify-between px-4">
-				<Link href={MAIN_PAGE_ROUTE}>
+			<nav
+				className={cn(
+					"container mx-auto flex h-14 w-full transition-all items-center justify-between px-3 bg-white ",
+					{
+						"border border-border rounded-full max-w-7xl backdrop-blur-sm supports-backdrop-filter:bg-white/80":
+							scrolled,
+					},
+				)}
+			>
+				<Link href={MAIN_PAGE_ROUTE} className="ml-3">
 					<img
 						src="/logos/logo_text.svg"
 						alt="logo"
@@ -64,15 +71,7 @@ const HeaderWebsite = ({ locale }: HeaderWebsiteProps) => {
 						</Button>
 					))}
 				</div>
-
-				<div className="hidden items-center gap-2 md:flex">
-					<Button size="sm" variant="outline" asChild>
-						<Link href={SIGNIN_ROUTE}>Sign In</Link>
-					</Button>
-					<Button size="sm" asChild>
-						<Link href={SIGNUP_ROUTE}>Get Started</Link>
-					</Button>
-				</div>
+				<AuthButtons user={user} className="hidden" />
 				<MobileNav />
 			</nav>
 		</header>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/shadcn/ui/button";
-import { MAIN_PAGE_ROUTE } from "@/helpers/routes";
+import { MAIN_PAGE_ROUTE } from "@/consts/routes";
 import { Link } from "@/i18n/routing";
+import { IconChevronLeft } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
@@ -60,10 +61,13 @@ export default function RootLayout({
 			<aside className="w-full md:w-2/5 md:min-w-112.5 min-h-screen flex flex-col gap-9 justify-center items-center p-6 bg-background">
 				<section className="max-w-87.5 w-full flex flex-col gap-5">
 					{children}
-					<Button variant={"link"} asChild>
-						<Link href={MAIN_PAGE_ROUTE}>do głównej strony</Link>
-					</Button>
 				</section>
+				<Button variant={"outline"} asChild>
+					<Link href={MAIN_PAGE_ROUTE}>
+						<IconChevronLeft className="size-5" />
+						Wróć
+					</Link>
+				</Button>
 			</aside>
 		</main>
 	);

@@ -31,7 +31,11 @@ import {
 } from "@/components/shadcn/ui/sidebar";
 import { signOutAction } from "@/features/auth/actions/sign-out";
 import { Link, useRouter } from "@/i18n/routing";
-import { ADMIN_DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/helpers/routes";
+import {
+	ADMIN_DASHBOARD_ROUTE,
+	MAIN_PAGE_ROUTE,
+	SIGNIN_ROUTE,
+} from "@/consts/routes";
 import { UserType } from "@/types/user";
 import { UserRole } from "@prisma/client";
 import { IconClipboardData } from "@tabler/icons-react";
@@ -136,7 +140,9 @@ export function NavUser({ user }: { user: UserType | null }) {
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={() =>
-								signOutAction(() => router.push(SIGNIN_ROUTE))
+								signOutAction(() =>
+									router.push(MAIN_PAGE_ROUTE),
+								)
 							}
 						>
 							<LogOut />

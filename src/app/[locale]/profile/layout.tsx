@@ -1,4 +1,4 @@
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE } from "@/consts/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { SidebarInset, SidebarProvider } from "@/components/shadcn/ui/sidebar";

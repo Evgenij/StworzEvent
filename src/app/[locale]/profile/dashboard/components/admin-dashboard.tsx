@@ -5,7 +5,7 @@ import { API_ROUTES } from "@/app/api/apiRoutes";
 import { apiFetcher } from "@/app/api/fetcher";
 import { Button } from "@/components/shadcn/ui/button";
 import { PageHeader } from "@/features/layout";
-import { SIGNUP_INVITE_ROUTE } from "@/helpers/routes";
+import { SIGNUP_INVITE_ROUTE } from "@/consts/routes";
 import { ApiResponse } from "@/types/api-pesponse";
 import { TypeMail } from "@/types/enums";
 import { UserType } from "@/types/user";

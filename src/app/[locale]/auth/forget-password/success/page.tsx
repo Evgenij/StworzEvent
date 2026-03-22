@@ -1,4 +1,4 @@
-import { SIGNIN_ROUTE } from "@/helpers/routes";
+import { SIGNIN_ROUTE } from "@/consts/routes";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
 import { IconChevronLeft } from "@tabler/icons-react";

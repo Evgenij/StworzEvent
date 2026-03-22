@@ -1,6 +1,6 @@
 "use client";
 
-import { AUTH_ERROR_ROUTE, DASHBOARD_ROUTE } from "@/helpers/routes";
+import { AUTH_ERROR_ROUTE, DASHBOARD_ROUTE } from "@/consts/routes";
 import { signIn } from "@/lib/auth-client";
 import { Button } from "@/components/shadcn/ui/button";
 import React, { useState } from "react";

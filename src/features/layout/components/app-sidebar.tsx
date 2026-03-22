@@ -14,7 +14,7 @@ import { IconCalendar, IconHome2, IconPlus } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 import { UserType } from "@/types/user";
 import { Link } from "@/i18n/routing";
-import { DASHBOARD_ROUTE, EVENTS_ROUTE } from "@/helpers/routes";
+import { DASHBOARD_ROUTE, EVENTS_ROUTE } from "@/consts/routes";
 import { NavUser } from "./nav-user";
 import { NavSecondary } from "./nav-secondary";
 import {

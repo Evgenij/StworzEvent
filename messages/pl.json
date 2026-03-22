@@ -240,9 +240,18 @@
 	"EventWizard": {
 		"stepOf": "Krok {current} z {total}",
 		"steps": {
-			"basicInfo": "Podstawowe",
-			"additional": "Dodatkowe",
-			"tickets": "Bilety"
+			"basicInfo": {
+				"title": "Podstawowe",
+				"description": "Nazwa, terminy i miejsce wydarzenia"
+			},
+			"additional": {
+				"title": "Dodatkowe",
+				"description": "Media wydarzenia i agenda"
+			},
+			"tickets": {
+				"title": "Bilety",
+				"description": "Konfiguracja biletow"
+			}
 		},
 		"tickets": {
 			"ticketNumber": "Bilet #{number}",
@@ -354,12 +363,15 @@
 		"organization": "Organizacja",
 		"organizationPlaceholder": "Wybierz organizację",
 		"cover": "Zdjęcie główne",
+		"coverUploaded": "Zdjęcie główne zostało dodane",
 		"title_field": "Nazwa wydarzenia",
 		"titlePlaceholder": "np. Koncert jazzowy w Warszawie",
 		"description": "Opis",
 		"descriptionPlaceholder": "Opisz swoje wydarzenie...",
 		"startsAt": "Data rozpoczęcia",
 		"endsAt": "Data zakończenia",
+		"endsAtBeforeStartsAt": "Data zakończenia musi być późniejsza niż data rozpoczęcia",
+		"dateTimePlaceholder": "np. 21 mar 2026 14:30",
 		"location": "Miasto",
 		"locationPlaceholder": "np. Warszawa",
 		"address": "Adres",

@@ -33,18 +33,31 @@ import {
 	IconCalendar,
 	IconLoader2,
 	IconMapPin,
+	IconPhoto,
+	IconPhotoCheck,
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
 import { CategoryCombobox } from "./category-combobox";
+import QUERY_KEYS from "@/consts/query-keys";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/shadcn/ui/accordion";
+import { cn } from "@/lib/utils";
+import { DateTimePicker } from "@/components/shared/date-time-picker";
+import { useCreateEventPreview } from "./create-event-context";
 
 export function CreateEventForm() {
 	const router = useRouter();
 	const locale = useLocale();
 	const t = useTranslations("CreateEvent");
 	const tErrors = useTranslations("CreateEventErrors");
+	const { setPreview } = useCreateEventPreview();
 
 	const form = useForm<CreateEventInput>({
 		resolver: zodResolver(createEventSchema(tErrors)),
@@ -64,6 +77,10 @@ export function CreateEventForm() {
 		reValidateMode: "onBlur",
 	});
 
+	form.watch((data) => {
+		setPreview(data as Partial<CreateEventInput>);
+	});
+
 	const {
 		handleSubmit,
 		control,
@@ -71,12 +88,14 @@ export function CreateEventForm() {
 	} = form;
 
 	const { data: memberships = [], isLoading: orgsLoading } = useQuery({
-		queryKey: ["my-organizations"],
+		queryKey: [QUERY_KEYS.ORGANIZATIONS.MY_ORG],
 		queryFn: () => getMyOrganizations(),
 		staleTime: 1000 * 60 * 5,
 	});
 
 	useEffect(() => {
+		console.log(memberships);
+
 		if (memberships.length === 1) {
 			form.setValue("organizationId", memberships[0].organizations.id);
 		}
@@ -98,10 +117,12 @@ export function CreateEventForm() {
 		);
 	};
 
+	const coverImage = form.watch("coverImage");
+
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
 			{/* Организация — только если их > 1 */}
-			{memberships.length !== 1 && (
+			{memberships.length > 1 && (
 				<Controller
 					name="organizationId"
 					control={control}
@@ -140,42 +161,106 @@ export function CreateEventForm() {
 			)}
 
 			{/* Обложка */}
-			<Controller
-				name="coverImage"
-				control={control}
-				render={({ field }) => (
-					<EventCoverUpload
-						value={field.value}
-						onChange={field.onChange}
-						onClear={() => field.onChange("")}
-					/>
+			<Accordion
+				type="single"
+				collapsible
+				defaultValue="item-1"
+				className={cn(
+					"rounded-lg border hover:border-muted-foreground/50",
 				)}
-			/>
-
-			{/* Название */}
-			<Controller
-				name="title"
-				control={control}
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<Label>{t("title_field")}</Label>
-						<InputGroup>
-							<InputGroupInput
-								{...field}
-								aria-invalid={fieldState.invalid}
-								placeholder={t("titlePlaceholder")}
-							/>
-						</InputGroup>
-						{fieldState.invalid && (
-							<FieldError errors={[fieldState.error]} />
+			>
+				<AccordionItem value="item-1">
+					<AccordionTrigger className="p-3 px-4 flex gap-3 w-full hover:no-underline">
+						{coverImage ? (
+							<div className="flex gap-1 text-green-600">
+								<IconPhotoCheck className="size-5 " />
+								<span>{t("coverUploaded")}</span>
+							</div>
+						) : (
+							<div className="flex gap-1 ">
+								<IconPhoto className="size-5" />
+								<span>{t("cover")}</span>
+							</div>
 						)}
-					</Field>
-				)}
-			/>
+					</AccordionTrigger>
+
+					<AccordionContent className="p-4 pt-0 h-fit">
+						<Controller
+							name="coverImage"
+							control={control}
+							render={({ field }) => (
+								<EventCoverUpload
+									value={field.value}
+									onChange={field.onChange}
+									onClear={() => field.onChange("")}
+								/>
+							)}
+						/>
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+
+			{/* Название и категория */}
+			<div className="flex gap-4">
+				<Controller
+					name="title"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<Label>{t("title_field")}</Label>
+							<InputGroup>
+								<InputGroupInput
+									{...field}
+									aria-invalid={fieldState.invalid}
+									placeholder={t("titlePlaceholder")}
+								/>
+							</InputGroup>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
+				<Controller
+					name="categoryId"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<Label>{t("category")}</Label>
+							<CategoryCombobox
+								value={field.value}
+								onChange={field.onChange}
+							/>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
+			</div>
 
 			{/* Даты */}
 			<div className="grid grid-cols-2 gap-4">
 				<Controller
+					name="startsAt"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<Label>{t("startsAt")}</Label>
+							<DateTimePicker
+								value={field.value}
+								onChange={field.onChange}
+								onBlur={field.onBlur}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("dateTimePlaceholder")}
+							/>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
+				{/* <Controller
 					name="startsAt"
 					control={control}
 					render={({ field, fieldState }) => (
@@ -197,8 +282,27 @@ export function CreateEventForm() {
 							)}
 						</Field>
 					)}
-				/>
+				/> */}
 				<Controller
+					name="endsAt"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<Label>{t("endsAt")}</Label>
+							<DateTimePicker
+								value={field.value}
+								onChange={field.onChange}
+								onBlur={field.onBlur}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("dateTimePlaceholder")}
+							/>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
+				{/* <Controller
 					name="endsAt"
 					control={control}
 					render={({ field, fieldState }) => (
@@ -220,26 +324,8 @@ export function CreateEventForm() {
 							)}
 						</Field>
 					)}
-				/>
+				/> */}
 			</div>
-
-			{/* Категория */}
-			<Controller
-				name="categoryId"
-				control={control}
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<Label>{t("category")}</Label>
-						<CategoryCombobox
-							value={field.value}
-							onChange={field.onChange}
-						/>
-						{fieldState.invalid && (
-							<FieldError errors={[fieldState.error]} />
-						)}
-					</Field>
-				)}
-			/>
 
 			{/* Описание */}
 			<Controller

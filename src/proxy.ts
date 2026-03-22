@@ -7,7 +7,7 @@ import {
 	AUTH_VERIFY_ROUTE,
 	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
-} from "./helpers/routes";
+} from "./consts/routes";
 
 // export default createMiddleware(routing);
 const intlMiddleware = createMiddleware(routing);

@@ -4,10 +4,11 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "@uploadthing/react";
 import { generateClientDropzoneAccept } from "uploadthing/client";
-import { useUploadThing } from "@/lib/uploadthing"; // сгенерируется после настройки UploadThing
+import { useUploadThing } from "@/lib/uploadthing";
 import { IconPhoto, IconX, IconLoader2 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { Button } from "@/components/shadcn/ui/button";
 
 interface Props {
 	value?: string;
@@ -45,20 +46,20 @@ export function EventCoverUpload({ value, onChange, onClear }: Props) {
 
 	if (value) {
 		return (
-			<div className="relative aspect-video w-full overflow-hidden rounded-lg border">
+			<div className="relative aspect-video w-full overflow-hidden rounded-2xl border">
 				<Image
 					src={value}
-					alt="Обложка"
+					alt="eventCoverImage"
 					fill
 					className="object-cover"
 				/>
-				<button
-					type="button"
+				<Button
 					onClick={onClear}
-					className="absolute right-2 top-2 rounded-full bg-black/60 p-1 text-white hover:bg-black/80"
+					variant={"outline"}
+					className="absolute right-3 top-3 rounded-lg bg-black/40 border-white/10 text-white hover:bg-black hover:text-white"
 				>
 					<IconX className="size-4" />
-				</button>
+				</Button>
 			</div>
 		);
 	}
@@ -70,8 +71,8 @@ export function EventCoverUpload({ value, onChange, onClear }: Props) {
 				"flex aspect-video w-full cursor-pointer flex-col items-center justify-center",
 				"rounded-lg border-2 border-dashed transition-colors",
 				isDragActive
-					? "border-primary bg-primary/5"
-					: "border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/50",
+					? "border-primary bg-primary/10"
+					: "border-muted-foreground/25 bg-muted-foreground/5 hover:border-muted-foreground/60 hover:bg-muted-foreground/10",
 			)}
 		>
 			<input {...getInputProps()} />

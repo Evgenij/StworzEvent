@@ -10,19 +10,27 @@ import Link from "next/link";
 type Step = {
 	number: number;
 	labelKey: string;
+	description: string;
 	path: (eventId: string) => string;
 };
 
 const STEPS: Step[] = [
-	{ number: 1, labelKey: "basicInfo", path: () => "" },
+	{
+		number: 1,
+		labelKey: "basicInfo",
+		description: "Basic event information",
+		path: () => "",
+	},
 	{
 		number: 2,
 		labelKey: "additional",
+		description: "Additional event information",
 		path: (id) => `/profile/events/${id}/edit/additional`,
 	},
 	{
 		number: 3,
 		labelKey: "tickets",
+		description: "Ticket configuration",
 		path: (id) => `/profile/events/${id}/edit/tickets`,
 	},
 ];
@@ -38,109 +46,78 @@ export function EventWizardProgress({ currentStep, eventId }: Props) {
 	const progressPercent = ((currentStep - 1) / (STEPS.length - 1)) * 100;
 
 	return (
-		<div className="flex flex-col gap-3 w-full">
-			{/* Шаги */}
-			<div className="flex items-center justify-between">
-				{STEPS.map((step, idx) => {
-					const isDone = step.number < currentStep;
-					const isActive = step.number === currentStep;
-					const isLocked = step.number > currentStep;
-					const href =
-						step.number === 1
-							? `/${locale}/profile/events/new`
-							: eventId
-								? `/${locale}${step.path(eventId)}`
-								: null;
+		<div className="flex gap-10 border-b border-border">
+			{STEPS.map((step) => {
+				const isDone = step.number < currentStep;
+				const isActive = step.number === currentStep;
+				const isLocked = step.number > currentStep;
+				const href =
+					step.number === 1
+						? `/${locale}/profile/events/new`
+						: eventId
+							? `/${locale}${step.path(eventId)}`
+							: null;
 
-					const indicator = (
-						<div
-							className={cn(
-								"flex size-7 shrink-0 items-center justify-center rounded-full border-2 text-xs font-semibold transition-colors",
-								isDone &&
-									"border-primary bg-primary text-primary-foreground",
-								isActive &&
-									"border-primary bg-background text-primary",
-								isLocked &&
-									"border-muted-foreground/30 bg-background text-muted-foreground/50",
-							)}
-						>
-							{isDone ? (
-								<IconCheck className="size-3.5" />
-							) : (
-								step.number
-							)}
-						</div>
-					);
+				const label = (
+					<h5
+						className={cn(
+							"font-medium text-start leading-tight",
+							isActive && "text-foreground",
+							isDone && "text-primary",
+							isLocked && "text-muted-foreground/70",
+						)}
+					>
+						{t(`steps.${step.labelKey}.title`)}
+					</h5>
+				);
 
-					const label = (
-						<span
-							className={cn(
-								"mt-1.5 text-center text-xs font-medium leading-tight",
-								isActive && "text-foreground",
-								isDone && "text-primary",
-								isLocked && "text-muted-foreground/50",
-							)}
-						>
-							{t(`steps.${step.labelKey}`)}
-						</span>
-					);
+				const description = (
+					<p
+						className={cn(
+							"text-start text-sm",
+							isActive && "text-muted-foreground",
+							isDone && "text-primary",
+							isLocked && "text-muted-foreground/70",
+						)}
+					>
+						{t(`steps.${step.labelKey}.description`)}
+					</p>
+				);
 
-					const inner = (
-						<div className="flex flex-col items-center gap-0.5">
-							{indicator}
-							{label}
-						</div>
-					);
+				const inner = (
+					<div
+						className={cn(
+							"flex flex-col justify-start items-start gap-0.5 pb-3",
+							{
+								"border-b-3 border-primary": isActive,
+							},
+						)}
+					>
+						{/* {indicator} */}
+						{label}
+						{description}
+					</div>
+				);
 
-					return (
-						<div
-							key={step.number}
-							className="flex flex-1 flex-col items-center"
-						>
-							{/* Кликабелен только если шаг пройден и есть href */}
-							{isDone && href ? (
-								<Link
-									href={href}
-									className="flex flex-col items-center"
-								>
-									{inner}
-								</Link>
-							) : (
-								inner
-							)}
-
-							{/* Линия между шагами */}
-							{idx < STEPS.length - 1 && (
-								<div
-									className={cn(
-										"absolute mt-3.5 h-0.5 w-full translate-x-1/2",
-										step.number < currentStep
-											? "bg-primary"
-											: "bg-muted-foreground/20",
-									)}
-									style={{ width: "calc(100% - 2rem)" }}
-								/>
-							)}
-						</div>
-					);
-				})}
-			</div>
-
-			{/* Прогресс бар */}
-			<div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-				<div
-					className="h-full rounded-full bg-primary transition-all duration-500"
-					style={{ width: `${progressPercent}%` }}
-				/>
-			</div>
-
-			{/* Подпись активного шага */}
-			<p className="text-center text-xs text-muted-foreground">
-				{t("stepOf", { current: currentStep, total: STEPS.length })} —{" "}
-				<span className="font-medium text-foreground">
-					{t(`steps.${STEPS[currentStep - 1].labelKey}`)}
-				</span>
-			</p>
+				return (
+					<div
+						key={step.number}
+						className="flex flex-col items-center"
+					>
+						{/* Кликабелен только если шаг пройден и есть href */}
+						{isDone && href ? (
+							<Link
+								href={href}
+								className="flex flex-col items-center"
+							>
+								{inner}
+							</Link>
+						) : (
+							inner
+						)}
+					</div>
+				);
+			})}
 		</div>
 	);
 }

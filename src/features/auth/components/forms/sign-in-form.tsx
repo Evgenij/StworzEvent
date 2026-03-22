@@ -29,7 +29,7 @@ import {
 	FORGET_PASSWORD_ROUTE,
 	DASHBOARD_ROUTE,
 	SIGNUP_ROUTE,
-} from "@/helpers/routes";
+} from "@/consts/routes";
 import { Spinner } from "@/components/shadcn/ui/spinner";
 import { Link } from "@/i18n/routing";
 import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
