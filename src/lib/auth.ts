@@ -214,8 +214,10 @@ const options = {
 		process.env.BETTER_AUTH_URL as string,
 		"http://localhost:3000",
 		...(vercelUrl ? [vercelUrl] : []),
-		// Все превью деплои
-		"https://*.vercel.app",
+		// Добавь конкретный preview URL или используй динамически:
+		...(process.env.VERCEL_BRANCH_URL
+			? [`https://${process.env.VERCEL_BRANCH_URL}`]
+			: []),
 	],
 	secret: process.env.BETTER_AUTH_SECRET as string,
 } satisfies BetterAuthOptions;
