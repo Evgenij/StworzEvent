@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { EventWizardProgress } from "./event-wizard-progress";
 
@@ -16,6 +17,18 @@ function getStepFromPathname(pathname: string): 1 | 2 | 3 {
 export function EventWizardProgressWrapper({ eventId }: Props) {
 	const pathname = usePathname();
 	const currentStep = getStepFromPathname(pathname);
+	const [loadingStep, setLoadingStep] = useState<number | null>(null);
 
-	return <EventWizardProgress currentStep={currentStep} eventId={eventId} />;
+	useEffect(() => {
+		setLoadingStep(null);
+	}, [pathname]);
+
+	return (
+		<EventWizardProgress
+			currentStep={currentStep}
+			eventId={eventId}
+			loadingStep={loadingStep}
+			onNavigate={setLoadingStep}
+		/>
+	);
 }

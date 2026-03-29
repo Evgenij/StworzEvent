@@ -29,6 +29,10 @@ export const MAIN_PAGE_ROUTE = `/`;
 export const MAIN_PAGE_EVENTS_ROUTE = `/events`;
 export const EVENT_PAGE_ROUTE = `/events/`;
 
+export const EVENT_EDIT_ROUTE = (id: string) =>
+	`${PROFILE_ROUTE}${EVENT_PAGE_ROUTE}${id}/edit`;
+// /profile/events/${id}/edit
+
 export const EVENT_EDIT_ADDITIONAL_ROUTE = (id: string) =>
 	`${PROFILE_ROUTE}${EVENT_PAGE_ROUTE}${id}/edit/additional`;
 // /profile/events/${id}/edit/additional

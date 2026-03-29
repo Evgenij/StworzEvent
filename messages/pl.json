@@ -354,7 +354,8 @@
 			"errors": {
 				"saveFailed": "Nie udało się zapisać mapy"
 			}
-		}
+		},
+		"p": "Ładowanie..."
 	},
 	"CreateEvent": {
 		"title": "Nowe wydarzenie",

@@ -473,7 +473,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 					</AccordionTrigger>
 
 					<AccordionContent className="p-4 border-t border-border h-fit flex flex-col gap-4">
-						<Controller
+						{/* <Controller
 							name="eventIsOffline"
 							control={control}
 							render={({ field }) => (
@@ -505,7 +505,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 								</div>
 							)}
 						/>
-						<Separator />
+						<Separator /> */}
 						{eventIsOffline ? (
 							<Controller
 								name="onlineUrl"

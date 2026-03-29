@@ -140,6 +140,7 @@ enum PlanInterval {
 
 enum SectionType {
   TEXT
+  LINKS
   IMAGE
   VIDEO
 }

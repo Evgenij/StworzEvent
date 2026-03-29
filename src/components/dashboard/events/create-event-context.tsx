@@ -18,10 +18,12 @@ const CreateEventContext = createContext<CreateEventContextType | null>(null);
 
 export function CreateEventProvider({
 	children,
+	initialPreview = {},
 }: {
 	children: React.ReactNode;
+	initialPreview?: Partial<CreateEventInput>;
 }) {
-	const [preview, setPreview] = useState<Partial<CreateEventInput>>({});
+	const [preview, setPreview] = useState<Partial<CreateEventInput>>(initialPreview);
 	const [selectedCategory, setSelectedCategory] = useState<CategoryOption | null>(null);
 	const previewAsEventItem: EventItemData | null = preview.title
 		? {
