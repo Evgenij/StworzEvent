@@ -27,6 +27,15 @@ export const NEW_EVENT_ROUTE = `${EVENTS_ROUTE}/new`;
 
 export const MAIN_PAGE_ROUTE = `/`;
 export const MAIN_PAGE_EVENTS_ROUTE = `/events`;
+export const EVENT_PAGE_ROUTE = `/events/`;
+
+export const EVENT_EDIT_ADDITIONAL_ROUTE = (id: string) =>
+	`${PROFILE_ROUTE}${EVENT_PAGE_ROUTE}${id}/edit/additional`;
+// /profile/events/${id}/edit/additional
+
+export const EVENT_EDIT_TICKETS_ROUTE = (id: string) =>
+	`${PROFILE_ROUTE}${EVENT_PAGE_ROUTE}${id}/edit/tickets`;
+// /profile/events/${id}/edit/tickets
 
 export const UI_ROUTE = "/ui";
 export const ADMIN_DASHBOARD_ROUTE = `${ADMIN_ROUTE}/dashboard`;

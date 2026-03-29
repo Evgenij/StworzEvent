@@ -1,11 +1,8 @@
 "use client";
 
-import React from "react";
-import NavLinks from "./nav-links";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
-import { IconLogin, IconUser, IconUserPlus } from "@tabler/icons-react";
-import { MAIN_PAGE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/consts/routes";
+import { MAIN_PAGE_ROUTE } from "@/consts/routes";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
@@ -43,9 +40,9 @@ const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
 		>
 			<nav
 				className={cn(
-					"container mx-auto flex h-14 w-full transition-all items-center justify-between px-3 bg-white ",
+					"max-w-7xl mx-auto flex h-14 w-full transition-all items-center justify-between px-3 bg-white ",
 					{
-						"border border-border rounded-full max-w-7xl backdrop-blur-sm supports-backdrop-filter:bg-white/80":
+						"border border-border rounded-full  backdrop-blur-sm supports-backdrop-filter:bg-white/80":
 							scrolled,
 					},
 				)}

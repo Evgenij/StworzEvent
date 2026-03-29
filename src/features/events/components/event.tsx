@@ -4,12 +4,20 @@ import React from "react";
 import StatusBadge from "./status-badge";
 import { TableCell, TableRow } from "@/components/shadcn/ui/table";
 import { Link } from "@/i18n/routing";
+import { Button } from "@/components/shadcn/ui/button";
+import { EVENT_EDIT_ADDITIONAL_ROUTE } from "@/consts/routes";
 
 const EventItem = ({ event }: { event: Event }) => {
 	return (
 		<>
 			<TableRow>
 				<TableCell className="font-medium w-1/2">
+					<Button variant="link" asChild>
+						<Link href={EVENT_EDIT_ADDITIONAL_ROUTE(event.id)}>
+							Edit additional info
+						</Link>
+					</Button>
+
 					<Link href={`/events/${event.slug}`}>{event.title}</Link>
 				</TableCell>
 				<TableCell>

@@ -93,7 +93,7 @@ export function DateTimePicker({
 						selected={dateValue}
 						onSelect={handleDateSelect}
 						locale={pl}
-						initialFocus
+						disabled={{ before: new Date() }}
 					/>
 
 					{/* Время */}

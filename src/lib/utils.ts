@@ -31,5 +31,4 @@ export const getBaseUrl = () => {
 export const truncate = (str: string, length: number) =>
 	str.length > length ? `${str.slice(0, length)}...` : str;
 
-export const formatPlnFromGrosze = (amount: number) =>
-	`${(amount / 100).toFixed(2)} zł`;
+export const formatPlnFromGrosze = (amount: number) => `${amount / 100} zł`;

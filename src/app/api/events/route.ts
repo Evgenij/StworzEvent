@@ -8,22 +8,19 @@ import prisma from "@/lib/prisma";
 
 export const GET = withApiHandler(async (req: Request) => {
 	const session = await auth.api.getSession({ headers: await headers() });
+	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED);
 
-	if (!session) {
-		throw new ApiError(ErrorCode.UNAUTHORIZED);
-	}
+	const { searchParams } = new URL(req.url);
+	const sort = searchParams.get("sort") ?? "createdAt";
+	const order = (searchParams.get("order") ?? "desc") as "asc" | "desc";
 
 	const organizationId = await prisma.organizationMember.findFirst({
 		where: {
 			userId: session.user.id,
 			memberRole: MemberRole.OWNER,
 		},
-		select: {
-			organizationId: true,
-		},
+		select: { organizationId: true },
 	});
-
-	console.log(organizationId);
 
 	const where: Prisma.EventWhereInput = {
 		organization: {
@@ -37,7 +34,10 @@ export const GET = withApiHandler(async (req: Request) => {
 		where.organizationId = organizationId.organizationId;
 	}
 
-	const events = await prisma.event.findMany({ where });
+	const events = await prisma.event.findMany({
+		where,
+		orderBy: { [sort]: order },
+	});
 
 	return successResponse(events);
 });

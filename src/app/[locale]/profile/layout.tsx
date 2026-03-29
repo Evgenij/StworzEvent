@@ -40,7 +40,7 @@ const ProfileLayout = async ({
 							role: session.user.role ?? UserRole.USER,
 						}}
 					/>
-					<SidebarInset>
+					<SidebarInset className="overflow-hidden">
 						<div className="flex flex-1 flex-col gap-4 p-4 px-5">
 							{children}
 						</div>

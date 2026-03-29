@@ -9,6 +9,7 @@ import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
+import Placeholder from "@tiptap/extension-placeholder";
 import { cn } from "@/lib/utils";
 import {
 	IconBold,
@@ -59,6 +60,9 @@ export const RichTextEditor = ({
 			Highlight,
 			TextAlign.configure({ types: ["heading", "paragraph"] }),
 			Link.configure({ openOnClick: false }),
+			Placeholder.configure({
+				placeholder: "Wpisz ladny opis wydarzenia",
+			}),
 		],
 		content: value ?? "",
 		editable: !disabled,
@@ -111,14 +115,14 @@ export const RichTextEditor = ({
 				<Divider />
 
 				{/* Heading */}
-				<ToolbarButton
+				{/* <ToolbarButton
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 1 }).run()
 					}
 					active={editor.isActive("heading", { level: 1 })}
 				>
 					<IconH1 className="size-4" />
-				</ToolbarButton>
+				</ToolbarButton> */}
 				<ToolbarButton
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 2 }).run()
@@ -155,18 +159,18 @@ export const RichTextEditor = ({
 				>
 					<IconListNumbers className="size-4" />
 				</ToolbarButton>
-				<ToolbarButton
+				{/* <ToolbarButton
 					onClick={() =>
 						editor.chain().focus().sinkListItem("listItem").run()
 					}
 				>
 					<IconIndentIncrease className="size-4" />
-				</ToolbarButton>
+				</ToolbarButton> */}
 
 				<Divider />
 
 				{/* Clear formatting */}
-				<ToolbarButton
+				{/* <ToolbarButton
 					onClick={() =>
 						editor
 							.chain()
@@ -177,9 +181,9 @@ export const RichTextEditor = ({
 					}
 				>
 					<IconClearFormatting className="size-4" />
-				</ToolbarButton>
+				</ToolbarButton> */}
 
-				<Divider />
+				{/* <Divider /> */}
 
 				{/* Inline marks */}
 				<ToolbarButton
@@ -200,12 +204,12 @@ export const RichTextEditor = ({
 				>
 					<IconStrikethrough className="size-4" />
 				</ToolbarButton>
-				<ToolbarButton
+				{/* <ToolbarButton
 					onClick={() => editor.chain().focus().toggleCode().run()}
 					active={editor.isActive("code")}
 				>
 					<IconCode className="size-4" />
-				</ToolbarButton>
+				</ToolbarButton> */}
 				<ToolbarButton
 					onClick={() =>
 						editor.chain().focus().toggleUnderline().run()
@@ -214,6 +218,7 @@ export const RichTextEditor = ({
 				>
 					<IconUnderline className="size-4" />
 				</ToolbarButton>
+				<Divider />
 				<ToolbarButton
 					onClick={() =>
 						editor.chain().focus().toggleHighlight().run()
@@ -315,7 +320,7 @@ const ToolbarButton = ({
 		onClick={onClick}
 		disabled={disabled}
 		className={cn(
-			"rounded p-1.5 transition-colors hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed",
+			"rounded-md p-2 cursor-pointer transition-colors hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed",
 			active ? "bg-muted text-foreground" : "text-muted-foreground",
 		)}
 	>

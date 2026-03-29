@@ -36,9 +36,10 @@ import { EventStatus } from "@prisma/client";
 type Props = {
 	eventId: string;
 	initialTickets: EventTicket[];
+	onBack?: () => void;
 };
 
-export function StepTickets({ eventId, initialTickets }: Props) {
+export function StepTickets({ eventId, initialTickets, onBack }: Props) {
 	const router = useRouter();
 	const locale = useLocale();
 	const t = useTranslations("EventWizard.tickets");
@@ -278,9 +279,11 @@ export function StepTickets({ eventId, initialTickets }: Props) {
 					type="button"
 					variant="outline"
 					onClick={() =>
-						router.push(
-							`/${locale}/profile/events/${eventId}/edit/additional`,
-						)
+						onBack
+							? onBack()
+							: router.push(
+									`/${locale}/profile/events/${eventId}/edit/additional`,
+								)
 					}
 				>
 					<IconArrowLeft className="mr-2 size-4" />

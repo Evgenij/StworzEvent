@@ -16,11 +16,16 @@ type UpdateEventInput = {
 		endsAt?: string;
 		location?: string;
 		address?: string;
+		lat?: number | null;
+		lng?: number | null;
+		showMap?: boolean;
 		categoryId?: string;
 		status?: EventStatus;
 		title?: string;
 		description?: Prisma.InputJsonValue; // ← было Record<string, unknown>
 		coverImage?: string | null;
+		eventIsOffline?: boolean;
+		onlineUrl?: string | null;
 	};
 };
 
@@ -28,6 +33,8 @@ export const updateEventAction = safeAction(
 	async ({ eventId, data }: UpdateEventInput) => {
 		const session = await auth.api.getSession({ headers: await headers() });
 		if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
+
+		console.log("session ============", session);
 
 		// Проверяем что событие принадлежит организации пользователя
 		const event = await prisma.event.findFirst({
@@ -39,7 +46,7 @@ export const updateEventAction = safeAction(
 					},
 				},
 			},
-			select: { id: true, categoryId: true },
+			select: { id: true },
 		});
 
 		if (!event) throw new ApiError(ErrorCode.FORBIDDEN, 403);

@@ -30,8 +30,8 @@ const socialLinks = [
 const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 	return (
 		<footer className=" px-4 md:px-6 border-t">
-			<div className="mx-auto container">
-				<div className="mx-auto container flex flex-col gap-6 py-6">
+			<div className="mx-auto max-w-7xl">
+				<div className="flex flex-col gap-6 py-6">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
 							<Link href="/">

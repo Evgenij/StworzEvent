@@ -385,17 +385,19 @@ model Event {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  coverImage  String?     @map("cover_image")
-  title       String      @map("title")
-  description Json?       @map("description")
-  startsAt    DateTime    @map("starts_at")
-  endsAt      DateTime?   @map("ends_at")
-  status      EventStatus @default(DRAFT) @map("status")
-  location    String?     @map("location") // город
-  address     String?     @map("address") // улица
-  lat         Float?      @map("lat")
-  lng         Float?      @map("lng")
-  showMap     Boolean     @default(true) @map("show_map")
+  coverImage     String?     @map("cover_image")
+  title          String      @map("title")
+  description    Json?       @map("description")
+  startsAt       DateTime    @map("starts_at")
+  endsAt         DateTime?   @map("ends_at")
+  status         EventStatus @default(DRAFT) @map("status")
+  location       String?     @map("location") // город
+  address        String?     @map("address") // улица
+  lat            Float?      @map("lat")
+  lng            Float?      @map("lng")
+  showMap        Boolean     @default(true) @map("show_map")
+  onlineUrl      String?     @map("online_url")
+  eventIsOffline Boolean     @default(false) @map("event_is_offline")
 
   organizationId String       @map("organization_id")
   organization   Organization @relation(fields: [organizationId], references: [id])

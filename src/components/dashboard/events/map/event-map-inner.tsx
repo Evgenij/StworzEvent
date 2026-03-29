@@ -10,10 +10,11 @@ const markerIcon = L.icon({
 	iconUrl: "/leaflet/marker-icon.png",
 	iconRetinaUrl: "/leaflet/marker-icon-2x.png",
 	shadowUrl: "/leaflet/marker-shadow.png",
-	iconSize: [25, 41],
-	iconAnchor: [12, 41],
-	popupAnchor: [1, -34],
+	iconSize: [33, 41],
+	iconAnchor: [17, 41],
+	popupAnchor: [0, -41],
 	shadowSize: [41, 41],
+	shadowAnchor: [0, 41],
 });
 
 type Props = {
@@ -64,8 +65,8 @@ export function EventMapInner({ lat, lng, onMarkerMove }: Props) {
 		<MapContainer
 			center={[lat, lng]}
 			zoom={15}
-			className="h-64 w-full rounded-lg"
-			scrollWheelZoom={false}
+			className="h-110 w-full rounded-xl z-0"
+			scrollWheelZoom={true}
 		>
 			<TileLayer
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

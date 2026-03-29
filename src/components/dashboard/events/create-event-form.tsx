@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -12,7 +12,11 @@ import { createEventAction } from "@/actions/events/create-event.action";
 import { EventStatus } from "@prisma/client";
 import { Label } from "@/components/shadcn/ui/label";
 import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError } from "@/components/shadcn/ui/field";
+import {
+	Field,
+	FieldDescription,
+	FieldError,
+} from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -31,15 +35,23 @@ import { RichTextEditor } from "@/components/shared/rich-text-editor";
 import {
 	IconBuilding,
 	IconCalendar,
+	IconCheck,
+	IconCircleCheckFilled,
+	IconDeviceFloppy,
+	IconLink,
 	IconLoader2,
+	IconMap2,
+	IconMapCheck,
 	IconMapPin,
 	IconPhoto,
 	IconPhotoCheck,
 } from "@tabler/icons-react";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
+import { getEventForEdit } from "@/actions/events/get-event-for-edit.action";
+import { updateEventAction } from "@/actions/events/update-event.action";
 import { CategoryCombobox } from "./category-combobox";
 import QUERY_KEYS from "@/consts/query-keys";
 import {
@@ -51,13 +63,22 @@ import {
 import { cn } from "@/lib/utils";
 import { DateTimePicker } from "@/components/shared/date-time-picker";
 import { useCreateEventPreview } from "./create-event-context";
+import { LocationPicker } from "./location/location-picker";
+import { Switch } from "@/components/shadcn/ui/switch";
+import { Separator } from "@/components/shadcn/ui/separator";
 
-export function CreateEventForm() {
+type Props = {
+	onSuccess?: (eventId: string) => void;
+	eventId?: string;
+};
+
+export function CreateEventForm({ onSuccess, eventId }: Props) {
+	const [locationKey, setLocationKey] = useState("new");
 	const router = useRouter();
 	const locale = useLocale();
 	const t = useTranslations("CreateEvent");
 	const tErrors = useTranslations("CreateEventErrors");
-	const { setPreview } = useCreateEventPreview();
+	const { setPreview, setSelectedCategory } = useCreateEventPreview();
 
 	const form = useForm<CreateEventInput>({
 		resolver: zodResolver(createEventSchema(tErrors)),
@@ -71,9 +92,14 @@ export function CreateEventForm() {
 			startsAt: "",
 			endsAt: "",
 			location: "",
-			address: "",
+			street: "",
+			streetNumber: "",
+			lat: undefined,
+			lng: undefined,
+			showMap: true,
+			eventIsOffline: false,
 		},
-		mode: "onBlur",
+		mode: "onChange",
 		reValidateMode: "onBlur",
 	});
 
@@ -93,34 +119,115 @@ export function CreateEventForm() {
 		staleTime: 1000 * 60 * 5,
 	});
 
-	useEffect(() => {
-		console.log(memberships);
+	const { data: eventData } = useQuery({
+		queryKey: ["event-for-edit", eventId],
+		queryFn: () => getEventForEdit(eventId!),
+		enabled: !!eventId,
+		staleTime: 0, // ← всегда перезапрашивает
+		refetchOnMount: true,
+	});
 
+	useEffect(() => {
 		if (memberships.length === 1) {
 			form.setValue("organizationId", memberships[0].organizations.id);
 		}
 	}, [memberships]);
 
-	const onSubmit = async (data: CreateEventInput) => {
-		const result = await createEventAction(data);
+	useEffect(() => {
+		if (!eventData) return;
+		form.reset({
+			title: eventData.title,
+			description: eventData.description ?? {},
+			coverImage: eventData.coverImage ?? "",
+			status: (["DRAFT", "PUBLISHED"].includes(eventData.status)
+				? eventData.status
+				: "DRAFT") as "DRAFT" | "PUBLISHED",
+			organizationId: eventData.organizationId,
+			categoryId: eventData.categoryId,
+			startsAt: eventData.startsAt.toISOString(),
+			endsAt: eventData.endsAt?.toISOString() ?? "",
+			location: eventData.location ?? "",
+			street: eventData.street ?? "",
+			streetNumber: eventData.streetNumber ?? "",
+			lat: eventData.lat ?? undefined,
+			lng: eventData.lng ?? undefined,
+			showMap: eventData.showMap,
+			eventIsOffline: eventData.eventIsOffline ?? false, // ← добавь
+			onlineUrl: eventData.onlineUrl ?? "", // ← добавь
+		});
+		setLocationKey(eventData.id);
+	}, [eventData]);
 
-		console.log(result);
+	const onSubmit = async (data: CreateEventInput) => {
+		console.log("eventId =======================", eventId);
+		console.log("data =======================", data);
+
+		if (eventId) {
+			const result = await updateEventAction({
+				eventId,
+				data: {
+					title: data.title,
+					description: data.description,
+					coverImage: data.coverImage || null,
+					status: data.status,
+					categoryId: data.categoryId,
+					startsAt: data.startsAt,
+					endsAt: data.endsAt,
+					location: data.location,
+					address: `${data.street}, ${data.streetNumber}`,
+					lat: data.lat ?? null,
+					lng: data.lng ?? null,
+					showMap: data.onlineUrl ? false : data.showMap,
+					eventIsOffline: data.eventIsOffline,
+					onlineUrl: data.onlineUrl || null,
+				},
+			});
+
+			if (!result.success) {
+				toast.error(t("errors.default"));
+				return;
+			}
+
+			if (onSuccess) {
+				onSuccess(eventId);
+				return;
+			}
+
+			router.push(`/${locale}/profile/events/${eventId}/edit/additional`);
+			return;
+		}
+
+		const result = await createEventAction(data);
 
 		if (!result.success) {
 			toast.error(t("errors.default"));
 			return;
 		}
 
-		// ✅ редирект на шаг 2
+		if (onSuccess) {
+			onSuccess(result.data.eventId);
+			return;
+		}
+
+		// fallback: редирект на шаг 2
 		router.push(
 			`/${locale}/profile/events/${result.data.eventId}/edit/additional`,
 		);
 	};
 
 	const coverImage = form.watch("coverImage");
+	const location = form.watch("location");
+	const street = form.watch("street");
+	const streetNumber = form.watch("streetNumber");
+	const lat = form.watch("lat");
+	const lng = form.watch("lng");
+	const eventIsOffline = form.watch("eventIsOffline");
+	const onlineUrl = form.watch("onlineUrl");
+	const onlineUrlError = form.formState.errors.onlineUrl;
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+			{eventId}
 			{/* Организация — только если их > 1 */}
 			{memberships.length > 1 && (
 				<Controller
@@ -170,28 +277,28 @@ export function CreateEventForm() {
 				)}
 			>
 				<AccordionItem value="item-1">
-					<AccordionTrigger className="p-3 px-4 flex gap-3 w-full hover:no-underline">
+					<AccordionTrigger className="p-3 flex items-center gap-3 w-full hover:no-underline data-[state=open]:bg-muted data-[state=open]:rounded-br-none data-[state=open]:rounded-bl-none">
 						{coverImage ? (
-							<div className="flex gap-1 text-green-600">
-								<IconPhotoCheck className="size-5 " />
+							<div className="flex gap-1 items-center">
+								<IconCircleCheckFilled className="size-6 text-green-600" />
 								<span>{t("coverUploaded")}</span>
 							</div>
 						) : (
-							<div className="flex gap-1 ">
+							<div className="flex gap-1 items-center h-6">
 								<IconPhoto className="size-5" />
 								<span>{t("cover")}</span>
 							</div>
 						)}
 					</AccordionTrigger>
 
-					<AccordionContent className="p-4 pt-0 h-fit">
+					<AccordionContent className="p-4 border-t border-border h-fit">
 						<Controller
 							name="coverImage"
 							control={control}
 							render={({ field }) => (
 								<EventCoverUpload
 									value={field.value}
-									onChange={field.onChange}
+									onChange={(url) => field.onChange(url)}
 									onClear={() => field.onChange("")}
 								/>
 							)}
@@ -213,6 +320,7 @@ export function CreateEventForm() {
 									{...field}
 									aria-invalid={fieldState.invalid}
 									placeholder={t("titlePlaceholder")}
+									onChange={field.onChange}
 								/>
 							</InputGroup>
 							{fieldState.invalid && (
@@ -229,7 +337,12 @@ export function CreateEventForm() {
 							<Label>{t("category")}</Label>
 							<CategoryCombobox
 								value={field.value}
-								onChange={field.onChange}
+								onChange={(item) => {
+									field.onChange(item?.id ?? "");
+									setSelectedCategory(item);
+								}}
+								invalid={fieldState.invalid}
+								onBlur={field.onBlur}
 							/>
 							{fieldState.invalid && (
 								<FieldError errors={[fieldState.error]} />
@@ -249,7 +362,19 @@ export function CreateEventForm() {
 							<Label>{t("startsAt")}</Label>
 							<DateTimePicker
 								value={field.value}
-								onChange={field.onChange}
+								onChange={(date) => {
+									field.onChange(date);
+									if (date) {
+										const endsAt = new Date(
+											new Date(date).getTime() +
+												2 * 60 * 60 * 1000,
+										);
+										form.setValue(
+											"endsAt",
+											endsAt.toISOString(),
+										);
+									}
+								}}
 								onBlur={field.onBlur}
 								aria-invalid={fieldState.invalid}
 								placeholder={t("dateTimePlaceholder")}
@@ -260,29 +385,7 @@ export function CreateEventForm() {
 						</Field>
 					)}
 				/>
-				{/* <Controller
-					name="startsAt"
-					control={control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<Label>{t("startsAt")}</Label>
-							<InputGroup>
-								<InputGroupAddon>
-									<IconCalendar className="size-4" />
-								</InputGroupAddon>
-								<InputGroupInput
-									type="datetime-local"
-									{...field}
-									value={field.value ?? ""}
-									aria-invalid={fieldState.invalid}
-								/>
-							</InputGroup>
-							{fieldState.invalid && (
-								<FieldError errors={[fieldState.error]} />
-							)}
-						</Field>
-					)}
-				/> */}
+
 				<Controller
 					name="endsAt"
 					control={control}
@@ -302,29 +405,6 @@ export function CreateEventForm() {
 						</Field>
 					)}
 				/>
-				{/* <Controller
-					name="endsAt"
-					control={control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<Label>{t("endsAt")}</Label>
-							<InputGroup>
-								<InputGroupAddon>
-									<IconCalendar className="size-4" />
-								</InputGroupAddon>
-								<InputGroupInput
-									type="datetime-local"
-									{...field}
-									value={field.value ?? ""}
-									aria-invalid={fieldState.invalid}
-								/>
-							</InputGroup>
-							{fieldState.invalid && (
-								<FieldError errors={[fieldState.error]} />
-							)}
-						</Field>
-					)}
-				/> */}
 			</div>
 
 			{/* Описание */}
@@ -333,10 +413,19 @@ export function CreateEventForm() {
 				control={control}
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>
-						<Label>{t("description")}</Label>
+						<div className="flex gap-1">
+							<Label>{t("description")}</Label>
+							<span className="text-sm text-muted-foreground">
+								(opcjonalnie)
+							</span>
+						</div>
+
 						<RichTextEditor
 							value={field.value}
-							onChange={field.onChange}
+							onChange={(item) => {
+								field.onChange(item?.id ?? "");
+								setSelectedCategory(item);
+							}}
 							disabled={isSubmitting}
 						/>
 						{fieldState.invalid && (
@@ -346,66 +435,209 @@ export function CreateEventForm() {
 				)}
 			/>
 
-			{/* Город */}
-			<Controller
-				name="location"
-				control={control}
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<Label>{t("location")}</Label>
-						<InputGroup>
-							<InputGroupAddon>
-								<IconMapPin className="size-4" />
-							</InputGroupAddon>
-							<InputGroupInput
-								{...field}
-								aria-invalid={fieldState.invalid}
-								placeholder={t("locationPlaceholder")}
-							/>
-						</InputGroup>
-						{fieldState.invalid && (
-							<FieldError errors={[fieldState.error]} />
-						)}
-					</Field>
+			<Accordion
+				type="single"
+				collapsible
+				defaultValue="item-1"
+				className={cn(
+					"rounded-lg border hover:border-muted-foreground/50",
 				)}
-			/>
+			>
+				<AccordionItem value="item-1">
+					<AccordionTrigger className="p-3 flex items-center gap-3 w-full hover:no-underline data-[state=open]:bg-muted data-[state=open]:rounded-br-none data-[state=open]:rounded-bl-none">
+						{(location && street && streetNumber) ||
+						(onlineUrl && !onlineUrlError) ? (
+							<div className="flex gap-1 items-center">
+								<IconCircleCheckFilled className="size-6 text-green-600" />
+								<span>
+									{eventIsOffline
+										? t("linkSetted")
+										: t("localizationSetted")}
+								</span>
+							</div>
+						) : (
+							<div className="flex gap-1 items-center h-6">
+								{eventIsOffline ? (
+									<IconLink className="size-5" />
+								) : (
+									<IconMap2 className="size-5" />
+								)}
 
-			{/* Адрес */}
-			<Controller
-				name="address"
-				control={control}
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<Label>{t("address")}</Label>
-						<InputGroup>
-							<InputGroupAddon>
-								<IconBuilding className="size-4" />
-							</InputGroupAddon>
-							<InputGroupInput
-								{...field}
-								aria-invalid={fieldState.invalid}
-								placeholder={t("addressPlaceholder")}
-							/>
-						</InputGroup>
-						{fieldState.invalid && (
-							<FieldError errors={[fieldState.error]} />
+								<span>
+									{eventIsOffline
+										? t("link")
+										: t("localization")}
+								</span>
+							</div>
 						)}
-					</Field>
-				)}
-			/>
+					</AccordionTrigger>
+
+					<AccordionContent className="p-4 border-t border-border h-fit flex flex-col gap-4">
+						<Controller
+							name="eventIsOffline"
+							control={control}
+							render={({ field }) => (
+								<div className="justify-start w-fit gap-2 flex items-center">
+									<Switch
+										id="event-is-offline"
+										checked={field.value}
+										onCheckedChange={(val) => {
+											field.onChange(val);
+											// Сбрасываем поля при переключении
+											if (val) {
+												form.setValue("location", "");
+												form.setValue("street", "");
+												form.setValue(
+													"streetNumber",
+													"",
+												);
+											} else {
+												form.setValue("onlineUrl", "");
+											}
+										}}
+									/>
+									<Label
+										htmlFor="event-is-offline"
+										className="cursor-pointer"
+									>
+										{t("eventIsOffline")}
+									</Label>
+								</div>
+							)}
+						/>
+						<Separator />
+						{eventIsOffline ? (
+							<Controller
+								name="onlineUrl"
+								control={control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<Label>{t("onlineUrl")}</Label>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												placeholder={t(
+													"linkPlaceholder",
+												)}
+												aria-invalid={
+													fieldState.invalid
+												}
+											/>
+										</InputGroup>
+										{fieldState.invalid && (
+											<FieldError
+												errors={[fieldState.error]}
+											/>
+										)}
+									</Field>
+								)}
+							/>
+						) : (
+							<>
+								<Controller
+									name="location"
+									control={control}
+									render={({ field, fieldState }) => (
+										<Field
+											data-invalid={fieldState.invalid}
+										>
+											<Label>{t("location")}</Label>
+											<LocationPicker
+												key={locationKey}
+												value={{
+													city: location ?? "",
+													street: street ?? "",
+													streetNumber:
+														streetNumber ?? "",
+													lat: lat ?? 0,
+													lng: lng ?? 0,
+												}}
+												onChange={(loc) => {
+													form.setValue(
+														"location",
+														loc.city,
+													);
+													form.setValue(
+														"street",
+														loc.street,
+													);
+													form.setValue(
+														"streetNumber",
+														loc.streetNumber,
+													);
+													form.setValue(
+														"lat",
+														loc.lat,
+													);
+													form.setValue(
+														"lng",
+														loc.lng,
+													);
+												}}
+												invalid={fieldState.invalid}
+												onBlur={field.onBlur}
+											/>
+											{fieldState.invalid && (
+												<FieldError
+													errors={[fieldState.error]}
+												/>
+											)}
+										</Field>
+									)}
+								/>
+								<Controller
+									name="showMap"
+									control={control}
+									render={({ field }) => (
+										<div className="justify-between rounded-lg border p-3 flex items-center">
+											<div className="flex flex-col gap-0.5">
+												<span className="text-sm font-medium">
+													{t("showMap")}
+												</span>
+												<span className="text-xs text-muted-foreground">
+													{t("showMapHint")}
+												</span>
+											</div>
+											<Switch
+												checked={field.value}
+												onCheckedChange={field.onChange}
+											/>
+										</div>
+									)}
+								/>
+							</>
+						)}
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
 
 			{/* Статус — убрали на шаг 3, но оставляем DRAFT по умолчанию скрыто */}
 
-			<Button type="submit" disabled={isSubmitting} className="w-full">
-				{isSubmitting ? (
-					<>
-						<IconLoader2 className="mr-2 size-4 animate-spin" />
-						{t("saving")}
-					</>
-				) : (
-					t("settingDetails")
-				)}
-			</Button>
+			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
+			<div className="navigation flex justify-end pt-4 border-t border-border">
+				<Button type="submit" disabled={isSubmitting}>
+					{isSubmitting ? (
+						<>
+							<IconLoader2 className="size-4 animate-spin" />
+							{t("saving")}
+						</>
+					) : (
+						<>
+							{eventId ? (
+								<>
+									<IconDeviceFloppy className="size-4" />
+									{t("save")}
+								</>
+							) : (
+								<>
+									<IconCheck className="size-4" />
+									{t("submit")}
+								</>
+							)}
+						</>
+					)}
+				</Button>
+			</div>
 		</form>
 	);
 }

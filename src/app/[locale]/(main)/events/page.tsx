@@ -1,4 +1,5 @@
-import EventItemCatalog from "@/components/events/catalog/event-item";
+import EventItem from "@/components/events/event-item";
+import { getMinTicketPrice } from "@/helpers/event";
 import prisma from "@/lib/prisma";
 
 const EventsCatalogPage = async () => {
@@ -17,6 +18,11 @@ const EventsCatalogPage = async () => {
 					},
 				},
 			},
+			categories: {
+				include: {
+					category: true,
+				},
+			},
 		},
 	});
 
@@ -32,10 +38,17 @@ const EventsCatalogPage = async () => {
 		}),
 	);
 
+	console.log(events);
+
 	return (
-		<div className="grid grid-cols-3 gap-4">
+		<div className="grid grid-cols-4 gap-4">
 			{availableEvents.map((event) => (
-				<EventItemCatalog key={event.id} event={event} />
+				<EventItem
+					key={event.id}
+					event={event}
+					minPrice={getMinTicketPrice(event.tickets)}
+					category={event.categories[0]?.category}
+				/>
 			))}
 		</div>
 	);

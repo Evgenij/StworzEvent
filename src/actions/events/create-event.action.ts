@@ -47,9 +47,15 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 			organizationId: data.organizationId,
 			startsAt: new Date(data.startsAt),
 			endsAt: data.endsAt ? new Date(data.endsAt) : null,
-			location: data.location,
-			address: data.address,
-			// categoryId через join таблицу
+			location: data.location ?? null,
+			address: data.eventIsOffline
+				? null
+				: `${data.street}, ${data.streetNumber}`,
+			lat: data.lat ?? null,
+			lng: data.lng ?? null,
+			showMap: data.onlineUrl ? false : data.showMap,
+			eventIsOffline: data.eventIsOffline,
+			onlineUrl: data.onlineUrl ?? null,
 		},
 		select: { id: true, slug: true },
 	});

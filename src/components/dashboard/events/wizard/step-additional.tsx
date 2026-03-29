@@ -15,9 +15,11 @@ import type { EventAdditionalData } from "@/actions/events/get-event-additional.
 type Props = {
 	eventId: string;
 	data: EventAdditionalData;
+	onBack?: () => void;
+	onNext?: () => void;
 };
 
-export function StepAdditional({ eventId, data }: Props) {
+export function StepAdditional({ eventId, data, onBack, onNext }: Props) {
 	const router = useRouter();
 	const locale = useLocale();
 	const t = useTranslations("EventWizard");
@@ -25,6 +27,7 @@ export function StepAdditional({ eventId, data }: Props) {
 	return (
 		<div className="flex flex-col gap-8">
 			{/* Агенда */}
+			{eventId}
 			<section className="flex flex-col gap-3">
 				<h3 className="text-base font-semibold">{t("agenda.title")}</h3>
 				<AgendaEditor eventId={eventId} initialItems={data.agenda} />
@@ -53,20 +56,18 @@ export function StepAdditional({ eventId, data }: Props) {
 
 			<Separator />
 
-			{/* Карта */}
-			<section className="flex flex-col gap-3">
-				<h3 className="text-base font-semibold">{t("map.showMap")}</h3>
-				<EventMapEditor eventId={eventId} initialData={data.map} />
-			</section>
-
-			<Separator />
-
 			{/* Навигация */}
 			<div className="flex justify-between">
 				<Button
 					type="button"
 					variant="outline"
-					onClick={() => router.push(`/${locale}/profile/events/new`)}
+					onClick={() =>
+						onBack
+							? onBack()
+							: router.push(
+									`/${locale}/profile/events/new?eventId=${eventId}`,
+								)
+					}
 				>
 					<IconArrowLeft className="mr-2 size-4" />
 					{t("tickets.back")}
@@ -74,9 +75,11 @@ export function StepAdditional({ eventId, data }: Props) {
 				<Button
 					type="button"
 					onClick={() =>
-						router.push(
-							`/${locale}/profile/events/${eventId}/edit/tickets`,
-						)
+						onNext
+							? onNext()
+							: router.push(
+									`/${locale}/profile/events/${eventId}/edit/tickets`,
+								)
 					}
 				>
 					{t("tickets.next")}

@@ -28,19 +28,31 @@ export async function getEventForEdit(eventId: string) {
 			endsAt: true,
 			location: true,
 			address: true,
+			lat: true,
+			lng: true,
+			showMap: true,
+			organizationId: true,
 			status: true,
 			categories: {
 				select: { categoryId: true },
 				take: 1,
 			},
+			eventIsOffline: true,
+			onlineUrl: true,
 		},
 	});
 
 	if (!event) throw new ApiError(ErrorCode.FORBIDDEN, 403);
 
+	const parts = (event.address ?? "").split(", ");
+	const streetNumber = parts.pop() ?? "";
+	const street = parts.join(", ");
+
 	return {
 		...event,
 		categoryId: event.categories[0]?.categoryId ?? "",
+		street,
+		streetNumber,
 	};
 }
 

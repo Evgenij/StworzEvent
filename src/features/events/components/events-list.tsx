@@ -3,7 +3,7 @@
 import { API_ROUTES } from "@/app/api/apiRoutes";
 import { apiFetcher } from "@/app/api/fetcher";
 import { Button } from "@/components/shadcn/ui/button";
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import EventItem from "./event";
 import { Event } from "@prisma/client";
@@ -20,6 +20,8 @@ import {
 import { useTranslations } from "next-intl";
 
 const EventsList = () => {
+	const [sortField, setSortField] = useState("createdAt");
+	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 	const {
 		data: events,
 		error,
@@ -27,8 +29,14 @@ const EventsList = () => {
 		isFetching,
 		refetch,
 	} = useQuery<ApiResponse<Event[]>>({
-		queryKey: ["events"],
-		queryFn: () => apiFetcher(API_ROUTES.events.list),
+		queryKey: ["events", sortField, sortOrder],
+		queryFn: () =>
+			apiFetcher(API_ROUTES.events.list, {
+				params: {
+					sort: sortField,
+					order: sortOrder,
+				},
+			}),
 	});
 
 	const tEventsTable = useTranslations(`EventsList.table`);

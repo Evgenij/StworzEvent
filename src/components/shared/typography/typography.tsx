@@ -6,9 +6,9 @@ type Variant = "h1" | "h2" | "h3" | "h4" | "p";
 
 const variantStyles: Record<Variant, string> = {
 	h1: "scroll-m-20 text-center text-4xl font-bold tracking-tight leading-tight text-balance",
-	h2: "scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0",
-	h3: "scroll-m-20 text-2xl font-semibold tracking-tight",
-	h4: "scroll-m-20 text-xl font-semibold tracking-tight",
+	h2: "scroll-m-20 text-2xl font-semibold tracking-tight first:mt-0",
+	h3: "scroll-m-20 text-xl font-semibold tracking-tight",
+	h4: "scroll-m-20 text-base font-semibold tracking-tight",
 	p: "leading-7 [&:not(:first-child)]:mt-6",
 };
 

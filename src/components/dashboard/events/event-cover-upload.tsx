@@ -21,7 +21,7 @@ export function EventCoverUpload({ value, onChange, onClear }: Props) {
 
 	const { startUpload, routeConfig } = useUploadThing("eventCover", {
 		onClientUploadComplete: (res) => {
-			onChange(res[0].url);
+			onChange(res[0].ufsUrl);
 			setIsUploading(false);
 		},
 		onUploadError: () => {

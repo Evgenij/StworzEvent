@@ -101,6 +101,7 @@
 	--sidebar-accent-foreground: oklch(0.21 0.006 285.885);
 	--sidebar-border: oklch(0.92 0.004 286.32);
 	--sidebar-ring: oklch(0.705 0.015 286.067);
+	--warning: oklch(0.761 0.169 63.7);
 }
 
 .dark {
@@ -143,6 +144,14 @@
 	}
 	body {
 		@apply bg-background text-foreground;
+	}
+	@media (max-width: 768px) {
+		input,
+		textarea,
+		select,
+		[contenteditable] {
+			font-size: 16px !important;
+		}
 	}
 }
 
@@ -212,22 +221,14 @@
 	text-decoration: underline;
 }
 
-.tiptap code {
-	background: hsl(var(--muted));
-	border-radius: 0.25rem;
-	padding: 0.1rem 0.3rem;
-	font-size: 0.875em;
-	font-family: monospace;
-}
-
 .tiptap mark {
-	background-color: hsl(var(--warning) / 0.3);
-	border-radius: 0.15rem;
-	padding: 0 0.1rem;
+	background-color: gold;
+	border-radius: 0.3rem;
+	padding: 0 0.2rem;
 }
 
 .tiptap a {
-	color: hsl(var(--primary));
+	color: dodgerblue;
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -240,9 +241,9 @@
 }
 
 /* Пустой редактор — placeholder */
-.tiptap p.is-editor-empty:first-child::before {
+.tiptap p.is-editor-empty::before {
 	content: attr(data-placeholder);
-	color: hsl(var(--muted-foreground));
+	color: darkgrey;
 	pointer-events: none;
 	float: left;
 	height: 0;

@@ -23,18 +23,14 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/shadcn/ui/tooltip";
-import { Typography } from "@/components/shared";
+import { EventImagePlaceholder } from "@/components/shared/event-image-placeholder";
 import { ShareButton } from "@/components/shared/share-button";
 import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
 import { Link } from "@/i18n/routing";
 import prisma from "@/lib/prisma";
 import { truncate } from "@/lib/utils";
 import { TicketWithAvailability } from "@/types/ticket";
-import {
-	IconBookmark,
-	IconBookmarkFilled,
-	IconShare2,
-} from "@tabler/icons-react";
+import { IconBookmark } from "@tabler/icons-react";
 import { notFound } from "next/navigation";
 
 const EventPage = async ({
@@ -144,7 +140,14 @@ const EventPage = async ({
 					<ShareButton title={event.title} />
 				</div>
 			</div>
-			<EventHeroSection image={event.coverImage ?? "/placeholder.jpg"} />
+			{event.coverImage ? (
+				<EventHeroSection
+					image={event.coverImage ?? "/placeholder.jpg"}
+				/>
+			) : (
+				<EventImagePlaceholder />
+			)}
+
 			<div className="flex w-full gap-6 px-5">
 				<div className="main-content flex-1 min-w-0 ">
 					<div className="event-data flex flex-col gap-8">

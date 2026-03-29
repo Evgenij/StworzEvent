@@ -39,3 +39,11 @@ li.cn-toast[data-sonner-toast] {
 		}
 	}
 }
+
+.leaflet-container {
+	cursor: move;
+}
+
+.leaflet-marker-icon {
+	cursor: grab;
+}

@@ -1,11 +1,13 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
-import { IconCheck } from "@tabler/icons-react";
 import Link from "next/link";
+import {
+	EVENT_EDIT_ADDITIONAL_ROUTE,
+	EVENT_EDIT_TICKETS_ROUTE,
+} from "@/consts/routes";
 
 type Step = {
 	number: number;
@@ -25,35 +27,44 @@ const STEPS: Step[] = [
 		number: 2,
 		labelKey: "additional",
 		description: "Additional event information",
-		path: (id) => `/profile/events/${id}/edit/additional`,
+		// path: (id) => `/profile/events/${id}/edit/additional`,
+		path: (id) => EVENT_EDIT_ADDITIONAL_ROUTE(id),
 	},
 	{
 		number: 3,
 		labelKey: "tickets",
 		description: "Ticket configuration",
-		path: (id) => `/profile/events/${id}/edit/tickets`,
+		path: (id) => EVENT_EDIT_TICKETS_ROUTE(id),
 	},
 ];
 
 type Props = {
 	currentStep: 1 | 2 | 3;
+	maxStep?: number;
 	eventId?: string;
+	onStepClick?: (step: number) => void;
 };
 
-export function EventWizardProgress({ currentStep, eventId }: Props) {
+export function EventWizardProgress({
+	currentStep,
+	maxStep,
+	eventId,
+	onStepClick,
+}: Props) {
 	const t = useTranslations("EventWizard");
 	const locale = useLocale();
-	const progressPercent = ((currentStep - 1) / (STEPS.length - 1)) * 100;
+	const reachedMax = maxStep ?? currentStep;
 
 	return (
 		<div className="flex gap-10 border-b border-border">
 			{STEPS.map((step) => {
 				const isDone = step.number < currentStep;
 				const isActive = step.number === currentStep;
-				const isLocked = step.number > currentStep;
+				const isLocked = step.number > reachedMax;
+				const isReachable = !isActive && step.number <= reachedMax;
 				const href =
 					step.number === 1
-						? `/${locale}/profile/events/new`
+						? `/${locale}/profile/events/new${eventId ? `?eventId=${eventId}` : ""}`
 						: eventId
 							? `/${locale}${step.path(eventId)}`
 							: null;
@@ -93,7 +104,6 @@ export function EventWizardProgress({ currentStep, eventId }: Props) {
 							},
 						)}
 					>
-						{/* {indicator} */}
 						{label}
 						{description}
 					</div>
@@ -104,8 +114,15 @@ export function EventWizardProgress({ currentStep, eventId }: Props) {
 						key={step.number}
 						className="flex flex-col items-center"
 					>
-						{/* Кликабелен только если шаг пройден и есть href */}
-						{isDone && href ? (
+						{isReachable && onStepClick ? (
+							<button
+								type="button"
+								onClick={() => onStepClick(step.number)}
+								className="flex flex-col items-center text-left"
+							>
+								{inner}
+							</button>
+						) : isDone && href ? (
 							<Link
 								href={href}
 								className="flex flex-col items-center"

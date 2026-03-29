@@ -1,4 +1,4 @@
-import { NewEventPageClient } from "@/components/dashboard/events/new-event-page-client";
+import NewEventPageClient from "@/components/dashboard/events/new-event-page";
 
 const NewEventPage = () => {
 	return <NewEventPageClient />;
