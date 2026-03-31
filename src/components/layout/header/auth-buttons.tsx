@@ -15,7 +15,12 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/shadcn/ui/dropdown-menu";
 import { signOutAction } from "@/features/auth/actions/sign-out";
-import { NEW_EVENT_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from "@/consts/routes";
+import {
+	DASHBOARD_ROUTE,
+	NEW_EVENT_ROUTE,
+	SIGNIN_ROUTE,
+	SIGNUP_ROUTE,
+} from "@/consts/routes";
 import { Link, useRouter } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { UserType } from "@/types/user";
@@ -28,6 +33,7 @@ import {
 	IconRocket,
 	IconSettings2,
 } from "@tabler/icons-react";
+import { UserRole } from "@prisma/client";
 
 type AuthButtonsProps = {
 	user?: UserType | null;
@@ -68,20 +74,30 @@ const AuthButtons = ({ user, className }: AuthButtonsProps) => {
 					</div>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
-					<DropdownMenuItem asChild>
-						<Link
-							href={NEW_EVENT_ROUTE}
-							className="flex items-center gap-1 cursor-pointer px-2 py-1 "
-						>
-							<IconPlus className="size-5" />
-							Create Event
-						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuSeparator />
+					{user.role === UserRole.ORGANIZER && (
+						<>
+							<DropdownMenuItem asChild>
+								<Link
+									href={NEW_EVENT_ROUTE}
+									className="flex items-center gap-1 cursor-pointer px-2 py-1 "
+								>
+									<IconPlus className="size-5" />
+									Create Event
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+						</>
+					)}
+
 					<DropdownMenuGroup>
-						<DropdownMenuItem>
-							<IconLayoutDashboard className="size-5" />
-							Panel glowny
+						<DropdownMenuItem asChild>
+							<Link
+								href={DASHBOARD_ROUTE}
+								className="flex items-center gap-1 cursor-pointer px-2 py-1 "
+							>
+								<IconLayoutDashboard className="size-5" />
+								Panel glowny
+							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<IconSettings2 className="size-5" /> Ustawienia

@@ -148,12 +148,15 @@
 	},
 	"Sidebar": {
 		"user": {
-			"groups": [
-				{
-					"name": "Platforma",
-					"icon": "SquareTerminal"
-				}
-			],
+			"groups": {
+				"platform": "Platforma",
+				"main": "Strona glowna"
+			},
+			"pages": {
+				"catalog": "Katalog wydarzen",
+				"dashboard": "Panel główny",
+				"events": "Wydarzenia"
+			},
 			"dashboard": "Panel główny",
 			"notifications": "Powiadomienia"
 		},

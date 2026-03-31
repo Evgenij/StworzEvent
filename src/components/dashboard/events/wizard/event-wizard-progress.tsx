@@ -89,7 +89,7 @@ export function EventWizardProgress({
 				const description = (
 					<div
 						className={cn(
-							"text-start text-sm text-muted-foreground line-clamp-1",
+							" text-start text-sm text-muted-foreground line-clamp-1",
 							isLocked && "text-muted-foreground/70",
 						)}
 					>
@@ -107,7 +107,7 @@ export function EventWizardProgress({
 				const inner = (
 					<div
 						className={cn(
-							"flex flex-1 border-b-3 border-transparent flex-col justify-start items-start gap-0.5 p-3 rounded-t-xl w-full h-full",
+							"flex flex-1 border-b-3 border-transparent flex-col justify-start gap-0.5 p-3 rounded-t-xl w-full h-full items-center sm:items-start",
 							{
 								"border-b-3 border-primary": isActive,
 								"hover:border-muted-foreground/20 cursor-pointer":
@@ -117,7 +117,7 @@ export function EventWizardProgress({
 						)}
 					>
 						<div className="flex items-center gap-2 ">{label}</div>
-						{description}
+						<div className="hidden sm:block">{description}</div>
 					</div>
 				);
 

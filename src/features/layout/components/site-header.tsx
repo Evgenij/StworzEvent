@@ -24,8 +24,8 @@ export default function SiteHeader() {
 					<SidebarIcon />
 				</Button>
 				<Separator orientation="vertical" className="mr-2 h-14" />
-				<div className="flex w-full justify-between items-center">
-					<Breadcrumbs />
+				<div className="flex w-full justify-end md:justify-between items-center">
+					<Breadcrumbs className="hidden md:flex" />
 					<div className="flex gap-2">
 						<div className="relative">
 							<Button variant="outline" size="icon">

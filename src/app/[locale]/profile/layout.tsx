@@ -41,9 +41,9 @@ const ProfileLayout = async ({
 						}}
 					/>
 					<SidebarInset className="h-full">
-						<div className="flex flex-1 flex-col gap-4 p-4 px-5">
+						<main className="profile-layout flex flex-1 flex-col gap-4 p-4 px-5">
 							{children}
-						</div>
+						</main>
 					</SidebarInset>
 				</div>
 			</SidebarProvider>

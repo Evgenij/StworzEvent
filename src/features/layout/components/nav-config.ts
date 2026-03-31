@@ -2,6 +2,7 @@
 import {
 	DASHBOARD_ROUTE,
 	EVENTS_ROUTE,
+	MAIN_PAGE_ROUTE,
 	NEW_EVENT_ROUTE,
 } from "@/consts/routes";
 import {
@@ -10,6 +11,8 @@ import {
 	IconTicket,
 	IconCalendar,
 	IconPlus,
+	IconTemplate,
+	IconListDetails,
 } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 
@@ -95,22 +98,40 @@ export const getNavConfig = (
 
 		[UserRole.USER]: [
 			{
+				title: t("groups.platform"),
+				items: [
+					{
+						title: t("pages.dashboard"),
+						url: DASHBOARD_ROUTE,
+						icon: IconSmartHome,
+					},
+					// {
+					// 	title: t("pages.events"),
+					// 	url: EVENTS_ROUTE,
+					// 	icon: IconCalendarEvent,
+					// 	actionButton: {
+					// 		label: t("actionButton"),
+					// 		href: NEW_EVENT_ROUTE,
+					// 	},
+					// },
+				],
+			},
+			{
 				title: t("groups.main"),
 				items: [
+					{
+						title: t("pages.catalog"),
+						url: MAIN_PAGE_ROUTE,
+						icon: IconListDetails,
+					},
 					// {
-					// 	title: t("pages.dashboard"),
-					// 	url: DASHBOARD_ROUTE,
-					// 	icon: IconSmartHome,
-					// },
-					// {
-					// 	title: t("pages.tickets"),
-					// 	url: "/profile/tickets",
-					// 	icon: IconTicket,
-					// },
-					// {
-					// 	title: t("pages.orders"),
-					// 	url: "/profile/orders",
-					// 	icon: IconCalendar,
+					// 	title: t("pages.events"),
+					// 	url: EVENTS_ROUTE,
+					// 	icon: IconCalendarEvent,
+					// 	actionButton: {
+					// 		label: t("actionButton"),
+					// 		href: NEW_EVENT_ROUTE,
+					// 	},
 					// },
 				],
 			},

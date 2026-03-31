@@ -19,7 +19,7 @@ const isDynamicSegment = (segment: string) =>
 	) || // UUID
 	/^[a-z0-9]{25,}$/.test(segment); // cuid
 
-const Breadcrumbs = () => {
+const Breadcrumbs = ({ className }: { className?: string }) => {
 	const pathname = usePathname();
 	const t = useTranslations("PageTitles");
 
@@ -57,7 +57,7 @@ const Breadcrumbs = () => {
 	};
 
 	return (
-		<Breadcrumb>
+		<Breadcrumb className={className}>
 			<BreadcrumbList>
 				<BreadcrumbItem>
 					<BreadcrumbLink asChild>

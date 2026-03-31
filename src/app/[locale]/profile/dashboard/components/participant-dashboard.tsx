@@ -1,10 +1,12 @@
+import { PageHeader } from "@/features/layout";
 import { UserType } from "@/types/user";
 
 export function ParticipantDashboard({ user }: { user: UserType }) {
 	return (
-		<section>
-			<h1>Привет, {user.name}!</h1>
+		<>
+			<PageHeader />
+			<h1>Czesc, {user.name}!</h1>
 			{/* tickets, orders */}
-		</section>
+		</>
 	);
 }

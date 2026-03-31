@@ -29,6 +29,7 @@ import {
 	FORGET_PASSWORD_ROUTE,
 	DASHBOARD_ROUTE,
 	SIGNUP_ROUTE,
+	MAIN_PAGE_ROUTE,
 } from "@/consts/routes";
 import { Spinner } from "@/components/shadcn/ui/spinner";
 import { Link } from "@/i18n/routing";
@@ -161,7 +162,7 @@ export default function SignInForm() {
 					const { error } = await signIn.email({
 						email: data.email,
 						password: data.password!,
-						callbackURL: DASHBOARD_ROUTE,
+						callbackURL: `${getBaseUrl()}${MAIN_PAGE_ROUTE}`,
 					});
 
 					if (error) {
