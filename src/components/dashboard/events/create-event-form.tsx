@@ -174,7 +174,8 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 					startsAt: data.startsAt,
 					endsAt: data.endsAt,
 					location: data.location,
-					address: `${data.street}, ${data.streetNumber}`,
+					street: data.street || null,
+					streetNumber: data.streetNumber || null,
 					lat: data.lat ?? null,
 					lng: data.lng ?? null,
 					showMap: data.onlineUrl ? false : data.showMap,
@@ -224,6 +225,18 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 	const eventIsOffline = form.watch("eventIsOffline");
 	const onlineUrl = form.watch("onlineUrl");
 	const onlineUrlError = form.formState.errors.onlineUrl;
+
+	const hasCoords = !!(lat && lng);
+
+	useEffect(() => {
+		form.setValue("showMap", hasCoords);
+	}, [hasCoords]);
+
+	useEffect(() => {
+		if (!location || !street) {
+			form.setValue("streetNumber", "");
+		}
+	}, [location, street]);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -589,7 +602,9 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 									name="showMap"
 									control={control}
 									render={({ field }) => (
-										<div className="justify-between rounded-lg border p-3 flex items-center">
+										<div
+											className={`justify-between rounded-lg border p-3 flex items-center ${!hasCoords ? "opacity-50" : ""}`}
+										>
 											<div className="flex flex-col gap-0.5">
 												<span className="text-sm font-medium">
 													{t("showMap")}
@@ -601,6 +616,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 											<Switch
 												checked={field.value}
 												onCheckedChange={field.onChange}
+												disabled={!hasCoords}
 											/>
 										</div>
 									)}
@@ -613,7 +629,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 
 			{/* Статус — убрали на шаг 3, но оставляем DRAFT по умолчанию скрыто */}
 
-			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
+			{/* <pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
 			<div className="navigation flex justify-end pt-4 border-t border-border">
 				<Button type="submit" disabled={isSubmitting}>
 					{isSubmitting ? (

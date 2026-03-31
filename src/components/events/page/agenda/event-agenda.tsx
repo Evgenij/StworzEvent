@@ -20,7 +20,7 @@ import {
 import AgendaToggleButton from "./agenda-toggle-button";
 
 // Группируем items по дате (YYYY-MM-DD)
-const groupByDay = (items: EventAgendaItem[]) => {
+export const groupByDay = (items: EventAgendaItem[]) => {
 	const groups = new Map<string, EventAgendaItem[]>();
 	items.forEach((item) => {
 		const day = item.startsAt.toISOString().split("T")[0]; // "2026-03-17"
@@ -31,6 +31,15 @@ const groupByDay = (items: EventAgendaItem[]) => {
 		date,
 		items,
 	}));
+};
+
+export const formatDayLabel = (
+	dateStr: string,
+	idx: number,
+	locale: string,
+) => {
+	const date = new Date(dateStr);
+	return `Dzień ${idx + 1} · ${date.toLocaleDateString(locale, { day: "numeric", month: "short" })}`;
 };
 
 const EventAgendaSection = ({
@@ -44,11 +53,6 @@ const EventAgendaSection = ({
 	const ref = useRef<HTMLDivElement>(null);
 	const days = groupByDay(items);
 	const isMultiDay = days.length > 1;
-
-	const formatDayLabel = (dateStr: string, idx: number) => {
-		const date = new Date(dateStr);
-		return `Dzień ${idx + 1} · ${date.toLocaleDateString(locale, { day: "numeric", month: "short" })}`;
-	};
 
 	const handleClose = () => {
 		setOpen(false);
@@ -71,7 +75,7 @@ const EventAgendaSection = ({
 					<TabsList className="mb-2">
 						{days.map(({ date }, idx) => (
 							<TabsTrigger key={date} value={date}>
-								{formatDayLabel(date, idx)}
+								{formatDayLabel(date, idx, locale)}
 							</TabsTrigger>
 						))}
 					</TabsList>

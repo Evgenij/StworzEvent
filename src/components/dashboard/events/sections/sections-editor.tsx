@@ -26,6 +26,7 @@ type Props = {
 // Дефолтный контент для каждого типа секции
 const DEFAULT_CONTENT: Record<SectionType, any> = {
 	[SectionType.TEXT]: { type: "doc", content: [] },
+	[SectionType.LINKS]: { links: [] },
 	[SectionType.IMAGE]: { urls: [] },
 	[SectionType.VIDEO]: { url: "" },
 };

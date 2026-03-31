@@ -5,8 +5,8 @@ export const agendaItemSchema = (t: (key: string) => string) =>
 	z.object({
 		title: z.string().min(2, t("min2")),
 		description: z.string().optional(),
-		startsAt: z.string().min(1, t("required")),
-		endsAt: z.string().optional(),
+		startsAt: z.string().nonempty(t("required")),
+		endsAt: z.string().nonempty(t("required")),
 		location: z.string().optional(),
 		speakerName: z.string().optional(),
 	});

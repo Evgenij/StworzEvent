@@ -2,11 +2,11 @@ import { SIGNIN_ROUTE } from "@/consts/routes";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Typography from "@/components/shared/typography/typography";
 
-const SuccessPage = () => {
-	const t = useTranslations("ForgetPasswordForm");
+const SuccessPage = async () => {
+	const t = await getTranslations("ForgetPasswordForm");
 
 	return (
 		<div className="flex flex-col gap-9">

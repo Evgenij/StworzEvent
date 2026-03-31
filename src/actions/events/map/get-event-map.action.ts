@@ -21,7 +21,7 @@ export async function getEventMap(eventId: string) {
 			lng: true,
 			showMap: true,
 			location: true,
-			address: true,
+			street: true,
 		},
 	});
 }

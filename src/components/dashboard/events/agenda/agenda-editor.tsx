@@ -1,55 +1,106 @@
 // src/components/dashboard/events/agenda/agenda-editor.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/shadcn/ui/button";
-import { IconPlus, IconLoader2 } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import { AgendaItemCard } from "./agenda-item-card";
-import { upsertAgendaItemAction } from "@/actions/events/agenda/upsert-agenda-item.action";
-import { toast } from "sonner";
 import type { AgendaItem } from "@/actions/events/agenda/get-event-agenda.action";
+import { formatDayLabel } from "@/components/events/page/agenda/event-agenda";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/shadcn/ui/tabs";
 
 type Props = {
 	eventId: string;
 	initialItems: AgendaItem[];
+	startDate?: Date | string;
+	endDate?: Date | string;
 };
 
-export function AgendaEditor({ eventId, initialItems }: Props) {
+const toDateString = (d: Date | string): string => {
+	const date = new Date(d);
+	const y = date.getFullYear();
+	const m = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+	return `${y}-${m}-${day}`;
+};
+
+const generateDaysBetween = (
+	start: Date | string,
+	end: Date | string,
+): string[] => {
+	const days: string[] = [];
+	const current = new Date(start);
+	current.setHours(0, 0, 0, 0);
+	const endDay = new Date(end);
+	endDay.setHours(0, 0, 0, 0);
+
+	while (current <= endDay) {
+		const y = current.getFullYear();
+		const m = String(current.getMonth() + 1).padStart(2, "0");
+		const d = String(current.getDate()).padStart(2, "0");
+		days.push(`${y}-${m}-${d}`);
+		current.setDate(current.getDate() + 1);
+	}
+	return days;
+};
+
+export function AgendaEditor({
+	eventId,
+	initialItems,
+	startDate,
+	endDate,
+}: Props) {
 	const t = useTranslations("EventWizard.agenda");
 	const [items, setItems] = useState<AgendaItem[]>(initialItems);
-	const [isCreating, setIsCreating] = useState(false);
+	const [newItemIds, setNewItemIds] = useState<Set<string>>(new Set());
+	const [sortedItems, setSortedItems] = useState<AgendaItem[]>([]);
 
-	const handleAdd = async () => {
-		setIsCreating(true);
+	const isMultiDay =
+		startDate && endDate
+			? toDateString(startDate) !== toDateString(endDate)
+			: false;
 
-		const result = await upsertAgendaItemAction({
-			eventId,
-			data: {
-				title: "",
-				description: "",
-				startsAt: new Date().toISOString().slice(0, 16),
-				endsAt: "",
-				location: "",
-				speakerName: "",
-			},
-		});
+	const allDays: string[] =
+		isMultiDay && startDate && endDate
+			? generateDaysBetween(startDate, endDate)
+			: startDate
+				? [toDateString(startDate)]
+				: [];
 
-		setIsCreating(false);
+	const [activeTab, setActiveTab] = useState<string>(allDays[0] ?? "");
 
-		if (!result.success) {
-			toast.error(t("errors.createFailed"));
-			return;
-		}
+	useEffect(() => {
+		const saved = items.filter((i) => !newItemIds.has(i.id));
+		const newOnes = items.filter((i) => newItemIds.has(i.id));
+		setSortedItems([
+			...[...saved].sort(
+				(a, b) => a.startsAt.getTime() - b.startsAt.getTime(),
+			),
+			...newOnes,
+		]);
+	}, [items, newItemIds]);
 
-		// Добавляем пустой элемент — откроется сразу для редактирования
+	const handleAdd = (dayDate?: string) => {
+		const baseDate = dayDate ?? activeTab;
+		const startsAt = baseDate
+			? `${baseDate}T09:00`
+			: new Date().toISOString().slice(0, 16);
+
+		const tempId = `temp-${Date.now()}`;
+		setNewItemIds((prev) => new Set(prev).add(tempId));
 		setItems((prev) => [
 			...prev,
 			{
-				id: result.data.itemId,
+				id: tempId,
 				title: "",
 				description: null,
-				startsAt: new Date(),
+				startsAt: new Date(startsAt),
 				endsAt: null,
 				location: null,
 				speakerName: null,
@@ -59,49 +110,128 @@ export function AgendaEditor({ eventId, initialItems }: Props) {
 	};
 
 	const handleDelete = (id: string) => {
+		setNewItemIds((prev) => {
+			const next = new Set(prev);
+			next.delete(id);
+			return next;
+		});
 		setItems((prev) => prev.filter((item) => item.id !== id));
 	};
 
-	const handleSave = (id: string, updated: AgendaItem) => {
+	const handleSave = (oldId: string, updated: AgendaItem) => {
+		setNewItemIds((prev) => {
+			const next = new Set(prev);
+			next.delete(oldId);
+			return next;
+		});
 		setItems((prev) =>
-			prev.map((item) => (item.id === id ? updated : item)),
+			prev.map((item) => (item.id === oldId ? updated : item)),
 		);
+	};
+
+	const itemsForDay = (day: string) => {
+		const dayItems = items.filter(
+			(item) => toDateString(item.startsAt) === day,
+		);
+		const saved = dayItems.filter((i) => !newItemIds.has(i.id));
+		const newOnes = dayItems.filter((i) => newItemIds.has(i.id));
+		return [
+			...saved.sort(
+				(a, b) => a.startsAt.getTime() - b.startsAt.getTime(),
+			),
+			...newOnes,
+		];
 	};
 
 	return (
 		<div className="flex flex-col gap-3">
 			{items.length === 0 && (
-				<div className="rounded-lg border border-dashed p-6 text-center">
+				<div className="rounded-xl w-full border-2 border-dashed p-5 text-center">
 					<p className="text-sm text-muted-foreground">
 						{t("empty")}
 					</p>
 				</div>
 			)}
+			{isMultiDay && allDays.length > 0 ? (
+				<Tabs
+					value={activeTab}
+					onValueChange={setActiveTab}
+					className="w-full"
+				>
+					<TabsList className="mb-2">
+						{allDays.map((date, idx) => (
+							<TabsTrigger key={date} value={date}>
+								{formatDayLabel(date, idx, "pl")}
+							</TabsTrigger>
+						))}
+					</TabsList>
 
-			{items.map((item) => (
-				<AgendaItemCard
-					key={item.id}
-					eventId={eventId}
-					item={item}
-					onDelete={handleDelete}
-					onSave={handleSave}
-				/>
-			))}
+					{allDays.map((date, idx) => {
+						const dayItems = itemsForDay(date);
+						return (
+							<TabsContent
+								key={date}
+								value={date}
+								className="flex flex-col items-center gap-3"
+							>
+								{dayItems.length === 0 ? (
+									<div className="rounded-xl w-full border-2 border-dashed p-5 text-center">
+										<p className="text-sm text-muted-foreground">
+											{formatDayLabel(date, idx, "pl")} —{" "}
+											{t("empty")}
+										</p>
+									</div>
+								) : (
+									<WrapperItemsList>
+										{dayItems.map((item, idx) => (
+											<AgendaItemCard
+												key={item.id}
+												date={item.startsAt}
+												dayNumber={idx}
+												eventId={eventId}
+												item={item}
+												onDelete={handleDelete}
+												onSave={handleSave}
+											/>
+										))}
+									</WrapperItemsList>
+								)}
 
-			<Button
-				type="button"
-				variant="outline"
-				disabled={isCreating}
-				onClick={handleAdd}
-				className="w-full border-dashed"
-			>
-				{isCreating ? (
-					<IconLoader2 className="mr-2 size-4 animate-spin" />
-				) : (
-					<IconPlus className="mr-2 size-4" />
-				)}
-				{t("add")}
-			</Button>
+								<Button
+									variant="outline"
+									onClick={() => handleAdd(date)}
+								>
+									<IconPlus className=" size-4" />
+									{t("add")}
+								</Button>
+							</TabsContent>
+						);
+					})}
+				</Tabs>
+			) : (
+				<>
+					<WrapperItemsList>
+						{sortedItems.map((item) => (
+							<AgendaItemCard
+								key={item.id}
+								date={item.startsAt}
+								eventId={eventId}
+								item={item}
+								onDelete={handleDelete}
+								onSave={handleSave}
+							/>
+						))}
+					</WrapperItemsList>
+					<Button variant="outline" onClick={() => handleAdd()}>
+						<IconPlus className="mr-2 size-4" />
+						{t("add")}
+					</Button>
+				</>
+			)}
 		</div>
 	);
 }
+
+const WrapperItemsList = ({ children }: { children: React.ReactNode }) => {
+	return <div className="flex flex-col pl-4 w-full">{children}</div>;
+};

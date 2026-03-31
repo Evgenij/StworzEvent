@@ -277,6 +277,7 @@
 		"sections": {
 			"types": {
 				"text": "Tekst",
+				"links": "Linki",
 				"gallery": "Galeria",
 				"video": "Wideo"
 			},
@@ -291,6 +292,43 @@
 			"saved": "Zapisano",
 			"addSection": "Dodaj sekcję",
 			"altPlaceholder": "Opis zdjęcia (alt)",
+			"links": {
+				"linksLabel": "Linki",
+				"addLink": "Dodaj link",
+				"empty": "Brak linków. Dodaj pierwszy link poniżej.",
+				"urlRequired": "Adres URL jest wymagany",
+				"invalidUrl": "Nieprawidłowy adres URL",
+				"noResults": "Nie znaleziono serwisu",
+				"services": {
+					"none": "Zwykły link",
+					"meetup": "Meetup",
+					"zoom": "Zoom",
+					"youtube": "YouTube",
+					"vimeo": "Vimeo",
+					"spotify": "Spotify",
+					"soundcloud": "SoundCloud",
+					"bandcamp": "Bandcamp",
+					"facebook": "Facebook",
+					"instagram": "Instagram",
+					"threads": "Threads",
+					"x": "X (Twitter)",
+					"bluesky": "Bluesky",
+					"tiktok": "TikTok",
+					"snapchat": "Snapchat",
+					"pinterest": "Pinterest",
+					"linkedin": "LinkedIn",
+					"whatsapp": "WhatsApp",
+					"telegram": "Telegram",
+					"discord": "Discord",
+					"patreon": "Patreon",
+					"paypal": "PayPal",
+					"medium": "Medium",
+					"linktree": "Linktree",
+					"googlemaps": "Google Maps",
+					"github": "GitHub",
+					"twitch": "Twitch"
+				}
+			},
 			"errors": {
 				"saveFailed": "Nie udało się zapisać sekcji",
 				"deleteFailed": "Nie udało się usunąć sekcji"
@@ -301,14 +339,14 @@
 		"agenda": {
 			"title": "Agenda",
 			"newItem": "Nowy punkt",
-			"empty": "Brak punktów agendy. Dodaj pierwszy.",
+			"empty": "Brak punktów agendy. Dodaj pierwszy",
 			"add": "Dodaj punkt",
 			"title_field": "Tytuł",
 			"titlePlaceholder": "np. Rejestracja uczestników",
 			"description": "Opis",
 			"descriptionPlaceholder": "Krótki opis...",
-			"startsAt": "Początek",
-			"endsAt": "Koniec",
+			"startsAt": "Od",
+			"endsAt": "Do",
 			"location": "Sala / Scena",
 			"locationPlaceholder": "np. Sala A",
 			"speakerName": "Prelegent",
@@ -316,6 +354,7 @@
 			"save": "Zapisz",
 			"saving": "Zapisywanie...",
 			"saved": "Zapisano",
+			"cancel": "Anuluj",
 			"errors": {
 				"saveFailed": "Nie udało się zapisać punktu",
 				"deleteFailed": "Nie udało się usunąć punktu",
@@ -355,7 +394,7 @@
 				"saveFailed": "Nie udało się zapisać mapy"
 			}
 		},
-		"p": "Ładowanie..."
+		"loading": "Ładowanie..."
 	},
 	"CreateEvent": {
 		"title": "Nowe wydarzenie",

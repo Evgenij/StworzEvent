@@ -11,6 +11,20 @@ export const sectionTextSchema = z.object({
 	content: z.record(z.string(), z.unknown()),
 });
 
+export const sectionLinksSchema = (t: (key: string) => string) =>
+	z.object({
+		type: z.literal(SectionType.LINKS),
+		title: z.string().optional(),
+		content: z.object({
+			links: z.array(
+				z.object({
+					url: z.url(t("invalidUrl")),
+					service: z.string(),
+				}),
+			),
+		}),
+	});
+
 export const sectionVideoSchema = (t: (key: string) => string) =>
 	z.object({
 		type: z.literal(SectionType.VIDEO),
@@ -39,6 +53,7 @@ export const sectionImageSchema = (t: (key: string) => string) =>
 // Схема без t — для сервера (parse без переводов)
 export const sectionSchema = z.discriminatedUnion("type", [
 	sectionTextSchema,
+	sectionLinksSchema((key) => key),
 	sectionVideoSchema((key) => key),
 	sectionImageSchema((key) => key),
 ]);
@@ -47,6 +62,7 @@ export const sectionSchema = z.discriminatedUnion("type", [
 export const sectionSchemaWithTranslate = (t: (key: string) => string) =>
 	z.discriminatedUnion("type", [
 		sectionTextSchema,
+		sectionLinksSchema(t),
 		sectionVideoSchema(t),
 		sectionImageSchema(t),
 	]);
@@ -54,5 +70,6 @@ export const sectionSchemaWithTranslate = (t: (key: string) => string) =>
 // Типы выводим из серверной схемы
 export type SectionInput = z.infer<typeof sectionSchema>;
 export type SectionTextInput = z.infer<typeof sectionTextSchema>;
+export type SectionLinksInput = z.infer<ReturnType<typeof sectionLinksSchema>>;
 export type SectionVideoInput = z.infer<ReturnType<typeof sectionVideoSchema>>;
 export type SectionImageInput = z.infer<ReturnType<typeof sectionImageSchema>>;

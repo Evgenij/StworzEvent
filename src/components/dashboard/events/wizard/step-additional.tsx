@@ -11,32 +11,54 @@ import { AgendaEditor } from "@/components/dashboard/events/agenda/agenda-editor
 import { FaqEditor } from "@/components/dashboard/events/faq/faq-editor";
 import { EventMapEditor } from "@/components/dashboard/events/map/event-map-editor";
 import type { EventAdditionalData } from "@/actions/events/get-event-additional.action";
+import EditSectionWrapper from "../sections/edit-section-wrapper";
 
 type Props = {
 	eventId: string;
 	data: EventAdditionalData;
+	eventStartDate?: Date | string;
+	eventEndDate?: Date | string;
 	onBack?: () => void;
 	onNext?: () => void;
 };
 
-export function StepAdditional({ eventId, data, onBack, onNext }: Props) {
+export function StepAdditional({
+	eventId,
+	data,
+	eventStartDate,
+	eventEndDate,
+	onBack,
+	onNext,
+}: Props) {
 	const router = useRouter();
 	const locale = useLocale();
 	const t = useTranslations("EventWizard");
 
 	return (
-		<div className="flex flex-col gap-8">
+		<div className="flex flex-col">
 			{/* Агенда */}
-			{eventId}
-			<section className="flex flex-col gap-3">
-				<h3 className="text-base font-semibold">{t("agenda.title")}</h3>
-				<AgendaEditor eventId={eventId} initialItems={data.agenda} />
-			</section>
+			{/* {eventId} */}
+			<EditSectionWrapper title={t("agenda.title")}>
+				<AgendaEditor
+					eventId={eventId}
+					initialItems={data.agenda}
+					startDate={eventStartDate}
+					endDate={eventEndDate}
+				/>
+			</EditSectionWrapper>
 
-			<Separator />
+			{/* <section className="flex flex-col gap-3">
+				<h3 className="text-base font-semibold">{t("agenda.title")}</h3>
+				<AgendaEditor
+					eventId={eventId}
+					initialItems={data.agenda}
+					startDate={eventStartDate}
+					endDate={eventEndDate}
+				/>
+			</section> */}
 
 			{/* Секции */}
-			<section className="flex flex-col gap-3">
+			{/* <section className="flex flex-col gap-3">
 				<h3 className="text-base font-semibold">
 					{t("sections.addSection")}
 				</h3>
@@ -46,18 +68,18 @@ export function StepAdditional({ eventId, data, onBack, onNext }: Props) {
 				/>
 			</section>
 
-			<Separator />
+			<Separator /> */}
 
 			{/* FAQ */}
-			<section className="flex flex-col gap-3">
+			{/* <section className="flex flex-col gap-3">
 				<h3 className="text-base font-semibold">{t("faq.title")}</h3>
 				<FaqEditor eventId={eventId} initialItems={data.faq} />
 			</section>
 
-			<Separator />
+			<Separator /> */}
 
 			{/* Навигация */}
-			<div className="flex justify-between">
+			<div className="navigation flex gap-2 justify-end pt-4 border-t border-border">
 				<Button
 					type="button"
 					variant="outline"
@@ -69,7 +91,7 @@ export function StepAdditional({ eventId, data, onBack, onNext }: Props) {
 								)
 					}
 				>
-					<IconArrowLeft className="mr-2 size-4" />
+					<IconArrowLeft className="size-4" />
 					{t("tickets.back")}
 				</Button>
 				<Button
@@ -83,7 +105,7 @@ export function StepAdditional({ eventId, data, onBack, onNext }: Props) {
 					}
 				>
 					{t("tickets.next")}
-					<IconArrowRight className="ml-2 size-4" />
+					<IconArrowRight className="size-4" />
 				</Button>
 			</div>
 		</div>

@@ -18,7 +18,7 @@ export function EditEventPageHeader({ eventTitle }: Props) {
 
 	return (
 		<Typography variant="h2">
-			<p className="font-medium text-muted-foreground inline">
+			<p className="font-normal text-muted-foreground inline mr-2">
 				{stepTitle}:
 			</p>{" "}
 			{eventTitle}

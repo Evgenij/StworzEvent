@@ -6,6 +6,7 @@ import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { getEventForEdit } from "@/actions/events/get-event-for-edit.action";
 import { headers } from "next/headers";
+import { Separator } from "@/components/shadcn/ui/separator";
 
 // src/app/[locale]/profile/events/[id]/edit/layout.tsx
 type Props = {
@@ -37,8 +38,9 @@ export default async function EditEventLayout({ children, params }: Props) {
 		: {};
 
 	return (
-		<div className="flex w-full flex-col gap-6">
+		<div className="edit-event-layout flex w-full flex-col gap-4">
 			{event && <EditEventPageHeader eventTitle={event.title} />}
+			<Separator />
 			<EventWizardProgressWrapper eventId={id} />
 			<EditEventShell initialPreview={initialPreview}>
 				{children}

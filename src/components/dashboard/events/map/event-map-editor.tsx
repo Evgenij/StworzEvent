@@ -51,7 +51,7 @@ export function EventMapEditor({ eventId, initialData }: Props) {
 	);
 
 	const handleGeocode = async () => {
-		if (!initialData?.address && !initialData?.location) {
+		if (!initialData?.street && !initialData?.location) {
 			toast.error(t("noAddressError"));
 			return;
 		}
@@ -59,7 +59,7 @@ export function EventMapEditor({ eventId, initialData }: Props) {
 		setIsGeocoding(true);
 
 		const result = await geocodeAddress(
-			initialData?.address ?? "",
+			initialData?.street ?? "",
 			initialData?.location ?? "",
 		);
 
@@ -122,8 +122,8 @@ export function EventMapEditor({ eventId, initialData }: Props) {
 					{/* Кнопка геокодинга */}
 					<div className="flex items-center gap-2">
 						<div className="flex-1 rounded-md border bg-muted px-3 py-2 text-sm text-muted-foreground">
-							{initialData?.address && initialData?.location
-								? `${initialData.address}, ${initialData.location}`
+							{initialData?.street && initialData?.location
+								? `${initialData.street}, ${initialData.location}`
 								: t("noAddress")}
 						</div>
 						<Button

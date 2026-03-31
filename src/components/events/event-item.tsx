@@ -13,7 +13,7 @@ import { CategoryOption } from "@/actions/events/get-categories.action";
 
 export type EventItemData = Pick<
 	Event,
-	"coverImage" | "title" | "startsAt" | "location" | "address"
+	"coverImage" | "title" | "startsAt" | "location" | "street" | "streetNumber"
 > & {
 	slug?: string; // опционально — нужен только для ссылки
 };
@@ -87,7 +87,7 @@ const EventItem = ({
 					{event.location ? (
 						<p className="text-sm w-full">
 							{event.location}
-							{event.address ? `, ${event.address}` : ""}
+							{event.street ? `, ${[event.street, event.streetNumber].filter(Boolean).join(" ")}` : ""}
 						</p>
 					) : (
 						<p className="text-sm w-full text-muted-foreground">

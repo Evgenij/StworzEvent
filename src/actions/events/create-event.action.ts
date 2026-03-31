@@ -19,8 +19,6 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 
 	const data = createEventSchema((key) => key).parse(input);
 
-	console.log(data);
-
 	// 🔒 Проверяем membership
 	const membership = await prisma.organizationMember.findUnique({
 		where: {
@@ -48,9 +46,8 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 			startsAt: new Date(data.startsAt),
 			endsAt: data.endsAt ? new Date(data.endsAt) : null,
 			location: data.location ?? null,
-			address: data.eventIsOffline
-				? null
-				: `${data.street}, ${data.streetNumber}`,
+			street: data.eventIsOffline ? null : (data.street ?? null),
+			streetNumber: data.eventIsOffline ? null : (data.streetNumber ?? null),
 			lat: data.lat ?? null,
 			lng: data.lng ?? null,
 			showMap: data.onlineUrl ? false : data.showMap,

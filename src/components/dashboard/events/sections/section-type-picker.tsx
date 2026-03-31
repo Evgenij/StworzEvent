@@ -3,7 +3,7 @@
 
 import { SectionType } from "@prisma/client";
 import { Button } from "@/components/shadcn/ui/button";
-import { IconPhoto, IconVideo, IconAlignLeft } from "@tabler/icons-react";
+import { IconPhoto, IconVideo, IconAlignLeft, IconLink } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
 
 const SECTION_TYPES = [
 	{ type: SectionType.TEXT, icon: IconAlignLeft, labelKey: "text" },
+	{ type: SectionType.LINKS, icon: IconLink, labelKey: "links" },
 	{ type: SectionType.IMAGE, icon: IconPhoto, labelKey: "gallery" },
 	{ type: SectionType.VIDEO, icon: IconVideo, labelKey: "video" },
 ] as const;

@@ -26,12 +26,7 @@ const sections = [
 		type: SectionType.VIDEO,
 		title: "Wideo",
 		content: {
-			videos: [
-				{
-					url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-					title: "Video 1",
-				},
-			],
+			url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 		},
 		order: 4,
 	},
@@ -100,6 +95,20 @@ const sections = [
 			],
 		},
 		order: 6,
+	},
+	{
+		type: SectionType.LINKS,
+		title: "Linki",
+		content: {
+			links: [
+				{ url: "https://zoom.us/j/123456789", service: "zoom" },
+				{
+					url: "https://www.facebook.com/events/123456",
+					service: "facebook",
+				},
+			],
+		},
+		order: 5,
 	},
 ];
 

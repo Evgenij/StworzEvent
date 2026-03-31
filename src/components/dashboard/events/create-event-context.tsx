@@ -33,9 +33,8 @@ export function CreateEventProvider({
 					? new Date(preview.startsAt)
 					: new Date(),
 				location: preview.location || null,
-				address: preview.street
-					? `${preview.street} ${preview.streetNumber ?? ""}`.trim()
-					: null,
+				street: preview.street || null,
+				streetNumber: preview.streetNumber || null,
 			}
 		: null;
 

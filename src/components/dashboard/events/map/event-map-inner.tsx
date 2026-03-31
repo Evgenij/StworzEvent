@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 
 // Фикс иконки Leaflet в Next.js
@@ -23,6 +23,14 @@ type Props = {
 	onMarkerMove: (lat: number, lng: number) => void;
 };
 
+function MapViewController({ lat, lng }: { lat: number; lng: number }) {
+	const map = useMap();
+	useEffect(() => {
+		map.setView([lat, lng], 18);
+	}, [lat, lng]);
+	return null;
+}
+
 // Компонент для перетаскивания маркера
 function DraggableMarker({ lat, lng, onMarkerMove }: Props) {
 	const markerRef = useRef<L.Marker>(null);
@@ -40,6 +48,9 @@ function DraggableMarker({ lat, lng, onMarkerMove }: Props) {
 						const pos = marker.getLatLng();
 						onMarkerMove(pos.lat, pos.lng);
 					}
+					if (document.activeElement instanceof HTMLElement) {
+						document.activeElement.blur();
+					}
 				},
 			}}
 		/>
@@ -55,6 +66,9 @@ function MapClickHandler({
 	useMapEvents({
 		click: (e) => {
 			onMapClick(e.latlng.lat, e.latlng.lng);
+			if (document.activeElement instanceof HTMLElement) {
+				document.activeElement.blur();
+			}
 		},
 	});
 	return null;
@@ -65,15 +79,17 @@ export function EventMapInner({ lat, lng, onMarkerMove }: Props) {
 		<MapContainer
 			center={[lat, lng]}
 			zoom={15}
-			className="h-110 w-full rounded-xl z-0"
+			className="h-90 w-full rounded-xl z-0"
 			scrollWheelZoom={true}
 		>
 			<TileLayer
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
-			<DraggableMarker lat={lat} lng={lng} onMarkerMove={onMarkerMove} />
-			<MapClickHandler onMapClick={onMarkerMove} />
+			<MapViewController lat={lat} lng={lng} />
+			{/* <DraggableMarker lat={lat} lng={lng} onMarkerMove={onMarkerMove} /> */}
+			{/* <MapClickHandler onMapClick={onMarkerMove} /> */}
+			<Marker position={[lat, lng]} icon={markerIcon} />
 		</MapContainer>
 	);
 }

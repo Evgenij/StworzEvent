@@ -76,6 +76,10 @@ const EventPage = async ({
 
 	const categories = event?.categories?.map((item) => item.category) || [];
 
+	const fullAddress = [event.street, event.streetNumber]
+		.filter(Boolean)
+		.join(" ") || null;
+
 	let ticketsWithAvailability: TicketWithAvailability[] = [];
 	if (event.tickets?.length) {
 		ticketsWithAvailability = await Promise.all(
@@ -160,7 +164,7 @@ const EventPage = async ({
 								endsAt: event.endsAt,
 							}}
 							location={event.location}
-							address={event.address}
+							address={fullAddress}
 						/>
 						{event.description &&
 							Object.keys(event.description as object).length >
@@ -182,13 +186,11 @@ const EventPage = async ({
 						)}
 						<EventMapSection
 							location={event.location}
-							address={event.address}
+							address={fullAddress}
 							lat={event.lat ?? 50.0647}
 							lng={event.lng ?? 19.945}
 						/>
 					</div>
-
-					{/* <pre>{JSON.stringify(event, null, 2)}</pre> */}
 				</div>
 				<Separator orientation="vertical" />
 				<div className="tickets-section min-h-full w-xs shrink-0">
@@ -202,7 +204,7 @@ const EventPage = async ({
 							endsAt: event.endsAt,
 						}}
 						location={event.location}
-						address={event.address}
+						address={fullAddress}
 					/>
 				</div>
 			</div>

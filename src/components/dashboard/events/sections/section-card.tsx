@@ -18,6 +18,7 @@ import {
 	IconPhoto,
 	IconVideo,
 	IconAlignLeft,
+	IconLink,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -25,11 +26,13 @@ import { toast } from "sonner";
 import { SectionText } from "./section-text";
 import { SectionGallery } from "./section-gallery";
 import { SectionVideo } from "./section-video";
+import { SectionLinks } from "./section-links";
 import type { DraggableProvided } from "@hello-pangea/dnd";
 import { deleteSectionAction } from "@/actions/events/sections/delete-section.action";
 
 const SECTION_ICONS = {
 	[SectionType.TEXT]: IconAlignLeft,
+	[SectionType.LINKS]: IconLink,
 	[SectionType.IMAGE]: IconPhoto,
 	[SectionType.VIDEO]: IconVideo,
 };
@@ -129,6 +132,9 @@ export function SectionCard({ section, provided, onDelete }: Props) {
 					<div className={cn("border-t p-3")}>
 						{section.type === SectionType.TEXT && (
 							<SectionText section={section} />
+						)}
+						{section.type === SectionType.LINKS && (
+							<SectionLinks section={section} />
 						)}
 						{section.type === SectionType.IMAGE && (
 							<SectionGallery section={section} />

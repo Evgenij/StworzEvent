@@ -2,8 +2,6 @@ import { FooterWebsite } from "@/components/layout/footer";
 import { HeaderWebsite } from "@/components/layout/header";
 import { auth } from "@/lib/auth";
 import { UserType } from "@/types/user";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 import { headers } from "next/headers";
 
 type MainLayoutProps = {

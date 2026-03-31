@@ -59,7 +59,7 @@ export function EventWizardProgress({
 	const locale = useLocale();
 
 	return (
-		<div className="flex border-b border-border">
+		<div className="flex items-end border-b border-border">
 			{STEPS.map((step) => {
 				const isDone = step.number < currentStep;
 				const isActive = step.number === currentStep;
@@ -87,9 +87,9 @@ export function EventWizardProgress({
 				const isLoading = loadingStep === step.number;
 
 				const description = (
-					<p
+					<div
 						className={cn(
-							"text-start text-sm text-muted-foreground",
+							"text-start text-sm text-muted-foreground line-clamp-1",
 							isLocked && "text-muted-foreground/70",
 						)}
 					>
@@ -101,22 +101,22 @@ export function EventWizardProgress({
 						) : (
 							t(`steps.${step.labelKey}.description`)
 						)}
-					</p>
+					</div>
 				);
 
 				const inner = (
 					<div
 						className={cn(
-							"cursor-pointer flex flex-1 border-b-3 border-transparent flex-col justify-start items-start gap-0.5 p-3 rounded-t-xl w-full",
+							"flex flex-1 border-b-3 border-transparent flex-col justify-start items-start gap-0.5 p-3 rounded-t-xl w-full h-full",
 							{
 								"border-b-3 border-primary": isActive,
-								"hover:border-muted-foreground/10":
+								"hover:border-muted-foreground/20 cursor-pointer":
 									!isActive && !isLocked,
-								"hover:bg-muted": !isLocked,
+								"hover:bg-muted/50": !isLocked,
 							},
 						)}
 					>
-						<div className="flex items-center gap-2">{label}</div>
+						<div className="flex items-center gap-2 ">{label}</div>
 						{description}
 					</div>
 				);
@@ -124,7 +124,7 @@ export function EventWizardProgress({
 				return (
 					<div
 						key={step.number}
-						className="flex flex-col items-center w-full"
+						className="flex flex-col items-center w-full h-full"
 					>
 						{isReachable && onStepClick ? (
 							<button
@@ -132,7 +132,7 @@ export function EventWizardProgress({
 								onClick={() => {
 									onStepClick(step.number);
 								}}
-								className="flex flex-col items-center text-left"
+								className="flex w-full flex-col items-center text-left h-stretch"
 							>
 								{inner}
 							</button>
@@ -140,7 +140,7 @@ export function EventWizardProgress({
 							<Link
 								href={href}
 								onClick={() => onNavigate?.(step.number)}
-								className="flex flex-col items-center w-full"
+								className="flex flex-col items-center w-full h-stretch"
 							>
 								{inner}
 							</Link>

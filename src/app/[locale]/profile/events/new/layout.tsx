@@ -31,9 +31,7 @@ const NewEventLayout = async ({
 	}
 
 	return (
-		<div className="flex flex-col gap-5">
-			{/* <PageHeader />
-			<Separator /> */}
+		<div className="new-event-layout flex w-full flex-col gap-6">
 			{children}
 		</div>
 	);

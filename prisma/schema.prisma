@@ -393,7 +393,8 @@ model Event {
   endsAt         DateTime?   @map("ends_at")
   status         EventStatus @default(DRAFT) @map("status")
   location       String?     @map("location") // город
-  address        String?     @map("address") // улица
+  street         String?     @map("street")
+  streetNumber   String?     @map("street_number")
   lat            Float?      @map("lat")
   lng            Float?      @map("lng")
   showMap        Boolean     @default(true) @map("show_map")

@@ -64,7 +64,7 @@ export const RichTextEditor = ({
 				placeholder: "Wpisz ladny opis wydarzenia",
 			}),
 		],
-		content: value ?? "",
+		content: value?.type === "doc" ? value : "",
 		editable: !disabled,
 		immediatelyRender: false,
 		onUpdate: ({ editor }) => {

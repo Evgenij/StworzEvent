@@ -6,15 +6,35 @@ import { createOrganizations } from "./seeders/organizations";
 async function main() {
 	console.info("🚀 Start seeding...");
 
-	// Очистка базы (опционально, но полезно при разработке)
-
-	await prisma.ticket.deleteMany();
-	await prisma.event.deleteMany();
-	await prisma.organizationMember.deleteMany();
-	await prisma.user.deleteMany();
-	await prisma.organization.deleteMany();
-	await prisma.eventSection.deleteMany();
-	await prisma.eventFaq.deleteMany();
+	// Очистка базы — TRUNCATE CASCADE обходит порядок FK автоматически
+	await prisma.$executeRawUnsafe(`
+		TRUNCATE TABLE
+			refunds,
+			payments,
+			participants,
+			order_items,
+			orders,
+			ticket_reservation_items,
+			ticket_reservations,
+			tickets,
+			event_sections,
+			event_agenda_items,
+			event_faqs,
+			event_categories_on_events,
+			events,
+			event_categories,
+			organization_subscriptions,
+			organization_features,
+			organization_members,
+			addresses,
+			organizations,
+			sessions,
+			accounts,
+			verifications,
+			users,
+			invitations
+		RESTART IDENTITY CASCADE
+	`);
 
 	// INVITATIONS
 	for (const invitation of listOrganizers) {

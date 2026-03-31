@@ -27,7 +27,8 @@ export async function getEventForEdit(eventId: string) {
 			startsAt: true,
 			endsAt: true,
 			location: true,
-			address: true,
+			street: true,
+			streetNumber: true,
 			lat: true,
 			lng: true,
 			showMap: true,
@@ -44,15 +45,11 @@ export async function getEventForEdit(eventId: string) {
 
 	if (!event) throw new ApiError(ErrorCode.FORBIDDEN, 403);
 
-	const parts = (event.address ?? "").split(", ");
-	const streetNumber = parts.pop() ?? "";
-	const street = parts.join(", ");
-
 	return {
 		...event,
 		categoryId: event.categories[0]?.categoryId ?? "",
-		street,
-		streetNumber,
+		street: event.street ?? "",
+		streetNumber: event.streetNumber ?? "",
 	};
 }
 

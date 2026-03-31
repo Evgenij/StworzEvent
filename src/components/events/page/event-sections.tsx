@@ -4,12 +4,14 @@ import React from "react";
 import EventTextSection from "./sections/text-section";
 import EventImageSection from "./sections/image-section";
 import EventVideoSection from "./sections/video-section";
+import EventLinksSection from "./sections/links-section";
 
 const sectionComponents: Record<
 	SectionType,
 	React.FC<{ section: EventSection }>
 > = {
 	[SectionType.TEXT]: EventTextSection,
+	[SectionType.LINKS]: EventLinksSection,
 	[SectionType.IMAGE]: EventImageSection,
 	[SectionType.VIDEO]: EventVideoSection,
 };

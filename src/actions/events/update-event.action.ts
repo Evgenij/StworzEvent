@@ -15,7 +15,8 @@ type UpdateEventInput = {
 		startsAt?: string;
 		endsAt?: string;
 		location?: string;
-		address?: string;
+		street?: string | null;
+		streetNumber?: string | null;
 		lat?: number | null;
 		lng?: number | null;
 		showMap?: boolean;
@@ -33,8 +34,6 @@ export const updateEventAction = safeAction(
 	async ({ eventId, data }: UpdateEventInput) => {
 		const session = await auth.api.getSession({ headers: await headers() });
 		if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
-
-		console.log("session ============", session);
 
 		// Проверяем что событие принадлежит организации пользователя
 		const event = await prisma.event.findFirst({

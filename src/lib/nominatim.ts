@@ -103,11 +103,12 @@ export async function reverseGeocode(
 
 export async function searchAddressCoords(
 	query: string,
-): Promise<{ lat: number; lng: number } | null> {
-	const results = await nominatimFetch({ q: query, limit: "1" });
+): Promise<{ lat: number; lng: number; hasHouseNumber: boolean } | null> {
+	const results = await nominatimFetch({ q: query, limit: "1", addressdetails: "1" });
 	if (!results.length) return null;
 	return {
 		lat: parseFloat(results[0].lat),
 		lng: parseFloat(results[0].lon),
+		hasHouseNumber: !!results[0].address.house_number,
 	};
 }
