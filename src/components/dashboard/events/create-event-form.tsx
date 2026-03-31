@@ -16,6 +16,7 @@ import {
 	Field,
 	FieldDescription,
 	FieldError,
+	FieldLabel,
 } from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
@@ -239,7 +240,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 	}, [location, street]);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
 			{eventId}
 			{/* Организация — только если их > 1 */}
 			{memberships.length > 1 && (
@@ -321,13 +322,13 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 			</Accordion>
 
 			{/* Название и категория */}
-			<div className="flex gap-4">
+			<div className="flex flex-col md:flex-row gap-4">
 				<Controller
 					name="title"
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
-							<Label>{t("title_field")}</Label>
+							<FieldLabel>{t("title_field")}</FieldLabel>
 							<InputGroup>
 								<InputGroupInput
 									{...field}
@@ -347,7 +348,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
-							<Label>{t("category")}</Label>
+							<FieldLabel>{t("category")}</FieldLabel>
 							<CategoryCombobox
 								value={field.value}
 								onChange={(item) => {
@@ -366,13 +367,13 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 			</div>
 
 			{/* Даты */}
-			<div className="grid grid-cols-2 gap-4">
+			<div className="flex flex-col md:flex-row gap-4">
 				<Controller
 					name="startsAt"
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
-							<Label>{t("startsAt")}</Label>
+							<FieldLabel>{t("startsAt")}</FieldLabel>
 							<DateTimePicker
 								value={field.value}
 								onChange={(date) => {
@@ -404,7 +405,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
-							<Label>{t("endsAt")}</Label>
+							<FieldLabel>{t("endsAt")}</FieldLabel>
 							<DateTimePicker
 								value={field.value}
 								onChange={field.onChange}
@@ -427,7 +428,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>
 						<div className="flex gap-1">
-							<Label>{t("description")}</Label>
+							<FieldLabel>{t("description")}</FieldLabel>
 							<span className="text-sm text-muted-foreground">
 								(opcjonalnie)
 							</span>
@@ -554,7 +555,9 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 										<Field
 											data-invalid={fieldState.invalid}
 										>
-											<Label>{t("location")}</Label>
+											<FieldLabel>
+												{t("location")}
+											</FieldLabel>
 											<LocationPicker
 												key={locationKey}
 												value={{

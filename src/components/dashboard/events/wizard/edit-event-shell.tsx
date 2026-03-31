@@ -16,8 +16,11 @@ export function EditEventShell({ children, initialPreview }: Props) {
 		<CreateEventProvider initialPreview={initialPreview}>
 			<div className="flex gap-6 w-full">
 				<div className="flex-1 min-w-0">{children}</div>
-				<Separator orientation="vertical" className="self-stretch" />
-				<aside className="w-90 flex flex-col gap-3 sticky top-18 self-start">
+				<Separator
+					orientation="vertical"
+					className="self-stretch hidden xl:block w-90"
+				/>
+				<aside className="hidden xl:flex w-90  flex-col gap-3 sticky top-18 self-start">
 					<Typography variant="h4" className="text-base">
 						Jak bedzie wygladac Twoj wydarzenie?
 					</Typography>

@@ -68,14 +68,15 @@ function NewEventPageInner() {
 						/>
 					)}
 				</main>
-				<Separator orientation="vertical" className="self-stretch" />
-				<aside className="w-90">
-					<div className="flex flex-col gap-3 sticky top-18">
-						<Typography variant="h4" className="text-base">
-							Jak bedzie wygladac Twoj wydarzenie?
-						</Typography>
-						<EventPreview />
-					</div>
+				<Separator
+					orientation="vertical"
+					className="self-stretch hidden xl:block"
+				/>
+				<aside className="hidden xl:flex w-90  flex-col gap-3 sticky top-18 self-start">
+					<Typography variant="h4" className="text-base">
+						Jak bedzie wygladac Twoj wydarzenie?
+					</Typography>
+					<EventPreview />
 				</aside>
 			</section>
 		</div>

@@ -127,7 +127,8 @@ export function LocationPicker({
 		if (geocodeTimerRef.current) clearTimeout(geocodeTimerRef.current);
 		geocodeTimerRef.current = setTimeout(async () => {
 			const current = valueRef.current;
-			if (!current.city || !current.street || !current.streetNumber) return;
+			if (!current.city || !current.street || !current.streetNumber)
+				return;
 			setIsGeocoding(true);
 			const query = [current.street, current.streetNumber, current.city]
 				.filter(Boolean)
@@ -227,7 +228,7 @@ export function LocationPicker({
 					className=""
 					invalid={invalid}
 				/>
-				<div className="flex flex-1 gap-2">
+				<div className="flex flex-col md:flex-row flex-1 gap-2">
 					<AddressCombobox
 						city={value.city}
 						value={selectedStreet}
