@@ -180,7 +180,7 @@ export default function SignInForm() {
 				}
 			} catch (error) {
 				console.error("Sign in error:", error);
-				toast.error(tErrors("unexpectedError"));
+				toast.error(tErrors("auth.default")); // ← было "unexpectedError"
 			} finally {
 				setIsPending(false);
 			}
