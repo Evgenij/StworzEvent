@@ -25,7 +25,12 @@ const ProfileLayout = async ({
 	const { locale } = await params;
 	const session = await auth.api
 		.getSession({ headers: await headers() })
-		.catch(() => null);
+		.catch((e) => {
+			console.error("getSession error:", e);
+			return null;
+		});
+
+	console.log("session:", JSON.stringify(session?.user?.id));
 
 	if (!session?.user) {
 		redirect({ href: SIGNIN_ROUTE, locale });
