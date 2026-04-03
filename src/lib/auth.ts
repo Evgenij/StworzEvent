@@ -204,9 +204,12 @@ const options = {
 	],
 	session: {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
+		// cookieCache: {
+		// 	enabled: true,
+		// 	maxAge: 5 * 60, // 5 minutes
+		// },
 		cookieCache: {
-			enabled: true,
-			maxAge: 5 * 60, // 5 minutes
+			enabled: false, // ← временно выключаем
 		},
 	},
 	trustedOrigins: [
