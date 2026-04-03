@@ -23,16 +23,19 @@ const ProfileLayout = async ({
 	params: { locale: string };
 }) => {
 	const { locale } = await params;
-	const session = await auth.api
-		.getSession({ headers: await headers() })
-		.catch((e) => {
-			console.error("getSession error:", e);
-			return null;
-		});
 
-	console.log("session:", JSON.stringify(session?.user?.id));
+	const h = await headers();
+	console.log("cookie header:", h.get("cookie"));
 
-	if (!session?.user) {
+	const sessionRaw = await auth.api.getSession({ headers: h }).catch((e) => {
+		console.error("getSession error:", JSON.stringify(e));
+		return null;
+	});
+
+	console.log("sessionRaw:", JSON.stringify(sessionRaw));
+	console.log("session.user:", JSON.stringify(sessionRaw?.user));
+
+	if (!sessionRaw?.user) {
 		redirect({ href: SIGNIN_ROUTE, locale });
 		return null;
 	}
@@ -44,8 +47,8 @@ const ProfileLayout = async ({
 				<div className="flex flex-1">
 					<AppSidebar
 						user={{
-							...session.user,
-							role: session.user.role ?? UserRole.USER,
+							...sessionRaw.user,
+							role: sessionRaw.user.role ?? UserRole.USER,
 						}}
 					/>
 					<SidebarInset className="h-full">

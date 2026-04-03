@@ -11,7 +11,7 @@ const EventHeroSection = ({ image }: EventHeroSectionProps) => {
 			<Image
 				src={image || "/placeholder.jpg"}
 				alt={image || "Event cover"}
-				className="w-full h-80 md:h-100 lg:h-125 object-cover sm:rounded-4xl"
+				className="w-full h-50 md:h-100 lg:h-125 object-cover sm:rounded-4xl"
 				width={0}
 				height={0}
 				sizes="100vw"

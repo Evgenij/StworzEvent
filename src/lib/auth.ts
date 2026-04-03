@@ -209,11 +209,20 @@ const options = {
 			maxAge: 5 * 60, // 5 minutes
 		},
 	},
+	// trustedOrigins: [
+	// 	process.env.BETTER_AUTH_URL as string,
+	// 	"http://localhost:3000",
+	// 	...(vercelUrl ? [vercelUrl] : []),
+	// 	// Добавь конкретный preview URL или используй динамически:
+	// 	...(process.env.VERCEL_BRANCH_URL
+	// 		? [`https://${process.env.VERCEL_BRANCH_URL}`]
+	// 		: []),
+	// ],
 	trustedOrigins: [
 		process.env.BETTER_AUTH_URL as string,
 		"http://localhost:3000",
+		"https://stworzevent.vercel.app", // ← явно хардкодим
 		...(vercelUrl ? [vercelUrl] : []),
-		// Добавь конкретный preview URL или используй динамически:
 		...(process.env.VERCEL_BRANCH_URL
 			? [`https://${process.env.VERCEL_BRANCH_URL}`]
 			: []),
