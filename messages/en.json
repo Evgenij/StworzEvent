@@ -1,19 +1,46 @@
 {
+	"Metadata": {
+		"auth": {
+			"title": "Sign In | StworzEvent.pl",
+			"description": "Sign in to StworzEvent.pl"
+		}
+	},
 	"Errors": {
-		"nameMin2": "Name must be at least 2 characters long",
-		"surnameMin2": "Surname must be at least 2 characters long",
-		"passwordMin6": "Password must be at least 6 characters long",
-		"passwordMax20": "Password must be no more than 20 characters long",
+		"auth": {
+			"INVALID_EMAIL_OR_PASSWORD": "Invalid email or password",
+			"INVALID_EMAIL": "Invalid email address",
+			"INVALID_PASSWORD": "Invalid password",
+			"USER_NOT_FOUND": "No user found with this email address",
+			"INVALID_TOKEN": "Your link is invalid",
+			"EXPIRED_TOKEN": "Your link has expired",
+			"INVALID_OR_EXPIRED_TOKEN": "Your link has expired or is invalid",
+			"PASSWORD_TOO_SHORT": "Password is too short",
+			"USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "User already exists. Please use a different email.",
+			"INTERNAL_ERROR": "An unexpected error occurred. Please try again",
+			"UNAUTHORIZED": "Unauthorized access",
+			"FORBIDDEN": "Access denied",
+			"INVALID_CREDENTIALS": "Invalid credentials",
+			"EMAIL_NOT_VERIFIED": "Email has not been verified",
+			"default": "An unexpected error occurred. Please try again"
+		},
+		"nameMin": "First name must be at least 2 characters",
+		"surnameMin": "Last name must be at least 2 characters",
+		"passwordMin": "Password must be at least 6 characters",
+		"passwordMax": "Password must be at most 25 characters",
 		"passwordsDontMatch": "Passwords do not match",
-		"invalidEmail": "Invalid email address"
+		"invalidEmail": "Invalid email address",
+		"emailRequired": "Email address is required",
+		"invalidPhone": "Invalid phone number",
+		"phoneMax": "Phone number can have at most 9 digits"
 	},
 	"Auth": {
 		"divider": "or",
 		"placeholders": {
-			"name": "First name",
-			"surname": "Last name",
-			"mail": "email@example.com",
-			"password": "enter password"
+			"name": "John",
+			"surname": "Smith",
+			"mail": "mail@example.com",
+			"password": "enter password",
+			"phone": "111 222 333"
 		},
 		"oauth": "Continue with"
 	},
@@ -21,28 +48,409 @@
 		"title": "Create an account",
 		"subtitle": "Enter your email address below <lineBreak></lineBreak> to create an account",
 		"generatePassword": "Generate password",
-		"fields": {
-			"name": "First name"
-		},
 		"have-account": "Already have an account?",
 		"button": "Sign up",
 		"signIn": "Sign in",
-		"politics": "By clicking, you agree to our <lineBreak></lineBreak><linkConditionals>Terms of Service</linkConditionals> and <politics>Privacy Policy</politics>",
+		"politics": "By clicking, you agree to our<lineBreak></lineBreak><linkConditionals>Terms of Service</linkConditionals> and <politics>Privacy Policy</politics>",
 		"successMessage": {
 			"header": "Registration successful",
-			"text": "We have sent an email to verify your email address"
+			"text": "We have sent you an email to confirm your email address"
 		}
 	},
 	"SignInForm": {
 		"title": "Welcome back! 👋",
 		"subtitle": "Enter your email address below <lineBreak></lineBreak> to sign in to your account",
-		"forgotPassword": "Forgot password?",
+		"forgotPassword": "Forgot password",
 		"no-account": "Don't have an account?",
 		"signUp": "Sign up",
-		"useMagicLink": "Log in with “Magic link”",
+		"useMagicLink": "Sign in with Magic link",
 		"button": {
 			"signIn": "Sign in",
 			"magicLink": "Send magic link"
+		},
+		"loginSuccess": "Signed in successfully",
+		"magicLinkSent": "We have sent you a sign-in email"
+	},
+	"ForgetPasswordForm": {
+		"title": "Reset password 🤔",
+		"subtitle": "Enter your email address below<lineBreak></lineBreak>to receive a password reset link.",
+		"button": "Reset password",
+		"errorOfReset": "An error occurred! Please try again.",
+		"rememberPassword": "Remember your password?",
+		"signIn": "Sign in",
+		"success": {
+			"title": "Check your inbox 📧",
+			"subtitle": "We have sent a password reset link<lineBreak></lineBreak>to your email address.",
+			"button": "Go back"
 		}
+	},
+	"ResetPasswordForm": {
+		"title": "Set new password 🔐",
+		"subtitle": "Enter a new, strong password below <lineBreak></lineBreak> to secure your account.",
+		"fields": {
+			"password": "New password",
+			"confirmPassword": "Confirm new password"
+		},
+		"button": "Save and sign in",
+		"backToLogin": "Remember your password?",
+		"signIn": "Sign in",
+		"successMessage": "Password has been changed!",
+		"resendLink": {
+			"text": "Request a new password reset link",
+			"button": "Resend"
+		}
+	},
+	"SignUpInviteForm": {
+		"title": "Welcome to StwórzEvent.pl! 🎫",
+		"subtitle": "Your access has been confirmed. <lineBreak></lineBreak> To finish setting up your account, set a password",
+		"fields": {
+			"password": "Set password",
+			"confirmPassword": "Confirm password"
+		},
+		"sendPassword": "Send password to email",
+		"button": "Activate account and sign in",
+		"politics": "By clicking, you agree to our<lineBreak></lineBreak><linkConditionals>Terms of Service</linkConditionals> and <politics>Privacy Policy</politics>",
+		"copyPassword": "Copy password",
+		"successCopy": "Password copied to clipboard",
+		"successMessage": {
+			"header": "Registration successful",
+			"text": "We have sent you an email to confirm your email address"
+		}
+	},
+	"EventStatus": {
+		"DRAFT": "Draft",
+		"REVIEW": "Under review",
+		"PUBLISHED": "Published",
+		"SALES_OPEN": "Sales open",
+		"SALES_PAUSED": "Sales paused",
+		"SALES_CLOSED": "Sales closed",
+		"LIVE": "Live",
+		"COMPLETED": "Completed",
+		"CANCELLED": "Cancelled",
+		"ARCHIVED": "Archived",
+		"BLOCKED": "Blocked",
+		"UNPUBLISHED": "Unpublished"
+	},
+	"PageTitles": {
+		"dashboard": "Dashboard",
+		"notifications": "Notifications",
+		"settings": "Settings",
+		"events": {
+			"title": "Events",
+			"new": "New event"
+		},
+		"edit": {
+			"title": "Edit",
+			"additional": "Additional info",
+			"tickets": "Tickets"
+		},
+		"default": ""
+	},
+	"Sidebar": {
+		"user": {
+			"groups": {
+				"platform": "Platform",
+				"main": "Main page"
+			},
+			"pages": {
+				"catalog": "Event catalog",
+				"dashboard": "Dashboard",
+				"events": "Events"
+			},
+			"dashboard": "Dashboard",
+			"notifications": "Notifications"
+		},
+		"organizer": {
+			"groups": {
+				"platform": "Platform",
+				"main": "Main page"
+			},
+			"pages": {
+				"catalog": "Event catalog",
+				"dashboard": "Dashboard",
+				"events": "Events"
+			},
+			"actionButton": "Create event",
+			"submenu": {
+				"events": {
+					"createEvent": "Create event"
+				}
+			}
+		},
+		"admin": {
+			"groups": {
+				"main": "Platform"
+			},
+			"pages": {
+				"dashboard": "Dashboard",
+				"events": "Events",
+				"users": "Users"
+			}
+		}
+	},
+	"Profile": {
+		"Dashboard": {
+			"header": "Hey,",
+			"notifications": "Notifications"
+		},
+		"organizer": {
+			"dashboard": "Home",
+			"notifications": "Notifications"
+		},
+		"admin": {
+			"dashboard": "Dashboard",
+			"notifications": "Notifications"
+		}
+	},
+	"EventsList": {
+		"table": {
+			"caption": "Events list",
+			"header": {
+				"data": "Event",
+				"image": "Image",
+				"status": "Status",
+				"action": "Action"
+			}
+		}
+	},
+	"EventsCatalog": {
+		"title": "Events",
+		"noResults": "No results",
+		"count": "{shown} of {total} events",
+		"emptyTitle": "No events found",
+		"emptyHint": "Try changing the filters or clear your search",
+		"loadMore": "Load more",
+		"loading": "Loading...",
+		"filters": {
+			"title": "Filters",
+			"reset": "Reset",
+			"apply": "Apply",
+			"date": "Date",
+			"datePlaceholder": "Select period",
+			"city": "City",
+			"cityPlaceholder": "Select cities",
+			"citySearch": "Search city...",
+			"cityNotFound": "City not found",
+			"citySelected": "{count} city selected",
+			"price": "Price",
+			"sort": {
+				"label": "Sort",
+				"date_asc": "Soonest",
+				"date_desc": "Latest",
+				"price_asc": "Price: low to high",
+				"price_desc": "Price: high to low"
+			}
+		}
+	},
+	"EventWizard": {
+		"stepOf": "Step {current} of {total}",
+		"steps": {
+			"basicInfo": {
+				"title": "Basic info",
+				"description": "Event name, dates and location"
+			},
+			"additional": {
+				"title": "Additional",
+				"description": "Event media and agenda"
+			},
+			"tickets": {
+				"title": "Tickets",
+				"description": "Ticket configuration"
+			}
+		},
+		"tickets": {
+			"ticketNumber": "Ticket #{number}",
+			"name": "Ticket name",
+			"namePlaceholder": "e.g. Standard ticket",
+			"price": "Price (PLN)",
+			"quantity": "Number of seats",
+			"quantityPlaceholder": "e.g. 100",
+			"quantityHint": "Leave empty for unlimited",
+			"addTicket": "Add ticket",
+			"back": "Back",
+			"next": "Next",
+			"saving": "Saving...",
+			"saveDraft": "Save draft",
+			"publish": "Publish event",
+			"successPublished": "Event has been published!",
+			"successDraft": "Event saved as draft",
+			"errors": {
+				"default": "An error occurred. Please try again.",
+				"deleteFailed": "Failed to delete ticket."
+			}
+		},
+		"sections": {
+			"types": {
+				"text": "Text",
+				"links": "Links",
+				"gallery": "Gallery",
+				"video": "Video"
+			},
+			"sectionTitle": "Section title",
+			"sectionTitlePlaceholder": "e.g. About the event",
+			"content": "Content",
+			"videoUrl": "Video link",
+			"uploadHint": "Drag or click to add photos",
+			"dropHere": "Drop here...",
+			"save": "Save",
+			"saving": "Saving...",
+			"saved": "Saved",
+			"addSection": "Add section",
+			"altPlaceholder": "Image description (alt)",
+			"links": {
+				"linksLabel": "Links",
+				"addLink": "Add link",
+				"empty": "No links. Add the first link below.",
+				"urlRequired": "URL is required",
+				"invalidUrl": "Invalid URL",
+				"noResults": "Service not found",
+				"services": {
+					"none": "Plain link",
+					"meetup": "Meetup",
+					"zoom": "Zoom",
+					"youtube": "YouTube",
+					"vimeo": "Vimeo",
+					"spotify": "Spotify",
+					"soundcloud": "SoundCloud",
+					"bandcamp": "Bandcamp",
+					"facebook": "Facebook",
+					"instagram": "Instagram",
+					"threads": "Threads",
+					"x": "X (Twitter)",
+					"bluesky": "Bluesky",
+					"tiktok": "TikTok",
+					"snapchat": "Snapchat",
+					"pinterest": "Pinterest",
+					"linkedin": "LinkedIn",
+					"whatsapp": "WhatsApp",
+					"telegram": "Telegram",
+					"discord": "Discord",
+					"patreon": "Patreon",
+					"paypal": "PayPal",
+					"medium": "Medium",
+					"linktree": "Linktree",
+					"googlemaps": "Google Maps",
+					"github": "GitHub",
+					"twitch": "Twitch"
+				}
+			},
+			"errors": {
+				"saveFailed": "Failed to save section",
+				"deleteFailed": "Failed to delete section"
+			},
+			"emptySections": "No sections. Add the first section below.",
+			"reorderFailed": "Failed to reorder sections."
+		},
+		"agenda": {
+			"title": "Agenda",
+			"newItem": "New item",
+			"empty": "No agenda items. Add the first one",
+			"add": "Add item",
+			"title_field": "Title",
+			"titlePlaceholder": "e.g. Participant registration",
+			"description": "Description",
+			"descriptionPlaceholder": "Short description...",
+			"startsAt": "From",
+			"endsAt": "To",
+			"location": "Room / Stage",
+			"locationPlaceholder": "e.g. Room A",
+			"speakerName": "Speaker",
+			"speakerNamePlaceholder": "e.g. John Smith",
+			"save": "Save",
+			"saving": "Saving...",
+			"saved": "Saved",
+			"cancel": "Cancel",
+			"errors": {
+				"saveFailed": "Failed to save item",
+				"deleteFailed": "Failed to delete item",
+				"createFailed": "Failed to create item"
+			}
+		},
+		"faq": {
+			"title": "FAQ",
+			"newItem": "New question",
+			"empty": "No questions. Add the first one.",
+			"add": "Add question",
+			"question": "Question",
+			"questionPlaceholder": "e.g. Can I get a refund?",
+			"answer": "Answer",
+			"answerPlaceholder": "Enter answer...",
+			"save": "Save",
+			"saving": "Saving...",
+			"saved": "Saved",
+			"errors": {
+				"saveFailed": "Failed to save question",
+				"deleteFailed": "Failed to delete question",
+				"createFailed": "Failed to create question"
+			}
+		},
+		"map": {
+			"noAddress": "No address — fill in the Basic info step",
+			"findOnMap": "Find on map",
+			"dragHint": "Drag the marker to change the location",
+			"noCoords": "Click \"Find on map\" to display the location",
+			"geocodeSuccess": "Location found",
+			"geocodeError": "Could not find the location. Please check the address.",
+			"noAddressError": "Fill in the address in the Basic info step",
+			"save": "Save",
+			"saving": "Saving...",
+			"saved": "Saved",
+			"errors": {
+				"saveFailed": "Failed to save map"
+			}
+		},
+		"loading": "Loading..."
+	},
+	"CreateEvent": {
+		"title": "New event",
+		"organization": "Organization",
+		"organizationPlaceholder": "Select organization",
+		"cover": "Cover image",
+		"coverUploaded": "Cover image has been added",
+		"title_field": "Event name",
+		"titlePlaceholder": "e.g. Jazz concert in Warsaw",
+		"description": "Description",
+		"descriptionPlaceholder": "Describe your event...",
+		"startsAt": "Start date",
+		"endsAt": "End date",
+		"endsAtBeforeStartsAt": "End date must be after start date",
+		"dateTimePlaceholder": "e.g. 21 Mar 2026 14:30",
+		"location": "City and address",
+		"locationPlaceholder": "e.g. Warsaw",
+		"address": "Address",
+		"localization": "Location",
+		"link": "Online event link",
+		"linkPlaceholder": "e.g. https://www.facebook.com/event/1234567890/",
+		"linkSetted": "Link has been set",
+		"localizationSetted": "Location has been set",
+		"addressPlaceholder": "e.g. 1 Marszałkowska St.",
+		"showMap": "Show map on page",
+		"eventIsOffline": "Event is offline",
+		"onlineUrl": "Online event link",
+		"showMapHint": "The map will be visible to attendees",
+		"category": "Category",
+		"status": "Publication status",
+		"statusDraft": "Save as draft",
+		"statusPublished": "Publish immediately",
+		"submit": "Create event",
+		"save": "Save",
+		"settingDetails": "Set event details",
+		"saving": "Saving...",
+		"errors": {
+			"default": "An error occurred. Please try again."
+		},
+		"ticketsMin": "Add at least one ticket",
+		"priceMin": "Price cannot be negative",
+		"quantityMin": "Minimum number of seats is 1"
+	},
+	"CreateEventErrors": {
+		"min3": "Name must be at least 3 characters",
+		"max100": "Name can be at most 100 characters",
+		"min10": "Description must be at least 10 characters",
+		"min2": "City must be at least 2 characters",
+		"min5": "Address must be at least 5 characters",
+		"required": "This field is required",
+		"invalidUrl": "Invalid URL",
+		"endsAtAfterStartsAt": "End date must be after start date"
 	}
 }
