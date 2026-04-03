@@ -135,7 +135,7 @@ const options = {
 	},
 
 	advanced: {
-		cookiePrefix: "better-auth",
+		cookiePrefix: "se-auth-v1",
 		cookies: {
 			session_token: {
 				attributes: {
