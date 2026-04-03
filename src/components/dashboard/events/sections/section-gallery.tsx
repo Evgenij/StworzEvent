@@ -10,7 +10,7 @@ import {
 	InputGroup,
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
-import { IconLoader2, IconX, IconPhoto } from "@tabler/icons-react";
+import { IconLoader, IconX, IconPhoto } from "@tabler/icons-react";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useDropzone } from "@uploadthing/react";
 import { generateClientDropzoneAccept } from "uploadthing/client";
@@ -155,7 +155,7 @@ export function SectionGallery({ section }: Props) {
 			>
 				<input {...getInputProps()} />
 				{isUploading ? (
-					<IconLoader2 className="size-6 animate-spin text-muted-foreground" />
+					<IconLoader className="size-6 animate-spin text-muted-foreground" />
 				) : (
 					<>
 						<IconPhoto className="mb-1 size-6 text-muted-foreground" />
@@ -175,7 +175,7 @@ export function SectionGallery({ section }: Props) {
 			>
 				{isSaving ? (
 					<>
-						<IconLoader2 className="mr-2 size-4 animate-spin" />
+						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (

@@ -10,7 +10,7 @@ import {
 	InputGroupInput,
 	InputGroupText,
 } from "@/components/shadcn/ui/input-group";
-import { IconLoader2, IconMapPin, IconMapQuestion } from "@tabler/icons-react";
+import { IconLoader, IconMapPin, IconMapQuestion } from "@tabler/icons-react";
 import { reverseGeocode, searchAddressCoords } from "@/lib/nominatim";
 import type { NominatimPlace, LocationValue } from "@/types/nominatim";
 import {
@@ -26,7 +26,7 @@ const EventMapInner = dynamic(
 		ssr: false,
 		loading: () => (
 			<div className="flex h-90 w-full items-center justify-center rounded-xl border bg-muted">
-				<IconLoader2 className="size-6 animate-spin text-muted-foreground" />
+				<IconLoader className="size-6 animate-spin text-muted-foreground" />
 			</div>
 		),
 	},
@@ -272,7 +272,7 @@ export function LocationPicker({
 				<div className="flex h-90 w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed bg-muted">
 					{isGeocoding ? (
 						<>
-							<IconLoader2 className="size-8 animate-spin text-muted-foreground/50" />
+							<IconLoader className="size-8 animate-spin text-muted-foreground/50" />
 							<p className="text-sm text-muted-foreground">
 								Szukam lokalizacji...
 							</p>
@@ -292,7 +292,7 @@ export function LocationPicker({
 				<div className="flex flex-col gap-1.5">
 					{isReverseGeocoding && (
 						<div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-							<IconLoader2 className="size-3 animate-spin" />
+							<IconLoader className="size-3 animate-spin" />
 							Aktualizuję adres...
 						</div>
 					)}
@@ -304,7 +304,7 @@ export function LocationPicker({
 						/>
 						{isGeocoding && (
 							<div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-background/50 backdrop-blur-sm">
-								<IconLoader2 className="size-8 animate-spin text-muted-foreground" />
+								<IconLoader className="size-8 animate-spin text-muted-foreground" />
 							</div>
 						)}
 					</div>

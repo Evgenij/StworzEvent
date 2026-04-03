@@ -10,7 +10,8 @@ import { Separator } from "@/components/shadcn/ui/separator";
 
 type EventMapSectionProps = {
 	location: string | null;
-	address: string | null;
+	street: string | null;
+	streetNumber: string | null;
 	lat?: number;
 	lng?: number;
 };
@@ -18,17 +19,21 @@ type EventMapSectionProps = {
 const fixLeafletIcon = () => {
 	delete (L.Icon.Default.prototype as any)._getIconUrl;
 	L.Icon.Default.mergeOptions({
-		iconRetinaUrl:
-			"https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-		iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-		shadowUrl:
-			"https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+		iconRetinaUrl: "/leaflet/marker-icon-2x.png",
+		iconUrl: "/leaflet/marker-icon.png",
+		shadowUrl: "/leaflet/marker-shadow.png",
+		iconSize: [33, 41],
+		iconAnchor: [17, 41],
+		popupAnchor: [0, -41],
+		shadowSize: [41, 41],
+		shadowAnchor: [0, 41],
 	});
 };
 
 const EventMapSection = ({
 	location,
-	address,
+	street,
+	streetNumber,
 	lat = 50.0647,
 	lng = 19.945,
 }: EventMapSectionProps) => {
@@ -36,9 +41,9 @@ const EventMapSection = ({
 		fixLeafletIcon();
 	}, []);
 
-	if (!location && !address) return null;
+	if (!location && !street) return null;
 
-	const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`Krakow, Drukarska 8`)}`;
+	const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${location}, ${street} ${streetNumber}`)}`;
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -49,7 +54,9 @@ const EventMapSection = ({
 			<div className="address flex gap-2 text-lg">
 				<p className="font-semibold">{location}</p>
 				<span>-</span>
-				<p>{address}</p>
+				<p>
+					{street} {streetNumber}
+				</p>
 				<Separator orientation="vertical" />
 				<a
 					href={mapsUrl}
@@ -73,7 +80,7 @@ const EventMapSection = ({
 				/>
 				<Marker position={[lat, lng]}>
 					<Popup>
-						{location} — {address}
+						{location} — {street} {streetNumber}
 					</Popup>
 				</Marker>
 			</MapContainer>

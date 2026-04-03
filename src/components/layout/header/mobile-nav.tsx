@@ -31,7 +31,7 @@ export function MobileNav() {
 					<PortalBackdrop />
 					<div
 						className={cn(
-							"data-[slot=open]:zoom-in-97 ease-out data-[slot=open]:animate-in",
+							"data-[slot=open]:zoom-in-97 flex flex-col justify-between ease-out data-[slot=open]:animate-in",
 							"size-full p-4",
 						)}
 						data-slot={open ? "open" : "closed"}

@@ -8,6 +8,8 @@ import { useSidebar } from "@/components/shadcn/ui/sidebar";
 import { IconBellRinging, IconPlus } from "@tabler/icons-react";
 import Breadcrumbs from "../../../components/shared/breadcrumbs";
 import { Badge } from "@/components/shadcn/ui/badge";
+import Link from "next/link";
+import { NEW_EVENT_ROUTE } from "@/consts/routes";
 
 export default function SiteHeader() {
 	const { toggleSidebar } = useSidebar();
@@ -39,9 +41,11 @@ export default function SiteHeader() {
 							</Button>
 						</div>
 
-						<Button>
-							<IconPlus />
-							Nowe wydarzenie
+						<Button asChild>
+							<Link href={NEW_EVENT_ROUTE}>
+								<IconPlus />
+								Nowe wydarzenie
+							</Link>
 						</Button>
 					</div>
 				</div>

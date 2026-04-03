@@ -76,9 +76,8 @@ const EventPage = async ({
 
 	const categories = event?.categories?.map((item) => item.category) || [];
 
-	const fullAddress = [event.street, event.streetNumber]
-		.filter(Boolean)
-		.join(" ") || null;
+	const fullAddress =
+		[event.street, event.streetNumber].filter(Boolean).join(" ") || null;
 
 	let ticketsWithAvailability: TicketWithAvailability[] = [];
 	if (event.tickets?.length) {
@@ -93,11 +92,11 @@ const EventPage = async ({
 	}
 
 	return (
-		<div className="max-w-6xl mx-auto flex flex-col gap-5">
+		<div className="event-page pt-4 md:pt-0 max-w-6xl mx-auto flex flex-col gap-5">
 			<div className="w-full flex justify-between items-center px-5">
 				<Breadcrumb>
 					<BreadcrumbList>
-						<BreadcrumbItem>
+						<BreadcrumbItem className="hidden sm:block">
 							<BreadcrumbLink asChild>
 								<Link href={MAIN_PAGE_EVENTS_ROUTE}>
 									Katalog
@@ -106,8 +105,8 @@ const EventPage = async ({
 						</BreadcrumbItem>
 						{categories.length > 0 && (
 							<>
-								<BreadcrumbSeparator />
-								<BreadcrumbItem>
+								<BreadcrumbSeparator className="hidden sm:block" />
+								<BreadcrumbItem className="hidden sm:block">
 									<BreadcrumbLink asChild>
 										<Link href={MAIN_PAGE_EVENTS_ROUTE}>
 											{categories
@@ -122,7 +121,8 @@ const EventPage = async ({
 								</BreadcrumbItem>
 							</>
 						)}
-						<BreadcrumbSeparator />
+						<BreadcrumbSeparator className="hidden sm:block" />
+
 						<BreadcrumbItem>
 							<Tooltip>
 								<TooltipTrigger asChild>
@@ -186,14 +186,15 @@ const EventPage = async ({
 						)}
 						<EventMapSection
 							location={event.location}
-							address={fullAddress}
+							street={event.street}
+							streetNumber={event.streetNumber}
 							lat={event.lat ?? 50.0647}
 							lng={event.lng ?? 19.945}
 						/>
 					</div>
 				</div>
-				<Separator orientation="vertical" />
-				<div className="tickets-section min-h-full w-xs shrink-0">
+				<Separator orientation="vertical" className="hidden lg:block" />
+				<div className="tickets-section contents lg:block min-h-full w-fit lg:w-xs shrink-0">
 					<EventSidebar
 						event={event}
 						tickets={ticketsWithAvailability}

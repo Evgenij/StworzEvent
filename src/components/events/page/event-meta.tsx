@@ -17,26 +17,8 @@ const EventMetaSection = ({
 	address,
 	locale,
 }: EventMetaSectionProps) => {
-	const month = DateFormatter.month(startsAt, locale);
-	const day = DateFormatter.day(startsAt);
-	const weekday = DateFormatter.weekday(startsAt, locale);
-	const date = DateFormatter.date(startsAt, locale);
-	const startTime = DateFormatter.time(startsAt, locale);
-	const endTime = DateFormatter.time(endsAt, locale);
-
 	return (
-		<div className="flex items-start gap-10">
-			{/* Дата */}
-			{/* <div className="dates-range">
-				<EventMetaItem
-					label={{
-						title: month,
-						value: day.toString(),
-					}}
-					header={weekday + ", " + date}
-					subheader={startTime + (endTime ? " - " + endTime : "")}
-				/>
-			</div> */}
+		<div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-10">
 			<EventDateRange
 				startsAt={startsAt}
 				endsAt={endsAt}

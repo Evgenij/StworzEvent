@@ -1,7 +1,9 @@
 # Coding Conventions
+
 _Last updated: 2026-03-31_
 
 ## Summary
+
 This is a Next.js 16 / React 19 application written entirely in TypeScript with strict mode enabled. Code follows a function-component-first pattern with named exports for shared components and default exports for pages/layouts. Tailwind CSS v4 is used throughout for styling, composed via `cn()` (clsx + tailwind-merge).
 
 ---
@@ -9,6 +11,7 @@ This is a Next.js 16 / React 19 application written entirely in TypeScript with 
 ## Naming Patterns
 
 **Files:**
+
 - Components: `kebab-case.tsx` — e.g., `create-event-form.tsx`, `section-type-picker.tsx`
 - Server actions: `kebab-case.action.ts` — e.g., `create-event.action.ts`, `get-event-for-edit.action.ts`
 - Schemas: `kebab-case.schema.ts` — e.g., `create-event.schema.ts`, `section.schema.ts`
@@ -18,12 +21,14 @@ This is a Next.js 16 / React 19 application written entirely in TypeScript with 
 - Constants: `kebab-case.ts` — e.g., `query-keys.ts`, `routes.ts`
 
 **Functions and variables:**
+
 - Functions: `camelCase` — e.g., `createEventAction`, `getEventForEdit`, `handleAddSection`
 - React components: `PascalCase` — e.g., `CreateEventForm`, `SectionsEditor`, `EventWizardProgress`
 - Constants objects: `SCREAMING_SNAKE_CASE` — e.g., `QUERY_KEYS`, `STEPS`, `DEFAULT_CONTENT`
 - Exported route constants: `SCREAMING_SNAKE_CASE` — e.g., `SIGNIN_ROUTE`, `EVENT_EDIT_ROUTE`
 
 **Types and enums:**
+
 - Interfaces/types: `PascalCase` — e.g., `ActionResult<T>`, `EventPreview`, `EventForEdit`
 - Enums: `PascalCase` with `SCREAMING_SNAKE_CASE` values — e.g., `ErrorCode.UNAUTHORIZED`, `TypeMail.AUTH`
 - Prop types defined inline as `type Props = { ... }` directly above the component
@@ -33,12 +38,14 @@ This is a Next.js 16 / React 19 application written entirely in TypeScript with 
 ## Component Patterns
 
 **Named exports** for all non-page components:
+
 ```typescript
 // src/components/dashboard/events/sections/sections-editor.tsx
 export function SectionsEditor({ eventId, initialSections }: Props) { ... }
 ```
 
 **Default exports** for Next.js pages and layouts:
+
 ```typescript
 // src/app/[locale]/(main)/layout.tsx
 const MainLayout = async ({ children, params }: MainLayoutProps) => { ... };
@@ -46,12 +53,14 @@ export default MainLayout;
 ```
 
 **"use client" / "use server" directives** always appear as the first line of the file when needed:
+
 ```typescript
-"use client";   // client components
-"use server";   // server actions
+"use client"; // client components
+"use server"; // server actions
 ```
 
 **Prop typing** uses a local `type Props` declaration directly above the component:
+
 ```typescript
 type Props = {
   eventId: string;
@@ -99,14 +108,14 @@ Zod schemas accept a translation function `t: (key: string) => string` to suppor
 ```typescript
 // src/schemas/section.schema.ts
 export const sectionVideoSchema = (t: (key: string) => string) =>
-  z.object({
-    type: z.literal(SectionType.VIDEO),
-    content: z.object({ url: z.url(t("invalidUrl")) }),
-  });
+	z.object({
+		type: z.literal(SectionType.VIDEO),
+		content: z.object({ url: z.url(t("invalidUrl")) }),
+	});
 
 // Server-side: (key) => key passthrough
 export const sectionSchema = z.discriminatedUnion("type", [
-  sectionVideoSchema((key) => key),
+	sectionVideoSchema((key) => key),
 ]);
 
 // Types always inferred from the schema
@@ -124,24 +133,26 @@ All mutations go through `safeAction` wrapper from `src/lib/safe-action.ts`. Act
 "use server";
 
 export const createEventAction = safeAction(async (input: CreateEventInput) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
-  // ... business logic
-  return { eventId: event.id };
+	const session = await auth.api.getSession({ headers: await headers() });
+	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
+	// ... business logic
+	return { eventId: event.id };
 });
 ```
 
 Callers always check `result.success` before accessing `result.data`:
+
 ```typescript
 const result = await createEventAction(data);
 if (!result.success) {
-  toast.error(t("errors.default"));
-  return;
+	toast.error(t("errors.default"));
+	return;
 }
 router.push(`/.../${result.data.eventId}/edit/additional`);
 ```
 
 Non-mutating server fetches (read actions) do NOT use `safeAction` — they are plain `async` functions that throw `ApiError` directly:
+
 ```typescript
 // src/actions/events/get-event-for-edit.action.ts
 "use server";
@@ -162,9 +173,9 @@ Next.js Route Handlers use `withApiHandler` wrapper from `src/lib/api-response.t
 ```typescript
 // src/app/api/events/[id]/route.ts
 export const GET = withApiHandler(async (req: Request) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED);
-  return successResponse(events);
+	const session = await auth.api.getSession({ headers: await headers() });
+	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED);
+	return successResponse(events);
 });
 ```
 
@@ -173,12 +184,14 @@ export const GET = withApiHandler(async (req: Request) => {
 ## Styling Conventions
 
 **Utility:** `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge) is used everywhere for conditional classes:
+
 ```typescript
 import { cn } from "@/lib/utils";
 className={cn("base-class", isActive && "active-class", className)}
 ```
 
 **CVA (class-variance-authority)** is used for multi-variant UI primitives (Button, Field):
+
 ```typescript
 const buttonVariants = cva("base...", { variants: { variant: {...}, size: {...} } });
 ```
@@ -186,8 +199,9 @@ const buttonVariants = cva("base...", { variants: { variant: {...}, size: {...} 
 **Tailwind classes** are written inline without abstraction. No CSS modules or global class names outside `src/app/globals.css`.
 
 **Icons** always come from `@tabler/icons-react` with explicit `size-*` class:
+
 ```typescript
-<IconLoader2 className="size-4 animate-spin" />
+<IconLoader className="size-4 animate-spin" />
 ```
 
 ---
@@ -195,15 +209,17 @@ const buttonVariants = cva("base...", { variants: { variant: {...}, size: {...} 
 ## Data Fetching Pattern
 
 **Client-side queries** use TanStack Query v5 (`useQuery`) with string-keyed `queryKey` arrays from `src/consts/query-keys.ts`. Server actions are used as `queryFn`:
+
 ```typescript
 const { data, isLoading } = useQuery({
-  queryKey: [QUERY_KEYS.ORGANIZATIONS.MY_ORG],
-  queryFn: () => getMyOrganizations(),
-  staleTime: 1000 * 60 * 5,
+	queryKey: [QUERY_KEYS.ORGANIZATIONS.MY_ORG],
+	queryFn: () => getMyOrganizations(),
+	staleTime: 1000 * 60 * 5,
 });
 ```
 
 **Server components** query Prisma directly (no SWR/React Query):
+
 ```typescript
 const event = await prisma.event.findUnique({ where: { slug }, include: { ... } });
 if (!event) notFound();
@@ -216,6 +232,7 @@ if (!event) notFound();
 ## Internationalisation
 
 `next-intl` v4 with locales `["en", "pl"]`, default `"pl"`. Always use the locale-aware `Link`, `redirect`, `useRouter`, `usePathname` from `src/i18n/routing.ts`, not from `next/navigation` or `next/link`:
+
 ```typescript
 import { Link, redirect, useRouter } from "@/i18n/routing";
 ```
@@ -227,6 +244,7 @@ Translation keys are accessed via `useTranslations("Namespace")` in client compo
 ## Path Aliases
 
 Two aliases defined in `tsconfig.json`:
+
 - `@/*` → `./src/*` (primary alias for all source imports)
 - `#/*` → `./src/app/[locale]/*` (locale app directory, rarely used)
 
@@ -259,6 +277,7 @@ No explicit sorting enforced by ESLint — convention observed from reading file
 ## Ownership / Auth Guards
 
 Reusable ownership guards live in `src/lib/verify-ownership.ts`:
+
 - `verifyEventOwnership(eventId, userId)`
 - `verifySectionOwnership(sectionId, userId)`
 - `verifyAgendaItemOwnership(itemId, userId)`

@@ -58,7 +58,9 @@ export const StepSelectTickets = ({
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="flex flex-col bg-muted rounded-lg p-3">
-				<p className="font-semibold text-base">{eventTitle}</p>
+				<p className="font-semibold text-base line-clamp-3">
+					{eventTitle}
+				</p>
 				<p className="text-sm text-muted-foreground capitalize">
 					{eventDate}
 				</p>

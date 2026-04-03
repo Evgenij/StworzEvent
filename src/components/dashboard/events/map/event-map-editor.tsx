@@ -8,7 +8,7 @@ import { Button } from "@/components/shadcn/ui/button";
 import { Label } from "@/components/shadcn/ui/label";
 import { Field } from "@/components/shadcn/ui/field";
 import { Switch } from "@/components/shadcn/ui/switch";
-import { IconLoader2, IconMapPin, IconSearch } from "@tabler/icons-react";
+import { IconLoader, IconMapPin, IconSearch } from "@tabler/icons-react";
 import { updateEventMapAction } from "@/actions/events/update-event-map.action";
 import { geocodeAddress } from "@/lib/geocode";
 import { toast } from "sonner";
@@ -21,7 +21,7 @@ const EventMapInner = dynamic(
 		ssr: false,
 		loading: () => (
 			<div className="flex h-64 w-full items-center justify-center rounded-lg border bg-muted">
-				<IconLoader2 className="size-6 animate-spin text-muted-foreground" />
+				<IconLoader className="size-6 animate-spin text-muted-foreground" />
 			</div>
 		),
 	},
@@ -133,7 +133,7 @@ export function EventMapEditor({ eventId, initialData }: Props) {
 							onClick={handleGeocode}
 						>
 							{isGeocoding ? (
-								<IconLoader2 className="mr-2 size-4 animate-spin" />
+								<IconLoader className="mr-2 size-4 animate-spin" />
 							) : (
 								<IconSearch className="mr-2 size-4" />
 							)}
@@ -175,7 +175,7 @@ export function EventMapEditor({ eventId, initialData }: Props) {
 			>
 				{isSaving ? (
 					<>
-						<IconLoader2 className="mr-2 size-4 animate-spin" />
+						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (

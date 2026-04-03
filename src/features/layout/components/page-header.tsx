@@ -1,8 +1,8 @@
 "use client";
 
 import { Typography } from "@/components/shared";
-import { usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 // UUID или cuid — пропускаем как динамический сегмент

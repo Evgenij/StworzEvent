@@ -17,6 +17,7 @@ import {
 import { signOutAction } from "@/features/auth/actions/sign-out";
 import {
 	DASHBOARD_ROUTE,
+	MAIN_PAGE_ROUTE,
 	NEW_EVENT_ROUTE,
 	SIGNIN_ROUTE,
 	SIGNUP_ROUTE,
@@ -51,8 +52,8 @@ const AuthButtons = ({ user, className }: AuthButtonsProps) => {
 		return (
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<div className="flex gap-1 items-center p-1 pl-4 hover:bg-muted cursor-pointer rounded-full">
-						<div className="name text-sm font-medium pr-1">
+					<div className="flex gap-1 items-center p-1 sm:pl-4 hover:bg-muted cursor-pointer rounded-full">
+						<div className="name hidden sm:block text-sm font-medium pr-1">
 							<p>
 								{user.name?.split(" ")[0] || "User"}{" "}
 								{user.surname?.split(" ")[0] || "User"}
@@ -99,9 +100,9 @@ const AuthButtons = ({ user, className }: AuthButtonsProps) => {
 								Panel glowny
 							</Link>
 						</DropdownMenuItem>
-						<DropdownMenuItem>
+						{/* <DropdownMenuItem>
 							<IconSettings2 className="size-5" /> Ustawienia
-						</DropdownMenuItem>
+						</DropdownMenuItem> */}
 					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
@@ -117,11 +118,21 @@ const AuthButtons = ({ user, className }: AuthButtonsProps) => {
 	}
 
 	return (
-		<div className={cn("items-center gap-2 md:flex", className)}>
-			<Button variant="ghost" asChild className="rounded-full">
+		<div
+			className={cn(
+				"items-center gap-2 flex flex-col md:flex-row",
+				className,
+			)}
+		>
+			<Button
+				variant="outline"
+				asChild
+				className="rounded-full w-full"
+				size={"lg"}
+			>
 				<Link href={SIGNIN_ROUTE}>Zaloguj się</Link>
 			</Button>
-			<Button asChild className="rounded-full">
+			<Button asChild className="rounded-full w-full" size={"lg"}>
 				<Link href={SIGNUP_ROUTE}>
 					<IconRocket className="size-5" />
 					Zarejestruj się

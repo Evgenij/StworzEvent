@@ -8,10 +8,6 @@ import {
 import {
 	IconSmartHome,
 	IconCalendarEvent,
-	IconTicket,
-	IconCalendar,
-	IconPlus,
-	IconTemplate,
 	IconListDetails,
 } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
@@ -65,7 +61,7 @@ export const getNavConfig = (
 
 		[UserRole.ORGANIZER]: [
 			{
-				title: t("groups.main"),
+				title: t("groups.platform"),
 				items: [
 					{
 						title: t("pages.dashboard"),
@@ -92,6 +88,25 @@ export const getNavConfig = (
 						// 	],
 						// },
 					},
+				],
+			},
+			{
+				title: t("groups.main"),
+				items: [
+					{
+						title: t("pages.catalog"),
+						url: MAIN_PAGE_ROUTE,
+						icon: IconListDetails,
+					},
+					// {
+					// 	title: t("pages.events"),
+					// 	url: EVENTS_ROUTE,
+					// 	icon: IconCalendarEvent,
+					// 	actionButton: {
+					// 		label: t("actionButton"),
+					// 		href: NEW_EVENT_ROUTE,
+					// 	},
+					// },
 				],
 			},
 		],

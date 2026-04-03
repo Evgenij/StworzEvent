@@ -5,6 +5,7 @@ import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { IconBrandFacebook } from "@tabler/icons-react";
 import React, { ReactNode } from "react";
+import { APP_CONFIG } from "@/config/app";
 
 type FooterWebsiteProps = {
 	locale: string;
@@ -29,7 +30,7 @@ const socialLinks = [
 
 const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 	return (
-		<footer className=" px-4 md:px-6 border-t">
+		<footer className="pb-30 sm:pb-0 px-4 md:px-6 border-t">
 			<div className="mx-auto max-w-7xl">
 				<div className="flex flex-col gap-6 py-6">
 					<div className="flex items-center justify-between">
@@ -76,8 +77,8 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 				</div>
 				<div className="flex items-center justify-between gap-4 border-t py-4 text-muted-foreground text-sm">
 					<p>
-						&copy; {new Date().getFullYear()}{" "}
-						{process.env.NEXT_PUBLIC_COMPANY_NAME}
+						&copy; {new Date().getFullYear()} {APP_CONFIG.name} v
+						{APP_CONFIG.version}
 					</p>
 
 					<p className="inline-flex items-center gap-1">
@@ -85,18 +86,11 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 						<a
 							aria-label="x/twitter"
 							className="inline-flex items-center gap-1 text-foreground/80 hover:text-foreground hover:underline"
-							href={"https://x.com/shabanhr"}
+							href={"https://uixer.design"}
 							rel="noreferrer"
 							target="_blank"
 						>
-							<img
-								alt="shaban"
-								className="size-4 rounded-full"
-								height="auto"
-								src="https://github.com/shabanhr.png"
-								width="auto"
-							/>
-							Shaban
+							UIXER
 						</a>
 					</p>
 				</div>

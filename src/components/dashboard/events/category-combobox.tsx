@@ -18,12 +18,7 @@ import {
 } from "@/components/shadcn/ui/combobox";
 import { useState } from "react";
 import { InputGroupAddon } from "@/components/shadcn/ui/input-group";
-import {
-	IconLoader,
-	IconLoader2,
-	IconTag,
-	IconTagFilled,
-} from "@tabler/icons-react";
+import { IconLoader, IconTag } from "@tabler/icons-react";
 
 interface Props {
 	value: string;

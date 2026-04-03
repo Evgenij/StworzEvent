@@ -9,7 +9,7 @@ type EventMetaItemProps = {
 
 const EventMetaItem = ({ label, header, subheader }: EventMetaItemProps) => {
 	return (
-		<div className="flex items-center gap-4">
+		<div className="flex items-center gap-3">
 			<div className="flex flex-col items-center border-2 border-gray-200 rounded-md overflow-hidden">
 				<div className="px-1.5 py-1 bg-gray-200 w-full">
 					<p className="text-xs text-muted-foreground text-center">
@@ -17,7 +17,7 @@ const EventMetaItem = ({ label, header, subheader }: EventMetaItemProps) => {
 					</p>
 				</div>
 				<div className="bg-white w-full px-2 py-1.5">
-					<p className="text-base font-semibold leading-none text-center w-full">
+					<p className="text-sm font-semibold leading-none text-center w-full ">
 						{label.value}
 					</p>
 				</div>
@@ -25,11 +25,7 @@ const EventMetaItem = ({ label, header, subheader }: EventMetaItemProps) => {
 
 			<div>
 				<p className="font-medium capitalize text-sm">{header}</p>
-				<p className="text-sm text-muted-foreground">
-					{subheader}
-					{/* {startTime}
-					{endTime ? ` - ${endTime}` : ""} */}
-				</p>
+				<p className="text-sm text-muted-foreground">{subheader}</p>
 			</div>
 		</div>
 	);

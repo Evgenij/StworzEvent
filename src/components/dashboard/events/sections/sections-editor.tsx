@@ -15,7 +15,7 @@ import { createSectionAction } from "@/actions/events/sections/create-section.ac
 import { reorderSectionsAction } from "@/actions/events/sections/reorder-sections.action";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { IconLoader2 } from "@tabler/icons-react";
+import { IconLoader } from "@tabler/icons-react";
 import type { EventSection } from "@/actions/events/sections/get-event-sections.action";
 
 type Props = {
@@ -144,7 +144,7 @@ export function SectionsEditor({ eventId, initialSections }: Props) {
 			{/* Индикатор reorder */}
 			{isPendingReorder && (
 				<div className="flex items-center gap-2 text-xs text-muted-foreground">
-					<IconLoader2 className="size-3 animate-spin" />
+					<IconLoader className="size-3 animate-spin" />
 					{t("saving")}
 				</div>
 			)}
@@ -154,7 +154,7 @@ export function SectionsEditor({ eventId, initialSections }: Props) {
 				<p className="text-sm font-medium">{t("addSection")}</p>
 				{isCreating ? (
 					<div className="flex items-center justify-center py-3">
-						<IconLoader2 className="size-5 animate-spin text-muted-foreground" />
+						<IconLoader className="size-5 animate-spin text-muted-foreground" />
 					</div>
 				) : (
 					<SectionTypePicker

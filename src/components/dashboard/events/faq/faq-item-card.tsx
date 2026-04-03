@@ -22,7 +22,7 @@ import {
 	IconChevronDown,
 	IconChevronUp,
 	IconTrash,
-	IconLoader2,
+	IconLoader,
 } from "@tabler/icons-react";
 import { faqItemSchema, type FaqItemInput } from "@/schemas/faq-item.schema";
 import { upsertFaqItemAction } from "@/actions/events/faq/upsert-faq-item.action";
@@ -112,7 +112,7 @@ export function FaqItemCard({ eventId, item, onDelete, onSave }: Props) {
 							className="text-destructive hover:text-destructive"
 						>
 							{isDeleting ? (
-								<IconLoader2 className="size-4 animate-spin" />
+								<IconLoader className="size-4 animate-spin" />
 							) : (
 								<IconTrash className="size-4" />
 							)}
@@ -191,7 +191,7 @@ export function FaqItemCard({ eventId, item, onDelete, onSave }: Props) {
 						>
 							{isSubmitting ? (
 								<>
-									<IconLoader2 className="mr-2 size-4 animate-spin" />
+									<IconLoader className="mr-2 size-4 animate-spin" />
 									{t("saving")}
 								</>
 							) : (

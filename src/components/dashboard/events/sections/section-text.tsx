@@ -11,7 +11,7 @@ import {
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
 import { Label } from "@/components/shadcn/ui/label";
-import { IconLoader2 } from "@tabler/icons-react";
+import { IconLoader } from "@tabler/icons-react";
 import { updateSectionAction } from "@/actions/events/sections/update-section.action";
 import { SectionType } from "@prisma/client";
 import { toast } from "sonner";
@@ -74,7 +74,7 @@ export function SectionText({ section }: Props) {
 			>
 				{isSaving ? (
 					<>
-						<IconLoader2 className="mr-2 size-4 animate-spin" />
+						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (

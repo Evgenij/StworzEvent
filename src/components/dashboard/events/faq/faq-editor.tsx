@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/shadcn/ui/button";
-import { IconPlus, IconLoader2 } from "@tabler/icons-react";
+import { IconPlus, IconLoader } from "@tabler/icons-react";
 import { FaqItemCard } from "./faq-item-card";
 import { upsertFaqItemAction } from "@/actions/events/faq/upsert-faq-item.action";
 import { toast } from "sonner";
@@ -84,7 +84,7 @@ export function FaqEditor({ eventId, initialItems }: Props) {
 				className="w-full border-dashed"
 			>
 				{isCreating ? (
-					<IconLoader2 className="mr-2 size-4 animate-spin" />
+					<IconLoader className="mr-2 size-4 animate-spin" />
 				) : (
 					<IconPlus className="mr-2 size-4" />
 				)}

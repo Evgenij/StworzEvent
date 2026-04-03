@@ -17,7 +17,7 @@ import { Button } from "@/components/shadcn/ui/button";
 import {
 	IconPlus,
 	IconTrash,
-	IconLoader2,
+	IconLoader,
 	IconArrowLeft,
 	IconTicket,
 	IconCurrencyZloty,
@@ -135,7 +135,7 @@ export function StepTickets({ eventId, initialTickets, onBack }: Props) {
 								className="text-destructive hover:text-destructive"
 							>
 								{deletingId === field.id ? (
-									<IconLoader2 className="size-4 animate-spin" />
+									<IconLoader className="size-4 animate-spin" />
 								) : (
 									<IconTrash className="size-4" />
 								)}
@@ -298,7 +298,7 @@ export function StepTickets({ eventId, initialTickets, onBack }: Props) {
 						onClick={() => setSubmitStatus(EventStatus.DRAFT)}
 					>
 						{isSubmitting && submitStatus === EventStatus.DRAFT ? (
-							<IconLoader2 className="mr-2 size-4 animate-spin" />
+							<IconLoader className="mr-2 size-4 animate-spin" />
 						) : null}
 						{t("saveDraft")}
 					</Button>
@@ -309,7 +309,7 @@ export function StepTickets({ eventId, initialTickets, onBack }: Props) {
 					>
 						{isSubmitting &&
 						submitStatus === EventStatus.PUBLISHED ? (
-							<IconLoader2 className="mr-2 size-4 animate-spin" />
+							<IconLoader className="mr-2 size-4 animate-spin" />
 						) : null}
 						{t("publish")}
 					</Button>

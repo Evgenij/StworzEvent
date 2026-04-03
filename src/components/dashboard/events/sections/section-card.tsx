@@ -13,7 +13,7 @@ import {
 	IconChevronDown,
 	IconChevronUp,
 	IconTrash,
-	IconLoader2,
+	IconLoader,
 	IconGripVertical,
 	IconPhoto,
 	IconVideo,
@@ -109,7 +109,7 @@ export function SectionCard({ section, provided, onDelete }: Props) {
 							className="text-destructive hover:text-destructive"
 						>
 							{isDeleting ? (
-								<IconLoader2 className="size-4 animate-spin" />
+								<IconLoader className="size-4 animate-spin" />
 							) : (
 								<IconTrash className="size-4" />
 							)}

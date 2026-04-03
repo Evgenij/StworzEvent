@@ -11,7 +11,7 @@ import {
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
 import { Label } from "@/components/shadcn/ui/label";
-import { IconBrandYoutube, IconLoader2 } from "@tabler/icons-react";
+import { IconBrandYoutube, IconLoader } from "@tabler/icons-react";
 import { updateSectionAction } from "@/actions/events/sections/update-section.action";
 import { sectionVideoSchema } from "@/schemas/section.schema";
 import { SectionType } from "@prisma/client";
@@ -105,7 +105,7 @@ export function SectionVideo({ section }: Props) {
 			>
 				{isSaving ? (
 					<>
-						<IconLoader2 className="mr-2 size-4 animate-spin" />
+						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (

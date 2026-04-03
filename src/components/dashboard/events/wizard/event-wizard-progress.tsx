@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { IconLoader2 } from "@tabler/icons-react";
+import { IconLoader } from "@tabler/icons-react";
 import {
 	EVENT_EDIT_ROUTE,
 	EVENT_EDIT_ADDITIONAL_ROUTE,
@@ -95,7 +95,7 @@ export function EventWizardProgress({
 					>
 						{isLoading ? (
 							<div className="flex gap-1 items-center">
-								<IconLoader2 className="animate-spin size-4"></IconLoader2>{" "}
+								<IconLoader className="animate-spin size-4"></IconLoader>{" "}
 								{t(`loading`)}
 							</div>
 						) : (

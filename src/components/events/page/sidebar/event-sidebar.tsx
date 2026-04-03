@@ -4,14 +4,14 @@ import { Button } from "@/components/shadcn/ui/button";
 import { Separator } from "@/components/shadcn/ui/separator";
 import { Typography } from "@/components/shared";
 import { Link } from "@/i18n/routing";
-import { Event, Organization, Prisma, Ticket } from "@prisma/client";
-import { IconBasket, IconExternalLink, IconTicket } from "@tabler/icons-react";
-import React, { useState } from "react";
+import { Event, Prisma } from "@prisma/client";
+import { IconBasket, IconExternalLink } from "@tabler/icons-react";
+import React from "react";
 import EventMetaItem from "../event-meta-item";
-import { DateFormatter } from "@/helpers/date-formatter";
 import { EventDateRange } from "../event-date-range";
 import { TicketsDrawer } from "../../tickets/tickets-drawer";
 import { TicketWithAvailability } from "@/types/ticket";
+import { useMobileMenuStore } from "@/stores/mobile-menu.store";
 
 type EventSidebarProps = {
 	organization: Prisma.OrganizationGetPayload<{
@@ -39,7 +39,8 @@ const EventSidebar = ({
 	location: string | null;
 	address: string | null;
 }) => {
-	const [drawerOpen, setDrawerOpen] = useState(false);
+	const { ticketDrawerOpen, openTicketDrawer, closeTicketDrawer } =
+		useMobileMenuStore();
 
 	let price = 0;
 	if (tickets.length) {
@@ -51,8 +52,8 @@ const EventSidebar = ({
 	}
 
 	return (
-		<aside className="sticky shadow-2xl shadow-black/10 bg-white top-22 rounded-xl overflow-hidden border border-border">
-			<header className="bg-sidebar flex items-start justify-between px-4 py-3 text-foreground ">
+		<aside className="hidden sm:block sm:fixed bottom-0 left-0 h-fit lg:sticky lg:shadow-2xl shadow-black/10 bg-white lg:top-22 w-full rounded-2xl rounded-bl-none rounded-br-none lg:rounded-xl overflow-hidden lg:border border-border border-t shadow-[0_-10px_16px_-5px_rgb(0,0,0,0.05)]">
+			<header className="hidden bg-sidebar lg:flex items-start justify-between px-4 py-3 text-foreground">
 				<div className="company-info flex items-center gap-3">
 					<img
 						src={
@@ -82,71 +83,69 @@ const EventSidebar = ({
 					<IconExternalLink size={20} />
 				</Link>
 			</header>
-			<main className="flex flex-col gap-4 p-4">
-				<EventDateRange
-					startsAt={dates.startsAt}
-					endsAt={dates.endsAt}
-					locale={locale}
-				/>
-				{/* <EventMetaItem
-					label={{
-						title: DateFormatter.month(dates.startsAt, locale),
-						value: DateFormatter.day(dates.startsAt).toString(),
-					}}
-					header={
-						DateFormatter.weekday(dates.startsAt, locale) +
-						", " +
-						DateFormatter.date(dates.startsAt, locale)
-					}
-					subheader={
-						DateFormatter.time(dates.startsAt, locale) +
-						(dates.endsAt
-							? " - " + DateFormatter.time(dates.endsAt, locale)
-							: "")
-					}
-				/> */}
-				<Separator />
-				<EventMetaItem
-					label={{
-						title: location ? "miasto" : "rodzaj",
-						value: location ? location : "online",
-					}}
-					header={location ? location : "Online wydarzenie"}
-					subheader={address ? address : "link dostępny po zapisaniu"}
-				/>
-				<Separator />
-				<div className="price flex flex-col gap-1">
-					<Typography variant="p" className="font-medium">
-						Bilety juz od:
+			<main className="flex flex-row items-start justify-between lg:justify-start lg:flex-col gap-4 px-5 lg:px-4 p-4">
+				<div className="flex flex-col gap-3 h-full w-full justify-between lg:contents">
+					<Typography variant="h4" className="lg:hidden line-clamp-2">
+						{event.title}
 					</Typography>
-					<div className="price-wrapper flex items-center gap-2">
-						<Typography variant="h2" className="text-primary">
-							{price} zl
-						</Typography>
-						<Typography
-							variant="h4"
-							className="text-muted-foreground opacity-50"
-						>
-							/os
-						</Typography>
+					<div className="flex gap-6 lg:contents">
+						<EventDateRange
+							startsAt={dates.startsAt}
+							endsAt={dates.endsAt}
+							locale={locale}
+						/>
+						<Separator className="hidden lg:block" />
+						<EventMetaItem
+							label={{
+								title: location ? "miasto" : "rodzaj",
+								value: location ? location : "online",
+							}}
+							header={location ? location : "Online wydarzenie"}
+							subheader={
+								address ? address : "link dostępny po zapisaniu"
+							}
+						/>
 					</div>
+					<Separator className="hidden lg:block" />
 				</div>
-				<Button
-					size={"lg"}
-					className="w-full"
-					onClick={() => setDrawerOpen(true)}
-				>
-					<IconBasket className="size-5" />
-					Buy Ticket
-				</Button>
+				<Separator orientation="vertical" className="lg:hidden" />
+				<div className="flex flex-col justify-end lg:justify-start gap-2 lg:w-full">
+					<div className="price flex flex-col">
+						<Typography
+							variant="p"
+							className="font-medium text-right lg:text-left"
+						>
+							Bilety juz od:
+						</Typography>
+						<div className="price-wrapper flex justify-end lg:justify-start items-baseline gap-2">
+							<Typography variant="h2" className="text-primary">
+								{price} zl
+							</Typography>
+							<Typography
+								variant="h4"
+								className="text-muted-foreground opacity-50"
+							>
+								/os
+							</Typography>
+						</div>
+					</div>
+					<Button
+						size={"lg"}
+						className="w-fit lg:w-full"
+						onClick={openTicketDrawer}
+					>
+						<IconBasket className="size-5" />
+						Kup bilety
+					</Button>
+				</div>
 			</main>
 
 			<TicketsDrawer
 				locale={locale}
 				eventSlug={event.slug}
 				eventId={event.id}
-				open={drawerOpen}
-				onClose={() => setDrawerOpen(false)}
+				open={ticketDrawerOpen}
+				onClose={closeTicketDrawer}
 				tickets={tickets}
 				eventTitle={event.title}
 				eventDate={dates.startsAt}

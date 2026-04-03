@@ -29,7 +29,10 @@ const EventHeaderSection = ({
 					{index < categories.length - 1 && " / "}
 				</React.Fragment>
 			))}
-			<Typography variant="h1" className="text-left mb-6">
+			<Typography
+				variant="h1"
+				className="text-left mb-2 lg:mb-6 line-clamp-2"
+			>
 				{title}
 			</Typography>
 			<EventMetaSection

@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "@uploadthing/react";
 import { generateClientDropzoneAccept } from "uploadthing/client";
 import { useUploadThing } from "@/lib/uploadthing";
-import { IconPhoto, IconX, IconLoader2 } from "@tabler/icons-react";
+import { IconPhoto, IconX, IconLoader } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Button } from "@/components/shadcn/ui/button";
@@ -77,7 +77,7 @@ export function EventCoverUpload({ value, onChange, onClear }: Props) {
 		>
 			<input {...getInputProps()} />
 			{isUploading ? (
-				<IconLoader2 className="size-8 animate-spin text-muted-foreground" />
+				<IconLoader className="size-8 animate-spin text-muted-foreground" />
 			) : (
 				<>
 					<IconPhoto className="mb-2 size-8 text-muted-foreground" />

@@ -19,7 +19,7 @@ import {
 	ComboboxItem,
 	ComboboxList,
 } from "@/components/shadcn/ui/combobox";
-import { IconLoader2, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconLoader, IconPlus, IconTrash } from "@tabler/icons-react";
 import type { ComponentType } from "react";
 import { updateSectionAction } from "@/actions/events/sections/update-section.action";
 import { SectionType } from "@prisma/client";
@@ -71,9 +71,14 @@ function ServiceCombobox({ value, onChange }: ServiceComboboxProps) {
 			itemToStringLabel={(item) => item?.label ?? ""}
 			isItemEqualToValue={(a, b) => a?.id === b?.id}
 			onInputValueChange={setInputValue}
-			onOpenChange={(open) => { if (open) setInputValue(""); }}
+			onOpenChange={(open) => {
+				if (open) setInputValue("");
+			}}
 		>
-			<ComboboxInput className="w-44 shrink-0" showClear={value !== "none"}>
+			<ComboboxInput
+				className="w-44 shrink-0"
+				showClear={value !== "none"}
+			>
 				<InputGroupAddon>
 					<SelectedIcon className="size-4" />
 				</InputGroupAddon>
@@ -248,7 +253,7 @@ export function SectionLinks({ section }: Props) {
 			>
 				{isSaving ? (
 					<>
-						<IconLoader2 className="mr-2 size-4 animate-spin" />
+						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (

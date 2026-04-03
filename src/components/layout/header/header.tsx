@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
-import { MAIN_PAGE_ROUTE } from "@/consts/routes";
+import { MAIN_PAGE_EVENTS_ROUTE, MAIN_PAGE_ROUTE } from "@/consts/routes";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
@@ -17,16 +17,16 @@ type HeaderWebsiteProps = {
 export const navLinks = [
 	{
 		label: "Wydarzenia",
-		href: "#",
+		href: MAIN_PAGE_EVENTS_ROUTE,
 	},
-	{
-		label: "Pricing",
-		href: "#",
-	},
-	{
-		label: "About",
-		href: "#",
-	},
+	// {
+	// 	label: "Pricing",
+	// 	href: "#",
+	// },
+	// {
+	// 	label: "About",
+	// 	href: "#",
+	// },
 ];
 
 const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
@@ -35,16 +35,19 @@ const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
 	return (
 		<header
 			className={cn("sticky top-0 z-50 w-full border-b border-border", {
-				"p-4 pb-0 border-transparent": scrolled,
+				"md:p-4 pb-0 p-2 border-transparent": scrolled,
 			})}
 		>
 			<nav
 				className={cn(
 					"max-w-7xl mx-auto flex h-14 w-full transition-all items-center justify-between px-3 bg-white ",
 					{
-						"border border-border rounded-full  backdrop-blur-sm supports-backdrop-filter:bg-white/80":
-							scrolled,
+						"border border-border rounded-full ": scrolled,
 					},
+					// {
+					// 	"border border-border rounded-full  backdrop-blur-sm supports-backdrop-filter:bg-white/90":
+					// 		scrolled,
+					// },
 				)}
 			>
 				<Link href={MAIN_PAGE_ROUTE} className="ml-3">
@@ -68,8 +71,11 @@ const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
 						</Button>
 					))}
 				</div>
-				<AuthButtons user={user} className="hidden" />
-				<MobileNav />
+
+				<div className="flex items-center">
+					<AuthButtons user={user} className="hidden" />
+					<MobileNav />
+				</div>
 			</nav>
 		</header>
 	);

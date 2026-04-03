@@ -8,6 +8,7 @@ import React from "react";
 import { AppSidebar } from "@/features/layout";
 import { SiteHeader } from "@/features/layout";
 import { UserRole } from "@prisma/client";
+import { MobileMenu } from "@/components/layout/menu";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -47,6 +48,8 @@ const ProfileLayout = async ({
 					</SidebarInset>
 				</div>
 			</SidebarProvider>
+
+			<MobileMenu />
 		</div>
 	);
 };

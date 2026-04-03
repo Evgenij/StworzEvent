@@ -29,7 +29,7 @@ import {
 	IconChevronDown,
 	IconChevronUp,
 	IconTrash,
-	IconLoader2,
+	IconLoader,
 	IconCalendar,
 	IconMapPin,
 	IconUser,
@@ -416,7 +416,7 @@ export function AgendaItemCard({
 					>
 						{isSubmitting ? (
 							<>
-								<IconLoader2 className="mr-2 size-4 animate-spin" />
+								<IconLoader className="mr-2 size-4 animate-spin" />
 								{t("saving")}
 							</>
 						) : (

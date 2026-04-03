@@ -1,5 +1,7 @@
 // src/lib/nominatim.ts
+import { APP_CONFIG } from "@/config/app";
 import type { NominatimPlace } from "@/types/nominatim";
+import { userAgent } from "next/server";
 
 async function nominatimFetch(
 	params: Record<string, string>,
@@ -16,6 +18,7 @@ export async function searchCities(query: string): Promise<NominatimPlace[]> {
 		q: query,
 		limit: "10",
 		featureType: "city",
+		userAgent: `${APP_CONFIG.name}/${APP_CONFIG.version} (${APP_CONFIG.email})`,
 	});
 
 	const filtered = results.filter((r) =>
@@ -43,6 +46,7 @@ export async function searchStreets(
 		q: `${query}, ${city}`,
 		limit: "8",
 		featureType: "highway",
+		userAgent: `${APP_CONFIG.name}/${APP_CONFIG.version} (${APP_CONFIG.email})`,
 	});
 
 	// только highway = улицы, дедупликация по названию улицы
@@ -67,6 +71,7 @@ export async function searchAddresses(
 	const results = await nominatimFetch({
 		q: `${query}, ${city}`,
 		limit: "10",
+		userAgent: `${APP_CONFIG.name}/${APP_CONFIG.version} (${APP_CONFIG.email})`,
 	});
 
 	return results.filter((r) => ADDRESS_CLASSES.has(r.class));
@@ -104,7 +109,11 @@ export async function reverseGeocode(
 export async function searchAddressCoords(
 	query: string,
 ): Promise<{ lat: number; lng: number; hasHouseNumber: boolean } | null> {
-	const results = await nominatimFetch({ q: query, limit: "1", addressdetails: "1" });
+	const results = await nominatimFetch({
+		q: query,
+		limit: "1",
+		addressdetails: "1",
+	});
 	if (!results.length) return null;
 	return {
 		lat: parseFloat(results[0].lat),

@@ -40,7 +40,7 @@ import {
 	IconCircleCheckFilled,
 	IconDeviceFloppy,
 	IconLink,
-	IconLoader2,
+	IconLoader,
 	IconMap2,
 	IconMapCheck,
 	IconMapPin,
@@ -637,7 +637,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 				<Button type="submit" disabled={isSubmitting}>
 					{isSubmitting ? (
 						<>
-							<IconLoader2 className="size-4 animate-spin" />
+							<IconLoader className="size-4 animate-spin" />
 							{t("saving")}
 						</>
 					) : (
