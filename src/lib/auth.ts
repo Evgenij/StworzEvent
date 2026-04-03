@@ -118,10 +118,9 @@ const options = {
 		before: createAuthMiddleware(async (ctx) => {
 			if (
 				ctx.path === "/sign-up/email" ||
-				"/api/auth/sign-in/magic-link" ||
-				"/update-user"
+				ctx.path === "/api/auth/sign-in/magic-link" ||
+				ctx.path === "/update-user"
 			) {
-				//TODO show error sonner
 				return {
 					context: {
 						...ctx,
