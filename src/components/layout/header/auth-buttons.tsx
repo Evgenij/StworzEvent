@@ -125,14 +125,13 @@ const AuthButtons = ({ user, className }: AuthButtonsProps) => {
 			)}
 		>
 			<Button
-				variant="outline"
+				variant="ghost"
 				asChild
-				className="rounded-full w-full"
-				size={"lg"}
+				className="rounded-full w-full md:w-fit"
 			>
 				<Link href={SIGNIN_ROUTE}>Zaloguj się</Link>
 			</Button>
-			<Button asChild className="rounded-full w-full" size={"lg"}>
+			<Button asChild className="rounded-full w-full md:w-fit">
 				<Link href={SIGNUP_ROUTE}>
 					<IconRocket className="size-5" />
 					Zarejestruj się

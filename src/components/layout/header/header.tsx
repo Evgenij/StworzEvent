@@ -72,10 +72,8 @@ const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
 					))}
 				</div>
 
-				<div className="flex items-center">
-					<AuthButtons user={user} className="hidden" />
-					<MobileNav />
-				</div>
+				<AuthButtons user={user} className="hidden md:flex" />
+				<MobileNav />
 			</nav>
 		</header>
 	);
