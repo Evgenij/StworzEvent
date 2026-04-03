@@ -17,6 +17,14 @@ import { DASHBOARD_ROUTE } from "@/consts/routes";
 import { TypeMail } from "@/types/enums";
 import { hashPassword, verifyPassword } from "@/lib/hashPassword";
 
+const BASE_URL =
+	process.env.BETTER_AUTH_URL ?? "https://stworzevent.vercel.app";
+const AUTH_SECRET = process.env.BETTER_AUTH_SECRET;
+
+if (!AUTH_SECRET) {
+	throw new Error("BETTER_AUTH_SECRET environment variable is not set");
+}
+
 const vercelUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
 	: undefined;
@@ -25,7 +33,7 @@ const options = {
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
-	baseURL: process.env.BETTER_AUTH_URL, // || "http://localhost:3000",
+	baseURL: BASE_URL, // || "http://localhost:3000",
 	socialProviders: {
 		google: {
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -218,16 +226,24 @@ const options = {
 	// 		? [`https://${process.env.VERCEL_BRANCH_URL}`]
 	// 		: []),
 	// ],
+	// trustedOrigins: [
+	// 	process.env.BETTER_AUTH_URL as string,
+	// 	"http://localhost:3000",
+	// 	"https://stworzevent.vercel.app", // ← явно хардкодим
+	// 	...(vercelUrl ? [vercelUrl] : []),
+	// 	...(process.env.VERCEL_BRANCH_URL
+	// 		? [`https://${process.env.VERCEL_BRANCH_URL}`]
+	// 		: []),
+	// ],
 	trustedOrigins: [
-		process.env.BETTER_AUTH_URL as string,
+		BASE_URL,
 		"http://localhost:3000",
-		"https://stworzevent.vercel.app", // ← явно хардкодим
 		...(vercelUrl ? [vercelUrl] : []),
 		...(process.env.VERCEL_BRANCH_URL
 			? [`https://${process.env.VERCEL_BRANCH_URL}`]
 			: []),
 	],
-	secret: process.env.BETTER_AUTH_SECRET as string,
+	secret: AUTH_SECRET,
 } satisfies BetterAuthOptions;
 
 export const auth = betterAuth({
