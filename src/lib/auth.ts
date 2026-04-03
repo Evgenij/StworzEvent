@@ -227,10 +227,11 @@ export const auth = betterAuth({
 		...(options.plugins || []),
 		customSession(async ({ session, user }) => {
 			return {
-				...session,
+				session: {
+					...session,
+				},
 				user: {
 					...user,
-					testMessage: "!!!",
 					role: user.role,
 				},
 			};
