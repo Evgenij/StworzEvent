@@ -2,6 +2,7 @@ import { ApiError } from "@/error/api-error";
 import { ActionResult } from "@/types/action-result";
 import { ErrorCode } from "@/types/error-code";
 import { APIError } from "better-auth/api";
+import { ZodError } from "zod";
 
 export function safeAction<T, Args extends unknown[]>(
 	fn: (...args: Args) => Promise<T>,
@@ -63,6 +64,19 @@ export function safeAction<T, Args extends unknown[]>(
 					success: false,
 					code: mappedCode,
 					errors: { general: [message] },
+				};
+			}
+
+			if (error instanceof ZodError) {
+				return {
+					success: false,
+					code: ErrorCode.VALIDATION_ERROR,
+					errors: Object.fromEntries(
+						error.issues.map((i) => [
+							i.path.join("."),
+							[i.message],
+						]),
+					),
 				};
 			}
 
