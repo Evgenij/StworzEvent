@@ -15,9 +15,13 @@ import prisma from "@/lib/prisma";
 
 export const createEventAction = safeAction(async (input: CreateEventInput) => {
 	const session = await auth.api.getSession({ headers: await headers() });
+	console.log(session);
+
 	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
 
 	const data = createEventSchema((key) => key).parse(input);
+
+	console.log(data);
 
 	// 🔒 Проверяем membership
 	const membership = await prisma.organizationMember.findUnique({
@@ -47,7 +51,9 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 			endsAt: data.endsAt ? new Date(data.endsAt) : null,
 			location: data.location ?? null,
 			street: data.eventIsOffline ? null : (data.street ?? null),
-			streetNumber: data.eventIsOffline ? null : (data.streetNumber ?? null),
+			streetNumber: data.eventIsOffline
+				? null
+				: (data.streetNumber ?? null),
 			lat: data.lat ?? null,
 			lng: data.lng ?? null,
 			showMap: data.onlineUrl ? false : data.showMap,

@@ -201,6 +201,8 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 
 		const result = await createEventAction(data);
 
+		console.log(result);
+
 		if (!result.success) {
 			toast.error(t("errors.default"));
 			return;
