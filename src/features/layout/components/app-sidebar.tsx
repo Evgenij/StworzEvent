@@ -10,7 +10,13 @@ import {
 	Trash2,
 	MoreHorizontal,
 } from "lucide-react";
-import { IconCalendar, IconHome2, IconPlus } from "@tabler/icons-react";
+import {
+	IconBuilding,
+	IconBuildings,
+	IconCalendar,
+	IconHome2,
+	IconPlus,
+} from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 import { UserType } from "@/types/user";
 import { Link } from "@/i18n/routing";
@@ -70,15 +76,15 @@ export default function AppSidebar({
 					<SidebarMenuItem>
 						<SidebarMenuButton size="lg" asChild>
 							<a href="#">
-								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-									<Command className="size-4" />
+								<div className="bg-black text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+									<IconBuildings className="size-4" />
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-medium">
-										Acme Inc
+										Twoja firma
 									</span>
 									<span className="truncate text-xs">
-										Enterprise
+										Plan - Free
 									</span>
 								</div>
 							</a>
