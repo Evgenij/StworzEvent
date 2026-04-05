@@ -9,6 +9,7 @@ import FacebookIcon from "@/assets/icons/facebook.svg";
 import GoogleIcon from "@/assets/icons/google.svg";
 import { useTranslations } from "next-intl";
 import { getBaseUrl } from "@/lib/utils";
+import { IconLoader } from "@tabler/icons-react";
 
 interface Props {
 	provider: "facebook" | "google";
@@ -32,10 +33,8 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 				onRequest() {
 					setIsPending(true);
 				},
-				onResponse() {
-					setIsPending(false);
-				},
 				onError: (ctx) => {
+					setIsPending(false);
 					toast.error(ctx.error.message);
 				},
 			},
@@ -51,7 +50,9 @@ function SignInOAuthBtn({ provider, signUp }: Props) {
 			className="w-full"
 			size={"lg"}
 		>
-			{provider === "facebook" ? (
+			{isPending ? (
+				<IconLoader className="size-5 animate-spin" />
+			) : provider === "facebook" ? (
 				<img src={FacebookIcon.src} height={20} width={20}></img>
 			) : (
 				<img src={GoogleIcon.src} height={18} width={18}></img>
