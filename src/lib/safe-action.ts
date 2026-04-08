@@ -73,7 +73,7 @@ export function safeAction<T, Args extends unknown[]>(
 					code: ErrorCode.VALIDATION_ERROR,
 					errors: Object.fromEntries(
 						error.issues.map((i) => [
-							i.path.join("."),
+							i.path.join(".") || "general",
 							[i.message],
 						]),
 					),
