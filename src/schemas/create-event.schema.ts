@@ -11,9 +11,9 @@ export const createEventSchema = (t: (key: string) => string) =>
 			organizationId: z.string().min(1, t("required")),
 			categoryId: z.string().min(1, t("required")),
 			startsAt: z.string().min(1, t("required")),
-			endsAt: z.string().optional(),
-			location: z.string().optional(),
-			street: z.string().optional(),
+			endsAt: z.string().min(1, t("required")),
+			location: z.string().min(2, t("min2")),
+			street: z.string().min(2, t("min2")),
 			streetNumber: z.string().optional(),
 			lat: z.number().optional().nullable(),
 			lng: z.number().optional().nullable(),
@@ -22,9 +22,23 @@ export const createEventSchema = (t: (key: string) => string) =>
 			onlineUrl: z.url(t("invalidUrl")).optional().or(z.literal("")),
 		})
 		.superRefine((data, ctx) => {
+			const normalizeDate = (s: string) => {
+				if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)) {
+					return new Date(s + ":00.000Z");
+				}
+				return new Date(s);
+			};
+
+			const start = normalizeDate(data.startsAt);
+			const end = normalizeDate(data.endsAt);
+
+			console.log("start", end);
+			console.log("end", end);
+
 			if (
-				data.endsAt &&
-				new Date(data.endsAt) <= new Date(data.startsAt)
+				!isNaN(start.getTime()) &&
+				!isNaN(end.getTime()) &&
+				end <= start
 			) {
 				ctx.addIssue({
 					code: "custom",

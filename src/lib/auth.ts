@@ -252,8 +252,8 @@ export const auth = betterAuth({
 		...(options.plugins || []),
 
 		customSession(async ({ session, user }) => {
-			console.log("customSession user:", JSON.stringify(user));
-			console.log("customSession session:", JSON.stringify(session));
+			//console.log("customSession user:", JSON.stringify(user));
+			//console.log("customSession session:", JSON.stringify(session));
 			return {
 				session: {
 					...session,
