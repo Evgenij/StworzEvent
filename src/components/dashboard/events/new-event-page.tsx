@@ -72,11 +72,16 @@ function NewEventPageInner() {
 					orientation="vertical"
 					className="self-stretch hidden xl:block"
 				/>
-				<aside className="hidden xl:flex w-90  flex-col gap-3 sticky top-18 self-start">
+				<aside className="hidden xl:flex w-2/5 h-full flex-col gap-3 sticky top-18">
 					<Typography variant="h4" className="text-base">
 						Jak bedzie wygladac Twoj wydarzenie?
 					</Typography>
-					<EventPreview />
+					<div className="grid grid-cols-1 2xl:grid-cols-2 2xl:grid-rows-2 gap-3 ">
+						<EventPreview />
+						<div className="event-item rounded-xl bg-secondary/50"></div>
+						<div className="event-item rounded-xl bg-secondary/50"></div>
+						<div className="event-item rounded-xl bg-secondary/50"></div>
+					</div>
 				</aside>
 			</section>
 		</div>

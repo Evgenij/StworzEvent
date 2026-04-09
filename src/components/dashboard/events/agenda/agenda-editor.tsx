@@ -244,8 +244,9 @@ export function AgendaEditor({
 						variant="outline"
 						disabled={deleting}
 						onClick={() => handleAdd()}
+						className="w-full"
 					>
-						<IconPlus className="mr-2 size-4" />
+						<IconPlus className="size-4" />
 						{t("add")}
 					</Button>
 				</>

@@ -112,7 +112,12 @@ export function SectionCard({
 							onClick={handleDelete}
 						>
 							{isDeleting ? (
-								<IconLoader className="size-4 animate-spin" />
+								<div className="flex gap-1 items-center text-muted-foreground">
+									<IconLoader className="size-4 animate-spin" />
+									<span className="text-sm">
+										{t("deleting")}
+									</span>
+								</div>
 							) : (
 								<IconTrash className="size-4" />
 							)}

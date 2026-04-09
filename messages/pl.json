@@ -284,7 +284,8 @@
 				"text": "Tekst",
 				"links": "Linki",
 				"image": "Galeria",
-				"video": "Wideo"
+				"video": "Wideo",
+				"gallery": "Galeria"
 			},
 			"sectionTitle": "Tytuł sekcji",
 			"sectionTitlePlaceholder": "np. O wydarzeniu",
@@ -295,6 +296,7 @@
 			"save": "Zapisz",
 			"saving": "Zapisywanie...",
 			"saved": "Zapisano",
+			"deleting": "Usuwanie...",
 			"addSections": "Dodatkowe sekcje",
 			"addSection": "Dodaj sekcję",
 			"altPlaceholder": "Opis zdjęcia (alt)",
@@ -386,6 +388,7 @@
 			"answerPlaceholder": "Wpisz odpowiedź...",
 			"save": "Zapisz",
 			"saving": "Zapisywanie...",
+			"deleting": "Usuwanie...",
 			"saved": "Zapisano",
 			"errors": {
 				"saveFailed": "Nie udało się zapisać pytania",

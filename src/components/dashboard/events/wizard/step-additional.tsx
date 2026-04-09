@@ -55,6 +55,9 @@ export function StepAdditional({
 	const [sectionsIsActive, setSectionsIsActive] = useState(true);
 	const [showSectionsAlert, setShowSectionsAlert] = useState(false);
 
+	const [faqIsActive, setFaqIsActive] = useState(true);
+	const [showFaqAlert, setShowFaqAlert] = useState(false);
+
 	const handleChangeAgendaActive = (val: boolean) => {
 		// Отключают И есть элементы → показываем алерт
 		if (!val && data.agenda.length > 0) {
@@ -68,6 +71,12 @@ export function StepAdditional({
 		console.log(val);
 
 		setSectionsIsActive(val);
+	};
+
+	const handleChangeFaqActive = (val: boolean) => {
+		console.log(val);
+
+		setFaqIsActive(val);
 	};
 
 	const handleConfirmDisableAgenda = async () => {
@@ -113,18 +122,15 @@ export function StepAdditional({
 				/>
 			</EditSectionWrapper>
 
-			{/* Секции */}
-			{/* <section className="flex flex-col gap-3">
-				<h3 className="text-base font-semibold">
-					{t("sections.addSection")}
-				</h3>
-				<SectionsEditor
-					eventId={eventId}
-					initialSections={data.sections}
-				/>
-			</section>
-
-			<Separator /> */}
+			<EditSectionWrapper
+				countItems={data.faq.length}
+				active={faqIsActive}
+				title={t("faq.title")}
+				onCheckedChange={handleChangeFaqActive}
+				className="border-none"
+			>
+				<FaqEditor eventId={eventId} initialItems={data.faq} />
+			</EditSectionWrapper>
 
 			{/* FAQ */}
 			{/* <section className="flex flex-col gap-3">

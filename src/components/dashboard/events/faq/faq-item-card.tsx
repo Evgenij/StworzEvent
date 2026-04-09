@@ -1,4 +1,3 @@
-// src/components/dashboard/events/faq/faq-item-card.tsx
 "use client";
 
 import { useState } from "react";
@@ -11,8 +10,7 @@ import {
 	CollapsibleTrigger,
 } from "@/components/shadcn/ui/collapsible";
 import { Button } from "@/components/shadcn/ui/button";
-import { Label } from "@/components/shadcn/ui/label";
-import { Field, FieldError } from "@/components/shadcn/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupInput,
@@ -23,6 +21,7 @@ import {
 	IconChevronUp,
 	IconTrash,
 	IconLoader,
+	IconDeviceFloppy,
 } from "@tabler/icons-react";
 import { faqItemSchema, type FaqItemInput } from "@/schemas/faq-item.schema";
 import { upsertFaqItemAction } from "@/actions/events/faq/upsert-faq-item.action";
@@ -39,7 +38,7 @@ type Props = {
 
 export function FaqItemCard({ eventId, item, onDelete, onSave }: Props) {
 	const t = useTranslations("EventWizard.faq");
-	const tErrors = useTranslations("CreateEventErrors");
+	const tErrors = useTranslations("EventWizard.sections.errors");
 	const [isOpen, setIsOpen] = useState(!item.question);
 	const [isDeleting, setIsDeleting] = useState(false);
 
@@ -50,7 +49,7 @@ export function FaqItemCard({ eventId, item, onDelete, onSave }: Props) {
 			answer: item.answer,
 		},
 		mode: "onBlur",
-		reValidateMode: "onBlur",
+		reValidateMode: "onChange",
 	});
 
 	const {
@@ -94,55 +93,54 @@ export function FaqItemCard({ eventId, item, onDelete, onSave }: Props) {
 	};
 
 	return (
-		<div className="rounded-lg border bg-card">
+		<div className="rounded-lg border bg-card overflow-hidden">
 			<Collapsible open={isOpen} onOpenChange={setIsOpen}>
-				{/* Header */}
-				<div className="flex items-center gap-2 p-3">
-					<p className="flex-1 truncate text-sm font-medium">
-						{item.question || t("newItem")}
-					</p>
+				<header className="flex justify-between">
+					<div className="text-wrapper w-full flex items-center gap-1 p-3 pl-4 py-3 pr-1">
+						<span className="flex-1 truncate text-sm font-medium">
+							{item.question || t("newItem")}
+						</span>
+					</div>
 
-					<div className="flex items-center gap-1">
-						<Button
-							type="button"
-							variant="ghost"
-							size="sm"
-							disabled={isDeleting}
+					<div className="buttons flex">
+						<div
+							className="flex cursor-pointer items-center gap-0 px-4 h-full hover:bg-secondary/50"
 							onClick={handleDelete}
-							className="text-destructive hover:text-destructive"
 						>
 							{isDeleting ? (
-								<IconLoader className="size-4 animate-spin" />
+								<div className="flex gap-1 items-center text-muted-foreground">
+									<IconLoader className="size-4 animate-spin" />
+									<span className="text-sm ">
+										{t("deleting")}
+									</span>
+								</div>
 							) : (
 								<IconTrash className="size-4" />
 							)}
-						</Button>
-
+						</div>
 						<CollapsibleTrigger asChild>
-							<Button type="button" variant="ghost" size="sm">
+							<div className="flex cursor-pointer items-center gap-0 border-l border-border px-4 hover:bg-secondary/50">
 								{isOpen ? (
 									<IconChevronUp className="size-4" />
 								) : (
 									<IconChevronDown className="size-4" />
 								)}
-							</Button>
+							</div>
 						</CollapsibleTrigger>
 					</div>
-				</div>
+				</header>
 
-				{/* Body */}
 				<CollapsibleContent>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
 						className="flex flex-col gap-3 border-t p-3"
 					>
-						{/* Вопрос */}
 						<Controller
 							name="question"
 							control={control}
 							render={({ field, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<Label>{t("question")}</Label>
+									<FieldLabel>{t("question")}</FieldLabel>
 									<InputGroup>
 										<InputGroupInput
 											{...field}
@@ -161,13 +159,12 @@ export function FaqItemCard({ eventId, item, onDelete, onSave }: Props) {
 							)}
 						/>
 
-						{/* Ответ */}
 						<Controller
 							name="answer"
 							control={control}
 							render={({ field, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<Label>{t("answer")}</Label>
+									<FieldLabel>{t("answer")}</FieldLabel>
 									<Textarea
 										{...field}
 										rows={3}
@@ -185,17 +182,21 @@ export function FaqItemCard({ eventId, item, onDelete, onSave }: Props) {
 
 						<Button
 							type="submit"
+							variant="success"
 							size="sm"
 							disabled={isSubmitting}
 							className="self-end"
 						>
 							{isSubmitting ? (
 								<>
-									<IconLoader className="mr-2 size-4 animate-spin" />
+									<IconLoader className="size-4 animate-spin" />
 									{t("saving")}
 								</>
 							) : (
-								t("save")
+								<>
+									<IconDeviceFloppy className="size-4" />
+									{t("save")}
+								</>
 							)}
 						</Button>
 					</form>

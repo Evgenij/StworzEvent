@@ -9,6 +9,7 @@ import { FaqItemCard } from "./faq-item-card";
 import { upsertFaqItemAction } from "@/actions/events/faq/upsert-faq-item.action";
 import { toast } from "sonner";
 import type { FaqItem } from "@/actions/events/faq/get-event-faq.action";
+import EmptySection from "../sections/empty-section";
 
 type Props = {
 	eventId: string;
@@ -58,35 +59,33 @@ export function FaqEditor({ eventId, initialItems }: Props) {
 
 	return (
 		<div className="flex flex-col gap-3">
-			{items.length === 0 && (
-				<div className="rounded-lg border border-dashed p-6 text-center">
-					<p className="text-sm text-muted-foreground">
-						{t("empty")}
-					</p>
+			{items.length === 0 ? (
+				<EmptySection>{t("empty")}</EmptySection>
+			) : (
+				<div className="flex flex-col gap-2">
+					{items.map((item) => (
+						<FaqItemCard
+							key={item.id}
+							eventId={eventId}
+							item={item}
+							onDelete={handleDelete}
+							onSave={handleSave}
+						/>
+					))}
 				</div>
 			)}
-
-			{items.map((item) => (
-				<FaqItemCard
-					key={item.id}
-					eventId={eventId}
-					item={item}
-					onDelete={handleDelete}
-					onSave={handleSave}
-				/>
-			))}
 
 			<Button
 				type="button"
 				variant="outline"
 				disabled={isCreating}
 				onClick={handleAdd}
-				className="w-full border-dashed"
+				className="w-full"
 			>
 				{isCreating ? (
-					<IconLoader className="mr-2 size-4 animate-spin" />
+					<IconLoader className=" size-4 animate-spin" />
 				) : (
-					<IconPlus className="mr-2 size-4" />
+					<IconPlus className=" size-4" />
 				)}
 				{t("add")}
 			</Button>
