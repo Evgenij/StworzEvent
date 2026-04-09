@@ -1,4 +1,4 @@
-import { DateFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 import EventMetaItem from "./event-meta-item";
 import { EventDateRange } from "./event-date-range";
 

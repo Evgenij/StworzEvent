@@ -1,16 +1,13 @@
-// src/components/dashboard/events/sections/section-links.tsx
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError } from "@/components/shadcn/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
-import { Label } from "@/components/shadcn/ui/label";
 import {
 	Combobox,
 	ComboboxContent,
@@ -19,16 +16,30 @@ import {
 	ComboboxItem,
 	ComboboxList,
 } from "@/components/shadcn/ui/combobox";
-import { IconLoader, IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+	IconDeviceFloppy,
+	IconLoader,
+	IconPlus,
+	IconTrash,
+} from "@tabler/icons-react";
 import type { ComponentType } from "react";
 import { updateSectionAction } from "@/actions/events/sections/update-section.action";
 import { SectionType } from "@prisma/client";
 import { toast } from "sonner";
 import type { SectionData } from "./section-card";
 import { LINK_SERVICES } from "./link-services";
+import EmptySection from "./empty-section";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+	type SectionLinksInput,
+	sectionLinksSchema,
+} from "@/schemas/section.schema";
+import { useState } from "react";
 
 type Props = {
 	section: SectionData;
+	onTitleChange?: (title: string) => void;
 };
 
 type ServiceOption = {
@@ -37,9 +48,7 @@ type ServiceOption = {
 	Icon: ComponentType<{ className?: string }>;
 };
 
-type LinkItem = { url: string; service: string };
-
-// ─── ServiceCombobox ─────────────────────────────────────────────────────────
+// ─── ServiceCombobox ──────────────────────────────────────────────────────────
 
 type ServiceComboboxProps = {
 	value: string;
@@ -65,15 +74,19 @@ function ServiceCombobox({ value, onChange }: ServiceComboboxProps) {
 
 	return (
 		<Combobox
+			// value={selected}
+			// onValueChange={(item) => onChange(item?.id ?? "none")}
+			// itemToStringLabel={(item) => item?.label ?? ""}
+			// isItemEqualToValue={(a, b) => a?.id === b?.id}
+			// onInputValueChange={setInputValue}
+			// onOpenChange={(open) => {
+			// 	if (open) setInputValue("");
+			// }}
 			value={selected}
 			onValueChange={(item) => onChange(item?.id ?? "none")}
-			items={allOptions}
+			items={allOptions} // ← вернуть
 			itemToStringLabel={(item) => item?.label ?? ""}
 			isItemEqualToValue={(a, b) => a?.id === b?.id}
-			onInputValueChange={setInputValue}
-			onOpenChange={(open) => {
-				if (open) setInputValue("");
-			}}
 		>
 			<ComboboxInput
 				className="w-44 shrink-0"
@@ -100,166 +113,188 @@ function ServiceCombobox({ value, onChange }: ServiceComboboxProps) {
 
 // ─── SectionLinks ─────────────────────────────────────────────────────────────
 
-export function SectionLinks({ section }: Props) {
+export function SectionLinks({ section, onTitleChange }: Props) {
 	const t = useTranslations("EventWizard.sections");
-	const [sectionTitle, setSectionTitle] = useState(section.title ?? "");
-	const [links, setLinks] = useState<LinkItem[]>(
-		(section.content as any)?.links ?? [],
-	);
-	const [errors, setErrors] = useState<(string | null)[]>([]);
-	const [isSaving, setIsSaving] = useState(false);
+	const tErrors = useTranslations("EventWizard.sections.errors");
 
-	const addLink = () => {
-		setLinks((prev) => [...prev, { url: "", service: "none" }]);
-		setErrors((prev) => [...prev, null]);
-	};
+	const form = useForm<SectionLinksInput>({
+		resolver: zodResolver(sectionLinksSchema(tErrors)),
+		defaultValues: {
+			type: SectionType.LINKS,
+			title: section.title ?? "",
+			content: {
+				links: (section.content as any)?.links ?? [],
+			},
+		},
+		mode: "onBlur",
+		reValidateMode: "onChange",
+	});
 
-	const removeLink = (index: number) => {
-		setLinks((prev) => prev.filter((_, i) => i !== index));
-		setErrors((prev) => prev.filter((_, i) => i !== index));
-	};
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting, errors },
+	} = form;
 
-	const updateLink = (index: number, patch: Partial<LinkItem>) => {
-		setLinks((prev) =>
-			prev.map((link, i) => (i === index ? { ...link, ...patch } : link)),
-		);
-		if (patch.url !== undefined) {
-			setErrors((prev) => prev.map((e, i) => (i === index ? null : e)));
-		}
-	};
+	const { fields, append, remove } = useFieldArray({
+		control,
+		name: "content.links",
+	});
 
-	const handleSave = async () => {
-		const newErrors = links.map((link) => {
-			if (!link.url) return t("links.urlRequired");
-			try {
-				new URL(link.url);
-				return null;
-			} catch {
-				return t("links.invalidUrl");
-			}
-		});
-
-		setErrors(newErrors);
-		if (newErrors.some(Boolean)) return;
-
-		setIsSaving(true);
-
+	const onSubmit = async (values: SectionLinksInput) => {
 		const result = await updateSectionAction({
 			sectionId: section.id,
 			data: {
 				type: SectionType.LINKS,
-				title: sectionTitle,
-				content: { links },
+				title: values.title,
+				content: values.content,
 			},
 		});
-
-		setIsSaving(false);
 
 		if (!result.success) {
 			toast.error(t("errors.saveFailed"));
 			return;
 		}
 
+		onTitleChange?.(values.title);
 		toast.success(t("saved"));
 	};
 
 	return (
-		<div className="flex flex-col gap-3">
-			<Field>
-				<Label>{t("sectionTitle")}</Label>
-				<InputGroup>
-					<InputGroupInput
-						value={sectionTitle}
-						onChange={(e) => setSectionTitle(e.target.value)}
-						placeholder={t("sectionTitlePlaceholder")}
-					/>
-				</InputGroup>
-			</Field>
-
-			<div className="flex flex-col gap-2">
-				<Label>{t("links.linksLabel")}</Label>
-
-				{links.length === 0 && (
-					<p className="text-sm text-muted-foreground">
-						{t("links.empty")}
-					</p>
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+			<Controller
+				name="title"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<FieldLabel>{t("sectionTitle")}</FieldLabel>
+						<InputGroup>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("sectionTitlePlaceholder")}
+							/>
+						</InputGroup>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
 				)}
+			/>
 
-				{links.map((link, index) => (
-					<div key={index} className="flex items-start gap-2">
-						{/* Service combobox */}
-						<ServiceCombobox
-							value={link.service}
-							onChange={(serviceId) =>
-								updateLink(index, { service: serviceId })
-							}
-						/>
+			<div className="flex flex-col gap-1">
+				<FieldLabel>{t("links.linksLabel")}</FieldLabel>
 
-						{/* URL input */}
-						<Field
-							data-invalid={!!errors[index]}
-							className="flex-1"
-						>
-							<InputGroup>
-								<InputGroupInput
-									value={link.url}
-									onChange={(e) =>
-										updateLink(index, {
-											url: e.target.value,
-										})
-									}
-									placeholder="https://..."
-									aria-invalid={!!errors[index]}
-								/>
-							</InputGroup>
-							{errors[index] && (
-								<FieldError
-									errors={[{ message: errors[index]! }]}
-								/>
-							)}
-						</Field>
+				{fields.length === 0 && (
+					<EmptySection>{t("links.empty")}</EmptySection>
+				)}
+				<div className="flex flex-col gap-2">
+					{fields.length > 0 && (
+						<div className="links-list flex flex-col gap-2">
+							{fields.map((field, index) => (
+								<div
+									key={field.id}
+									className="flex items-start gap-2"
+								>
+									<Controller
+										name={`content.links.${index}.service`}
+										control={control}
+										render={({ field: serviceField }) => (
+											<ServiceCombobox
+												value={serviceField.value}
+												onChange={serviceField.onChange}
+											/>
+										)}
+									/>
 
-						{/* Remove */}
+									<Controller
+										name={`content.links.${index}.url`}
+										control={control}
+										render={({
+											field: urlField,
+											fieldState,
+										}) => (
+											<Field
+												data-invalid={
+													fieldState.invalid
+												}
+												className="flex-1"
+											>
+												<InputGroup>
+													<InputGroupInput
+														{...urlField}
+														aria-invalid={
+															fieldState.invalid
+														}
+														placeholder="https://..."
+													/>
+												</InputGroup>
+												{fieldState.invalid && (
+													<FieldError
+														errors={[
+															fieldState.error,
+														]}
+													/>
+												)}
+											</Field>
+										)}
+									/>
+
+									<Button
+										type="button"
+										variant="destructive"
+										size="icon"
+										onClick={() => remove(index)}
+										className="shrink-0"
+									>
+										<IconTrash className="size-4" />
+									</Button>
+								</div>
+							))}
+						</div>
+					)}
+					<div className="new-link-wrapper flex px-2">
 						<Button
 							type="button"
 							variant="ghost"
-							size="icon"
-							onClick={() => removeLink(index)}
-							className="shrink-0 text-destructive hover:text-destructive"
+							size="sm"
+							onClick={() => {
+								append({ url: "", service: "none" });
+							}}
+							className="self-start flex-1"
 						>
-							<IconTrash className="size-4" />
+							<IconPlus className="size-4" />
+							{t("links.addLink")}
 						</Button>
 					</div>
-				))}
+				</div>
 
-				<Button
-					type="button"
-					variant="outline"
-					size="sm"
-					onClick={addLink}
-					className="self-start"
-				>
-					<IconPlus className="mr-1.5 size-4" />
-					{t("links.addLink")}
-				</Button>
+				{errors.content?.links?.root?.message && ( // ← добавить
+					<p className="text-sm text-destructive">
+						{errors.content.links.root.message}
+					</p>
+				)}
 			</div>
 
 			<Button
-				type="button"
+				type="submit"
+				variant="success"
 				size="sm"
-				disabled={isSaving}
-				onClick={handleSave}
+				disabled={isSubmitting}
 				className="self-end"
 			>
-				{isSaving ? (
+				{isSubmitting ? (
 					<>
 						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (
-					t("save")
+					<>
+						<IconDeviceFloppy className="size-4" />
+						{t("save")}
+					</>
 				)}
 			</Button>
-		</div>
+		</form>
 	);
 }

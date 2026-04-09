@@ -1,6 +1,6 @@
 // src/app/[locale]/profile/events/[id]/edit/additional/page.tsx
-import { getEventAdditional } from "@/actions/events/get-event-additional.action";
-import { getEventForEdit } from "@/actions/events/get-event-for-edit.action";
+import { getEventAdditionalAction } from "@/actions/events/get-event-additional.action";
+import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
 import { StepAdditional } from "@/components/dashboard/events/wizard/step-additional";
 
 import { notFound } from "next/navigation";
@@ -14,8 +14,8 @@ export default async function AdditionalPage({ params }: Props) {
 
 	try {
 		const [data, event] = await Promise.all([
-			getEventAdditional(id),
-			getEventForEdit(id),
+			getEventAdditionalAction(id),
+			getEventForEditAction(id),
 		]);
 		return (
 			<StepAdditional

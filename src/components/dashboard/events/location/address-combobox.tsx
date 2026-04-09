@@ -11,6 +11,7 @@ import {
 import { useAddressSearch } from "@/hooks/use-address-search";
 import type { NominatimPlace } from "@/types/nominatim";
 import { cn } from "@/lib/utils";
+import { IconLoader } from "@tabler/icons-react";
 
 interface Props {
 	city: string;
@@ -65,9 +66,14 @@ export function AddressCombobox({
 				<ComboboxList>
 					{results.length === 0 ? (
 						<div className="py-2 text-center text-sm text-muted-foreground">
-							{loading
-								? "Szukam..."
-								: (placeholder ?? "Wpisz nazwę ulicy")}
+							{loading ? (
+								<span className="flex items-center justify-center">
+									<IconLoader className="size-5 gap-2 animate-spin" />{" "}
+									Szukam...
+								</span>
+							) : (
+								(placeholder ?? "Wpisz nazwę ulicy")
+							)}
 						</div>
 					) : (
 						results.map((place) => {

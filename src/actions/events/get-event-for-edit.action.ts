@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 
-export async function getEventForEdit(eventId: string) {
+export async function getEventForEditAction(eventId: string) {
 	const session = await auth.api.getSession({ headers: await headers() });
 	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
 
@@ -53,4 +53,4 @@ export async function getEventForEdit(eventId: string) {
 	};
 }
 
-export type EventForEdit = Awaited<ReturnType<typeof getEventForEdit>>;
+export type EventForEdit = Awaited<ReturnType<typeof getEventForEditAction>>;

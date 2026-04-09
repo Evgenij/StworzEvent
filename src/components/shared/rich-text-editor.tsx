@@ -42,6 +42,7 @@ type Props = {
 	onChange?: (value: any) => void;
 	disabled?: boolean;
 	className?: string;
+	"data-invalid"?: boolean;
 };
 
 export const RichTextEditor = ({
@@ -49,6 +50,7 @@ export const RichTextEditor = ({
 	onChange,
 	disabled,
 	className,
+	"data-invalid": invalid,
 }: Props) => {
 	const editor = useEditor({
 		extensions: [
@@ -92,8 +94,10 @@ export const RichTextEditor = ({
 
 	return (
 		<div
+			data-invalid={invalid || undefined}
 			className={cn(
 				"rounded-md border focus-within:ring-1 focus-within:ring-ring",
+				"data-[invalid]:border-destructive data-[invalid]:focus-within:ring-destructive",
 				className,
 			)}
 		>

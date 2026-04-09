@@ -8,7 +8,7 @@ import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { verifyEventOwnership } from "@/lib/verify-ownership";
 
-export async function getEventSections(eventId: string) {
+export async function getEventSectionsAction(eventId: string) {
 	const session = await auth.api.getSession({ headers: await headers() });
 	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
 
@@ -28,4 +28,6 @@ export async function getEventSections(eventId: string) {
 	});
 }
 
-export type EventSection = Awaited<ReturnType<typeof getEventSections>>[number];
+export type EventSection = Awaited<
+	ReturnType<typeof getEventSectionsAction>
+>[number];

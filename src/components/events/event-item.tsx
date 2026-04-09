@@ -4,7 +4,7 @@ import { Link } from "@/i18n/routing";
 import { Event } from "@prisma/client";
 import { EventImagePlaceholder } from "../shared/event-image-placeholder";
 import { Typography } from "../shared";
-import { DateFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 import { IconMapPin } from "@tabler/icons-react";
 import { EVENT_PAGE_ROUTE } from "@/consts/routes";
 import { cn, formatPlnFromGrosze } from "@/lib/utils";
@@ -72,9 +72,12 @@ const EventItem = ({
 					<p className="text-sm w-full text-muted-foreground">
 						{event.startsAt ? (
 							<span className="capitalize">
-								{DateFormatter.weekday(event.startsAt, "pl")}
+								{DateTimeFormatter.weekday(
+									event.startsAt,
+									"pl",
+								)}
 								{", "}
-								{DateFormatter.date(event.startsAt, "pl")}
+								{DateTimeFormatter.date(event.startsAt, "pl")}
 							</span>
 						) : (
 							"Data nie została podana"
@@ -87,7 +90,9 @@ const EventItem = ({
 					{event.location ? (
 						<p className="text-sm w-full">
 							{event.location}
-							{event.street ? `, ${[event.street, event.streetNumber].filter(Boolean).join(" ")}` : ""}
+							{event.street
+								? `, ${[event.street, event.streetNumber].filter(Boolean).join(" ")}`
+								: ""}
 						</p>
 					) : (
 						<p className="text-sm w-full text-muted-foreground">

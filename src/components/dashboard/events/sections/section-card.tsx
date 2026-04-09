@@ -50,9 +50,15 @@ type Props = {
 	section: SectionData;
 	provided: DraggableProvided;
 	onDelete: (id: string) => void;
+	onTitleChange?: (id: string, title: string) => void;
 };
 
-export function SectionCard({ section, provided, onDelete }: Props) {
+export function SectionCard({
+	section,
+	provided,
+	onDelete,
+	onTitleChange,
+}: Props) {
 	const t = useTranslations("EventWizard.sections");
 	const [isOpen, setIsOpen] = useState(true);
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -76,71 +82,87 @@ export function SectionCard({ section, provided, onDelete }: Props) {
 		<div
 			ref={provided.innerRef}
 			{...provided.draggableProps}
-			className="rounded-lg border bg-card"
+			className="rounded-lg border bg-card overflow-hidden"
 		>
 			<Collapsible open={isOpen} onOpenChange={setIsOpen}>
 				{/* Header */}
-				<div className="flex items-center gap-2 p-3">
-					{/* Drag handle */}
-					<div
-						{...provided.dragHandleProps}
-						className="cursor-grab text-muted-foreground active:cursor-grabbing"
-					>
-						<IconGripVertical className="size-4" />
+				<header className="flex justify-between">
+					<div className="text-wrapper w-full flex items-center justify-between gap-1 p-3 pl-1 py-2 pr-1">
+						<div
+							{...provided.dragHandleProps}
+							className="drag-handle cursor-grab size-7 flex items-center justify-center text-muted-foreground active:cursor-grabbing "
+						>
+							<IconGripVertical className="size-4" />
+						</div>
+
+						{/* Иконка типа */}
+						<Icon className="size-4 shrink-0 text-foreground" />
+
+						{/* Название секции */}
+						<span className="flex-1 truncate text-sm font-medium">
+							{section.title ||
+								t(`types.${section.type.toLowerCase()}`)}
+						</span>
 					</div>
 
-					{/* Иконка типа */}
-					<Icon className="size-4 shrink-0 text-muted-foreground" />
-
-					{/* Название секции */}
-					<span className="flex-1 truncate text-sm font-medium">
-						{section.title ||
-							t(`types.${section.type.toLowerCase()}`)}
-					</span>
-
 					{/* Кнопки */}
-					<div className="flex items-center gap-1">
-						<Button
-							type="button"
-							variant="ghost"
-							size="sm"
-							disabled={isDeleting}
+					<div className="buttons flex">
+						<div
+							className="flex cursor-pointer items-center gap-0 px-4 h-full hover:bg-secondary/50 "
 							onClick={handleDelete}
-							className="text-destructive hover:text-destructive"
 						>
 							{isDeleting ? (
 								<IconLoader className="size-4 animate-spin" />
 							) : (
 								<IconTrash className="size-4" />
 							)}
-						</Button>
-
+						</div>
 						<CollapsibleTrigger asChild>
-							<Button type="button" variant="ghost" size="sm">
+							<div className="flex cursor-pointer items-center gap-0 border-l border-border px-4 hover:bg-secondary/50 ">
 								{isOpen ? (
 									<IconChevronUp className="size-4" />
 								) : (
 									<IconChevronDown className="size-4" />
 								)}
-							</Button>
+							</div>
 						</CollapsibleTrigger>
 					</div>
-				</div>
+				</header>
 
 				{/* Body */}
 				<CollapsibleContent>
 					<div className={cn("border-t p-3")}>
 						{section.type === SectionType.TEXT && (
-							<SectionText section={section} />
+							<SectionText
+								section={section}
+								onTitleChange={(title) =>
+									onTitleChange?.(section.id, title)
+								}
+							/>
 						)}
 						{section.type === SectionType.LINKS && (
-							<SectionLinks section={section} />
+							<SectionLinks
+								section={section}
+								onTitleChange={(title) =>
+									onTitleChange?.(section.id, title)
+								}
+							/>
 						)}
 						{section.type === SectionType.IMAGE && (
-							<SectionGallery section={section} />
+							<SectionGallery
+								section={section}
+								onTitleChange={(title) =>
+									onTitleChange?.(section.id, title)
+								}
+							/>
 						)}
 						{section.type === SectionType.VIDEO && (
-							<SectionVideo section={section} />
+							<SectionVideo
+								section={section}
+								onTitleChange={(title) =>
+									onTitleChange?.(section.id, title)
+								}
+							/>
 						)}
 					</div>
 				</CollapsibleContent>

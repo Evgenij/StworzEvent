@@ -4,7 +4,7 @@ import { EditEventShell } from "@/components/dashboard/events/wizard/edit-event-
 import { SIGNIN_ROUTE } from "@/consts/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
-import { getEventForEdit } from "@/actions/events/get-event-for-edit.action";
+import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
 import { headers } from "next/headers";
 import { Separator } from "@/components/shadcn/ui/separator";
 
@@ -23,7 +23,7 @@ export default async function EditEventLayout({ children, params }: Props) {
 		return null;
 	}
 
-	const event = await getEventForEdit(id).catch(() => null);
+	const event = await getEventForEditAction(id).catch(() => null);
 
 	const initialPreview = event
 		? {

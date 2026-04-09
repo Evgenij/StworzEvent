@@ -32,8 +32,8 @@ const ProfileLayout = async ({
 		return null;
 	});
 
-	console.log("sessionRaw:", JSON.stringify(sessionRaw));
-	console.log("session.user:", JSON.stringify(sessionRaw?.user));
+	//console.log("sessionRaw:", JSON.stringify(sessionRaw));
+	//console.log("session.user:", JSON.stringify(sessionRaw?.user));
 
 	if (!sessionRaw?.user) {
 		redirect({ href: SIGNIN_ROUTE, locale });

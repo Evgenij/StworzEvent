@@ -1,16 +1,18 @@
-// src/components/dashboard/events/sections/section-gallery.tsx
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/shadcn/ui/button";
-import { Label } from "@/components/shadcn/ui/label";
-import { Field } from "@/components/shadcn/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
-import { IconLoader, IconX, IconPhoto } from "@tabler/icons-react";
+import {
+	IconDeviceFloppy,
+	IconLoader,
+	IconX,
+	IconPhoto,
+} from "@tabler/icons-react";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useDropzone } from "@uploadthing/react";
 import { generateClientDropzoneAccept } from "uploadthing/client";
@@ -21,40 +23,62 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useCallback } from "react";
 import type { SectionData } from "./section-card";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+	type SectionImageInput,
+	sectionImageSchema,
+} from "@/schemas/section.schema";
 
 type Props = {
 	section: SectionData;
+	onTitleChange?: (title: string) => void;
 };
 
-type ImageItem = {
-	url: string;
-	alt: string;
-};
-
-export function SectionGallery({ section }: Props) {
+export function SectionGallery({ section, onTitleChange }: Props) {
 	const t = useTranslations("EventWizard.sections");
-	const [title, setTitle] = useState(section.title ?? "");
-	const [images, setImages] = useState<ImageItem[]>(
-		(section.content as any)?.images ?? [],
-	);
-	const [isUploading, setIsUploading] = useState(false);
-	const [isSaving, setIsSaving] = useState(false);
+	const tErrors = useTranslations("EventWizard.sections.errors");
 
-	const { startUpload } = useUploadThing("eventCover", {
-		onClientUploadComplete: (res) => {
-			const newImages: ImageItem[] = res.map((r, i) => ({
-				url: r.url,
-				alt: `Zdjęcie ${images.length + i + 1}`,
-			}));
-			setImages((prev) => [...prev, ...newImages]);
-			setIsUploading(false);
+	const form = useForm<SectionImageInput>({
+		resolver: zodResolver(sectionImageSchema(tErrors)),
+		defaultValues: {
+			type: SectionType.IMAGE,
+			title: section.title ?? "",
+			content: {
+				images: (section.content as any)?.images ?? [],
+			},
 		},
-		onUploadError: () => setIsUploading(false),
+		mode: "onBlur",
+		reValidateMode: "onChange",
+	});
+
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting, errors },
+	} = form;
+
+	const { fields, append, remove } = useFieldArray({
+		control,
+		name: "content.images",
+	});
+
+	const { startUpload, isUploading } = useUploadThing("eventGalleryImage", {
+		onClientUploadComplete: (res) => {
+			res.forEach((r, i) => {
+				append({
+					url: r.ufsUrl,
+					alt: `Zdjęcie ${fields.length + i + 1}`,
+				});
+			});
+		},
+		onUploadError: () => {
+			toast.error(t("errors.uploadFailed"));
+		},
 	});
 
 	const onDrop = useCallback(
 		(files: File[]) => {
-			setIsUploading(true);
 			startUpload(files);
 		},
 		[startUpload],
@@ -66,100 +90,113 @@ export function SectionGallery({ section }: Props) {
 		disabled: isUploading,
 	});
 
-	const removeImage = (url: string) => {
-		setImages((prev) => prev.filter((img) => img.url !== url));
-	};
-
-	const updateAlt = (url: string, alt: string) => {
-		setImages((prev) =>
-			prev.map((img) => (img.url === url ? { ...img, alt } : img)),
-		);
-	};
-
-	const handleSave = async () => {
-		setIsSaving(true);
+	const onSubmit = async (values: SectionImageInput) => {
 		const result = await updateSectionAction({
 			sectionId: section.id,
 			data: {
 				type: SectionType.IMAGE,
-				title,
-				content: { images },
+				title: values.title,
+				content: values.content,
 			},
 		});
-		setIsSaving(false);
 
 		if (!result.success) {
 			toast.error(t("errors.saveFailed"));
 			return;
 		}
+
+		onTitleChange?.(values.title);
 		toast.success(t("saved"));
 	};
 
 	return (
-		<div className="flex flex-col gap-3">
-			<Field>
-				<Label>{t("sectionTitle")}</Label>
-				<InputGroup>
-					<InputGroupInput
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-						placeholder={t("sectionTitlePlaceholder")}
-					/>
-				</InputGroup>
-			</Field>
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+			<Controller
+				name="title"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<FieldLabel>{t("sectionTitle")}</FieldLabel>
+						<InputGroup>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("sectionTitlePlaceholder")}
+							/>
+						</InputGroup>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
 
 			{/* Превью с полем alt */}
-			{images.length > 0 && (
+			{fields.length > 0 && (
 				<div className="grid grid-cols-3 gap-2">
-					{images.map((img) => (
-						<div key={img.url} className="flex flex-col gap-1">
-							<div className="relative aspect-video overflow-hidden rounded-md border">
+					{fields.map((field, index) => (
+						<div key={field.id} className="flex flex-col gap-1">
+							<div className="relative aspect-video overflow-hidden rounded-lg border">
 								<Image
-									src={img.url}
-									alt={img.alt}
+									src={field.url}
+									alt={field.alt ?? ""}
 									fill
 									className="object-cover"
 								/>
 								<button
 									type="button"
-									onClick={() => removeImage(img.url)}
-									className="absolute right-1 top-1 rounded-full bg-black/60 p-0.5 text-white hover:bg-black/80"
+									onClick={() => remove(index)}
+									className="absolute cursor-pointer right-1 top-1 rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80"
 								>
 									<IconX className="size-3" />
 								</button>
 							</div>
-							{/* Alt текст */}
-							<input
-								type="text"
-								value={img.alt}
-								onChange={(e) =>
-									updateAlt(img.url, e.target.value)
-								}
-								placeholder={t("altPlaceholder")}
-								className="w-full rounded border px-2 py-1 text-xs"
+							<Controller
+								name={`content.images.${index}.alt`}
+								control={control}
+								render={({ field: altField }) => (
+									<input
+										{...altField}
+										type="text"
+										placeholder={t("altPlaceholder")}
+										className="w-full rounded-md border px-2 py-1 text-xs"
+									/>
+								)}
 							/>
 						</div>
 					))}
 				</div>
 			)}
 
+			{/* Ошибка минимум 1 фото */}
+			{errors.content?.images?.root?.message && (
+				<p className="text-sm text-destructive">
+					{errors.content.images.root.message}
+				</p>
+			)}
+
 			{/* Dropzone */}
 			<div
 				{...getRootProps()}
 				className={cn(
-					"flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed py-6 transition-colors",
-					isDragActive
+					"flex cursor-pointer flex-col gap-1 items-center justify-center rounded-xl border-2 border-dashed py-8 transition-colors group",
+					isDragActive && !isUploading
 						? "border-primary bg-primary/5"
-						: "border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/50",
+						: "border-muted-foreground/25 hover:border-primary/80 hover:bg-primary/5",
 				)}
 			>
 				<input {...getInputProps()} />
 				{isUploading ? (
-					<IconLoader className="size-6 animate-spin text-muted-foreground" />
+					<>
+						<IconLoader className="size-5 animate-spin text-muted-foreground" />
+						<p className="text-sm text-muted-foreground">
+							Ladowanie...
+						</p>
+					</>
 				) : (
 					<>
-						<IconPhoto className="mb-1 size-6 text-muted-foreground" />
-						<p className="text-xs text-muted-foreground">
+						<IconPhoto className="mb-1 size-6 text-muted-foreground group-hover:text-primary" />
+						<p className="text-sm text-muted-foreground group-hover:text-primary">
 							{isDragActive ? t("dropHere") : t("uploadHint")}
 						</p>
 					</>
@@ -167,21 +204,24 @@ export function SectionGallery({ section }: Props) {
 			</div>
 
 			<Button
-				type="button"
+				type="submit"
+				variant="success"
 				size="sm"
-				disabled={isSaving || images.length === 0}
-				onClick={handleSave}
+				disabled={isSubmitting || isUploading || fields.length === 0}
 				className="self-end"
 			>
-				{isSaving ? (
+				{isSubmitting ? (
 					<>
 						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (
-					t("save")
+					<>
+						<IconDeviceFloppy className="size-4" />
+						{t("save")}
+					</>
 				)}
 			</Button>
-		</div>
+		</form>
 	);
 }

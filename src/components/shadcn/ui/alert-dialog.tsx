@@ -97,7 +97,7 @@ function AlertDialogFooter({
 		<div
 			data-slot="alert-dialog-footer"
 			className={cn(
-				"bg-muted/50 -mx-4 -mb-4 rounded-b-xl border-t p-4 flex flex-col-reverse gap-2 group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end",
+				"bg-muted/50 -mx-4 -mb-4 rounded-b-xl border-t p-4 flex flex-col-reverse gap-2 group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end ",
 				className,
 			)}
 			{...props}
@@ -161,7 +161,12 @@ function AlertDialogAction({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Action> &
 	Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
 	return (
-		<Button variant={variant} size={size} asChild>
+		<Button
+			variant={variant}
+			size={size}
+			asChild
+			className="w-full sm:w-fit"
+		>
 			<AlertDialogPrimitive.Action
 				data-slot="alert-dialog-action"
 				className={cn(className)}
@@ -179,7 +184,12 @@ function AlertDialogCancel({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Cancel> &
 	Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
 	return (
-		<Button variant={variant} size={size} asChild>
+		<Button
+			variant={variant}
+			size={size}
+			asChild
+			className="w-full sm:w-fit"
+		>
 			<AlertDialogPrimitive.Cancel
 				data-slot="alert-dialog-cancel"
 				className={cn(className)}

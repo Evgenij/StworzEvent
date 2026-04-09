@@ -283,7 +283,7 @@
 			"types": {
 				"text": "Tekst",
 				"links": "Linki",
-				"gallery": "Galeria",
+				"image": "Galeria",
 				"video": "Wideo"
 			},
 			"sectionTitle": "Tytuł sekcji",
@@ -295,6 +295,7 @@
 			"save": "Zapisz",
 			"saving": "Zapisywanie...",
 			"saved": "Zapisano",
+			"addSections": "Dodatkowe sekcje",
 			"addSection": "Dodaj sekcję",
 			"altPlaceholder": "Opis zdjęcia (alt)",
 			"links": {
@@ -335,8 +336,11 @@
 				}
 			},
 			"errors": {
+				"required": "To pole jest wymagane",
 				"saveFailed": "Nie udało się zapisać sekcji",
-				"deleteFailed": "Nie udało się usunąć sekcji"
+				"deleteFailed": "Nie udało się usunąć sekcji",
+				"minLinks": "Minimalna liczba linków to 1",
+				"invalidUrl": "Nieprawidłowy adres URL"
 			},
 			"emptySections": "Brak sekcji. Dodaj pierwszą sekcję poniżej.",
 			"reorderFailed": "Nie udało się zmienić kolejności sekcji."
@@ -360,6 +364,11 @@
 			"saving": "Zapisywanie...",
 			"saved": "Zapisano",
 			"cancel": "Anuluj",
+			"disableTitle": "Wyłączyć sekcję agendy?",
+			"disableDescriptionMain": "Masz już dodane elementy agendy. ",
+			"disableDescriptionSecondary": "Wyłączenie tej sekcji spowoduje usunięcie wszystkich punktów agendy.",
+			"disableCancel": "Anuluj",
+			"disableConfirm": "Wyłącz",
 			"errors": {
 				"saveFailed": "Nie udało się zapisać punktu",
 				"deleteFailed": "Nie udało się usunąć punktu",

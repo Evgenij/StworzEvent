@@ -13,7 +13,8 @@ import { useCitySearch } from "@/hooks/use-city-search";
 import type { NominatimPlace } from "@/types/nominatim";
 import { cn } from "@/lib/utils";
 import { InputGroupAddon } from "@/components/shadcn/ui/input-group";
-import { IconBuildingSkyscraper } from "@tabler/icons-react";
+import { IconBuildingSkyscraper, IconLoader } from "@tabler/icons-react";
+import { spawn } from "node:child_process";
 
 interface Props {
 	value: NominatimPlace | null;
@@ -81,7 +82,14 @@ export function CityCombobox({
 				<ComboboxList>
 					{results.length === 0 ? (
 						<div className="py-2 text-center text-sm text-muted-foreground">
-							{loading ? "Szukam..." : "Wpisz nazwe miasta"}
+							{loading ? (
+								<span className="flex items-center justify-center">
+									<IconLoader className="size-5 gap-2 animate-spin" />{" "}
+									Szukam...
+								</span>
+							) : (
+								"Wpisz nazwe miasta"
+							)}
 						</div>
 					) : (
 						results.map((place) => (

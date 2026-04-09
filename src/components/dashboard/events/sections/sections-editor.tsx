@@ -17,6 +17,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { IconLoader } from "@tabler/icons-react";
 import type { EventSection } from "@/actions/events/sections/get-event-sections.action";
+import EmptySection from "./empty-section";
 
 type Props = {
 	eventId: string;
@@ -112,11 +113,9 @@ export function SectionsEditor({ eventId, initialSections }: Props) {
 							className="flex flex-col gap-2"
 						>
 							{sections.length === 0 && (
-								<div className="rounded-lg border border-dashed p-6 text-center">
-									<p className="text-sm text-muted-foreground">
-										{t("emptySections")}
-									</p>
-								</div>
+								<EmptySection>
+									{t("emptySections")}
+								</EmptySection>
 							)}
 
 							{sections.map((section, index) => (
@@ -130,6 +129,16 @@ export function SectionsEditor({ eventId, initialSections }: Props) {
 											section={section}
 											provided={provided}
 											onDelete={handleDeleteSection}
+											onTitleChange={(id, title) => {
+												// ← добавить
+												setSections((prev) =>
+													prev.map((s) =>
+														s.id === id
+															? { ...s, title }
+															: s,
+													),
+												);
+											}}
 										/>
 									)}
 								</Draggable>
@@ -150,8 +159,10 @@ export function SectionsEditor({ eventId, initialSections }: Props) {
 			)}
 
 			{/* Добавить секцию */}
-			<div className="flex flex-col gap-2">
-				<p className="text-sm font-medium">{t("addSection")}</p>
+			<div className="flex flex-col justify-center gap-3">
+				<p className="text-sm font-medium text-center">
+					{t("addSection")}
+				</p>
 				{isCreating ? (
 					<div className="flex items-center justify-center py-3">
 						<IconLoader className="size-5 animate-spin text-muted-foreground" />

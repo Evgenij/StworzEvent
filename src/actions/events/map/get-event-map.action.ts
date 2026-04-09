@@ -8,7 +8,7 @@ import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { verifyEventOwnership } from "@/lib/verify-ownership";
 
-export async function getEventMap(eventId: string) {
+export async function getEventMapAction(eventId: string) {
 	const session = await auth.api.getSession({ headers: await headers() });
 	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED, 401);
 
@@ -26,4 +26,4 @@ export async function getEventMap(eventId: string) {
 	});
 }
 
-export type EventMapData = Awaited<ReturnType<typeof getEventMap>>;
+export type EventMapData = Awaited<ReturnType<typeof getEventMapAction>>;

@@ -1,86 +1,131 @@
-// src/components/dashboard/events/sections/section-text.tsx
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { RichTextEditor } from "@/components/shared/rich-text-editor";
 import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError } from "@/components/shadcn/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
-import { Label } from "@/components/shadcn/ui/label";
-import { IconLoader } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconLoader } from "@tabler/icons-react";
 import { updateSectionAction } from "@/actions/events/sections/update-section.action";
 import { SectionType } from "@prisma/client";
 import { toast } from "sonner";
 import type { SectionData } from "./section-card";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import {
+	type SectionTextInput,
+	sectionTextSchema,
+} from "@/schemas/section.schema";
 
 type Props = {
 	section: SectionData;
+	onTitleChange?: (title: string) => void;
 };
 
-export function SectionText({ section }: Props) {
+export function SectionText({ section, onTitleChange }: Props) {
 	const t = useTranslations("EventWizard.sections");
-	const [title, setTitle] = useState(section.title ?? "");
-	const [content, setContent] = useState(section.content);
-	const [isSaving, setIsSaving] = useState(false);
+	const tErrors = useTranslations("EventWizard.sections.errors");
 
-	const handleSave = async () => {
-		setIsSaving(true);
+	const form = useForm<SectionTextInput>({
+		resolver: zodResolver(sectionTextSchema(tErrors)),
+		defaultValues: {
+			type: SectionType.TEXT, // ← было missing
+			title: section.title ?? "",
+			content: section.content as Record<string, unknown>,
+		},
+		mode: "onChange",
+		reValidateMode: "onChange",
+	});
+
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting },
+	} = form;
+
+	const onSubmit = async (values: SectionTextInput) => {
+		console.log(values);
+
 		const result = await updateSectionAction({
 			sectionId: section.id,
 			data: {
 				type: SectionType.TEXT,
-				title,
-				content,
+				title: values.title,
+				content: values.content,
 			},
 		});
-		setIsSaving(false);
 
 		if (!result.success) {
 			toast.error(t("errors.saveFailed"));
 			return;
 		}
 
+		onTitleChange?.(values.title);
 		toast.success(t("saved"));
 	};
 
 	return (
-		<div className="flex flex-col gap-3">
-			<Field>
-				<Label>{t("sectionTitle")}</Label>
-				<InputGroup>
-					<InputGroupInput
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-						placeholder={t("sectionTitlePlaceholder")}
-					/>
-				</InputGroup>
-			</Field>
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+			<Controller
+				name="title"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<FieldLabel>{t("sectionTitle")}</FieldLabel>
+						<InputGroup>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("sectionTitlePlaceholder")}
+							/>
+						</InputGroup>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
 
-			<Field>
-				<Label>{t("content")}</Label>
-				<RichTextEditor value={content} onChange={setContent} />
-			</Field>
+			<Controller
+				name="content"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<FieldLabel>{t("content")}</FieldLabel>
+						<RichTextEditor
+							value={field.value}
+							onChange={field.onChange}
+							data-invalid={fieldState.invalid}
+						/>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
 
 			<Button
-				type="button"
+				type="submit"
+				variant="success"
 				size="sm"
-				disabled={isSaving}
-				onClick={handleSave}
+				disabled={isSubmitting}
 				className="self-end"
 			>
-				{isSaving ? (
+				{isSubmitting ? (
 					<>
-						<IconLoader className="mr-2 size-4 animate-spin" />
+						<IconLoader className="size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (
-					t("save")
+					<>
+						<IconDeviceFloppy className="size-4" />
+						{t("save")}
+					</>
 				)}
 			</Button>
-		</div>
+		</form>
 	);
 }

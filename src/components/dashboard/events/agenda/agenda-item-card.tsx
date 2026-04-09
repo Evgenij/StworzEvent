@@ -50,7 +50,7 @@ import type { AgendaItem } from "@/actions/events/agenda/get-event-agenda.action
 import { Input } from "@/components/shadcn/ui/input";
 import { Separator } from "@/components/shadcn/ui/separator";
 import { formatDayLabel } from "@/components/events/page/agenda/event-agenda";
-import { DateFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 import { Typography } from "@/components/shared";
 
 type Props = {
@@ -451,16 +451,16 @@ const CreatedItem = ({
 	onEdit: () => void;
 }) => {
 	return (
-		<div className="w-full relative flex flex-col gap-1 border-border border-l-2 pl-5 pt-1 pb-3 group text-base ">
+		<div className="agenda-item-card w-full relative flex flex-col gap-1 border-border border-l-2 pl-5 pt-1 pb-3 group text-base ">
 			<div className="mark absolute size-2.5 -left-1.5 top-3.5 rounded-full bg-black"></div>
 			<header className="flex gap-2 items-center justify-between h-8">
 				<div className="data flex items-start gap-3">
 					<div className="time flex gap-1 items-center text-muted-foreground">
 						<p className="text-foreground font-medium">
-							{DateFormatter.time(data.startsAt, "pl")}
+							{DateTimeFormatter.time(data.startsAt, "pl")}
 						</p>
 						<span>-</span>
-						<p>{DateFormatter.time(data.endsAt, "pl")}</p>
+						<p>{DateTimeFormatter.time(data.endsAt, "pl")}</p>
 					</div>
 
 					{data.location && <Separator orientation="vertical" />}

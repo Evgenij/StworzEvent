@@ -51,7 +51,7 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
-import { getEventForEdit } from "@/actions/events/get-event-for-edit.action";
+import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
 import { updateEventAction } from "@/actions/events/update-event.action";
 import { CategoryCombobox } from "./category-combobox";
 import QUERY_KEYS from "@/consts/query-keys";
@@ -66,7 +66,7 @@ import { DateTimePicker } from "@/components/shared/date-time-picker";
 import { useCreateEventPreview } from "./create-event-context";
 import { LocationPicker } from "./location/location-picker";
 import { Switch } from "@/components/shadcn/ui/switch";
-import { Separator } from "@/components/shadcn/ui/separator";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 
 type Props = {
 	onSuccess?: (eventId: string) => void;
@@ -122,7 +122,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 
 	const { data: eventData } = useQuery({
 		queryKey: ["event-for-edit", eventId],
-		queryFn: () => getEventForEdit(eventId!),
+		queryFn: () => getEventForEditAction(eventId!),
 		enabled: !!eventId,
 		staleTime: 0, // ← всегда перезапрашивает
 		refetchOnMount: true,
@@ -145,8 +145,8 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 				: "DRAFT") as "DRAFT" | "PUBLISHED",
 			organizationId: eventData.organizationId,
 			categoryId: eventData.categoryId,
-			startsAt: eventData.startsAt.toISOString(),
-			endsAt: eventData.endsAt?.toISOString() ?? "",
+			startsAt: DateTimeFormatter.timeISO(eventData.startsAt),
+			endsAt: DateTimeFormatter.timeISO(eventData.endsAt),
 			location: eventData.location ?? "",
 			street: eventData.street ?? "",
 			streetNumber: eventData.streetNumber ?? "",
@@ -387,7 +387,7 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 										);
 										form.setValue(
 											"endsAt",
-											endsAt.toISOString(),
+											DateTimeFormatter.timeISO(endsAt),
 										);
 									}
 								}}
@@ -557,9 +557,6 @@ export function CreateEventForm({ onSuccess, eventId }: Props) {
 										<Field
 											data-invalid={fieldState.invalid}
 										>
-											<FieldLabel>
-												{t("location")}
-											</FieldLabel>
 											<LocationPicker
 												key={locationKey}
 												value={{

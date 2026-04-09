@@ -1,4 +1,3 @@
-// src/actions/agenda/delete-agenda-item.action.ts
 "use server";
 
 import prisma from "@/lib/prisma";

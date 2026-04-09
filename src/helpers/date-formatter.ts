@@ -1,4 +1,4 @@
-export class DateFormatter {
+export class DateTimeFormatter {
 	static day(date: Date) {
 		return date.getDate();
 	}
@@ -27,6 +27,10 @@ export class DateFormatter {
 					minute: "2-digit",
 				}).format(date)
 			: null;
+	}
+
+	static timeISO(date: Date | null) {
+		return date?.toISOString() ?? "";
 	}
 
 	static isSameDay(date1: Date, date2: Date): boolean {

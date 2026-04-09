@@ -1,117 +1,140 @@
-// src/components/dashboard/events/sections/section-video.tsx
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError } from "@/components/shadcn/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/components/shadcn/ui/input-group";
-import { Label } from "@/components/shadcn/ui/label";
-import { IconBrandYoutube, IconLoader } from "@tabler/icons-react";
+import {
+	IconBrandYoutube,
+	IconDeviceFloppy,
+	IconLoader,
+} from "@tabler/icons-react";
 import { updateSectionAction } from "@/actions/events/sections/update-section.action";
-import { sectionVideoSchema } from "@/schemas/section.schema";
+import {
+	type SectionVideoInput,
+	sectionVideoSchema,
+} from "@/schemas/section.schema";
 import { SectionType } from "@prisma/client";
 import { toast } from "sonner";
 import type { SectionData } from "./section-card";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 
 type Props = {
 	section: SectionData;
+	onTitleChange?: (title: string) => void;
 };
 
-export function SectionVideo({ section }: Props) {
+export function SectionVideo({ section, onTitleChange }: Props) {
 	const t = useTranslations("EventWizard.sections");
-	const tErrors = useTranslations("CreateEventErrors");
-	const [sectionTitle, setSectionTitle] = useState(section.title ?? "");
-	const [url, setUrl] = useState((section.content as any)?.url ?? "");
-	const [error, setError] = useState<string | null>(null);
-	const [isSaving, setIsSaving] = useState(false);
+	const tErrors = useTranslations("EventWizard.sections.errors");
 
-	const handleSave = async () => {
-		if (!url) {
-			setError(tErrors("required"));
-			return;
-		}
-		try {
-			new URL(url);
-		} catch {
-			setError(tErrors("invalidUrl"));
-			return;
-		}
+	const form = useForm<SectionVideoInput>({
+		resolver: zodResolver(sectionVideoSchema(tErrors)),
+		defaultValues: {
+			type: SectionType.VIDEO,
+			title: section.title ?? "",
+			content: {
+				url: (section.content as any)?.url ?? "",
+			},
+		},
+		mode: "onBlur",
+		reValidateMode: "onChange",
+	});
 
-		setError(null);
-		setIsSaving(true);
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting },
+	} = form;
 
+	const onSubmit = async (values: SectionVideoInput) => {
 		const result = await updateSectionAction({
 			sectionId: section.id,
 			data: {
 				type: SectionType.VIDEO,
-				title: sectionTitle,
-				content: { url },
+				title: values.title,
+				content: values.content,
 			},
 		});
-
-		setIsSaving(false);
 
 		if (!result.success) {
 			toast.error(t("errors.saveFailed"));
 			return;
 		}
 
+		onTitleChange?.(values.title);
 		toast.success(t("saved"));
 	};
 
 	return (
-		<div className="flex flex-col gap-3">
-			<Field>
-				<Label>{t("sectionTitle")}</Label>
-				<InputGroup>
-					<InputGroupInput
-						value={sectionTitle}
-						onChange={(e) => setSectionTitle(e.target.value)}
-						placeholder={t("sectionTitlePlaceholder")}
-					/>
-				</InputGroup>
-			</Field>
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+			<Controller
+				name="title"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<FieldLabel>{t("sectionTitle")}</FieldLabel>
+						<InputGroup>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder={t("sectionTitlePlaceholder")}
+							/>
+						</InputGroup>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
 
-			<Field data-invalid={!!error}>
-				<Label>{t("videoUrl")}</Label>
-				<InputGroup>
-					<InputGroupAddon>
-						<IconBrandYoutube className="size-4" />
-					</InputGroupAddon>
-					<InputGroupInput
-						value={url}
-						onChange={(e) => {
-							setUrl(e.target.value);
-							setError(null);
-						}}
-						placeholder="https://youtube.com/watch?v=..."
-						aria-invalid={!!error}
-					/>
-				</InputGroup>
-				{error && <FieldError errors={[{ message: error }]} />}
-			</Field>
+			<Controller
+				name="content.url"
+				control={control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+						<FieldLabel>{t("videoUrl")}</FieldLabel>
+						<InputGroup>
+							<InputGroupAddon>
+								<IconBrandYoutube className="size-4" />
+							</InputGroupAddon>
+							<InputGroupInput
+								{...field}
+								aria-invalid={fieldState.invalid}
+								placeholder="https://youtube.com/watch?v=..."
+							/>
+						</InputGroup>
+						{fieldState.invalid && (
+							<FieldError errors={[fieldState.error]} />
+						)}
+					</Field>
+				)}
+			/>
 
 			<Button
-				type="button"
+				type="submit"
+				variant="success"
 				size="sm"
-				disabled={isSaving}
-				onClick={handleSave}
+				disabled={isSubmitting}
 				className="self-end"
 			>
-				{isSaving ? (
+				{isSubmitting ? (
 					<>
 						<IconLoader className="mr-2 size-4 animate-spin" />
 						{t("saving")}
 					</>
 				) : (
-					t("save")
+					<>
+						<IconDeviceFloppy className="size-4" />
+						{t("save")}
+					</>
 				)}
 			</Button>
-		</div>
+		</form>
 	);
 }

@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/shadcn/ui/button";
-import { IconPlus } from "@tabler/icons-react";
+import { IconLoader, IconPlus } from "@tabler/icons-react";
 import { AgendaItemCard } from "./agenda-item-card";
 import type { AgendaItem } from "@/actions/events/agenda/get-event-agenda.action";
 import { formatDayLabel } from "@/components/events/page/agenda/event-agenda";
@@ -14,6 +14,8 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@/components/shadcn/ui/tabs";
+import { cn } from "@/lib/utils";
+import EmptySection from "../sections/empty-section";
 
 type Props = {
 	eventId: string;
@@ -60,6 +62,7 @@ export function AgendaEditor({
 	const [items, setItems] = useState<AgendaItem[]>(initialItems);
 	const [newItemIds, setNewItemIds] = useState<Set<string>>(new Set());
 	const [sortedItems, setSortedItems] = useState<AgendaItem[]>([]);
+	const [deleting, setDeleting] = useState<boolean>(false);
 
 	const isMultiDay =
 		startDate && endDate
@@ -110,12 +113,16 @@ export function AgendaEditor({
 	};
 
 	const handleDelete = (id: string) => {
+		setDeleting(true);
+
 		setNewItemIds((prev) => {
 			const next = new Set(prev);
 			next.delete(id);
 			return next;
 		});
 		setItems((prev) => prev.filter((item) => item.id !== id));
+
+		setDeleting(false);
 	};
 
 	const handleSave = (oldId: string, updated: AgendaItem) => {
@@ -144,13 +151,21 @@ export function AgendaEditor({
 	};
 
 	return (
-		<div className="flex flex-col gap-3">
+		<div
+			className={cn(
+				"agenda-editor flex flex-col gap-3 items-center",
+				// {
+				// 	"opacity-50 cursor-not-allowed": deleting,
+				// },
+			)}
+		>
 			{items.length === 0 && (
-				<div className="rounded-xl w-full border-2 border-dashed p-5 text-center">
-					<p className="text-sm text-muted-foreground">
-						{t("empty")}
-					</p>
-				</div>
+				<EmptySection>{t("empty")}</EmptySection>
+				// <div className="rounded-xl w-full border-2 border-dashed p-5 text-center">
+				// 	<p className="text-sm text-muted-foreground">
+				// 		{t("empty")}
+				// 	</p>
+				// </div>
 			)}
 			{isMultiDay && allDays.length > 0 ? (
 				<Tabs
@@ -175,14 +190,14 @@ export function AgendaEditor({
 								className="flex flex-col items-center gap-3"
 							>
 								{dayItems.length === 0 ? (
-									<div className="rounded-xl w-full border-2 border-dashed p-5 text-center">
+									<EmptySection>
 										<p className="text-sm text-muted-foreground">
 											{formatDayLabel(date, idx, "pl")} —{" "}
 											{t("empty")}
 										</p>
-									</div>
+									</EmptySection>
 								) : (
-									<WrapperItemsList>
+									<WrapperItemsList deleting={deleting}>
 										{dayItems.map((item, idx) => (
 											<AgendaItemCard
 												key={item.id}
@@ -210,19 +225,26 @@ export function AgendaEditor({
 				</Tabs>
 			) : (
 				<>
-					<WrapperItemsList>
-						{sortedItems.map((item) => (
-							<AgendaItemCard
-								key={item.id}
-								date={item.startsAt}
-								eventId={eventId}
-								item={item}
-								onDelete={handleDelete}
-								onSave={handleSave}
-							/>
-						))}
-					</WrapperItemsList>
-					<Button variant="outline" onClick={() => handleAdd()}>
+					{sortedItems.length > 0 && (
+						<WrapperItemsList deleting={deleting}>
+							{sortedItems.map((item) => (
+								<AgendaItemCard
+									key={item.id}
+									date={item.startsAt}
+									eventId={eventId}
+									item={item}
+									onDelete={handleDelete}
+									onSave={handleSave}
+								/>
+							))}
+						</WrapperItemsList>
+					)}
+
+					<Button
+						variant="outline"
+						disabled={deleting}
+						onClick={() => handleAdd()}
+					>
 						<IconPlus className="mr-2 size-4" />
 						{t("add")}
 					</Button>
@@ -232,6 +254,22 @@ export function AgendaEditor({
 	);
 }
 
-const WrapperItemsList = ({ children }: { children: React.ReactNode }) => {
-	return <div className="flex flex-col pl-4 w-full">{children}</div>;
+const WrapperItemsList = ({
+	children,
+	deleting,
+}: {
+	children: React.ReactNode;
+	deleting: boolean;
+}) => {
+	return (
+		<div className="agenda-wrapper-items-list  relative flex flex-col pl-4 w-full">
+			{deleting && (
+				<div className="flex items-center z-10 gap-2 justify-center text-sm text-foreground absolute top-0 right-0 bg-white/80 h-full w-full">
+					<IconLoader className="size-5 animate-spin" /> Usunięcie
+					punktu w trakcie
+				</div>
+			)}
+			{children}
+		</div>
+	);
 };

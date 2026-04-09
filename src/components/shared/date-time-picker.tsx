@@ -15,6 +15,7 @@ import {
 // import { ScrollArea, ScrollBar } from "@/components/shadcn/ui/scroll-area";
 import { IconCalendar } from "@tabler/icons-react";
 import { ScrollArea } from "../shadcn/ui/scroll-area";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 
 type Props = {
 	value?: string; // ISO string "2024-03-21T14:30"
@@ -45,7 +46,7 @@ export function DateTimePicker({
 		date.setHours(current.getHours());
 		date.setMinutes(current.getMinutes());
 
-		onChange?.(formatToLocalISO(date));
+		onChange?.(DateTimeFormatter.timeISO(date));
 	};
 
 	const handleTimeChange = (type: "hour" | "minute", val: string) => {
@@ -55,7 +56,7 @@ export function DateTimePicker({
 		if (type === "hour") newDate.setHours(parseInt(val, 10));
 		if (type === "minute") newDate.setMinutes(parseInt(val, 10));
 
-		onChange?.(formatToLocalISO(newDate));
+		onChange?.(DateTimeFormatter.timeISO(newDate));
 	};
 
 	return (
@@ -168,7 +169,3 @@ export function DateTimePicker({
 // 	const pad = (n: number) => n.toString().padStart(2, "0");
 // 	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 // }
-
-function formatToLocalISO(date: Date): string {
-	return date.toISOString();
-}

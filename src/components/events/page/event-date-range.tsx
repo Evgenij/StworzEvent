@@ -1,6 +1,6 @@
 // src/components/shared/event-date-range.tsx
 
-import { DateFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 import EventMetaItem from "@/components/events/page/event-meta-item";
 
 type EventDateRangeProps = {
@@ -14,14 +14,16 @@ export const EventDateRange = ({
 	endsAt,
 	locale,
 }: EventDateRangeProps) => {
-	const isSameDay = endsAt ? DateFormatter.isSameDay(startsAt, endsAt) : true;
+	const isSameDay = endsAt
+		? DateTimeFormatter.isSameDay(startsAt, endsAt)
+		: true;
 
-	const startMonth = DateFormatter.month(startsAt, locale);
-	const startDay = DateFormatter.day(startsAt);
-	const startWeekday = DateFormatter.weekday(startsAt, locale);
-	const startDate = DateFormatter.date(startsAt, locale);
-	const startTime = DateFormatter.time(startsAt, locale);
-	const endTime = endsAt ? DateFormatter.time(endsAt, locale) : null;
+	const startMonth = DateTimeFormatter.month(startsAt, locale);
+	const startDay = DateTimeFormatter.day(startsAt);
+	const startWeekday = DateTimeFormatter.weekday(startsAt, locale);
+	const startDate = DateTimeFormatter.date(startsAt, locale);
+	const startTime = DateTimeFormatter.time(startsAt, locale);
+	const endTime = endsAt ? DateTimeFormatter.time(endsAt, locale) : null;
 
 	if (isSameDay) {
 		// Одна дата — показываем время начала и конца
@@ -35,10 +37,10 @@ export const EventDateRange = ({
 	}
 
 	// Разные даты — показываем две даты
-	const endMonth = DateFormatter.month(endsAt!, locale);
-	const endDay = DateFormatter.day(endsAt!);
-	const endWeekday = DateFormatter.weekday(endsAt!, locale);
-	const endDate = DateFormatter.date(endsAt!, locale);
+	const endMonth = DateTimeFormatter.month(endsAt!, locale);
+	const endDay = DateTimeFormatter.day(endsAt!);
+	const endWeekday = DateTimeFormatter.weekday(endsAt!, locale);
+	const endDate = DateTimeFormatter.date(endsAt!, locale);
 
 	return (
 		<div className="flex flex-col justify-start">

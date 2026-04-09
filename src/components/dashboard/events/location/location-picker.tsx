@@ -19,6 +19,12 @@ import {
 	AlertTitle,
 } from "@/components/shadcn/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
+import {
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+} from "@/components/shadcn/ui/field";
 
 const EventMapInner = dynamic(
 	() => import("../map/event-map-inner").then((mod) => mod.EventMapInner),
@@ -215,46 +221,53 @@ export function LocationPicker({
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="flex flex-col 2xl:flex-row gap-2">
-				<CityCombobox
-					value={selectedCity}
-					onChange={handleCityChange}
-					onBlur={onBlur}
-					disabled={disabled}
-					placeholder={
-						!selectedCity && value.city
-							? value.city
-							: "Wpisz nazwę miasta"
-					}
-					className=""
-					invalid={invalid}
-				/>
-				<div className="flex flex-col md:flex-row flex-1 gap-2">
-					<AddressCombobox
-						city={value.city}
-						value={selectedStreet}
-						onChange={handleStreetChange}
+				<Field className="flex-1">
+					<FieldLabel>Miasto</FieldLabel>
+					<CityCombobox
+						value={selectedCity}
+						onChange={handleCityChange}
 						onBlur={onBlur}
 						disabled={disabled}
 						placeholder={
-							!selectedStreet && value.street
-								? value.street
-								: "Wpisz nazwę ulicy"
+							!selectedCity && value.city
+								? value.city
+								: "Wpisz nazwę miasta"
 						}
-						className="flex-2"
+						invalid={invalid}
 					/>
-					<InputGroup className="flex-1">
-						<InputGroupAddon className="min-w-fit">
-							<InputGroupText>Nr domu</InputGroupText>
-						</InputGroupAddon>
-						<InputGroupInput
-							name="street-number"
-							value={value.streetNumber}
-							onChange={handleStreetNumberChange}
+				</Field>
+
+				<div className="flex flex-col flex-1 md:flex-row gap-2">
+					<Field>
+						<FieldLabel>Ulica</FieldLabel>
+						<AddressCombobox
+							city={value.city}
+							value={selectedStreet}
+							onChange={handleStreetChange}
 							onBlur={onBlur}
-							disabled={disabled || !value.street}
-							className=""
+							disabled={disabled}
+							placeholder={
+								!selectedStreet && value.street
+									? value.street
+									: "Wpisz nazwę ulicy"
+							}
 						/>
-					</InputGroup>
+					</Field>
+					<Field>
+						<FieldLabel>Nr domu</FieldLabel>
+						<InputGroup>
+							<InputGroupAddon>
+								<InputGroupText>Nr domu</InputGroupText>
+							</InputGroupAddon>
+							<InputGroupInput
+								name="street-number"
+								value={value.streetNumber}
+								onChange={handleStreetNumberChange}
+								onBlur={onBlur}
+								disabled={disabled || !value.street}
+							/>
+						</InputGroup>
+					</Field>
 				</div>
 			</div>
 

@@ -1,4 +1,4 @@
-import { DateFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 import { EventAgendaItem } from "@prisma/client";
 import { IconChevronDown, IconUser } from "@tabler/icons-react";
 import React from "react";
@@ -14,11 +14,11 @@ const EventAgendaListItem = ({
 		<div className="flex gap-4 mb-6">
 			<div className="times w-12 flex flex-col items-end text-sm">
 				<span className="text-base font-medium">
-					{DateFormatter.time(data.startsAt, locale)}
+					{DateTimeFormatter.time(data.startsAt, locale)}
 				</span>
 				<span className="text-muted-foreground">
 					{data.endsAt
-						? DateFormatter.time(data.endsAt, locale)
+						? DateTimeFormatter.time(data.endsAt, locale)
 						: "N/A"}
 				</span>
 			</div>

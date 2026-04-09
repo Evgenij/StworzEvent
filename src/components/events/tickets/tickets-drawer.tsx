@@ -16,7 +16,7 @@ import { createReservation } from "@/actions/reservations/create-reservation.act
 import { TicketWithAvailability } from "@/types/ticket";
 import { cancelReservation } from "@/actions/reservations/cancel-reservation.action";
 import { getTicketsWithAvailability } from "@/actions/tickets/get-tickets-with-availability.action";
-import { DateFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 
 export type SelectedTicket = {
 	ticket: TicketWithAvailability;
@@ -80,8 +80,8 @@ export const TicketsDrawer = ({
 	>(null);
 	const [checkingReservation, setCheckingReservation] = useState(false);
 
-	const startWeekday = DateFormatter.weekday(eventDate, locale);
-	const startDate = DateFormatter.date(eventDate, locale);
+	const startWeekday = DateTimeFormatter.weekday(eventDate, locale);
+	const startDate = DateTimeFormatter.date(eventDate, locale);
 
 	// При открытии Drawer — проверяем есть ли активная резервация
 	useEffect(() => {
