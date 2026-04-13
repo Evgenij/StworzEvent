@@ -241,7 +241,6 @@ export function StepBasicData({ eventId, onSuccess }: Props) {
 			<Accordion
 				type="single"
 				collapsible
-				defaultValue="item-1"
 				className={cn(
 					"rounded-lg border hover:border-muted-foreground/50",
 				)}
@@ -408,7 +407,6 @@ export function StepBasicData({ eventId, onSuccess }: Props) {
 			<Accordion
 				type="single"
 				collapsible
-				defaultValue="item-1"
 				className={cn(
 					"rounded-lg border hover:border-muted-foreground/50",
 				)}

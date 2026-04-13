@@ -100,10 +100,16 @@ export function DateTimePicker({
 					{/* Время */}
 					<div className="flex divide-x border-l">
 						{/* Часы */}
-						<ScrollArea className="h-75 w-16">
-							<div className="flex flex-col p-2 gap-1">
-								{Array.from({ length: 24 }, (_, i) => i).map(
-									(hour) => (
+						<div className="wrapper flex flex-col">
+							<span className="text-xs p-2 text-center">
+								Godzina
+							</span>
+							<ScrollArea className="h-75 w-22">
+								<div className="flex flex-col p-2 gap-1">
+									{Array.from(
+										{ length: 24 },
+										(_, i) => i,
+									).map((hour) => (
 										<Button
 											key={hour}
 											type="button"
@@ -123,40 +129,46 @@ export function DateTimePicker({
 										>
 											{hour.toString().padStart(2, "0")}
 										</Button>
-									),
-								)}
-							</div>
-						</ScrollArea>
+									))}
+								</div>
+							</ScrollArea>
+						</div>
 
+						<div className="wrapper flex flex-col">
+							<span className="text-xs p-2 text-center">
+								Minuta
+							</span>
+							<ScrollArea className="h-75 w-22">
+								<div className="flex flex-col p-2 gap-1">
+									{Array.from(
+										{ length: 12 },
+										(_, i) => i * 5,
+									).map((minute) => (
+										<Button
+											key={minute}
+											type="button"
+											size="icon"
+											variant={
+												dateValue?.getMinutes() ===
+												minute
+													? "default"
+													: "ghost"
+											}
+											className="w-full shrink-0"
+											onClick={() =>
+												handleTimeChange(
+													"minute",
+													minute.toString(),
+												)
+											}
+										>
+											{minute.toString().padStart(2, "0")}
+										</Button>
+									))}
+								</div>
+							</ScrollArea>
+						</div>
 						{/* Минуты */}
-						<ScrollArea className="h-75 w-16">
-							<div className="flex flex-col p-2 gap-1">
-								{Array.from(
-									{ length: 12 },
-									(_, i) => i * 5,
-								).map((minute) => (
-									<Button
-										key={minute}
-										type="button"
-										size="icon"
-										variant={
-											dateValue?.getMinutes() === minute
-												? "default"
-												: "ghost"
-										}
-										className="w-full shrink-0"
-										onClick={() =>
-											handleTimeChange(
-												"minute",
-												minute.toString(),
-											)
-										}
-									>
-										{minute.toString().padStart(2, "0")}
-									</Button>
-								))}
-							</div>
-						</ScrollArea>
 					</div>
 				</div>
 			</PopoverContent>

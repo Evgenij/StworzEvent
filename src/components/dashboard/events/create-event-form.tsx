@@ -33,6 +33,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { PolishCityCombobox } from "./location/polish-city-combobox";
 import { Separator } from "@/components/shadcn/ui/separator";
+import { DateTimeFormatter } from "@/helpers/date-formatter";
 
 export function CreateEventForm() {
 	const router = useRouter();
@@ -43,7 +44,7 @@ export function CreateEventForm() {
 		resolver: zodResolver(createEventSchema((key) => t(`errors.${key}`))),
 		defaultValues: {
 			title: "",
-			startsAt: "",
+			startsAt: DateTimeFormatter.timeISO(new Date()),
 			// endsAt: "",
 			location: "",
 			street: "",
@@ -51,7 +52,7 @@ export function CreateEventForm() {
 			ticketType: "free",
 			ticketPrice: 50,
 			ticketQuantity: 5,
-			coverImage: "",
+			coverImage: null,
 		},
 	});
 
@@ -92,9 +93,9 @@ export function CreateEventForm() {
 						name="coverImage"
 						render={({ field }) => (
 							<EventCoverUpload
-								value={field.value}
+								value={field.value || ""}
 								onChange={field.onChange}
-								onClear={() => field.onChange("")}
+								onClear={() => field.onChange(null)}
 							/>
 						)}
 					/>
@@ -352,6 +353,7 @@ export function CreateEventForm() {
 				<Field>
 					<div className="flex items-center justify-between pr-2 mb-2">
 						<FieldLabel>{t("ticketQuantity")}</FieldLabel>
+
 						<span className="text-sm font-semibold tabular-nums">
 							{watch("ticketQuantity") ?? 5}
 						</span>

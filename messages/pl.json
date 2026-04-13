@@ -423,8 +423,8 @@
 		"titlePlaceholder": "np. Koncert jazzowy w Warszawie",
 		"description": "Opis",
 		"descriptionPlaceholder": "Opisz swoje wydarzenie...",
-		"startsAt": "Data rozpoczęcia",
-		"endsAt": "Data zakończenia",
+		"startsAt": "Data i czas rozpoczęcia",
+		"endsAt": "Data i czas zakończenia",
 		"endsAtBeforeStartsAt": "Data zakończenia musi być późniejsza niż data rozpoczęcia",
 		"dateTimePlaceholder": "np. 21 mar 2026 14:30",
 		"locationLabel": "Lokalizacja",
@@ -468,9 +468,9 @@
 		"typeTicket": "Typ biletu",
 		"ticketPrice": "Cena biletu (PLN)",
 		"ticketQuantity": "Liczba miejsc",
-		"free": "Bezpłatne",
+		"free": "Bezpłatny",
 		"freeDescription": "Wstęp wolny",
-		"paid": "Płatne",
+		"paid": "Płatny",
 		"paidDescription": "Ustaw cenę biletu"
 	},
 	"QuickCreateEvent": {
