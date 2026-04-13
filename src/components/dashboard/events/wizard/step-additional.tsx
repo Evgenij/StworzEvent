@@ -92,7 +92,7 @@ export function StepAdditional({
 	return (
 		<div className="flex flex-col">
 			{/* Агенда */}
-			{/* {eventId} */}
+			{eventId}
 			<EditSectionWrapper
 				countItems={data.agenda.length}
 				active={agendaIsActive}

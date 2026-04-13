@@ -9,653 +9,407 @@ import {
 	type CreateEventInput,
 } from "@/schemas/create-event.schema";
 import { createEventAction } from "@/actions/events/create-event.action";
-import { EventStatus } from "@prisma/client";
-import { Label } from "@/components/shadcn/ui/label";
 import { Button } from "@/components/shadcn/ui/button";
+import { Input } from "@/components/shadcn/ui/input";
 import {
 	Field,
+	FieldContent,
 	FieldDescription,
 	FieldError,
 	FieldLabel,
+	FieldTitle,
 } from "@/components/shadcn/ui/field";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
 import { RadioGroup, RadioGroupItem } from "@/components/shadcn/ui/radio-group";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/shadcn/ui/select";
+import { DateTimePicker } from "@/components/shared/date-time-picker";
 import { EventCoverUpload } from "./event-cover-upload";
-import { RichTextEditor } from "@/components/shared/rich-text-editor";
 import {
-	IconBuilding,
-	IconCalendar,
-	IconCheck,
-	IconCircleCheckFilled,
-	IconDeviceFloppy,
-	IconLink,
+	IconInfoCircle,
 	IconLoader,
 	IconMap2,
-	IconMapCheck,
-	IconMapPin,
-	IconPhoto,
-	IconPhotoCheck,
+	IconTicket,
 } from "@tabler/icons-react";
+import { Slider } from "@/components/shadcn/ui/slider";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
-import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
-import { updateEventAction } from "@/actions/events/update-event.action";
-import { CategoryCombobox } from "./category-combobox";
-import QUERY_KEYS from "@/consts/query-keys";
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from "@/components/shadcn/ui/accordion";
 import { cn } from "@/lib/utils";
-import { DateTimePicker } from "@/components/shared/date-time-picker";
-import { useCreateEventPreview } from "./create-event-context";
-import { LocationPicker } from "./location/location-picker";
-import { Switch } from "@/components/shadcn/ui/switch";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
+import { PolishCityCombobox } from "./location/polish-city-combobox";
+import { Separator } from "@/components/shadcn/ui/separator";
 
-type Props = {
-	onSuccess?: (eventId: string) => void;
-	eventId?: string;
-};
-
-export function CreateEventForm({ onSuccess, eventId }: Props) {
-	const [locationKey, setLocationKey] = useState("new");
+export function CreateEventForm() {
 	const router = useRouter();
 	const locale = useLocale();
 	const t = useTranslations("CreateEvent");
-	const tErrors = useTranslations("CreateEventErrors");
-	const { setPreview, setSelectedCategory } = useCreateEventPreview();
 
 	const form = useForm<CreateEventInput>({
-		resolver: zodResolver(createEventSchema(tErrors)),
+		resolver: zodResolver(createEventSchema((key) => t(`errors.${key}`))),
 		defaultValues: {
 			title: "",
-			description: {},
-			coverImage: "",
-			status: EventStatus.DRAFT,
-			organizationId: "",
-			categoryId: "",
 			startsAt: "",
-			endsAt: "",
+			// endsAt: "",
 			location: "",
 			street: "",
 			streetNumber: "",
-			lat: undefined,
-			lng: undefined,
-			showMap: true,
-			eventIsOffline: false,
+			ticketType: "free",
+			ticketPrice: 50,
+			ticketQuantity: 5,
+			coverImage: "",
 		},
-		mode: "onChange",
-		reValidateMode: "onBlur",
-	});
-
-	form.watch((data) => {
-		setPreview(data as Partial<CreateEventInput>);
 	});
 
 	const {
 		handleSubmit,
 		control,
-		formState: { isSubmitting },
+		register,
+		watch,
+		formState: { isSubmitting, errors },
 	} = form;
 
-	const { data: memberships = [], isLoading: orgsLoading } = useQuery({
-		queryKey: [QUERY_KEYS.ORGANIZATIONS.MY_ORG],
-		queryFn: () => getMyOrganizations(),
-		staleTime: 1000 * 60 * 5,
-	});
+	const ticketType = watch("ticketType");
 
-	const { data: eventData } = useQuery({
-		queryKey: ["event-for-edit", eventId],
-		queryFn: () => getEventForEditAction(eventId!),
-		enabled: !!eventId,
-		staleTime: 0, // ← всегда перезапрашивает
-		refetchOnMount: true,
-	});
-
-	useEffect(() => {
-		if (memberships.length === 1) {
-			form.setValue("organizationId", memberships[0].organizations.id);
-		}
-	}, [memberships]);
-
-	useEffect(() => {
-		if (!eventData) return;
-		form.reset({
-			title: eventData.title,
-			description: eventData.description ?? {},
-			coverImage: eventData.coverImage ?? "",
-			status: (["DRAFT", "PUBLISHED"].includes(eventData.status)
-				? eventData.status
-				: "DRAFT") as "DRAFT" | "PUBLISHED",
-			organizationId: eventData.organizationId,
-			categoryId: eventData.categoryId,
-			startsAt: DateTimeFormatter.timeISO(eventData.startsAt),
-			endsAt: DateTimeFormatter.timeISO(eventData.endsAt),
-			location: eventData.location ?? "",
-			street: eventData.street ?? "",
-			streetNumber: eventData.streetNumber ?? "",
-			lat: eventData.lat ?? undefined,
-			lng: eventData.lng ?? undefined,
-			showMap: eventData.showMap,
-			eventIsOffline: eventData.eventIsOffline ?? false, // ← добавь
-			onlineUrl: eventData.onlineUrl ?? "", // ← добавь
-		});
-		setLocationKey(eventData.id);
-	}, [eventData]);
-
-	const onSubmit = async (data: CreateEventInput) => {
-		console.log("eventId =======================", eventId);
-		console.log("data =======================", data);
-
-		if (eventId) {
-			const result = await updateEventAction({
-				eventId,
-				data: {
-					title: data.title,
-					description: data.description,
-					coverImage: data.coverImage || null,
-					status: data.status,
-					categoryId: data.categoryId,
-					startsAt: data.startsAt,
-					endsAt: data.endsAt,
-					location: data.location,
-					street: data.street || null,
-					streetNumber: data.streetNumber || null,
-					lat: data.lat ?? null,
-					lng: data.lng ?? null,
-					showMap: data.onlineUrl ? false : data.showMap,
-					eventIsOffline: data.eventIsOffline,
-					onlineUrl: data.onlineUrl || null,
-				},
-			});
-
-			if (!result.success) {
-				toast.error(t("errors.default"));
-				return;
-			}
-
-			if (onSuccess) {
-				onSuccess(eventId);
-				return;
-			}
-
-			router.push(`/${locale}/profile/events/${eventId}/edit/additional`);
-			return;
-		}
-
+	const onSubmit: SubmitHandler<CreateEventInput> = async (data) => {
 		const result = await createEventAction(data);
 
-		console.log(result);
+		console.log(data);
 
 		if (!result.success) {
 			toast.error(t("errors.default"));
 			return;
 		}
-
-		if (onSuccess) {
-			onSuccess(result.data.eventId);
-			return;
-		}
-
-		// fallback: редирект на шаг 2
-		router.push(
-			`/${locale}/profile/events/${result.data.eventId}/edit/additional`,
-		);
+		router.push(`/${locale}/profile/events/${result.data.eventId}/edit`);
 	};
 
-	const coverImage = form.watch("coverImage");
-	const location = form.watch("location");
-	const street = form.watch("street");
-	const streetNumber = form.watch("streetNumber");
-	const lat = form.watch("lat");
-	const lng = form.watch("lng");
-	const eventIsOffline = form.watch("eventIsOffline");
-	const onlineUrl = form.watch("onlineUrl");
-	const onlineUrlError = form.formState.errors.onlineUrl;
-
-	const hasCoords = !!(lat && lng);
-
-	useEffect(() => {
-		form.setValue("showMap", hasCoords);
-	}, [hasCoords]);
-
-	useEffect(() => {
-		if (!location || !street) {
-			form.setValue("streetNumber", "");
-		}
-	}, [location, street]);
-
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-			{eventId}
-			{/* Организация — только если их > 1 */}
-			{memberships.length > 1 && (
-				<Controller
-					name="organizationId"
-					control={control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<Label>{t("organization")}</Label>
-							<Select
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
+			<div className="fields-group flex flex-col gap-4">
+				<Field>
+					<div className="wrapper flex items-center gap-1">
+						<FieldLabel htmlFor="title">{t("cover")}</FieldLabel>
+						<span className="text-muted-foreground text-xs">
+							({t("optional")})
+						</span>
+					</div>
+					<Controller
+						control={control}
+						name="coverImage"
+						render={({ field }) => (
+							<EventCoverUpload
 								value={field.value}
-								onValueChange={field.onChange}
-								disabled={orgsLoading}
-							>
-								<SelectTrigger>
-									<SelectValue
-										placeholder={t(
-											"organizationPlaceholder",
-										)}
-									/>
-								</SelectTrigger>
-								<SelectContent>
-									{memberships.map((m) => (
-										<SelectItem
-											key={m.organizations.id}
-											value={m.organizations.id}
-										>
-											{m.organizations.name}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-							{fieldState.invalid && (
-								<FieldError errors={[fieldState.error]} />
-							)}
-						</Field>
-					)}
-				/>
-			)}
-
-			{/* Обложка */}
-			<Accordion
-				type="single"
-				collapsible
-				defaultValue="item-1"
-				className={cn(
-					"rounded-lg border hover:border-muted-foreground/50",
-				)}
-			>
-				<AccordionItem value="item-1">
-					<AccordionTrigger className="p-3 flex items-center gap-3 w-full hover:no-underline data-[state=open]:bg-muted data-[state=open]:rounded-br-none data-[state=open]:rounded-bl-none">
-						{coverImage ? (
-							<div className="flex gap-1 items-center">
-								<IconCircleCheckFilled className="size-6 text-green-600" />
-								<span>{t("coverUploaded")}</span>
-							</div>
-						) : (
-							<div className="flex gap-1 items-center h-6">
-								<IconPhoto className="size-5" />
-								<span>{t("cover")}</span>
-							</div>
+								onChange={field.onChange}
+								onClear={() => field.onChange("")}
+							/>
 						)}
-					</AccordionTrigger>
-
-					<AccordionContent className="p-4 border-t border-border h-fit">
-						<Controller
-							name="coverImage"
-							control={control}
-							render={({ field }) => (
-								<EventCoverUpload
-									value={field.value}
-									onChange={(url) => field.onChange(url)}
-									onClear={() => field.onChange("")}
-								/>
-							)}
-						/>
-					</AccordionContent>
-				</AccordionItem>
-			</Accordion>
-
-			{/* Название и категория */}
-			<div className="flex flex-col md:flex-row gap-4">
-				<Controller
-					name="title"
-					control={control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel>{t("title_field")}</FieldLabel>
-							<InputGroup>
-								<InputGroupInput
-									{...field}
-									aria-invalid={fieldState.invalid}
-									placeholder={t("titlePlaceholder")}
-									onChange={field.onChange}
-								/>
-							</InputGroup>
-							{fieldState.invalid && (
-								<FieldError errors={[fieldState.error]} />
-							)}
-						</Field>
-					)}
-				/>
-				<Controller
-					name="categoryId"
-					control={control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel>{t("category")}</FieldLabel>
-							<CategoryCombobox
-								value={field.value}
-								onChange={(item) => {
-									field.onChange(item?.id ?? "");
-									setSelectedCategory(item);
-								}}
-								invalid={fieldState.invalid}
-								onBlur={field.onBlur}
-							/>
-							{fieldState.invalid && (
-								<FieldError errors={[fieldState.error]} />
-							)}
-						</Field>
-					)}
-				/>
-			</div>
-
-			{/* Даты */}
-			<div className="flex flex-col md:flex-row gap-4">
-				<Controller
-					name="startsAt"
-					control={control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel>{t("startsAt")}</FieldLabel>
-							<DateTimePicker
-								value={field.value}
-								onChange={(date) => {
-									field.onChange(date);
-									if (date) {
-										const endsAt = new Date(
-											new Date(date).getTime() +
-												2 * 60 * 60 * 1000,
-										);
-										form.setValue(
-											"endsAt",
-											DateTimeFormatter.timeISO(endsAt),
-										);
-									}
-								}}
-								onBlur={field.onBlur}
-								aria-invalid={fieldState.invalid}
-								placeholder={t("dateTimePlaceholder")}
-							/>
-							{fieldState.invalid && (
-								<FieldError errors={[fieldState.error]} />
-							)}
-						</Field>
-					)}
-				/>
-
-				<Controller
-					name="endsAt"
-					control={control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel>{t("endsAt")}</FieldLabel>
+					/>
+				</Field>
+				<Field>
+					<FieldLabel htmlFor="title">{t("title")}</FieldLabel>
+					<Input
+						id="title"
+						{...register("title")}
+						placeholder={t("titlePlaceholder")}
+						aria-invalid={!!errors.title}
+					/>
+					<FieldError errors={[errors.title]} />
+				</Field>
+				<Field>
+					<FieldLabel>{t("startsAt")}</FieldLabel>
+					<Controller
+						control={control}
+						name="startsAt"
+						render={({ field }) => (
 							<DateTimePicker
 								value={field.value}
 								onChange={field.onChange}
 								onBlur={field.onBlur}
-								aria-invalid={fieldState.invalid}
-								placeholder={t("dateTimePlaceholder")}
+								aria-invalid={!!errors.startsAt}
 							/>
-							{fieldState.invalid && (
-								<FieldError errors={[fieldState.error]} />
-							)}
-						</Field>
-					)}
-				/>
+						)}
+					/>
+					<FieldError errors={[errors.startsAt]} />
+				</Field>
 			</div>
 
-			{/* Описание */}
-			<Controller
-				name="description"
-				control={control}
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<div className="flex gap-1">
-							<FieldLabel>{t("description")}</FieldLabel>
-							<span className="text-sm text-muted-foreground">
-								(opcjonalnie)
-							</span>
-						</div>
-
-						<RichTextEditor
-							value={field.value}
-							onChange={(item) => {
-								field.onChange(item?.id ?? "");
-								setSelectedCategory(item);
-							}}
-							disabled={isSubmitting}
-						/>
-						{fieldState.invalid && (
-							<FieldError errors={[fieldState.error]} />
+			{/* location */}
+			<div className="fields-group flex flex-col gap-4">
+				<div className="text-muted-foreground flex items-center gap-1 text-sm ml-2">
+					<IconMap2 className="size-5 text-primary" />
+					{t("locationLabel")}
+				</div>
+				<Field>
+					<FieldLabel>{t("city")}</FieldLabel>
+					<Controller
+						control={control}
+						name="location"
+						render={({ field }) => (
+							<PolishCityCombobox
+								value={field.value || ""}
+								onChange={field.onChange}
+								onBlur={field.onBlur}
+								invalid={!!errors.location}
+							/>
 						)}
+					/>
+					<FieldError errors={[errors.location]} />
+				</Field>
+				<div className="flex gap-2">
+					<Field className="flex-2">
+						<FieldLabel htmlFor="street">{t("street")}</FieldLabel>
+						<Input
+							id="street"
+							{...register("street")}
+							placeholder={t("streetPlaceholder")}
+							aria-invalid={!!errors.street}
+						/>
+						<FieldError errors={[errors.street]} />
 					</Field>
-				)}
-			/>
-
-			<Accordion
-				type="single"
-				collapsible
-				defaultValue="item-1"
-				className={cn(
-					"rounded-lg border hover:border-muted-foreground/50",
-				)}
-			>
-				<AccordionItem value="item-1">
-					<AccordionTrigger className="p-3 flex items-center gap-3 w-full hover:no-underline data-[state=open]:bg-muted data-[state=open]:rounded-br-none data-[state=open]:rounded-bl-none">
-						{(location && street && streetNumber) ||
-						(onlineUrl && !onlineUrlError) ? (
-							<div className="flex gap-1 items-center">
-								<IconCircleCheckFilled className="size-6 text-green-600" />
-								<span>
-									{eventIsOffline
-										? t("linkSetted")
-										: t("localizationSetted")}
-								</span>
-							</div>
-						) : (
-							<div className="flex gap-1 items-center h-6">
-								{eventIsOffline ? (
-									<IconLink className="size-5" />
-								) : (
-									<IconMap2 className="size-5" />
-								)}
-
-								<span>
-									{eventIsOffline
-										? t("link")
-										: t("localization")}
-								</span>
-							</div>
-						)}
-					</AccordionTrigger>
-
-					<AccordionContent className="p-4 border-t border-border h-fit flex flex-col gap-4">
-						{/* <Controller
-							name="eventIsOffline"
-							control={control}
-							render={({ field }) => (
-								<div className="justify-start w-fit gap-2 flex items-center">
-									<Switch
-										id="event-is-offline"
-										checked={field.value}
-										onCheckedChange={(val) => {
-											field.onChange(val);
-											// Сбрасываем поля при переключении
-											if (val) {
-												form.setValue("location", "");
-												form.setValue("street", "");
-												form.setValue(
-													"streetNumber",
-													"",
-												);
-											} else {
-												form.setValue("onlineUrl", "");
-											}
-										}}
-									/>
-									<Label
-										htmlFor="event-is-offline"
-										className="cursor-pointer"
-									>
-										{t("eventIsOffline")}
-									</Label>
-								</div>
-							)}
+					<Field className="flex-1">
+						<FieldLabel htmlFor="number">{t("number")}</FieldLabel>
+						<Input
+							id="streetNumber"
+							{...register("streetNumber")}
+							placeholder={t("numberPlaceholder")}
+							aria-invalid={!!errors.streetNumber}
 						/>
-						<Separator /> */}
-						{eventIsOffline ? (
-							<Controller
-								name="onlineUrl"
-								control={control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<Label>{t("onlineUrl")}</Label>
-										<InputGroup>
-											<InputGroupInput
-												{...field}
-												placeholder={t(
-													"linkPlaceholder",
-												)}
-												aria-invalid={
-													fieldState.invalid
-												}
-											/>
-										</InputGroup>
-										{fieldState.invalid && (
-											<FieldError
-												errors={[fieldState.error]}
-											/>
-										)}
-									</Field>
-								)}
-							/>
-						) : (
-							<>
-								<Controller
-									name="location"
-									control={control}
-									render={({ field, fieldState }) => (
-										<Field
-											data-invalid={fieldState.invalid}
-										>
-											<LocationPicker
-												key={locationKey}
-												value={{
-													city: location ?? "",
-													street: street ?? "",
-													streetNumber:
-														streetNumber ?? "",
-													lat: lat ?? 0,
-													lng: lng ?? 0,
-												}}
-												onChange={(loc) => {
-													form.setValue(
-														"location",
-														loc.city,
-													);
-													form.setValue(
-														"street",
-														loc.street,
-													);
-													form.setValue(
-														"streetNumber",
-														loc.streetNumber,
-													);
-													form.setValue(
-														"lat",
-														loc.lat,
-													);
-													form.setValue(
-														"lng",
-														loc.lng,
-													);
-												}}
-												invalid={fieldState.invalid}
-												onBlur={field.onBlur}
-											/>
-											{fieldState.invalid && (
-												<FieldError
-													errors={[fieldState.error]}
-												/>
-											)}
-										</Field>
-									)}
-								/>
-								<Controller
-									name="showMap"
-									control={control}
-									render={({ field }) => (
-										<div
-											className={`justify-between rounded-lg border p-3 flex items-center ${!hasCoords ? "opacity-50" : ""}`}
-										>
-											<div className="flex flex-col gap-0.5">
-												<span className="text-sm font-medium">
-													{t("showMap")}
-												</span>
-												<span className="text-xs text-muted-foreground">
-													{t("showMapHint")}
-												</span>
-											</div>
-											<Switch
-												checked={field.value}
-												onCheckedChange={field.onChange}
-												disabled={!hasCoords}
-											/>
-										</div>
-									)}
-								/>
-							</>
-						)}
-					</AccordionContent>
-				</AccordionItem>
-			</Accordion>
-
-			{/* Статус — убрали на шаг 3, но оставляем DRAFT по умолчанию скрыто */}
-
-			{/* <pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
-			<div className="navigation flex justify-end pt-4 border-t border-border">
-				<Button type="submit" disabled={isSubmitting}>
-					{isSubmitting ? (
-						<>
-							<IconLoader className="size-4 animate-spin" />
-							{t("saving")}
-						</>
-					) : (
-						<>
-							{eventId ? (
-								<>
-									<IconDeviceFloppy className="size-4" />
-									{t("save")}
-								</>
-							) : (
-								<>
-									<IconCheck className="size-4" />
-									{t("submit")}
-								</>
-							)}
-						</>
-					)}
-				</Button>
+						<FieldError errors={[errors.streetNumber]} />
+					</Field>
+				</div>
 			</div>
+			<div className="fields-group flex flex-col gap-4">
+				<div className="text-muted-foreground flex items-center gap-1 text-sm ml-2">
+					<IconTicket className="size-5 text-primary" />
+					{t("ticketLabel")}
+				</div>
+				<Field>
+					<FieldLabel>{t("typeTicket")}</FieldLabel>
+					<Controller
+						control={control}
+						name="ticketType"
+						render={({ field }) => (
+							<RadioGroup
+								value={field.value}
+								onValueChange={field.onChange}
+								className="grid-cols-2"
+							>
+								<FieldLabel
+									htmlFor="ticket-free"
+									className="p-0 cursor-pointer"
+								>
+									<Field orientation="horizontal">
+										<FieldContent>
+											<FieldTitle>{t("free")}</FieldTitle>
+											<FieldDescription>
+												{t("freeDescription")}
+											</FieldDescription>
+										</FieldContent>
+										<RadioGroupItem
+											value="free"
+											id="ticket-free"
+										/>
+									</Field>
+								</FieldLabel>
+								<FieldLabel
+									htmlFor="ticket-paid"
+									className="p-0 cursor-pointer"
+								>
+									<Field orientation="horizontal">
+										<FieldContent>
+											<FieldTitle>{t("paid")}</FieldTitle>
+											<FieldDescription>
+												{t("paidDescription")}
+											</FieldDescription>
+										</FieldContent>
+										<RadioGroupItem
+											value="paid"
+											id="ticket-paid"
+										/>
+									</Field>
+								</FieldLabel>
+							</RadioGroup>
+						)}
+					/>
+					<FieldDescription className="ml-2 text-sm flex items-center gap-1 mt-2">
+						<IconInfoCircle className="size-4" />
+						{t("ticketDescription")}
+					</FieldDescription>
+				</Field>
+
+				{ticketType === "paid" && (
+					<div className="border border-border rounded-xl p-3 shadow-xl/5">
+						{/* <Separator /> */}
+						<Field>
+							<div className="flex items-center justify-between pr-2 mb-2">
+								<FieldLabel className="pl-0">
+									{t("ticketPrice")}
+								</FieldLabel>
+								<span className="text-sm font-semibold tabular-nums">
+									{watch("ticketPrice") ?? 0} zł
+								</span>
+							</div>
+							<Controller
+								control={control}
+								name="ticketPrice"
+								render={({ field }) => {
+									const adjust = (delta: number) =>
+										field.onChange(
+											Math.max(
+												0,
+												(field.value ?? 0) + delta,
+											),
+										);
+									return (
+										<div className="flex flex-col gap-2">
+											<div className="flex gap-1">
+												{[15, 30, 50, 100, 200].map(
+													(preset) => (
+														<Button
+															key={preset}
+															type="button"
+															variant={
+																field.value ===
+																preset
+																	? "default"
+																	: "secondary"
+															}
+															size="sm"
+															className="flex-1 text-xs h-7"
+															onClick={() =>
+																field.onChange(
+																	preset,
+																)
+															}
+														>
+															{preset} zł
+														</Button>
+													),
+												)}
+											</div>
+											<div className="flex items-center gap-1">
+												<Button
+													type="button"
+													variant="outline"
+													size="sm"
+													className="h-9 px-2.5 text-xs shrink-0"
+													onClick={() => adjust(-20)}
+												>
+													−20
+												</Button>
+												<Button
+													type="button"
+													variant="outline"
+													size="sm"
+													className="h-9 px-2.5 text-xs shrink-0"
+													onClick={() => adjust(-5)}
+												>
+													−5
+												</Button>
+												<Input
+													type="number"
+													min={0}
+													step={1}
+													value={field.value ?? ""}
+													onChange={(e) =>
+														field.onChange(
+															e.target.value ===
+																""
+																? undefined
+																: e.target
+																		.valueAsNumber,
+														)
+													}
+													onBlur={field.onBlur}
+													placeholder="0"
+													aria-invalid={
+														!!errors.ticketPrice
+													}
+													className="text-center"
+												/>
+												<Button
+													type="button"
+													variant="outline"
+													size="sm"
+													className="h-9 px-2.5 text-xs shrink-0"
+													onClick={() => adjust(5)}
+												>
+													+5
+												</Button>
+												<Button
+													type="button"
+													variant="outline"
+													size="sm"
+													className="h-9 px-2.5 text-xs shrink-0"
+													onClick={() => adjust(20)}
+												>
+													+20
+												</Button>
+											</div>
+										</div>
+									);
+								}}
+							/>
+							<FieldError errors={[errors.ticketPrice]} />
+						</Field>
+					</div>
+				)}
+				{/* Quantity */}
+				<Field>
+					<div className="flex items-center justify-between pr-2 mb-2">
+						<FieldLabel>{t("ticketQuantity")}</FieldLabel>
+						<span className="text-sm font-semibold tabular-nums">
+							{watch("ticketQuantity") ?? 5}
+						</span>
+					</div>
+					<Controller
+						control={control}
+						name="ticketQuantity"
+						render={({ field }) => (
+							<div className="flex flex-col gap-3">
+								<Slider
+									min={5}
+									max={2000}
+									step={5}
+									value={[field.value ?? 5]}
+									onValueChange={([val]) =>
+										field.onChange(val)
+									}
+								/>
+								<div className="flex gap-1">
+									{[25, 50, 100, 250, 500, 1000, 2000].map(
+										(preset) => (
+											<Button
+												key={preset}
+												type="button"
+												variant={
+													field.value === preset
+														? "default"
+														: "outline"
+												}
+												size="sm"
+												className="flex-1 text-xs h-7"
+												onClick={() =>
+													field.onChange(preset)
+												}
+											>
+												{preset}
+											</Button>
+										),
+									)}
+								</div>
+							</div>
+						)}
+					/>
+					<FieldError errors={[errors.ticketQuantity]} />
+				</Field>
+			</div>
+			{/* <pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
+			{/* Submit */}
+			<Button
+				type="submit"
+				disabled={isSubmitting}
+				className={cn("w-full")}
+			>
+				{isSubmitting ? (
+					<IconLoader className="size-4 animate-spin mr-2" />
+				) : null}
+				{t("submit")}
+			</Button>
 		</form>
 	);
 }

@@ -87,7 +87,6 @@ const EventsList = () => {
 					))}
 				</TableBody>
 			</Table>
-			<div className="list-events grid sm:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-4"></div>
 		</div>
 	);
 };

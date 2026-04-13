@@ -23,8 +23,10 @@ export function CreateEventProvider({
 	children: React.ReactNode;
 	initialPreview?: Partial<CreateEventInput>;
 }) {
-	const [preview, setPreview] = useState<Partial<CreateEventInput>>(initialPreview);
-	const [selectedCategory, setSelectedCategory] = useState<CategoryOption | null>(null);
+	const [preview, setPreview] =
+		useState<Partial<CreateEventInput>>(initialPreview);
+	const [selectedCategory, setSelectedCategory] =
+		useState<CategoryOption | null>(null);
 	const previewAsEventItem: EventItemData | null = preview.title
 		? {
 				coverImage: preview.coverImage || null,
@@ -40,7 +42,13 @@ export function CreateEventProvider({
 
 	return (
 		<CreateEventContext.Provider
-			value={{ preview, setPreview, previewAsEventItem, selectedCategory, setSelectedCategory }}
+			value={{
+				preview,
+				setPreview,
+				previewAsEventItem,
+				selectedCategory,
+				setSelectedCategory,
+			}}
 		>
 			{children}
 		</CreateEventContext.Provider>

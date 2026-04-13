@@ -443,6 +443,32 @@
 		"priceMin": "Price cannot be negative",
 		"quantityMin": "Minimum number of seats is 1"
 	},
+	"QuickCreateEvent": {
+		"title": "Event name",
+		"titlePlaceholder": "e.g. Jazz concert in Warsaw",
+		"startsAt": "Start date",
+		"endsAt": "End date",
+		"location": "City",
+		"locationPlaceholder": "e.g. Warsaw",
+		"address": "Address",
+		"addressPlaceholder": "e.g. 1 Marszałkowska St.",
+		"optional": "optional",
+		"tickets": "Tickets",
+		"free": "Free",
+		"freeDescription": "Entry is free of charge",
+		"paid": "Paid",
+		"paidDescription": "Set a ticket price",
+		"ticketPrice": "Ticket price (PLN)",
+		"ticketQuantity": "Number of seats",
+		"cover": "Cover image",
+		"submit": "Create event",
+		"errors": {
+			"default": "An error occurred. Please try again.",
+			"titleMin": "Name must be at least 3 characters",
+			"titleMax": "Name can be at most 100 characters",
+			"required": "This field is required"
+		}
+	},
 	"CreateEventErrors": {
 		"min3": "Name must be at least 3 characters",
 		"max100": "Name can be at most 100 characters",
