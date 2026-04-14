@@ -25,6 +25,9 @@ export const SETTINGS_ROUTE = `${PROFILE_ROUTE}/settings`;
 
 export const NEW_EVENT_ROUTE = `${EVENTS_ROUTE}/new`;
 
+export const ORGANIZATIONS_ROUTE = `${PROFILE_ROUTE}/organizations`;
+export const NEW_ORGANIZATION_ROUTE = `${ORGANIZATIONS_ROUTE}/new`;
+
 export const MAIN_PAGE_ROUTE = `/`;
 export const MAIN_PAGE_EVENTS_ROUTE = `/events`;
 export const EVENT_PAGE_ROUTE = `/events/`;

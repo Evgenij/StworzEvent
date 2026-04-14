@@ -60,7 +60,7 @@ export const StepOrderSummary = ({
 	};
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="step-order-summary flex flex-col gap-4">
 			<div className="flex flex-col gap-1">
 				<p className="font-semibold">Zamawiający</p>
 				<p className="text-sm">

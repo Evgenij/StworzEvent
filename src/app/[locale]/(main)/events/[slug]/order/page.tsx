@@ -31,7 +31,7 @@ const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 
 	if (completed) {
 		return (
-			<div className="max-w-6xl mx-auto px-4 py-8">
+			<div className="px-4 py-8">
 				<OrderForm
 					reservation={null}
 					eventId={event.id}
@@ -69,8 +69,8 @@ const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 	}
 
 	return (
-		<div className="flex flex-col gap-6 max-w-6xl mx-auto px-4 d">
-			<div className="py-4 bg-muted  rounded-2xl">
+		<section className="order-page flex flex-col flex-1 max-w-5xl gap-6">
+			<div className="py-4 bg-muted rounded-2xl">
 				<Typography>Zamawianie biletów</Typography>
 			</div>
 
@@ -79,7 +79,7 @@ const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 				eventId={event.id}
 				eventSlug={slug}
 			/>
-		</div>
+		</section>
 	);
 };
 

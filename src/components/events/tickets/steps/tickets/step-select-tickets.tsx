@@ -56,7 +56,7 @@ export const StepSelectTickets = ({
 		.join(", ");
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="step-select-tickets flex flex-col gap-4">
 			<div className="flex flex-col bg-muted rounded-lg p-3">
 				<p className="font-semibold text-base line-clamp-3">
 					{eventTitle}

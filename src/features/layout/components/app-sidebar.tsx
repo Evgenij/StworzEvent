@@ -1,26 +1,12 @@
 "use client";
 
 import * as React from "react";
-import {
-	LifeBuoy,
-	Send,
-	Command,
-	Folder,
-	Share,
-	Trash2,
-	MoreHorizontal,
-} from "lucide-react";
-import {
-	IconBuilding,
-	IconBuildings,
-	IconCalendar,
-	IconHome2,
-	IconPlus,
-} from "@tabler/icons-react";
+import { LifeBuoy, Send } from "lucide-react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 import { UserType } from "@/types/user";
 import { Link } from "@/i18n/routing";
-import { DASHBOARD_ROUTE, EVENTS_ROUTE } from "@/consts/routes";
+import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
 import { NavUser } from "./nav-user";
 import { NavSecondary } from "./nav-secondary";
 import {
@@ -41,7 +27,6 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/shadcn/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -51,16 +36,28 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/shadcn/ui/tooltip";
+import { CompanySwitcher } from "./company-switcher";
 
 const navSecondary = [
 	{ title: "Support", url: "#", icon: LifeBuoy },
 	{ title: "Feedback", url: "#", icon: Send },
 ];
 
+type OrgInfo = {
+	id: string;
+	name: string;
+	logo: string | null;
+	slug: string;
+};
+
 export default function AppSidebar({
 	user,
+	organizations,
 	...props
-}: React.ComponentProps<typeof Sidebar> & { user: UserType }) {
+}: React.ComponentProps<typeof Sidebar> & {
+	user: UserType;
+	organizations: OrgInfo[];
+}) {
 	const role = user.role ?? UserRole.USER;
 	const t = useTranslations(`Sidebar.${role.toLowerCase()}`);
 	const navConfig = getNavConfig(role, t);
@@ -68,26 +65,29 @@ export default function AppSidebar({
 
 	return (
 		<Sidebar
-			className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
+			// className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
+
+			variant="inset"
 			{...props}
 		>
 			<SidebarHeader>
+				<CompanySwitcher organizations={organizations} />
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton size="lg" asChild>
-							<a href="#">
-								<div className="bg-black text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-									<IconBuildings className="size-4" />
+							<Link href={MAIN_PAGE_EVENTS_ROUTE}>
+								<div className="flex aspect-square size-8 items-center justify-center rounded-lg border-2 border-border ">
+									<IconSearch className="size-4 text-muted-foreground" />
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-medium">
-										Twoja firma
+										Szukaj wydarzeń
 									</span>
-									<span className="truncate text-xs">
-										Plan - Free
+									<span className="truncate text-xs text-muted-foreground">
+										Znajdź cos dla siebie
 									</span>
 								</div>
-							</a>
+							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				</SidebarMenu>

@@ -469,6 +469,18 @@
 			"required": "This field is required"
 		}
 	},
+	"CreateOrganization": {
+		"name": "Organization name",
+		"namePlaceholder": "e.g. Jazz Events Kraków",
+		"submit": "Create organization",
+		"noOrgTitle": "Create an organization",
+		"noOrgDescription": "To publish events you need an organization. It takes a moment — you can fill in the rest later.",
+		"errors": {
+			"nameMin": "Name must be at least 2 characters",
+			"nameMax": "Name can be at most 100 characters",
+			"default": "Something went wrong. Please try again."
+		}
+	},
 	"CreateEventErrors": {
 		"min3": "Name must be at least 3 characters",
 		"max100": "Name can be at most 100 characters",

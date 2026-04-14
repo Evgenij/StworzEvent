@@ -103,7 +103,7 @@ export const StepParticipants = ({
 	};
 
 	return (
-		<main className="grid grid-cols-[380px_1fr] gap-6 items-start">
+		<section className="step-participants grid grid-cols-[380px_1fr] gap-6 items-start">
 			<aside className="self-start sticky top-18 flex flex-col gap-5">
 				<BuyerDetails
 					items={items}
@@ -159,7 +159,7 @@ export const StepParticipants = ({
 					</Button>
 				</div>
 			</section>
-		</main>
+		</section>
 	);
 };
 

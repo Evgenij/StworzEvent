@@ -101,7 +101,7 @@ export const StepOrderSuccess = ({
 	};
 
 	return (
-		<div className="flex flex-col max-w-lg mx-auto items-center gap-6 py-8 text-center">
+		<div className="step-order-success flex flex-col max-w-lg mx-auto items-center gap-6 py-8 text-center">
 			<div className="size-16 rounded-full bg-primary/10 flex items-center justify-center">
 				<IconCheck className="size-8 text-primary" />
 			</div>

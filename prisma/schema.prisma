@@ -118,6 +118,21 @@ enum VatStatus {
   CANCELLED
 }
 
+enum LegalForm {
+  OSOBA_FIZYCZNA            // Osoba fizyczna
+  JEDNOOSOBOWA_DG           // Jednoosobowa działalność gospodarcza
+  SP_ZOO                    // Sp. z o.o.
+  SA                        // S.A.
+  SP_JAWNA                  // Sp. jawna
+  SP_PARTNERSKA             // Sp. partnerska
+  SP_KOMANDYTOWA            // Sp. komandytowa
+  SP_KOMANDYTOWO_AKCYJNA    // Sp. komandytowo-akcyjna
+  STOWARZYSZENIE            // Stowarzyszenie
+  FUNDACJA                  // Fundacja
+  SPOLDZIELNIA              // Spółdzielnia
+  INNE                      // Inne
+}
+
 enum EmployeeCountRange {
   MICRO // < 10 osób
   SMALL // 10–49
@@ -268,8 +283,8 @@ model Organization {
   krs   String? @unique // 10 cyfr – tylko spółki rejestrowane w KRS
 
   // ── forma prawna (kluczowe przy fakturach, KSeF, umowach B2B) ─────────
-  legalForm     String? // "osoba fizyczna", "sp. z o.o.", "S.A.", "sp.k.", "sp.j.", "stowarzyszenie"...
-  legalFormCode String? // np. kod GUS / REGON: "019", "091", "092"...
+  legalForm     LegalForm? // enum: OSOBA_FIZYCZNA, SP_ZOO, SA, ...
+  legalFormCode String?    // np. kod GUS / REGON: "019", "091", "092"...
 
   // ── status VAT i KSeF (obowiązkowy B2B od 2026/2027) ──────────────────
   vatStatus   VatStatus? @default(ACTIVE)
@@ -314,7 +329,7 @@ model OrganizationAddress {
   country         Country @default(COUNTRY_PL)
 
   organizationId String?
-  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   // ewentualnie userId jeśli adres prywatny użytkownika
 
@@ -331,7 +346,7 @@ model OrganizationMember {
 
   memberRole    MemberRole   @default(OWNER) @map("member_role")
   user          User         @relation(fields: [userId], references: [id])
-  organizations Organization @relation(fields: [organizationId], references: [id])
+  organizations Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@unique([userId, organizationId], name: "user_organization_unique")
   @@index([userId], name: "idx_organization_members_user_id")
@@ -402,7 +417,7 @@ model Event {
   eventIsOffline Boolean     @default(false) @map("event_is_offline")
 
   organizationId String       @map("organization_id")
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   tickets            Ticket[]
   orders             Order[]
@@ -497,7 +512,7 @@ model Ticket {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  events     Event       @relation(fields: [eventId], references: [id])
+  events     Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
   orderItems OrderItem[]
 
   // sold считается через агрегацию OrderItem — не хранится денормализованно
@@ -528,7 +543,7 @@ model TicketReservationItem {
   quantity      Int    @map("quantity")
 
   reservation TicketReservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
-  ticket      Ticket            @relation(fields: [ticketId], references: [id])
+  ticket      Ticket            @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@map("ticket_reservation_items")
 }
@@ -560,7 +575,7 @@ model Order {
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  events     Event       @relation(fields: [eventId], references: [id])
+  events     Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user       User?       @relation(fields: [userId], references: [id])
   payments   Payment[]
   orderItems OrderItem[]
@@ -589,8 +604,8 @@ model OrderItem {
   // deletedAt убран — позиции заказа не удаляются мягко,
   // отмена происходит через OrderStatus
 
-  orders  Order  @relation(fields: [orderId], references: [id])
-  tickets Ticket @relation(fields: [ticketId], references: [id])
+  orders  Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  tickets Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   participants Participant[]
 
@@ -619,7 +634,7 @@ model Participant {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  orderItem OrderItem @relation(fields: [orderItemId], references: [id])
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
 
   @@index([orderItemId], name: "idx_attendees_order_item_id")
   @@index([checkInCode], name: "idx_attendees_check_in_code")
@@ -643,7 +658,7 @@ model Payment {
   currency          Currency      @default(PLN)
   status            PaymentStatus @default(CREATED) @map("status")
 
-  orders Order @relation(fields: [orderId], references: [id])
+  orders Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   user   User? @relation(fields: [userId], references: [id])
 
   refunds Refund[]
@@ -676,7 +691,7 @@ model Refund {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  payment Payment @relation(fields: [paymentId], references: [id])
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
 
   @@index([paymentId], name: "idx_refunds_payment_id")
   @@map("refunds")
@@ -777,7 +792,7 @@ model OrganizationSubscription {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  organization Organization @relation(fields: [organizationId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   plan         Plan         @relation(fields: [planId], references: [id])
 
   @@index([organizationId], name: "idx_org_subscriptions_org_id")
@@ -800,7 +815,7 @@ model OrganizationFeature {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  organization Organization @relation(fields: [organizationId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   feature      Feature      @relation(fields: [featureId], references: [id])
 
   @@unique([organizationId, featureId], name: "org_feature_unique")

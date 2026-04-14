@@ -1,7 +1,11 @@
 import { SIGNIN_ROUTE } from "@/consts/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
-import { SidebarInset, SidebarProvider } from "@/components/shadcn/ui/sidebar";
+import {
+	SidebarInset,
+	SidebarProvider,
+	SidebarTrigger,
+} from "@/components/shadcn/ui/sidebar";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import React from "react";
@@ -9,6 +13,8 @@ import { AppSidebar } from "@/features/layout";
 import { SiteHeader } from "@/features/layout";
 import { UserRole } from "@prisma/client";
 import { MobileMenu } from "@/components/layout/menu";
+import { Separator } from "@/components/shadcn/ui/separator";
+import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -40,27 +46,45 @@ const ProfileLayout = async ({
 		return null;
 	}
 
-	return (
-		<div className="[--header-height:calc(--spacing(14))]">
-			<SidebarProvider className="flex flex-col">
-				<SiteHeader />
-				<div className="flex flex-1">
-					<AppSidebar
-						user={{
-							...sessionRaw.user,
-							role: sessionRaw.user.role ?? UserRole.USER,
-						}}
-					/>
-					<SidebarInset className="h-full">
-						<main className="profile-layout flex flex-1 flex-col gap-4 p-4 px-5">
-							{children}
-						</main>
-					</SidebarInset>
-				</div>
-			</SidebarProvider>
+	const members = await getMyOrganizations();
+	const organizations = members.map((m) => m.organizations);
 
-			<MobileMenu />
-		</div>
+	return (
+		<SidebarProvider>
+			<AppSidebar
+				user={{
+					...sessionRaw.user,
+					role: sessionRaw.user.role ?? UserRole.USER,
+				}}
+				organizations={organizations}
+			/>
+			<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg!">
+				<SiteHeader />
+				<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 min-h-screen  rounded-xl md:min-h-min">
+					{children}
+				</main>
+			</SidebarInset>
+		</SidebarProvider>
+		// <div className="[--header-height:calc(--spacing(14))]">
+		// 	<SidebarProvider className="flex flex-col">
+		// 		<div className="flex flex-1">
+		// 			<AppSidebar
+		// 				user={{
+		// 					...sessionRaw.user,
+		// 					role: sessionRaw.user.role ?? UserRole.USER,
+		// 				}}
+		// 			/>
+		// 			<SidebarInset className="h-full overflow-hidden">
+		// 				<SiteHeader />
+		// 				<main className="profile-layout flex flex-1 flex-col gap-4 p-4 px-5">
+		// 					{children}
+		// 				</main>
+		// 			</SidebarInset>
+		// 		</div>
+		// 	</SidebarProvider>
+
+		// 	<MobileMenu />
+		// </div>
 	);
 };
 

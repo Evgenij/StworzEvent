@@ -139,6 +139,10 @@
 			"title": "Wydarzenia",
 			"new": "Nowe wydarzenie"
 		},
+		"organizations": {
+			"title": "Organizacje",
+			"new": "Nowa organizacja"
+		},
 		"edit": {
 			"title": "Edycja",
 			"additional": "Informacje dodatkowe",
@@ -472,6 +476,63 @@
 		"freeDescription": "Wstęp wolny",
 		"paid": "Płatny",
 		"paidDescription": "Ustaw cenę biletu"
+	},
+	"CreateOrganization": {
+		"title": "Utwórz organizację",
+		"submit": "Utwórz organizację",
+		"sectionOrganizer": "Dane organizatora",
+		"sectionAddress": "Adres siedziby",
+		"name": "Nazwa",
+		"namePlaceholder": "np. Eventy Warszawa sp. z o.o.",
+		"nip": "NIP",
+		"nipPlaceholder": "np. 1234567890",
+		"email": "E-mail organizacji",
+		"emailPlaceholder": "np. kontakt@firma.pl",
+		"phone": "Telefon",
+		"phonePlaceholder": "np. +48 123 456 789",
+		"legalForm": "Forma prawna",
+		"legalFormPlaceholder": "Wybierz formę prawną",
+		"vatStatus": "Status VAT",
+		"vatStatusPlaceholder": "Wybierz status VAT",
+		"street": "Ulica",
+		"streetPlaceholder": "np. ul. Marszałkowska",
+		"buildingNumber": "Numer budynku",
+		"buildingNumberPlaceholder": "np. 10A",
+		"zipCode": "Kod pocztowy",
+		"zipCodePlaceholder": "np. 00-001",
+		"city": "Miasto",
+		"cityPlaceholder": "np. Warszawa",
+		"legalForms": {
+			"OSOBA_FIZYCZNA": "Osoba fizyczna",
+			"JEDNOOSOBOWA_DG": "Jednoosobowa działalność gospodarcza",
+			"SP_ZOO": "Sp. z o.o.",
+			"SA": "S.A.",
+			"SP_JAWNA": "Sp. jawna",
+			"SP_PARTNERSKA": "Sp. partnerska",
+			"SP_KOMANDYTOWA": "Sp. komandytowa",
+			"SP_KOMANDYTOWO_AKCYJNA": "Sp. komandytowo-akcyjna",
+			"STOWARZYSZENIE": "Stowarzyszenie",
+			"FUNDACJA": "Fundacja",
+			"SPOLDZIELNIA": "Spółdzielnia",
+			"INNE": "Inne"
+		},
+		"vatStatuses": {
+			"ACTIVE": "Czynny podatnik VAT",
+			"EXEMPT": "Zwolniony z VAT",
+			"UNREGISTERED": "Niezarejestrowany"
+		},
+		"noOrgTitle": "Najpierw stwórz organizację",
+		"noOrgDescription": "Aby opublikować wydarzenie, potrzebujesz organizacji. To tylko chwila – resztę uzupełnisz później.",
+		"newOrgTitle": "Dodaj firmę",
+		"newOrgDescription": "Wprowadź dane o firmie",
+		"errors": {
+			"default": "Wystąpił błąd. Spróbuj ponownie.",
+			"required": "To pole jest wymagane",
+			"nipInvalid": "NIP musi zawierać dokładnie 10 cyfr",
+			"emailInvalid": "Podaj prawidłowy adres e-mail",
+			"phoneInvalid": "Podaj prawidłowy numer telefonu",
+			"zipInvalid": "Kod pocztowy musi być w formacie XX-XXX"
+		}
 	},
 	"QuickCreateEvent": {
 		"title": "Nazwa wydarzenia",
