@@ -1,19 +1,24 @@
-import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
+"use client";
+
 import { CreateEventForm } from "@/components/dashboard/events/create-event-form";
 import { CreateOrganizationForm } from "@/components/dashboard/organizations/create-organization-form";
 import { Typography } from "@/components/shared";
-import { getTranslations } from "next-intl/server";
 import { IconBuildingSkyscraper } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+	useMyOrganizations,
+	MY_ORGANIZATIONS_QUERY_KEY,
+} from "@/hooks/use-my-organizations";
 
-export default async function NewEventPage() {
-	const [organizations, t] = await Promise.all([
-		getMyOrganizations(),
-		getTranslations("CreateOrganization"),
-	]);
+export default function NewEventPage() {
+	const t = useTranslations("CreateOrganization");
+	const queryClient = useQueryClient();
+	const { data: organizations = [], isLoading } = useMyOrganizations();
 
-	const hasOrganization = organizations.length > 0;
+	if (isLoading) return <div>Sprawdzamy czy jestes orgizatorem...</div>;
 
-	if (!hasOrganization) {
+	if (organizations.length === 0) {
 		return (
 			<div className="z-10 w-sm 2xl:w-lg mx-auto flex flex-col gap-7 py-5">
 				<header className="flex items-start gap-3">
@@ -21,14 +26,20 @@ export default async function NewEventPage() {
 						<IconBuildingSkyscraper className="size-5 text-muted-foreground" />
 					</div>
 					<div>
-						<Typography variant="h2">{t("newOrgTitle")}</Typography>
+						<Typography variant="h2">{t("noOrgTitle")}</Typography>
 						<p className="text-sm text-muted-foreground mt-1">
-							{t("newOrgDescription")}
+							{t("noOrgDescription")}
 						</p>
 					</div>
 				</header>
 
-				<CreateOrganizationForm />
+				<CreateOrganizationForm
+					onSuccess={() =>
+						queryClient.invalidateQueries({
+							queryKey: MY_ORGANIZATIONS_QUERY_KEY,
+						})
+					}
+				/>
 			</div>
 		);
 	}

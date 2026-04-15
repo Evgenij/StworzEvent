@@ -437,7 +437,7 @@
 		"city": "Miasto",
 		"address": "Adres",
 		"street": "Ulica",
-		"number": "Numer domu",
+		"number": "Numer budynku",
 		"localization": "Lokalizacja",
 		"link": "Link do wydarzenia online",
 		"linkPlaceholder": "np. https://www.facebook.com/event/1234567890/",

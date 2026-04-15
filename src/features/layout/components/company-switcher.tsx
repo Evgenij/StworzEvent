@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import { useState, useEffect, useTransition } from "react";
+import { ChevronsUpDown, Plus, Trash2 } from "lucide-react";
 import { IconBuildings, IconPlus } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { deleteOrganizationAction } from "@/actions/organizations/delete-organization.action";
+import { MY_ORGANIZATIONS_QUERY_KEY } from "@/hooks/use-my-organizations";
+import { toast } from "sonner";
 
 import {
 	DropdownMenu,
@@ -10,7 +14,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from "@/components/shadcn/ui/dropdown-menu";
 import {
@@ -35,9 +38,42 @@ export function CompanySwitcher({
 	organizations: OrgInfo[];
 }) {
 	const { isMobile } = useSidebar();
+	const queryClient = useQueryClient();
 	const [active, setActive] = useState<OrgInfo | null>(
 		organizations[0] ?? null,
 	);
+	const [deletingId, setDeletingId] = useState<string | null>(null);
+	const [, startTransition] = useTransition();
+
+	useEffect(() => {
+		if (!active && organizations[0]) {
+			setActive(organizations[0]);
+		} else if (active && !organizations.find((o) => o.id === active.id)) {
+			setActive(organizations[0] ?? null);
+		}
+	}, [organizations, active]);
+
+	function handleDelete(e: React.MouseEvent, org: OrgInfo) {
+		e.stopPropagation();
+		setDeletingId(org.id);
+		startTransition(async () => {
+			const result = await deleteOrganizationAction(org.id);
+			if (!result.success) {
+				toast.error("Nie udało się usunąć organizacji");
+			} else {
+				toast.success(`Organizacja "${org.name}" została usunięta`);
+				if (active?.id === org.id) {
+					const next =
+						organizations.find((o) => o.id !== org.id) ?? null;
+					setActive(next);
+				}
+				queryClient.invalidateQueries({
+					queryKey: MY_ORGANIZATIONS_QUERY_KEY,
+				});
+			}
+			setDeletingId(null);
+		});
+	}
 
 	if (!active) {
 		return (
@@ -45,8 +81,8 @@ export function CompanySwitcher({
 				<SidebarMenuItem>
 					<SidebarMenuButton size="lg" asChild>
 						<Link href={NEW_EVENT_ROUTE}>
-							<div className="flex aspect-square size-8 items-center justify-center rounded-lg border-2 border-dashed border-sidebar-border">
-								<IconPlus className="size-4 text-muted-foreground" />
+							<div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary">
+								<IconPlus className="size-4 text-white" />
 							</div>
 							<div className="grid flex-1 text-left text-sm leading-tight">
 								<span className="truncate font-medium">
@@ -95,19 +131,22 @@ export function CompanySwitcher({
 						<DropdownMenuLabel className="text-xs text-muted-foreground">
 							Firmy
 						</DropdownMenuLabel>
-						{organizations.map((org, index) => (
+						{organizations.map((org) => (
 							<DropdownMenuItem
 								key={org.id}
 								onClick={() => setActive(org)}
-								className="gap-2 p-2"
+								className="group gap-2 p-2 pr-1"
 							>
-								<div className="flex size-6 items-center justify-center rounded-md border">
-									<IconBuildings className="size-3.5 shrink-0" />
-								</div>
-								{org.name}
-								<DropdownMenuShortcut>
-									⌘{index + 1}
-								</DropdownMenuShortcut>
+								<span className="flex-1 truncate">
+									{org.name}
+								</span>
+								<button
+									onClick={(e) => handleDelete(e, org)}
+									disabled={deletingId === org.id}
+									className="ml-auto shrink-0 rounded p-1 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100 focus:opacity-100 disabled:cursor-not-allowed disabled:opacity-50"
+								>
+									<Trash2 className="size-3.5" />
+								</button>
 							</DropdownMenuItem>
 						))}
 						<DropdownMenuSeparator />

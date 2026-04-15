@@ -46,6 +46,7 @@ const EventsCatalogPage = async () => {
 	return (
 		<div className="flex flex-col w-full h-full items-start gap-4 p-6 sm:p-0">
 			<PageHeader />
+
 			<div className="event-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
 				{availableEvents.map((event) => (
 					<EventItem

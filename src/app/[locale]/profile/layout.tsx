@@ -14,7 +14,6 @@ import { SiteHeader } from "@/features/layout";
 import { UserRole } from "@prisma/client";
 import { MobileMenu } from "@/components/layout/menu";
 import { Separator } from "@/components/shadcn/ui/separator";
-import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -46,9 +45,6 @@ const ProfileLayout = async ({
 		return null;
 	}
 
-	const members = await getMyOrganizations();
-	const organizations = members.map((m) => m.organizations);
-
 	return (
 		<SidebarProvider>
 			<AppSidebar
@@ -56,7 +52,6 @@ const ProfileLayout = async ({
 					...sessionRaw.user,
 					role: sessionRaw.user.role ?? UserRole.USER,
 				}}
-				organizations={organizations}
 			/>
 			<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg!">
 				<SiteHeader />

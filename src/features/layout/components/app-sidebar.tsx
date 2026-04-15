@@ -37,31 +37,24 @@ import {
 	TooltipTrigger,
 } from "@/components/shadcn/ui/tooltip";
 import { CompanySwitcher } from "./company-switcher";
+import { useMyOrganizations } from "@/hooks/use-my-organizations";
 
 const navSecondary = [
 	{ title: "Support", url: "#", icon: LifeBuoy },
 	{ title: "Feedback", url: "#", icon: Send },
 ];
 
-type OrgInfo = {
-	id: string;
-	name: string;
-	logo: string | null;
-	slug: string;
-};
-
 export default function AppSidebar({
 	user,
-	organizations,
 	...props
 }: React.ComponentProps<typeof Sidebar> & {
 	user: UserType;
-	organizations: OrgInfo[];
 }) {
 	const role = user.role ?? UserRole.USER;
 	const t = useTranslations(`Sidebar.${role.toLowerCase()}`);
 	const navConfig = getNavConfig(role, t);
 	const isMobile = useIsMobile();
+	const { data: organizations = [] } = useMyOrganizations();
 
 	return (
 		<Sidebar

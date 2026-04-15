@@ -1,14 +1,22 @@
+"use client";
+
 import { CreateOrganizationForm } from "@/components/dashboard/organizations/create-organization-form";
-import { Typography } from "@/components/shared";
-import { getTranslations } from "next-intl/server";
-import { IconBuildingSkyscraper } from "@tabler/icons-react";
+import { DASHBOARD_ROUTE } from "@/consts/routes";
+import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export default async function NewOrganizationPage() {
-	const t = await getTranslations("CreateOrganization");
+	const t = useTranslations("CreateOrganization");
+
+	const router = useRouter();
+
+	const handlerSuccess = () => {
+		router.push(DASHBOARD_ROUTE);
+	};
 
 	return (
 		<div className="relative z-10 w-sm 2xl:w-lg mx-auto flex flex-col gap-7 py-5">
-			<header className="flex items-start gap-3">
+			{/* <header className="flex items-start gap-3">
 				<div className="rounded-lg bg-muted p-2.5 mt-0.5 shrink-0">
 					<IconBuildingSkyscraper className="size-5 text-muted-foreground" />
 				</div>
@@ -18,9 +26,15 @@ export default async function NewOrganizationPage() {
 						{t("newOrgDescription")}
 					</p>
 				</div>
-			</header>
+			</header> */}
 
-			<CreateOrganizationForm />
+			<CreateOrganizationForm
+				header={{
+					title: t("newOrgTitle"),
+					subTitle: t("newOrgDescription"),
+				}}
+				onSuccess={handlerSuccess}
+			/>
 		</div>
 	);
 }
