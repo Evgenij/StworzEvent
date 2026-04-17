@@ -6,18 +6,22 @@ import { cn } from "@/lib/utils";
 import { IconBrandFacebook } from "@tabler/icons-react";
 import React, { ReactNode } from "react";
 import { APP_CONFIG } from "@/config/app";
+import NavLinks from "../header/nav-links";
+import { NavLink } from "@/types/nav-link";
+import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
 
 type FooterWebsiteProps = {
 	locale: string;
 };
 
-const navLinks = [
-	{ href: "#", label: "Features" },
-	{ href: "#", label: "Blog" },
-	{ href: "#", label: "About" },
-	{ href: "#", label: "Contact" },
-	{ href: "#", label: "Licence" },
-	{ href: "#", label: "Privacy" },
+const mainLinks: NavLink[] = [
+	{ href: MAIN_PAGE_EVENTS_ROUTE, label: "Wydarzenia" },
+	{ href: "#", label: "Kontakt" },
+];
+
+const secondaryLinks: NavLink[] = [
+	{ href: "#", label: "Regulamin" },
+	{ href: "#", label: "Polityka prywatności" },
 ];
 
 const socialLinks = [
@@ -60,7 +64,7 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 						</div>
 					</div>
 
-					<nav>
+					{/* <nav>
 						<ul className="flex flex-wrap gap-4 font-medium text-muted-foreground text-sm md:gap-6">
 							{navLinks.map((link) => (
 								<li key={link.label}>
@@ -73,15 +77,22 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 								</li>
 							))}
 						</ul>
-					</nav>
+					</nav> */}
+					<NavLinks items={mainLinks} />
 				</div>
 				<div className="flex items-center justify-between gap-4 border-t py-4 text-muted-foreground text-sm">
 					<p>
-						&copy; {new Date().getFullYear()} {APP_CONFIG.name} v
-						{APP_CONFIG.version}
+						&copy; 2025-{new Date().getFullYear()},{" "}
+						{APP_CONFIG.name} v{APP_CONFIG.version}
 					</p>
 
-					<p className="inline-flex items-center gap-1">
+					<div className="flex items-center gap-4">
+						{secondaryLinks.map((link) => (
+							<Link href={link.href}>{link.label}</Link>
+						))}
+					</div>
+
+					{/* <p className="inline-flex items-center gap-1">
 						<span>Built by</span>
 						<a
 							aria-label="x/twitter"
@@ -92,7 +103,7 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 						>
 							UIXER
 						</a>
-					</p>
+					</p> */}
 				</div>
 			</div>
 		</footer>

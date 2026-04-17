@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Portal, PortalBackdrop } from "./ui/portal";
-import { navLinks } from "./header";
 import { XIcon, MenuIcon } from "lucide-react";
 import { Button } from "@/components/shadcn/ui/button";
 import AuthButtons from "./auth-buttons";
+import { NavLink } from "@/types/nav-link";
 
-export function MobileNav() {
+export function MobileNav({ items }: { items: NavLink[] }) {
 	const [open, setOpen] = React.useState(false);
 
 	return (
@@ -37,7 +37,7 @@ export function MobileNav() {
 						data-slot={open ? "open" : "closed"}
 					>
 						<div className="grid gap-y-2">
-							{navLinks.map((link) => (
+							{items.map((link) => (
 								<Button
 									asChild
 									className="justify-start"

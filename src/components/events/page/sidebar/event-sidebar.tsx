@@ -5,7 +5,11 @@ import { Separator } from "@/components/shadcn/ui/separator";
 import { Typography } from "@/components/shared";
 import { Link } from "@/i18n/routing";
 import { Event, Prisma } from "@prisma/client";
-import { IconBasket, IconExternalLink } from "@tabler/icons-react";
+import {
+	IconBasket,
+	IconClipboardCheck,
+	IconExternalLink,
+} from "@tabler/icons-react";
 import React from "react";
 import EventMetaItem from "../event-meta-item";
 import { EventDateRange } from "../event-date-range";
@@ -53,7 +57,7 @@ const EventSidebar = ({
 
 	return (
 		<aside className="hidden sm:block sm:fixed bottom-0 left-0 h-fit lg:sticky lg:shadow-2xl shadow-black/10 bg-white lg:top-22 w-full rounded-2xl rounded-bl-none rounded-br-none lg:rounded-xl overflow-hidden lg:border border-border border-t shadow-[0_-10px_16px_-5px_rgb(0,0,0,0.05)]">
-			<header className="hidden bg-sidebar lg:flex items-start justify-between px-4 py-3 text-foreground">
+			<header className="hidden bg-sidebar border-b border-border lg:flex items-start justify-between px-4 py-3 text-foreground">
 				<div className="company-info flex items-center gap-3">
 					<img
 						src={
@@ -115,18 +119,32 @@ const EventSidebar = ({
 							variant="p"
 							className="font-medium text-right lg:text-left"
 						>
-							Bilety juz od:
+							{price > 0 ? "Bilety juz od:" : "Wejscie"}
 						</Typography>
 						<div className="price-wrapper flex justify-end lg:justify-start items-baseline gap-2">
-							<Typography variant="h2" className="text-primary">
-								{price} zl
-							</Typography>
-							<Typography
-								variant="h4"
-								className="text-muted-foreground opacity-50"
-							>
-								/os
-							</Typography>
+							{price > 0 ? (
+								<>
+									<Typography
+										variant="h2"
+										className="text-primary"
+									>
+										{price} zl
+									</Typography>
+									<Typography
+										variant="h4"
+										className="text-muted-foreground opacity-50"
+									>
+										/os
+									</Typography>
+								</>
+							) : (
+								<Typography
+									variant="h2"
+									className="text-primary"
+								>
+									Bezplatne
+								</Typography>
+							)}
 						</div>
 					</div>
 					<Button
@@ -134,8 +152,17 @@ const EventSidebar = ({
 						className="w-fit lg:w-full"
 						onClick={openTicketDrawer}
 					>
-						<IconBasket className="size-5" />
-						Kup bilety
+						{price > 0 ? (
+							<>
+								<IconBasket className="size-5" /> Kup
+								bilety{" "}
+							</>
+						) : (
+							<>
+								<IconClipboardCheck className="size-5" />
+								Zapisz się
+							</>
+						)}
 					</Button>
 				</div>
 			</main>

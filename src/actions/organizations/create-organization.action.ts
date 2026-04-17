@@ -8,6 +8,7 @@ import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { slugify } from "@/lib/slugify/slugify";
 import prisma from "@/lib/prisma";
+import { UserRole } from "@prisma/client";
 
 async function generateUniqueOrgSlug(name: string): Promise<string> {
 	const base = slugify(name);
@@ -63,6 +64,15 @@ export const createOrganizationAction = safeAction(async (input: unknown) => {
 		});
 
 		return org;
+	});
+
+	await prisma.user.update({
+		where: {
+			id: session.user.id,
+		},
+		data: {
+			role: UserRole.ORGANIZER,
+		},
 	});
 
 	return { organizationId: org.id, slug: org.slug };

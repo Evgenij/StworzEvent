@@ -415,6 +415,7 @@ model Event {
   showMap        Boolean     @default(true) @map("show_map")
   onlineUrl      String?     @map("online_url")
   eventIsOffline Boolean     @default(false) @map("event_is_offline")
+  payAtEntrance  Boolean     @default(false) @map("pay_at_entrance")
 
   organizationId String       @map("organization_id")
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)

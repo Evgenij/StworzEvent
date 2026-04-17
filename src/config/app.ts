@@ -1,5 +1,5 @@
 export const APP_CONFIG = {
-	name: "StworzEvent",
+	name: "StworzEvent.pl",
 	version: "0.0.1",
 	description: "Platforma do tworzenia i zarządzania wydarzeniami",
 	url: "https://stworzevent.pl",

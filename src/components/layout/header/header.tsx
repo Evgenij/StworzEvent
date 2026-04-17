@@ -8,25 +8,16 @@ import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
 import AuthButtons from "./auth-buttons";
 import { UserType } from "@/types/user";
+import NavLinks from "./nav-links";
+import { NavLink } from "@/types/nav-link";
 
 type HeaderWebsiteProps = {
 	locale: string;
 	user?: UserType;
 };
 
-export const navLinks = [
-	{
-		label: "Wydarzenia",
-		href: MAIN_PAGE_EVENTS_ROUTE,
-	},
-	// {
-	// 	label: "Pricing",
-	// 	href: "#",
-	// },
-	// {
-	// 	label: "About",
-	// 	href: "#",
-	// },
+const navLinks: NavLink[] = [
+	{ label: "Wydarzenia", href: MAIN_PAGE_EVENTS_ROUTE },
 ];
 
 const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
@@ -60,20 +51,22 @@ const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
 				</Link>
 
 				<div className="hidden md:flex items-center gap-2">
-					{navLinks.map((link) => (
+					<NavLinks items={navLinks} />
+					{/* {navLinks.map((link) => (
 						<Button
 							asChild
 							key={link.label}
 							size="sm"
+							className="rounded-full"
 							variant="ghost"
 						>
 							<a href={link.href}>{link.label}</a>
 						</Button>
-					))}
+					))} */}
 				</div>
 
 				<AuthButtons user={user} className="hidden md:flex" />
-				<MobileNav />
+				<MobileNav items={navLinks} />
 			</nav>
 		</header>
 	);

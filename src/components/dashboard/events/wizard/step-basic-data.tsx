@@ -109,9 +109,9 @@ export function StepBasicData({ eventId, onSuccess }: Props) {
 	});
 
 	useEffect(() => {
-		if (memberships.length === 1) {
-			form.setValue("organizationId", memberships[0].organizations.id);
-		}
+		// if (memberships.length === 1) {
+		// 	form.setValue("organizationId", memberships[0].organizations.id);
+		// }
 	}, [memberships]);
 
 	useEffect(() => {

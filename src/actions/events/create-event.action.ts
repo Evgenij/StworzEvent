@@ -32,12 +32,13 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 		data: {
 			title: data.title,
 			slug,
-			status: EventStatus.DRAFT,
+			status: data.publishImmediately ? EventStatus.PUBLISHED : EventStatus.DRAFT,
 			startsAt: new Date(data.startsAt),
 			endsAt: null, //new Date(data.endsAt),
 			location: data.location,
 			street: data.street ?? null,
 			coverImage: data.coverImage ?? null,
+			payAtEntrance: data.payAtEntrance ?? false,
 			organizationId: member.organizationId,
 			tickets: {
 				create: {

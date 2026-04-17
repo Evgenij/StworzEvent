@@ -92,7 +92,7 @@ const EventPage = async ({
 	}
 
 	return (
-		<div className="event-page pt-4 md:pt-0 max-w-6xl mx-auto flex flex-col gap-5">
+		<div className="event-page pt-4 md:pt-0 w-6xl mx-auto flex flex-col gap-5">
 			<div className="w-full flex justify-between items-center px-5">
 				<Breadcrumb>
 					<BreadcrumbList>
@@ -144,12 +144,11 @@ const EventPage = async ({
 					<ShareButton title={event.title} />
 				</div>
 			</div>
-			{event.coverImage ? (
+
+			{event.coverImage && (
 				<EventHeroSection
 					image={event.coverImage ?? "/placeholder.jpg"}
 				/>
-			) : (
-				<EventImagePlaceholder />
 			)}
 
 			<div className="flex w-full gap-6 px-5">

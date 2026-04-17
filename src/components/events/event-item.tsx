@@ -104,7 +104,7 @@ const EventItem = ({
 					{minPrice ? (
 						<>
 							<span className="text-muted-foreground">od</span>
-							<p className="font-bold text-primary text-lg">
+							<p className="font-semibold text-primary text-base">
 								{formatPlnFromGrosze(minPrice)}
 							</p>
 						</>
@@ -113,7 +113,7 @@ const EventItem = ({
 							bilety nie ustawione
 						</p>
 					) : (
-						<p className="font-bold text-primary text-lg">
+						<p className="font-semibold text-primary text-base">
 							Bezpłatne
 						</p>
 					)}

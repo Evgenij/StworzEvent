@@ -30,15 +30,16 @@ const ProfileLayout = async ({
 	const { locale } = await params;
 
 	const h = await headers();
-	console.log("cookie header:", h.get("cookie"));
 
-	const sessionRaw = await auth.api.getSession({ headers: h }).catch((e) => {
-		console.error("getSession error:", JSON.stringify(e));
-		return null;
-	});
-
-	//console.log("sessionRaw:", JSON.stringify(sessionRaw));
-	//console.log("session.user:", JSON.stringify(sessionRaw?.user));
+	let sessionRaw: Awaited<ReturnType<typeof auth.api.getSession>> | null = null;
+	try {
+		sessionRaw = await auth.api.getSession({ headers: h });
+	} catch (e) {
+		// DB / network error — do NOT treat this as "no session".
+		// Let Next.js render the error boundary instead of logging the user out.
+		console.error("getSession error:", e);
+		throw e;
+	}
 
 	if (!sessionRaw?.user) {
 		redirect({ href: SIGNIN_ROUTE, locale });

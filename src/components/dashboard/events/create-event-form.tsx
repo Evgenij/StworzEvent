@@ -16,6 +16,7 @@ import {
 	FieldContent,
 	FieldDescription,
 	FieldError,
+	FieldGroup,
 	FieldLabel,
 	FieldTitle,
 } from "@/components/shadcn/ui/field";
@@ -34,6 +35,20 @@ import { cn } from "@/lib/utils";
 import { PolishCityCombobox } from "./location/polish-city-combobox";
 import { Separator } from "@/components/shadcn/ui/separator";
 import { DateTimeFormatter } from "@/helpers/date-formatter";
+import { FormGroup, FormRow } from "@/components/forms";
+import { Checkbox } from "@/components/shadcn/ui/checkbox";
+import FutureFunctionWrapper from "@/features/layout/components/wrapper-future-function";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/shadcn/ui/tabs";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/shadcn/ui/popover";
 
 export function CreateEventForm() {
 	const router = useRouter();
@@ -51,7 +66,9 @@ export function CreateEventForm() {
 			streetNumber: "",
 			ticketType: "free",
 			ticketPrice: 50,
-			ticketQuantity: 5,
+			payAtEntrance: false,
+			publishImmediately: false,
+			ticketQuantity: null,
 			coverImage: null,
 		},
 	});
@@ -82,11 +99,80 @@ export function CreateEventForm() {
 		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
 			<div className="fields-group flex flex-col gap-4">
 				<Field>
-					<div className="wrapper flex items-center gap-1">
-						<FieldLabel htmlFor="title">{t("cover")}</FieldLabel>
-						<span className="text-muted-foreground text-xs">
-							({t("optional")})
-						</span>
+					<div className="wrapper flex items-center justify-between gap-1">
+						<div className="flex items-center gap-1">
+							<FieldLabel htmlFor="title">
+								{t("cover")}
+							</FieldLabel>
+							<span className="text-muted-foreground text-xs">
+								({t("optional")})
+							</span>
+						</div>
+						<Popover>
+							<PopoverTrigger
+								asChild
+								className="cursor-pointer group hidden"
+							>
+								<div className="flex items-center gap-0.5">
+									<IconInfoCircle className="size-4 text-link " />
+									<span className="text-muted-foreground text-xs group-hover:text-foreground">
+										{t("coverRules")}
+									</span>
+								</div>
+							</PopoverTrigger>
+							<PopoverContent className="w-80">
+								<div className="grid gap-4">
+									<div className="space-y-2">
+										<h4 className="leading-none font-medium">
+											Dimensions
+										</h4>
+										<p className="text-sm text-muted-foreground">
+											Set the dimensions for the layer.
+										</p>
+									</div>
+									<div className="grid gap-2">
+										{/* <div className="grid grid-cols-3 items-center gap-4">
+											<Label htmlFor="width">Width</Label>
+											<Input
+												id="width"
+												defaultValue="100%"
+												className="col-span-2 h-8"
+											/>
+										</div>
+										<div className="grid grid-cols-3 items-center gap-4">
+											<Label htmlFor="maxWidth">
+												Max. width
+											</Label>
+											<Input
+												id="maxWidth"
+												defaultValue="300px"
+												className="col-span-2 h-8"
+											/>
+										</div>
+										<div className="grid grid-cols-3 items-center gap-4">
+											<Label htmlFor="height">
+												Height
+											</Label>
+											<Input
+												id="height"
+												defaultValue="25px"
+												className="col-span-2 h-8"
+											/>
+										</div>
+										<div className="grid grid-cols-3 items-center gap-4">
+											<Label htmlFor="maxHeight">
+												Max. height
+											</Label>
+											<Input
+												id="maxHeight"
+												defaultValue="none"
+												className="col-span-2 h-8"
+											/>
+										</div> */}
+									</div>
+								</div>
+							</PopoverContent>
+						</Popover>
 					</div>
 					<Controller
 						control={control}
@@ -129,50 +215,72 @@ export function CreateEventForm() {
 			</div>
 
 			{/* location */}
-			<div className="fields-group flex flex-col gap-4">
-				<div className="text-muted-foreground flex items-center gap-1 text-sm ml-2">
-					<IconMap2 className="size-5 text-primary" />
-					{t("locationLabel")}
-				</div>
-				<Field>
-					<FieldLabel>{t("city")}</FieldLabel>
-					<Controller
-						control={control}
-						name="location"
-						render={({ field }) => (
-							<PolishCityCombobox
-								value={field.value || ""}
-								onChange={field.onChange}
-								onBlur={field.onBlur}
-								invalid={!!errors.location}
+			<FormGroup label={t("locationLabel")} icon={IconMap2}>
+				<Tabs defaultValue="offline" className="w-full gap-4">
+					<TabsList className="w-full">
+						<TabsTrigger value="offline">Lokalizacja</TabsTrigger>
+						<FutureFunctionWrapper>
+							<TabsTrigger value="online" disabled>
+								Online
+							</TabsTrigger>
+						</FutureFunctionWrapper>
+					</TabsList>
+					<TabsContent
+						value="offline"
+						className="flex flex-col gap-4"
+					>
+						<Field>
+							<FieldLabel>{t("city")}</FieldLabel>
+							<Controller
+								control={control}
+								name="location"
+								render={({ field }) => (
+									<PolishCityCombobox
+										value={field.value || ""}
+										onChange={field.onChange}
+										onBlur={field.onBlur}
+										invalid={!!errors.location}
+									/>
+								)}
 							/>
-						)}
-					/>
-					<FieldError errors={[errors.location]} />
-				</Field>
-				<div className="flex gap-2">
-					<Field className="flex-2">
-						<FieldLabel htmlFor="street">{t("street")}</FieldLabel>
-						<Input
-							id="street"
-							{...register("street")}
-							placeholder={t("streetPlaceholder")}
-							aria-invalid={!!errors.street}
-						/>
-						<FieldError errors={[errors.street]} />
-					</Field>
-					<Field className="flex-1">
-						<FieldLabel htmlFor="number">{t("number")}</FieldLabel>
-						<Input
-							id="streetNumber"
-							{...register("streetNumber")}
-							placeholder={t("numberPlaceholder")}
-							aria-invalid={!!errors.streetNumber}
-						/>
-						<FieldError errors={[errors.streetNumber]} />
-					</Field>
-				</div>
-			</div>
+							<FieldError errors={[errors.location]} />
+						</Field>
+						<FormRow>
+							<Field>
+								<FieldLabel htmlFor="street">
+									{t("street")}
+								</FieldLabel>
+								<Input
+									id="street"
+									{...register("street")}
+									placeholder={t("streetPlaceholder")}
+									aria-invalid={!!errors.street}
+								/>
+								<FieldError errors={[errors.street]} />
+							</Field>
+							<Field className="w-35 shrink-0">
+								<FieldLabel htmlFor="number">
+									{t("number")}
+								</FieldLabel>
+								<Input
+									id="streetNumber"
+									{...register("streetNumber")}
+									placeholder={t("numberPlaceholder")}
+									aria-invalid={!!errors.streetNumber}
+								/>
+								<FieldError errors={[errors.streetNumber]} />
+							</Field>
+						</FormRow>
+					</TabsContent>
+					<TabsContent
+						value="online"
+						className="flex flex-col gap-4"
+					></TabsContent>
+				</Tabs>
+			</FormGroup>
+			{/* <div className="fields-group flex flex-col gap-4">
+				
+			</div> */}
 			<div className="fields-group flex flex-col gap-4">
 				<div className="text-muted-foreground flex items-center gap-1 text-sm ml-2">
 					<IconTicket className="size-5 text-primary" />
@@ -233,8 +341,7 @@ export function CreateEventForm() {
 				</Field>
 
 				{ticketType === "paid" && (
-					<div className="border border-border rounded-xl p-3 shadow-xl/5">
-						{/* <Separator /> */}
+					<div className="flex flex-col gap-3 border border-border rounded-xl p-3 shadow-xl/5">
 						<Field>
 							<div className="flex items-center justify-between pr-2 mb-2">
 								<FieldLabel className="pl-0">
@@ -347,6 +454,74 @@ export function CreateEventForm() {
 							/>
 							<FieldError errors={[errors.ticketPrice]} />
 						</Field>
+						<Separator />
+						<Controller
+							control={control}
+							name="payAtEntrance"
+							render={({ field }) => (
+								<Field
+									orientation="horizontal"
+									className="gap-2"
+								>
+									<Checkbox
+										id="pay-at-entrance"
+										checked={field.value ?? false}
+										name="payAtEntrance"
+										onCheckedChange={field.onChange}
+									/>
+									<FieldContent>
+										<FieldLabel
+											className="pl-0"
+											htmlFor="pay-at-entrance"
+										>
+											{t("payAtEntrance")}
+										</FieldLabel>
+										<FieldDescription
+											onClick={() =>
+												field.onChange(!field.value)
+											}
+										>
+											{t("payAtEntranceDescription")}
+										</FieldDescription>
+									</FieldContent>
+								</Field>
+								// <FieldLabel className="p-0 cursor-pointer">
+								// 	<Field orientation="horizontal">
+								// 		<Checkbox
+								// 			id="pay-at-entrance"
+								// 			checked={field.value ?? false}
+								// 			onCheckedChange={field.onChange}
+								// 		/>
+								// 		<FieldContent>
+								// 			<FieldTitle>
+								// 				{t("payAtEntrance")}
+								// 			</FieldTitle>
+								// 			<FieldDescription>
+								// 				{t("payAtEntranceDescription")}
+								// 			</FieldDescription>
+								// 		</FieldContent>
+								// 	</Field>
+								// </FieldLabel>
+							)}
+						/>
+						{/* <FieldGroup className="mx-auto w-72">
+							<Field orientation="horizontal">
+								<Checkbox
+									id="terms-checkbox-desc"
+									name="terms-checkbox-desc"
+									defaultChecked
+								/>
+								<FieldContent>
+									<FieldLabel htmlFor="terms-checkbox-desc">
+										Accept terms and conditions
+									</FieldLabel>
+									<FieldDescription>
+										By clicking this checkbox, you agree to
+										the terms and conditions.
+									</FieldDescription>
+								</FieldContent>
+							</Field>
+						</FieldGroup> */}
 					</div>
 				)}
 				{/* Quantity */}
@@ -355,7 +530,7 @@ export function CreateEventForm() {
 						<FieldLabel>{t("ticketQuantity")}</FieldLabel>
 
 						<span className="text-sm font-semibold tabular-nums">
-							{watch("ticketQuantity") ?? 5}
+							{watch("ticketQuantity") ?? "Bez limitu"}
 						</span>
 					</div>
 					<Controller
@@ -373,7 +548,7 @@ export function CreateEventForm() {
 									}
 								/>
 								<div className="flex gap-1">
-									{[25, 50, 100, 250, 500, 1000, 2000].map(
+									{[25, 50, 150, 500, 1000, 2000, null].map(
 										(preset) => (
 											<Button
 												key={preset}
@@ -389,7 +564,9 @@ export function CreateEventForm() {
 													field.onChange(preset)
 												}
 											>
-												{preset}
+												{preset === null
+													? "Bez limitu"
+													: preset}
 											</Button>
 										),
 									)}
@@ -400,18 +577,61 @@ export function CreateEventForm() {
 					<FieldError errors={[errors.ticketQuantity]} />
 				</Field>
 			</div>
+			<FutureFunctionWrapper>
+				<FieldLabel className="pl-0">
+					<Field orientation="horizontal" data-disabled>
+						<Checkbox
+							id="toggle-checkbox-2"
+							name="toggle-checkbox-2"
+							disabled
+						/>
+						<FieldContent>
+							<FieldTitle>Wydarzenie prywatne</FieldTitle>
+							<FieldDescription>
+								Wydarzenie wylacznie dla zaproszonych
+								użytkowników.
+							</FieldDescription>
+						</FieldContent>
+					</Field>
+				</FieldLabel>
+			</FutureFunctionWrapper>
+
 			{/* <pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
 			{/* Submit */}
-			<Button
-				type="submit"
-				disabled={isSubmitting}
-				className={cn("w-full")}
-			>
-				{isSubmitting ? (
-					<IconLoader className="size-4 animate-spin mr-2" />
-				) : null}
-				{t("submit")}
-			</Button>
+			<div className="flex flex-col gap-3 items-center">
+				<Button
+					type="submit"
+					disabled={isSubmitting}
+					className={cn("w-full")}
+				>
+					{isSubmitting ? (
+						<IconLoader className="size-4 animate-spin" />
+					) : null}
+					{t("submit")}
+				</Button>
+				<Controller
+					control={control}
+					name="publishImmediately"
+					render={({ field }) => (
+						<Field
+							orientation="horizontal"
+							className="gap-2 items-center w-fit"
+						>
+							<Checkbox
+								id="publish-immediately"
+								checked={field.value ?? false}
+								onCheckedChange={field.onChange}
+							/>
+							<FieldLabel
+								className="pl-0 cursor-pointer font-normal"
+								htmlFor="publish-immediately"
+							>
+								{t("publishImmediately")}
+							</FieldLabel>
+						</Field>
+					)}
+				/>
+			</div>
 		</form>
 	);
 }

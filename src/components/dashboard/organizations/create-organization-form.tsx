@@ -85,8 +85,13 @@ export function CreateOrganizationForm({
 			return;
 		}
 
-		//router.push("/profile/dashboard");
-		//router.refresh();
+		// After role change in DB, Better Auth cookie cache still holds the old role.
+		// Force a fresh session read from DB to update the cache cookie.
+		await fetch("/api/auth/get-session?disableCookieCache=true", {
+			credentials: "include",
+		});
+
+		router.refresh();
 		onSuccess?.();
 	};
 
@@ -145,48 +150,54 @@ export function CreateOrganizationForm({
 					<FieldError errors={[errors.nip]} />
 				</Field>
 
-				<Field>
-					<FieldLabel htmlFor="org-email">{t("email")}</FieldLabel>
-					<Controller
-						control={control}
-						name="email"
-						render={({ field }) => (
-							<Input
-								id="org-email"
-								type="email"
-								{...field}
-								placeholder={t("emailPlaceholder")}
-								aria-invalid={!!errors.email}
-							/>
-						)}
-					/>
-					<FieldError errors={[errors.email]} />
-				</Field>
-
-				<Field>
-					<FieldLabel>{t("phone")}</FieldLabel>
-					<Controller
-						control={control}
-						name="phone"
-						render={({ field, fieldState }) => (
-							<InputGroup>
-								<InputGroupAddon>
-									<InputGroupText>+48</InputGroupText>
-								</InputGroupAddon>
-								<InputGroupIMask
-									mask="000-000-000"
-									value={field.value ?? ""}
-									onAccept={(value) => field.onChange(value)}
-									placeholder="___-___-___"
-									inputRef={field.ref}
-									aria-invalid={fieldState.invalid}
-									onBlur={field.onBlur}
+				<FormRow className="flex-col gap-4 2xl:gap-2 2xl:flex-row">
+					<Field>
+						<FieldLabel htmlFor="org-email">
+							{t("email")}
+						</FieldLabel>
+						<Controller
+							control={control}
+							name="email"
+							render={({ field }) => (
+								<Input
+									id="org-email"
+									type="email"
+									{...field}
+									placeholder={t("emailPlaceholder")}
+									aria-invalid={!!errors.email}
 								/>
-							</InputGroup>
-						)}
-					/>
-					<FieldError errors={[errors.phone]} />
-				</Field>
+							)}
+						/>
+						<FieldError errors={[errors.email]} />
+					</Field>
+
+					<Field className="flex-1 2xl:w-48 2xl:shrink-0">
+						<FieldLabel>{t("phone")}</FieldLabel>
+						<Controller
+							control={control}
+							name="phone"
+							render={({ field, fieldState }) => (
+								<InputGroup>
+									<InputGroupAddon>
+										<InputGroupText>+48</InputGroupText>
+									</InputGroupAddon>
+									<InputGroupIMask
+										mask="000-000-000"
+										value={field.value ?? ""}
+										onAccept={(value) =>
+											field.onChange(value)
+										}
+										placeholder="___-___-___"
+										inputRef={field.ref}
+										aria-invalid={fieldState.invalid}
+										onBlur={field.onBlur}
+									/>
+								</InputGroup>
+							)}
+						/>
+						<FieldError errors={[errors.phone]} />
+					</Field>
+				</FormRow>
 
 				<Field>
 					<FieldLabel>{t("legalForm")}</FieldLabel>
@@ -334,31 +345,6 @@ export function CreateOrganizationForm({
 					</Field>
 				</FormRow>
 
-				{/* <Field>
-					<FieldLabel>{t("phone")}</FieldLabel>
-					<Controller
-						control={control}
-						name="phone"
-						render={({ field, fieldState }) => (
-							<InputGroup>
-								<InputGroupAddon>
-									<InputGroupText>+48</InputGroupText>
-								</InputGroupAddon>
-								<InputGroupIMask
-									mask="000-000-000"
-									value={field.value ?? ""}
-									onAccept={(value) => field.onChange(value)}
-									placeholder="___-___-___"
-									inputRef={field.ref}
-									aria-invalid={fieldState.invalid}
-									onBlur={field.onBlur}
-								/>
-							</InputGroup>
-						)}
-					/>
-					<FieldError errors={[errors.phone]} />
-				</Field> */}
-
 				<FormRow>
 					<Field className="w-32 shrink-0">
 						<FieldLabel htmlFor="org-zip">
@@ -367,19 +353,8 @@ export function CreateOrganizationForm({
 						<Controller
 							control={control}
 							name="address.zipCode"
-							// render={({ field }) => (
-							// 	<Input
-							// 		id="org-zip"
-							// 		{...field}
-							// 		placeholder={t("zipCodePlaceholder")}
-							// 		aria-invalid={!!errors.address?.zipCode}
-							// 	/>
-							// )}
 							render={({ field, fieldState }) => (
 								<InputGroup>
-									{/* <InputGroupAddon>
-									<InputGroupText>ZIP CODE</InputGroupText>
-								</InputGroupAddon> */}
 									<InputGroupIMask
 										id="org-zip"
 										mask="00-000"
@@ -435,7 +410,7 @@ export function CreateOrganizationForm({
 
 			<Button type="submit" disabled={isSubmitting} className="w-full">
 				{isSubmitting ? (
-					<IconLoader className="size-4 animate-spin mr-2" />
+					<IconLoader className="size-4 animate-spin" />
 				) : null}
 				{t("submit")}
 			</Button>

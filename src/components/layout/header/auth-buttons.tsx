@@ -33,6 +33,7 @@ import {
 	IconPlus,
 	IconRocket,
 	IconSettings2,
+	IconUserPlus,
 } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 
@@ -120,22 +121,22 @@ const AuthButtons = ({ user, className }: AuthButtonsProps) => {
 	return (
 		<div
 			className={cn(
-				"items-center gap-2 flex flex-col md:flex-row",
+				"items-center gap-1 flex flex-col md:flex-row",
 				className,
 			)}
 		>
 			<Button
-				variant="ghost"
 				asChild
+				variant="ghost"
 				className="rounded-full w-full md:w-fit"
 			>
-				<Link href={SIGNIN_ROUTE}>Zaloguj się</Link>
-			</Button>
-			<Button asChild className="rounded-full w-full md:w-fit">
 				<Link href={SIGNUP_ROUTE}>
-					<IconRocket className="size-5" />
+					{/* <IconUserPlus className="size-5" /> */}
 					Zarejestruj się
 				</Link>
+			</Button>
+			<Button asChild className="rounded-full w-full md:w-fit">
+				<Link href={SIGNIN_ROUTE}>Zaloguj się</Link>
 			</Button>
 		</div>
 	);

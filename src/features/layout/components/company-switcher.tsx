@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronsUpDown, Plus, Trash2 } from "lucide-react";
 import { IconBuildings, IconPlus } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -39,6 +40,7 @@ export function CompanySwitcher({
 }) {
 	const { isMobile } = useSidebar();
 	const queryClient = useQueryClient();
+	const router = useRouter();
 	const [active, setActive] = useState<OrgInfo | null>(
 		organizations[0] ?? null,
 	);
@@ -70,6 +72,14 @@ export function CompanySwitcher({
 				queryClient.invalidateQueries({
 					queryKey: MY_ORGANIZATIONS_QUERY_KEY,
 				});
+				if (result.data?.isLastOrganization) {
+					// Role changed to USER — refresh session cache to reflect new role
+					await fetch(
+						"/api/auth/get-session?disableCookieCache=true",
+						{ credentials: "include" },
+					);
+					router.refresh();
+				}
 			}
 			setDeletingId(null);
 		});

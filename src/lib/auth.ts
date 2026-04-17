@@ -214,7 +214,7 @@ const options = {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
 		cookieCache: {
 			enabled: true,
-			maxAge: 5 * 60, // 5 minutes
+			maxAge: 30 * 60, // 30 minutes
 		},
 	},
 	// trustedOrigins: [

@@ -11,7 +11,9 @@ export const createEventSchema = (t: (key: string) => string) =>
 			streetNumber: z.string().optional(),
 			ticketType: z.enum(["free", "paid"]),
 			ticketPrice: z.number().min(0).optional(),
-			ticketQuantity: z.number().int().min(1, t("required")),
+			payAtEntrance: z.boolean().optional(),
+			publishImmediately: z.boolean().optional(),
+			ticketQuantity: z.number().int().nullable(),
 			coverImage: z.string().nullable(),
 		})
 		.superRefine((data, ctx) => {

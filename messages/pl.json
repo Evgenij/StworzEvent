@@ -422,6 +422,7 @@
 		"organization": "Organizacja",
 		"organizationPlaceholder": "Wybierz organizację",
 		"cover": "Zdjęcie główne",
+		"coverRules": "Zasady okładki",
 		"coverUploaded": "Zdjęcie główne zostało dodane",
 		"title_field": "Nazwa wydarzenia",
 		"titlePlaceholder": "np. Koncert jazzowy w Warszawie",
@@ -431,7 +432,7 @@
 		"endsAt": "Data i czas zakończenia",
 		"endsAtBeforeStartsAt": "Data zakończenia musi być późniejsza niż data rozpoczęcia",
 		"dateTimePlaceholder": "np. 21 mar 2026 14:30",
-		"locationLabel": "Lokalizacja",
+		"locationLabel": "Gdzie się odbywa wydarzenie",
 		"location": "Miasto i adres",
 		"locationPlaceholder": "np. Warszawa",
 		"city": "Miasto",
@@ -475,7 +476,10 @@
 		"free": "Bezpłatny",
 		"freeDescription": "Wstęp wolny",
 		"paid": "Płatny",
-		"paidDescription": "Ustaw cenę biletu"
+		"paidDescription": "Ustaw cenę biletu",
+		"payAtEntrance": "Opłata przy wejściu",
+		"payAtEntranceDescription": "Uczestnicy płacą gotówką lub kartą bezpośrednio przy wejściu na wydarzenie",
+		"publishImmediately": "Opublikuj wydarzenie od razu"
 	},
 	"CreateOrganization": {
 		"title": "Utwórz organizację",

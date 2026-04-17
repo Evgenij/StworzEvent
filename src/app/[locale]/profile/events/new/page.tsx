@@ -3,7 +3,7 @@
 import { CreateEventForm } from "@/components/dashboard/events/create-event-form";
 import { CreateOrganizationForm } from "@/components/dashboard/organizations/create-organization-form";
 import { Typography } from "@/components/shared";
-import { IconBuildingSkyscraper } from "@tabler/icons-react";
+import { IconBuildingSkyscraper, IconLoader } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -16,7 +16,18 @@ export default function NewEventPage() {
 	const queryClient = useQueryClient();
 	const { data: organizations = [], isLoading } = useMyOrganizations();
 
-	if (isLoading) return <div>Sprawdzamy czy jestes orgizatorem...</div>;
+	if (isLoading)
+		return (
+			<div className="h-[700px] flex items-center justify-center flex-col">
+				<img src="/images/boy.svg" alt="boy" />
+				<div className="flex items-center gap-2">
+					<IconLoader className="size-6 animate-spin" />
+					<Typography variant="h4">
+						Sprawdzamy czy jestes orgizatorem...
+					</Typography>
+				</div>
+			</div>
+		);
 
 	if (organizations.length === 0) {
 		return (
