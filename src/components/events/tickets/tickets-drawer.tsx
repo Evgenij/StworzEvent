@@ -156,7 +156,8 @@ export const TicketsDrawer = ({
 	const handleCancelReservation = async () => {
 		setCancelLoading(true);
 		try {
-			await cancelReservation(eventId);
+			const result = await cancelReservation(eventId);
+			if (!result.success) return;
 			setActiveReservationId(null);
 			const updated = await getTicketsWithAvailability(eventId);
 			setItems(updated.map((t) => ({ ticket: t, quantity: 0 })));

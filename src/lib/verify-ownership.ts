@@ -8,7 +8,7 @@ export async function verifyEventOwnership(eventId: string, userId: string) {
 		where: {
 			id: eventId,
 			organization: {
-				organizationMembers: { some: { userId } },
+				organizationMembers: { some: { userId, memberRole: "OWNER" } },
 			},
 		},
 		select: { id: true },
@@ -26,7 +26,7 @@ export async function verifySectionOwnership(
 			id: sectionId,
 			event: {
 				organization: {
-					organizationMembers: { some: { userId } },
+					organizationMembers: { some: { userId, memberRole: "OWNER" } },
 				},
 			},
 		},
@@ -45,7 +45,7 @@ export async function verifyAgendaItemOwnership(
 			id: itemId,
 			event: {
 				organization: {
-					organizationMembers: { some: { userId } },
+					organizationMembers: { some: { userId, memberRole: "OWNER" } },
 				},
 			},
 		},
@@ -61,7 +61,7 @@ export async function verifyFaqItemOwnership(itemId: string, userId: string) {
 			id: itemId,
 			event: {
 				organization: {
-					organizationMembers: { some: { userId } },
+					organizationMembers: { some: { userId, memberRole: "OWNER" } },
 				},
 			},
 		},

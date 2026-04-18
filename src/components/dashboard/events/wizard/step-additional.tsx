@@ -68,13 +68,13 @@ export function StepAdditional({
 	};
 
 	const handleChangeSectionsActive = (val: boolean) => {
-		console.log(val);
+		// console.log(val);
 
 		setSectionsIsActive(val);
 	};
 
 	const handleChangeFaqActive = (val: boolean) => {
-		console.log(val);
+		// console.log(val);
 
 		setFaqIsActive(val);
 	};

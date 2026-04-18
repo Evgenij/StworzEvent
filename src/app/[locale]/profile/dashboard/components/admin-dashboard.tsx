@@ -33,7 +33,7 @@ export function AdminDashboard({ user }: { user: UserType }) {
 			);
 			inviteUrl.searchParams.set("token", invite.token);
 
-			console.log(inviteUrl.toString());
+			//console.log(inviteUrl.toString());
 
 			await sendEmailAction({
 				type: TypeMail.INVITATION,

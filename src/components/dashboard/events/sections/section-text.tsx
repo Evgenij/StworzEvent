@@ -47,7 +47,7 @@ export function SectionText({ section, onTitleChange }: Props) {
 	} = form;
 
 	const onSubmit = async (values: SectionTextInput) => {
-		console.log(values);
+		// console.log(values);
 
 		const result = await updateSectionAction({
 			sectionId: section.id,

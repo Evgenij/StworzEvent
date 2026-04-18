@@ -53,7 +53,7 @@ const OrderPage = async ({ params, searchParams }: OrderPageProps) => {
 			},
 		});
 
-		console.log(reservation);
+		// console.log(reservation);
 	} else {
 		// Пытаемся восстановить по сессии
 		reservation = await getActiveReservation(event.id);

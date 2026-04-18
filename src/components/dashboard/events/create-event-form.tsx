@@ -86,7 +86,7 @@ export function CreateEventForm() {
 	const onSubmit: SubmitHandler<CreateEventInput> = async (data) => {
 		const result = await createEventAction(data);
 
-		console.log(data);
+		// console.log(data);
 
 		if (!result.success) {
 			toast.error(t("errors.default"));

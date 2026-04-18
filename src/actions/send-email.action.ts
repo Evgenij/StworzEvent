@@ -4,7 +4,7 @@
 import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
-import transporter from "@/lib/nodemailer";
+import resend from "@/lib/resend";
 import {
 	authMail,
 	AuthMailsProps,
@@ -30,19 +30,19 @@ export const sendEmailAction = safeAction(async (input: SendEmailInput) => {
 
 	// ─── Валидация входных данных ────────────────────────────────
 	if (!to || typeof to !== "string" || !to.includes("@")) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 500, {
 			to: ["Nieprawidłowy lub brak adresu email odbiorcy"],
 		});
 	}
 
 	if (!subject || typeof subject !== "string" || subject.trim().length < 3) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 500, {
 			subject: ["Temat wiadomości jest wymagany"],
 		});
 	}
 
 	if (!type || !Object.values(TypeMail).includes(type)) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 500, {
 			type: ["Nieprawidłowy typ wiadomości email"],
 		});
 	}
@@ -64,45 +64,25 @@ export const sendEmailAction = safeAction(async (input: SendEmailInput) => {
 			break;
 
 		default:
-			throw new ApiError(ErrorCode.INTERNAL_ERROR, {
+			throw new ApiError(ErrorCode.INTERNAL_ERROR, 500, {
 				general: ["Nieobsługiwany typ wiadomości email"],
 			});
 	}
 
 	// ─── Отправка письма ─────────────────────────────────────────
-	try {
-		await transporter.sendMail({
-			from: '"StworzEvent.pl" <no-reply@stworzevent.pl>',
-			to,
-			subject,
-			html: htmlContent,
+	const { error } = await resend.emails.send({
+		from: "StworzEvent.pl <no-reply@stworzevent.pl>",
+		to,
+		subject,
+		html: htmlContent,
+	});
+
+	if (error) {
+		console.error("[sendEmailAction] failed", { to, subject, type, error });
+		throw new ApiError(ErrorCode.INTERNAL_ERROR, 500, {
+			general: [error.message],
 		});
-
-		return { success: true };
-		// или: return { success: true, message: "Wiadomość wysłana pomyślnie" };
-	} catch (err: any) {
-		console.error("[sendEmailAction] failed", {
-			to,
-			subject,
-			type,
-			error: err?.message || err,
-			stack: err?.stack,
-		});
-
-		// Более точная обработка типичных ошибок nodemailer (по желанию)
-		if (err?.code === "EAUTH") {
-			throw new ApiError(ErrorCode.INTERNAL_ERROR, {
-				general: ["Błąd autoryzacji serwera SMTP"],
-			});
-		}
-
-		if (err?.responseCode === 550) {
-			throw new ApiError(ErrorCode.BAD_REQUEST, {
-				to: ["Adres email nie istnieje lub jest zablokowany"],
-			});
-		}
-
-		// остальные ошибки → INTERNAL_ERROR через safeAction
-		throw err;
 	}
+
+	return { success: true };
 });

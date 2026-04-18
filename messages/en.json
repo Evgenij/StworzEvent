@@ -101,6 +101,7 @@
 		}
 	},
 	"SignUpInviteForm": {
+		"noToken": "Missing invitation token",
 		"title": "Welcome to StwórzEvent.pl! 🎫",
 		"subtitle": "Your access has been confirmed. <lineBreak></lineBreak> To finish setting up your account, set a password",
 		"fields": {

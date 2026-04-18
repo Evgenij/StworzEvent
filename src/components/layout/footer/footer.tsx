@@ -88,7 +88,9 @@ const FooterWebsite = ({ locale }: FooterWebsiteProps) => {
 
 					<div className="flex items-center gap-4">
 						{secondaryLinks.map((link) => (
-							<Link href={link.href}>{link.label}</Link>
+							<Link href={link.href} key={link.label}>
+								{link.label}
+							</Link>
 						))}
 					</div>
 

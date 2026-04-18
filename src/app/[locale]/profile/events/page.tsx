@@ -28,7 +28,7 @@ export default async function EventsPage({
 
 	const role = session.user.role ?? UserRole.USER;
 
-	console.log(role);
+	// console.log(role);
 
 	const dashboards = {
 		[UserRole.ADMIN]: <div>admin dashboard</div>,

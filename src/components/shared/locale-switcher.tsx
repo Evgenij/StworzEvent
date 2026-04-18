@@ -24,8 +24,7 @@ export default function LocaleSwitcher() {
 	function onLocaleChange(nextLocale: string) {
 		// router.replace сохраняет текущий путь, но меняет префикс языка
 		router.replace(
-			// @ts-ignore - чтобы не ругался на типы путей
-			{ pathname, params },
+			{ pathname: pathname as never, params },
 			{ locale: nextLocale },
 		);
 	}

@@ -101,6 +101,7 @@
 		}
 	},
 	"SignUpInviteForm": {
+		"noToken": "Brak tokenu zaproszenia",
 		"title": "Witamy w StwórzEvent.pl! 🎫",
 		"subtitle": "Twój dostęp został potwierdzony. <lineBreak></lineBreak> Aby zakończyć konfigurację konta, ustaw hasło",
 		"fields": {

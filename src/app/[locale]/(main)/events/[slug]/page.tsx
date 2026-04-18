@@ -1,4 +1,4 @@
-import { getAvailableQuantity } from "@/actions/tickets/get-available-quantity.action";
+import { getBatchAvailability } from "@/actions/tickets/get-batch-availability.action";
 import {
 	EventDescriptionSection,
 	EventHeaderSection,
@@ -81,14 +81,11 @@ const EventPage = async ({
 
 	let ticketsWithAvailability: TicketWithAvailability[] = [];
 	if (event.tickets?.length) {
-		ticketsWithAvailability = await Promise.all(
-			event.tickets.map(async (ticket) => ({
-				...ticket,
-				available: await getAvailableQuantity(ticket.id),
-			})),
-		);
-	} else {
-		ticketsWithAvailability = [];
+		const availability = await getBatchAvailability(event.tickets);
+		ticketsWithAvailability = event.tickets.map((ticket) => ({
+			...ticket,
+			available: availability.get(ticket.id) ?? null,
+		}));
 	}
 
 	return (

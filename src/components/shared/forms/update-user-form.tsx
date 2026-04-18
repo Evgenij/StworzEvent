@@ -13,7 +13,7 @@ type Props = {
 const UpdateUserForm = ({ image, name }: Props) => {
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		console.log("!");
+		// console.log("!");
 
 		await updateUser({
 			name: name,

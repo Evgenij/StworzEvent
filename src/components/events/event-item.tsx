@@ -103,7 +103,9 @@ const EventItem = ({
 				<footer className="pt-2 mt-auto flex items-baseline gap-1 border-t border-border w-full">
 					{minPrice ? (
 						<>
-							<span className="text-muted-foreground">od</span>
+							<span className="text-muted-foreground text-sm">
+								od
+							</span>
 							<p className="font-semibold text-primary text-base">
 								{formatPlnFromGrosze(minPrice)}
 							</p>

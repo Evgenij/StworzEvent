@@ -22,7 +22,7 @@ export const createReservation = async (input: CreateReservationInput) => {
 	// sessionId — берём из сессии если залогинен, иначе генерируем для гостя
 	const sessionId = session?.id ?? randomUUID();
 
-	console.log("SESSION:", JSON.stringify(session, null, 2));
+	// console.log("SESSION:", JSON.stringify(session, null, 2));
 
 	// 1. Проверяем доступность билетов перед резервацией
 	for (const item of input.items) {

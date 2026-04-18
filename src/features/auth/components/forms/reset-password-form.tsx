@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { MIN_PASSWORD_LENGTH } from "@/consts/validation";
 import { Button } from "@/components/shadcn/ui/button";
 import { Field, FieldError, FieldGroup } from "@/components/shadcn/ui/field";
 import {
@@ -52,7 +53,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 		.object({
 			password: z
 				.string()
-				.min(6, tErrors("passwordMin")) //TODO create global variables for validation
+				.min(MIN_PASSWORD_LENGTH, tErrors("passwordMin"))
 				.max(25, tErrors("passwordMax")),
 			confirmPassword: z.string(),
 		})

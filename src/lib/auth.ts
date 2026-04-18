@@ -159,7 +159,6 @@ const options = {
 			create: {
 				before: async (user) => {
 					const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(";");
-					console.log("USER EMAIL: ", user.email, ADMIN_EMAILS);
 
 					if (ADMIN_EMAILS?.includes(user.email)) {
 						return { data: { ...user, role: UserRole.ADMIN } };

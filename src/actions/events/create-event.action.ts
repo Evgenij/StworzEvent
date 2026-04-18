@@ -34,7 +34,7 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 			slug,
 			status: data.publishImmediately ? EventStatus.PUBLISHED : EventStatus.DRAFT,
 			startsAt: new Date(data.startsAt),
-			endsAt: null, //new Date(data.endsAt),
+			endsAt: data.endsAt ? new Date(data.endsAt) : null,
 			location: data.location,
 			street: data.street ?? null,
 			coverImage: data.coverImage ?? null,
@@ -48,7 +48,7 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 							: "Bilet",
 					price:
 						data.ticketType === "paid"
-							? (data.ticketPrice ?? 0)
+							? (data.ticketPrice ?? 0) * 100
 							: 0,
 					quantity: data.ticketQuantity,
 				},

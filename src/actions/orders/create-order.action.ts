@@ -36,46 +36,43 @@ export const createOrder = async (input: CreateOrderInput) => {
 		headers: await headers(),
 	});
 
-	// 1. Проверяем доступность билетов
-	for (const item of input.items) {
-		const ticket = await prisma.ticket.findUnique({
-			where: { id: item.ticketId },
+	const order = await prisma.$transaction(async (tx) => {
+		// 1. Получаем билеты и проверяем доступность внутри транзакции
+		const tickets = await tx.ticket.findMany({
+			where: { id: { in: input.items.map((i) => i.ticketId) } },
 		});
 
-		if (!ticket) throw new Error("Ticket not found");
+		for (const item of input.items) {
+			const ticket = tickets.find((t) => t.id === item.ticketId);
+			if (!ticket) throw new Error("Ticket not found");
 
-		if (ticket.quantity) {
-			const sold = await prisma.orderItem.aggregate({
-				where: {
-					ticketId: item.ticketId,
-					orders: {
-						status: { in: ["CONFIRMED", "PAID", "PENDING"] },
+			if (ticket.quantity) {
+				const sold = await tx.orderItem.aggregate({
+					where: {
+						ticketId: item.ticketId,
+						orders: {
+							status: { in: ["CONFIRMED", "PAID", "PENDING"] },
+						},
 					},
-				},
-				_sum: { quantity: true },
-			});
+					_sum: { quantity: true },
+				});
 
-			const available = ticket.quantity - (sold._sum.quantity ?? 0);
-			if (available < item.quantity) {
-				throw new Error(
-					`Niewystarczająca liczba biletów: ${ticket.name}`,
-				);
+				const available = ticket.quantity - (sold._sum.quantity ?? 0);
+				if (available < item.quantity) {
+					throw new Error(
+						`Niewystarczająca liczba biletów: ${ticket.name}`,
+					);
+				}
 			}
 		}
-	}
 
-	// 2. Считаем итоговую сумму
-	const tickets = await prisma.ticket.findMany({
-		where: { id: { in: input.items.map((i) => i.ticketId) } },
-	});
+		// 2. Считаем итоговую сумму
+		const total = input.items.reduce((sum, item) => {
+			const ticket = tickets.find((t) => t.id === item.ticketId)!;
+			return sum + ticket.price * item.quantity;
+		}, 0);
 
-	const total = input.items.reduce((sum, item) => {
-		const ticket = tickets.find((t) => t.id === item.ticketId)!;
-		return sum + ticket.price * item.quantity;
-	}, 0);
-
-	// 3. Создаём заказ в транзакции
-	const order = await prisma.$transaction(async (tx) => {
+		// 3. Создаём заказ
 		const order = await tx.order.create({
 			data: {
 				eventId: input.eventId,
@@ -116,15 +113,13 @@ export const createOrder = async (input: CreateOrderInput) => {
 			},
 		});
 
-		console.log("✅ Order created:", order.id);
-		console.log("🗑 Deleting reservation:", input.reservationId);
+		//console.log("✅ Order created:", order.id);
+		//console.log("🗑 Deleting reservation:", input.reservationId);
 
 		// Удаляем резервацию — билеты теперь заняты заказом
 		await tx.ticketReservation.delete({
 			where: { id: input.reservationId },
 		});
-
-		console.log("✅ Reservation deleted");
 
 		return order;
 	});

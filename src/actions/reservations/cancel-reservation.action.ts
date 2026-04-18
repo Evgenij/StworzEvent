@@ -4,13 +4,18 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { safeAction } from "@/lib/safe-action";
+import { ApiError } from "@/error/api-error";
+import { ErrorCode } from "@/types/error-code";
 
-export const cancelReservation = async (eventId: string) => {
+export const cancelReservation = safeAction(async (eventId: string) => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
 
-	if (!session) return;
+	if (!session) {
+		throw new ApiError(ErrorCode.UNAUTHORIZED);
+	}
 
 	await prisma.ticketReservation.deleteMany({
 		where: {
@@ -18,4 +23,4 @@ export const cancelReservation = async (eventId: string) => {
 			sessionId: session.id,
 		},
 	});
-};
+});
