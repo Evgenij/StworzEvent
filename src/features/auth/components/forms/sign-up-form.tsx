@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { MIN_PASSWORD_LENGTH } from "@/consts/validation";
 import { Button } from "@/components/shadcn/ui/button";
 import { Field, FieldError, FieldGroup } from "@/components/shadcn/ui/field";
 import {
@@ -50,7 +51,7 @@ export default function SignUpForm() {
 		email: z.email(tErrors("invalidEmail")),
 		password: z
 			.string()
-			.min(6, tErrors("passwordMin"))
+			.min(MIN_PASSWORD_LENGTH, tErrors("passwordMin"))
 			.max(25, tErrors("passwordMax")),
 	});
 

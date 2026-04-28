@@ -159,7 +159,6 @@ const options = {
 			create: {
 				before: async (user) => {
 					const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(";");
-					console.log("USER EMAIL: ", user.email, ADMIN_EMAILS);
 
 					if (ADMIN_EMAILS?.includes(user.email)) {
 						return { data: { ...user, role: UserRole.ADMIN } };
@@ -214,7 +213,7 @@ const options = {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
 		cookieCache: {
 			enabled: true,
-			maxAge: 5 * 60, // 5 minutes
+			maxAge: 30 * 60, // 30 minutes
 		},
 	},
 	// trustedOrigins: [

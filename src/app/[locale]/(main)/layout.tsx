@@ -1,8 +1,6 @@
-import { FooterWebsite } from "@/components/layout/footer";
-import { HeaderWebsite } from "@/components/layout/header";
-import { MobileMenu } from "@/components/layout/menu";
+import { FooterWebsite, HeaderWebsite, MobileMenu } from "@/features/layout";
+import { UserType } from "@/features/user/types/user";
 import { auth } from "@/lib/auth";
-import { UserType } from "@/types/user";
 import { headers } from "next/headers";
 
 type MainLayoutProps = {
@@ -18,7 +16,7 @@ const MainLayout = async ({ children, params }: MainLayoutProps) => {
 	return (
 		<>
 			<HeaderWebsite locale={locale} user={session?.user as UserType} />
-			<main className="container relative flex items-center justify-center max-w-7xl mx-auto flex-1 px-0 sm:px-6 py-0 md:py-4">
+			<main className="event-layout container relative flex items-start justify-center max-w-7xl mx-auto flex-1 px-0 sm:px-6 py-0 md:py-4">
 				{children}
 			</main>
 			<MobileMenu />

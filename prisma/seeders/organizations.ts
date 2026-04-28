@@ -1,4 +1,4 @@
-import { MemberRole, PrismaClient, User } from "@prisma/client";
+import { LegalForm, MemberRole, PrismaClient, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { createEvents } from "./events/events";
 import { slugify } from "@/lib/slugify/slugify";
@@ -21,7 +21,7 @@ export const createOrganizations = async (
 			nip: null,
 			regon: null,
 			krs: null,
-			legalForm: "osoba fizyczna", // наиболее вероятный вариант для физлица-организатора
+			legalForm: LegalForm.SP_ZOO, // наиболее вероятный вариант для физлица-организатора
 			vatStatus: "ACTIVE",
 			ksefEnabled: false,
 			website: null,

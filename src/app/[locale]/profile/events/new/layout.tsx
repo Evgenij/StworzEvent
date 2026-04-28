@@ -1,14 +1,9 @@
 import { SIGNIN_ROUTE } from "@/consts/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
-import { SidebarInset, SidebarProvider } from "@/components/shadcn/ui/sidebar";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import React from "react";
-import { AppSidebar, PageHeader } from "@/features/layout";
-import { SiteHeader } from "@/features/layout";
-import { UserRole } from "@prisma/client";
-import { Separator } from "@/components/shadcn/ui/separator";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -32,6 +27,25 @@ const NewEventLayout = async ({
 
 	return (
 		<div className="new-event-layout flex w-full flex-col gap-6">
+			<div
+				style={{
+					position: "absolute",
+					top: -1,
+					right: 0,
+					bottom: 0,
+					left: -1,
+					zIndex: 0,
+					backgroundImage: `
+        linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)
+      `,
+					backgroundSize: "100px 100px",
+					WebkitMaskImage:
+						"linear-gradient(to right, #000 0%, transparent 30%, transparent 70%, #000 100%)",
+					maskImage:
+						"linear-gradient(to right, #000 0%, transparent 30%, transparent 70%, #000 100%)",
+				}}
+			/>
 			{children}
 		</div>
 	);

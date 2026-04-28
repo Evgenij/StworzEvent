@@ -101,6 +101,7 @@
 		}
 	},
 	"SignUpInviteForm": {
+		"noToken": "Missing invitation token",
 		"title": "Welcome to StwórzEvent.pl! 🎫",
 		"subtitle": "Your access has been confirmed. <lineBreak></lineBreak> To finish setting up your account, set a password",
 		"fields": {
@@ -442,6 +443,44 @@
 		"ticketsMin": "Add at least one ticket",
 		"priceMin": "Price cannot be negative",
 		"quantityMin": "Minimum number of seats is 1"
+	},
+	"QuickCreateEvent": {
+		"title": "Event name",
+		"titlePlaceholder": "e.g. Jazz concert in Warsaw",
+		"startsAt": "Start date",
+		"endsAt": "End date",
+		"location": "City",
+		"locationPlaceholder": "e.g. Warsaw",
+		"address": "Address",
+		"addressPlaceholder": "e.g. 1 Marszałkowska St.",
+		"optional": "optional",
+		"tickets": "Tickets",
+		"free": "Free",
+		"freeDescription": "Entry is free of charge",
+		"paid": "Paid",
+		"paidDescription": "Set a ticket price",
+		"ticketPrice": "Ticket price (PLN)",
+		"ticketQuantity": "Number of seats",
+		"cover": "Cover image",
+		"submit": "Create event",
+		"errors": {
+			"default": "An error occurred. Please try again.",
+			"titleMin": "Name must be at least 3 characters",
+			"titleMax": "Name can be at most 100 characters",
+			"required": "This field is required"
+		}
+	},
+	"CreateOrganization": {
+		"name": "Organization name",
+		"namePlaceholder": "e.g. Jazz Events Kraków",
+		"submit": "Create organization",
+		"noOrgTitle": "Create an organization",
+		"noOrgDescription": "To publish events you need an organization. It takes a moment — you can fill in the rest later.",
+		"errors": {
+			"nameMin": "Name must be at least 2 characters",
+			"nameMax": "Name can be at most 100 characters",
+			"default": "Something went wrong. Please try again."
+		}
 	},
 	"CreateEventErrors": {
 		"min3": "Name must be at least 3 characters",

@@ -29,6 +29,12 @@ next-env.d.ts
 # agents / skills
 .agents/
 
+# planning — внутренние планы, не коммитить
+.planning/
+
+# docs — внутренняя документация, не коммитить
+docs/
+
 # Mocks — тестовые данные, не коммитить
 src/mocks/
 src/mocks.ts

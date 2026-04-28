@@ -10,13 +10,14 @@ import Breadcrumbs from "../../../components/shared/breadcrumbs";
 import { Badge } from "@/components/shadcn/ui/badge";
 import Link from "next/link";
 import { NEW_EVENT_ROUTE } from "@/consts/routes";
+import FutureFunctionWrapper from "./wrapper-future-function";
 
 export default function SiteHeader() {
 	const { toggleSidebar } = useSidebar();
 
 	return (
 		<header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
-			<div className="flex h-(--header-height) w-full items-center gap-2 px-4">
+			<div className="flex h-(--header-height) w-full items-center gap-2 px-3">
 				<Button
 					className="h-8 w-8"
 					variant="ghost"
@@ -29,17 +30,19 @@ export default function SiteHeader() {
 				<div className="flex w-full justify-end md:justify-between items-center">
 					<Breadcrumbs className="hidden md:flex" />
 					<div className="flex gap-2">
-						<div className="relative">
-							<Button variant="outline" size="icon">
-								<IconBellRinging />
-								<Badge
-									variant="destructive"
-									className="absolute -top-2 -right-2"
-								>
-									3
-								</Badge>
-							</Button>
-						</div>
+						<FutureFunctionWrapper>
+							<div className="relative">
+								<Button variant="outline" size="icon" disabled>
+									<IconBellRinging />
+									{/* <Badge
+										variant="destructive"
+										className="absolute -top-2 -right-2"
+									>
+										3
+									</Badge> */}
+								</Button>
+							</div>
+						</FutureFunctionWrapper>
 
 						<Button asChild>
 							<Link href={NEW_EVENT_ROUTE}>

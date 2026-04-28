@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
 	const { searchParams } = req.nextUrl;
-	const url = new URL("https://nominatim.openstreetmap.org/search");
+	const q = searchParams.get("q");
+	if (!q) return NextResponse.json([]);
 
-	searchParams.forEach((v, k) => url.searchParams.set(k, v));
-	// эти параметры всегда фиксированы
+	const url = new URL("https://nominatim.openstreetmap.org/search");
+	url.searchParams.set("q", q);
 	url.searchParams.set("format", "json");
 	url.searchParams.set("addressdetails", "1");
 	url.searchParams.set("accept-language", "pl");

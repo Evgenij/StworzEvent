@@ -1,43 +1,23 @@
+"use client";
+
 import { Button } from "@/components/shadcn/ui/button";
-import {
-	Empty,
-	EmptyContent,
-	EmptyDescription,
-	EmptyHeader,
-	EmptyTitle,
-} from "@/components/shadcn/ui/empty";
-import { HomeIcon, CompassIcon } from "lucide-react";
+import { Typography } from "@/components/shared";
+import { useRouter } from "@/i18n/routing";
+import { IconChevronLeft } from "@tabler/icons-react";
 
 export default function NotFoundPage() {
-	return (
-		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden">
-			<Empty>
-				<EmptyHeader>
-					<EmptyTitle className="mask-b-from-20% mask-b-to-80% font-extrabold text-9xl">
-						404
-					</EmptyTitle>
-					<EmptyDescription className="-mt-8 text-nowrap text-foreground/80">
-						The page you're looking for might have been <br />
-						moved or doesn't exist.
-					</EmptyDescription>
-				</EmptyHeader>
-				<EmptyContent>
-					<div className="flex gap-2">
-						<Button asChild>
-							<a href="#">
-								<HomeIcon data-icon="inline-start" />
-								Go Home
-							</a>
-						</Button>
+	const router = useRouter();
 
-						<Button asChild variant="outline">
-							<a href="#">
-								<CompassIcon data-icon="inline-start" /> Explore
-							</a>
-						</Button>
-					</div>
-				</EmptyContent>
-			</Empty>
+	return (
+		<div className="flex flex-col justify-center items-center h-screen">
+			<img src="/images/not-found.svg" alt="not-found" className="w-sm" />
+			<div className="wrapp flex flex-col items-center gap-5">
+				<Typography variant="h2">Nie znaleziono strony</Typography>
+				<Button onClick={() => router.back()}>
+					<IconChevronLeft />
+					Wróć
+				</Button>
+			</div>
 		</div>
 	);
 }

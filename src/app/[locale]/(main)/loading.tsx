@@ -1,6 +1,5 @@
 "use client";
 
-import { LottieAnimation } from "@/components/shared/lottie-animation";
 import { IconLoader } from "@tabler/icons-react";
 
 const loading = () => {
