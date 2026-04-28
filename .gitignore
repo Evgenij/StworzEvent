@@ -45,3 +45,6 @@ __mocks__/
 *.mock.tsx
 
 
+
+# claude code worktrees
+.claude/
