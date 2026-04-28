@@ -1,37 +1,36 @@
-import { getBatchAvailability } from "@/actions/tickets/get-batch-availability.action";
 import {
 	EventDescriptionSection,
 	EventHeaderSection,
 	EventHeroSection,
-} from "@/components/events/page";
-import EventAgendaSection from "@/components/events/page/agenda/event-agenda";
-import EventFAQSection from "@/components/events/page/event-faq";
-import EventSectionsSection from "@/components/events/page/event-sections";
-import { EventMapSection } from "@/components/events/page/map/event-map-wrapper";
-import { EventSidebar } from "@/components/events/page/sidebar";
+} from "@/features/events/components/page";
+import EventAgendaSection from "@/features/events/components/page/agenda/event-agenda";
+import EventFAQSection from "@/features/events/components/page/event-faq";
+import EventSectionsSection from "@/features/events/components/page/event-sections";
+import { EventMapSection } from "@/features/events/components/page/map/event-map-wrapper";
+import { EventSidebar } from "@/features/events/components/page/sidebar";
 import Breadcrumb, {
 	BreadcrumbItem,
 	BreadcrumbLink,
 	BreadcrumbList,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
-} from "@/components/shadcn/ui/breadcrumb";
-import { Button } from "@/components/shadcn/ui/button";
-import { Separator } from "@/components/shadcn/ui/separator";
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-} from "@/components/shadcn/ui/tooltip";
-import { EventImagePlaceholder } from "@/components/shared/event-image-placeholder";
-import { ShareButton } from "@/components/shared/share-button";
-import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
+} from "@/components/ui/tooltip";
+import { MAIN_PAGE_EVENTS_ROUTE } from "@/config/routes";
 import { Link } from "@/i18n/routing";
 import prisma from "@/lib/prisma";
 import { truncate } from "@/lib/utils";
-import { TicketWithAvailability } from "@/types/ticket";
 import { IconBookmark } from "@tabler/icons-react";
 import { notFound } from "next/navigation";
+import { getBatchAvailability } from "@/features/tickets/actions/get-batch-availability.action";
+import { TicketWithAvailability } from "@/features/events/types/ticket";
+import { ShareButton } from "@/shared/components/share-button";
 
 const EventPage = async ({
 	params,

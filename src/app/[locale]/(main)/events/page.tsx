@@ -1,7 +1,7 @@
-import { EventsCatalogList } from "@/components/events/events-catalog-list";
-import { LottieAnimation } from "@/components/shared/lottie-animation";
+import { getEventsPage } from "@/features/events/actions/get-events-page.action";
+import { EventsCatalogList } from "@/features/events/components/catalog/events-catalog-list";
 import { PageHeader } from "@/features/layout";
-import { getEventsPage } from "@/actions/events/get-events-page.action";
+import { LottieAnimation } from "@/shared/components/lottie-animation";
 
 const EventsCatalogPage = async () => {
 	const { items, hasMore } = await getEventsPage(0);
