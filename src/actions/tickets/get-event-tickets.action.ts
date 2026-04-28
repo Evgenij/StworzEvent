@@ -24,6 +24,7 @@ export async function getEventTickets(eventId: string) {
 		select: {
 			id: true,
 			name: true,
+			description: true,
 			price: true,
 			quantity: true,
 		},

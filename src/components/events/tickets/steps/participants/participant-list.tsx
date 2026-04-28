@@ -36,7 +36,7 @@ export const ParticipantList = ({
 				if (isBuyerSlot) {
 					return (
 						<TicketWrapper
-							id={`#${truncate(flat.ticket.id, 10)}`}
+							id={flat.ticket.id}
 							key={`${flat.groupIdx}-${flat.participantIdx}`}
 						>
 							<div className="flex flex-col gap-3">

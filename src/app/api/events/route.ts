@@ -10,12 +10,19 @@ export const GET = withApiHandler(async (req: Request) => {
 	const session = await auth.api.getSession({ headers: await headers() });
 	if (!session) throw new ApiError(ErrorCode.UNAUTHORIZED);
 
-	const ALLOWED_SORT_FIELDS = ["createdAt", "startsAt", "title", "status"] as const;
-	type SortField = typeof ALLOWED_SORT_FIELDS[number];
+	const ALLOWED_SORT_FIELDS = [
+		"createdAt",
+		"startsAt",
+		"title",
+		"status",
+	] as const;
+	type SortField = (typeof ALLOWED_SORT_FIELDS)[number];
 
 	const { searchParams } = new URL(req.url);
 	const sortParam = searchParams.get("sort") ?? "createdAt";
-	const sort: SortField = (ALLOWED_SORT_FIELDS as readonly string[]).includes(sortParam)
+	const sort: SortField = (ALLOWED_SORT_FIELDS as readonly string[]).includes(
+		sortParam,
+	)
 		? (sortParam as SortField)
 		: "createdAt";
 	const order = searchParams.get("order") === "asc" ? "asc" : "desc";
@@ -43,6 +50,15 @@ export const GET = withApiHandler(async (req: Request) => {
 	const events = await prisma.event.findMany({
 		where,
 		orderBy: { [sort]: order },
+		include: {
+			categories: {
+				include: {
+					category: {
+						select: { id: true, name: true, slug: true, icon: true },
+					},
+				},
+			},
+		},
 	});
 
 	return successResponse(events);

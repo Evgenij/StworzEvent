@@ -18,7 +18,7 @@ const MainLayout = async ({ children, params }: MainLayoutProps) => {
 	return (
 		<>
 			<HeaderWebsite locale={locale} user={session?.user as UserType} />
-			<main className="event-layout container relative flex items-start justify-center max-w-7xl mx-auto flex-1 px-0 sm:px-6 py-0 md:py-4">
+			<main className="main-layout container relative flex items-start justify-center max-w-7xl mx-auto flex-1 px-0 sm:px-6 py-4">
 				{children}
 			</main>
 			<MobileMenu />

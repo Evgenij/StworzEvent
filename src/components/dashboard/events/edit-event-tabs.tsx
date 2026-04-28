@@ -32,8 +32,13 @@ export function EditEventTabs({
 }: Props) {
 	const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
 
+	const initialMinPrice =
+		initialTickets.length > 0
+			? Math.min(...initialTickets.map((t) => t.price)) * 100
+			: null;
+
 	return (
-		<CreateEventProvider initialPreview={initialPreview}>
+		<CreateEventProvider initialPreview={initialPreview} initialMinPrice={initialMinPrice}>
 			<div className="flex gap-6 w-full">
 				<div className="flex-1 min-w-0 flex flex-col gap-5">
 					<EventWizardProgress
@@ -57,8 +62,6 @@ export function EditEventTabs({
 							data={initialAdditionalData}
 							eventStartDate={eventStartDate}
 							eventEndDate={eventEndDate}
-							onBack={() => setCurrentStep(1)}
-							onNext={() => setCurrentStep(3)}
 						/>
 					)}
 
@@ -66,7 +69,6 @@ export function EditEventTabs({
 						<StepTickets
 							eventId={eventId}
 							initialTickets={initialTickets}
-							onBack={() => setCurrentStep(2)}
 						/>
 					)}
 				</div>
@@ -76,9 +78,12 @@ export function EditEventTabs({
 					className="self-stretch hidden xl:block"
 				/>
 
-				<aside className="hidden xl:flex w-2/5 h-full flex-col gap-3 sticky top-18">
-					<Typography variant="h4" className="text-base">
-						Jak bedzie wygladac Twoj wydarzenie?
+				<aside className="hidden xl:flex  2xl:w-2/5 xl:w-1/3 h-full flex-col gap-3 sticky top-18">
+					<Typography
+						variant="h4"
+						className="text-sm text-muted-foreground"
+					>
+						Podglad wydarzenia
 					</Typography>
 					<div className="grid grid-cols-1 2xl:grid-cols-2 2xl:grid-rows-2 gap-3">
 						<EventPreview />

@@ -98,7 +98,7 @@ const AuthButtons = ({ user, className }: AuthButtonsProps) => {
 								className="flex items-center gap-1 cursor-pointer px-2 py-1 "
 							>
 								<IconLayoutDashboard className="size-5" />
-								Panel glowny
+								Dashboard
 							</Link>
 						</DropdownMenuItem>
 						{/* <DropdownMenuItem>

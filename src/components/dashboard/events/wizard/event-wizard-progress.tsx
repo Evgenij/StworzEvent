@@ -109,7 +109,7 @@ export function EventWizardProgress({
 						className={cn(
 							"flex flex-1 border-b-3 border-transparent flex-col justify-start gap-0.5 p-3 rounded-t-xl w-full h-full items-center sm:items-start",
 							{
-								"border-b-3 border-primary": isActive,
+								"border-b-3 border-primary ": isActive,
 								"hover:border-muted-foreground/20 cursor-pointer":
 									!isActive && !isLocked,
 								"hover:bg-muted/50": !isLocked,

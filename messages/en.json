@@ -263,6 +263,8 @@
 			"ticketNumber": "Ticket #{number}",
 			"name": "Ticket name",
 			"namePlaceholder": "e.g. Standard ticket",
+			"description": "Description (optional)",
+			"descriptionPlaceholder": "e.g. Includes access to the main stage and backstage",
 			"price": "Price (PLN)",
 			"quantity": "Number of seats",
 			"quantityPlaceholder": "e.g. 100",
@@ -270,7 +272,13 @@
 			"addTicket": "Add ticket",
 			"back": "Back",
 			"next": "Next",
+			"save": "Save",
 			"saving": "Saving...",
+			"saved": "Ticket saved",
+			"cancel": "Cancel",
+			"free": "Free",
+			"unlimited": "Unlimited",
+			"empty": "No tickets yet. Add your first ticket below.",
 			"saveDraft": "Save draft",
 			"publish": "Publish event",
 			"successPublished": "Event has been published!",
@@ -442,7 +450,8 @@
 		},
 		"ticketsMin": "Add at least one ticket",
 		"priceMin": "Price cannot be negative",
-		"quantityMin": "Minimum number of seats is 1"
+		"quantityMin": "Minimum number of seats is 1",
+		"descriptionMax": "Description cannot exceed 500 characters"
 	},
 	"QuickCreateEvent": {
 		"title": "Event name",

@@ -1,6 +1,7 @@
 "use client";
 
 import { Typography } from "@/components/shared";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -12,7 +13,7 @@ const isDynamicSegment = (segment: string) =>
 	) || // UUID
 	/^[a-z0-9]{20,}$/.test(segment); // cuid
 
-const PageHeader = () => {
+const PageHeader = ({ padding = false }: { padding?: boolean }) => {
 	const pathname = usePathname();
 	const t = useTranslations("PageTitles");
 
@@ -34,7 +35,10 @@ const PageHeader = () => {
 	};
 
 	return (
-		<Typography className="text-left" variant="h2">
+		<Typography
+			className={cn("text-left", padding ? "pl-5" : "")}
+			variant="h1"
+		>
 			{getTitle()}
 		</Typography>
 	);

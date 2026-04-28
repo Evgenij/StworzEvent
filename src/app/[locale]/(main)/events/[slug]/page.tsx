@@ -89,7 +89,7 @@ const EventPage = async ({
 	}
 
 	return (
-		<div className="event-page pt-4 md:pt-0 w-6xl mx-auto flex flex-col gap-5">
+		<div className="event-page w-6xl mx-auto flex flex-col gap-5">
 			<div className="w-full flex justify-between items-center px-5">
 				<Breadcrumb>
 					<BreadcrumbList>

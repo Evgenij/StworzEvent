@@ -36,7 +36,9 @@ export default async function EditEventPage({ params }: Props) {
 				eventEndDate={event.endsAt ?? undefined}
 			/>
 		);
-	} catch {
+	} catch (error) {
+		console.log(error);
+
 		notFound();
 	}
 }

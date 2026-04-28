@@ -12,6 +12,11 @@ export class DateTimeFormatter {
 	static month(date: Date, locale: string) {
 		return new Intl.DateTimeFormat(locale, { month: "long" }).format(date);
 	}
+	static year(date: Date, locale: string) {
+		return new Intl.DateTimeFormat(locale, { year: "numeric" }).format(
+			date,
+		);
+	}
 
 	static date(date: Date, locale: string) {
 		return new Intl.DateTimeFormat(locale, {

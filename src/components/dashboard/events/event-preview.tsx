@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/shadcn/ui/skeleton";
 import { IconMapPin } from "@tabler/icons-react";
 
 const EventPreview = () => {
-	const { previewAsEventItem, selectedCategory } = useCreateEventPreview();
+	const { previewAsEventItem, selectedCategory, minPrice } = useCreateEventPreview();
 
 	if (!previewAsEventItem) {
 		return (
@@ -37,7 +37,7 @@ const EventPreview = () => {
 		<div className="flex flex-col gap-3">
 			<EventItem
 				event={previewAsEventItem}
-				minPrice={null}
+				minPrice={minPrice}
 				isPreview
 				category={selectedCategory}
 			/>

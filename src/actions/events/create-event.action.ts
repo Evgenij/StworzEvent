@@ -32,7 +32,9 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 		data: {
 			title: data.title,
 			slug,
-			status: data.publishImmediately ? EventStatus.PUBLISHED : EventStatus.DRAFT,
+			status: data.publishImmediately
+				? EventStatus.PUBLISHED
+				: EventStatus.DRAFT,
 			startsAt: new Date(data.startsAt),
 			endsAt: data.endsAt ? new Date(data.endsAt) : null,
 			location: data.location,
@@ -53,6 +55,7 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 					quantity: data.ticketQuantity,
 				},
 			},
+			minPrice: data.ticketPrice ?? 0,
 		},
 		select: { id: true },
 	});

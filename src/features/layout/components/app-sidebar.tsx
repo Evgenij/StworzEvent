@@ -2,11 +2,15 @@
 
 import * as React from "react";
 import { LifeBuoy, Send } from "lucide-react";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import {
+	IconListDetails,
+	IconPlus,
+	IconSearch,
+	IconWorld,
+} from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 import { UserType } from "@/types/user";
 import { Link } from "@/i18n/routing";
-import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
 import { NavUser } from "./nav-user";
 import { NavSecondary } from "./nav-secondary";
 import {
@@ -38,6 +42,8 @@ import {
 } from "@/components/shadcn/ui/tooltip";
 import { CompanySwitcher } from "./company-switcher";
 import { useMyOrganizations } from "@/hooks/use-my-organizations";
+import { cn } from "@/lib/utils";
+import { EVENTS_ROUTE, MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
 
 const navSecondary = [
 	{ title: "Support", url: "#", icon: LifeBuoy },
@@ -70,11 +76,11 @@ export default function AppSidebar({
 						<SidebarMenuButton size="lg" asChild>
 							<Link href={MAIN_PAGE_EVENTS_ROUTE}>
 								<div className="flex aspect-square size-8 items-center justify-center rounded-lg border-2 border-border ">
-									<IconSearch className="size-4 text-muted-foreground" />
+									<IconWorld className="size-6 text-muted-foreground" />
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-medium">
-										Szukaj wydarzeń
+										Katalog wydarzeń
 									</span>
 									<span className="truncate text-xs text-muted-foreground">
 										Znajdź cos dla siebie
@@ -94,7 +100,13 @@ export default function AppSidebar({
 							<SidebarMenu>
 								{group.items.map((item) => (
 									<SidebarMenuItem key={item.title}>
-										<SidebarMenuButton asChild>
+										<SidebarMenuButton
+											asChild
+											className={cn({
+												"opacity-40 cursor-not-allowed":
+													!item.active,
+											})}
+										>
 											<Link href={item.url}>
 												{item.icon && <item.icon />}
 												{item.title}

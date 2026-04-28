@@ -6,10 +6,10 @@ import { EventImagePlaceholder } from "../shared/event-image-placeholder";
 import { Typography } from "../shared";
 import { DateTimeFormatter } from "@/helpers/date-formatter";
 import { IconMapPin } from "@tabler/icons-react";
-import { EVENT_PAGE_ROUTE } from "@/consts/routes";
-import { cn, formatPlnFromGrosze } from "@/lib/utils";
+import { cn, formatCurrencyPln } from "@/lib/utils";
 import { Badge } from "../shadcn/ui/badge";
 import { CategoryOption } from "@/actions/events/get-categories.action";
+import { MAIN_PAGE_EVENT_ROUTE } from "@/consts/routes";
 
 export type EventItemData = Pick<
 	Event,
@@ -23,18 +23,20 @@ const EventItem = ({
 	minPrice,
 	category,
 	isPreview = false,
+	href,
 }: {
 	event: EventItemData;
 	minPrice: number | null;
 	category?: CategoryOption | null;
 	isPreview?: boolean;
+	href?: string;
 }) => {
 	// console.log("EventItem", event);
 
 	const content = (
 		<div
 			className={cn(
-				"flex h-full rounded-2xl flex-col items-start justify-center gap-3 border border-transparent hover:border-border hover:shadow-2xl/5 p-2",
+				"event-item-content flex h-full rounded-2xl flex-col items-start justify-center gap-3 border border-transparent hover:border-border hover:shadow-2xl/5 p-2",
 				{
 					"border-border shadow-2xl/5": isPreview,
 				},
@@ -101,15 +103,19 @@ const EventItem = ({
 					)}
 				</main>
 				<footer className="pt-2 mt-auto flex items-baseline gap-1 border-t border-border w-full">
-					{minPrice ? (
+					{minPrice !== null && minPrice > 0 ? (
 						<>
 							<span className="text-muted-foreground text-sm">
 								od
 							</span>
 							<p className="font-semibold text-primary text-base">
-								{formatPlnFromGrosze(minPrice)}
+								{formatCurrencyPln(minPrice)}
 							</p>
 						</>
+					) : minPrice === 0 ? (
+						<p className="font-semibold text-primary text-base">
+							Bezpłatne
+						</p>
 					) : isPreview ? (
 						<p className="font-regular text-muted-foreground text-sm">
 							bilety nie ustawione
@@ -130,8 +136,8 @@ const EventItem = ({
 
 	return (
 		<Link
-			href={`${EVENT_PAGE_ROUTE}${event.slug}`}
-			className="no-underline block group"
+			href={href ?? `${MAIN_PAGE_EVENT_ROUTE(event.slug)}`}
+			className="event-item no-underline block group h-full"
 		>
 			{content}
 		</Link>

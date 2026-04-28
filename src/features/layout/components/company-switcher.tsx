@@ -3,7 +3,17 @@
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronsUpDown, Plus, Trash2 } from "lucide-react";
-import { IconBuildings, IconPlus } from "@tabler/icons-react";
+import {
+	IconBuildings,
+	IconClipboardText,
+	IconDotsVertical,
+	IconEdit,
+	IconFilePencil,
+	IconPlus,
+	IconSelect,
+	IconSelector,
+	IconSparkles,
+} from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteOrganizationAction } from "@/actions/organizations/delete-organization.action";
 import { MY_ORGANIZATIONS_QUERY_KEY } from "@/hooks/use-my-organizations";
@@ -25,6 +35,7 @@ import {
 } from "@/components/shadcn/ui/sidebar";
 import { Link } from "@/i18n/routing";
 import { NEW_EVENT_ROUTE, NEW_ORGANIZATION_ROUTE } from "@/consts/routes";
+import { Button } from "@/components/shadcn/ui/button";
 
 type OrgInfo = {
 	id: string;
@@ -129,7 +140,7 @@ export function CompanySwitcher({
 									Plan - Free
 								</span>
 							</div>
-							<ChevronsUpDown className="ml-auto" />
+							<IconSelector />
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
@@ -138,25 +149,57 @@ export function CompanySwitcher({
 						side={isMobile ? "bottom" : "right"}
 						sideOffset={4}
 					>
-						<DropdownMenuLabel className="text-xs text-muted-foreground">
-							Firmy
-						</DropdownMenuLabel>
+						<DropdownMenuLabel>Firmy</DropdownMenuLabel>
 						{organizations.map((org) => (
 							<DropdownMenuItem
 								key={org.id}
 								onClick={() => setActive(org)}
-								className="group gap-2 p-2 pr-1"
+								className="group pl-2"
 							>
-								<span className="flex-1 truncate">
+								<span className="flex flex-col flex-1 truncate">
 									{org.name}
+									<span className="truncate text-xs text-muted-foreground">
+										Plan - Free
+									</span>
 								</span>
-								<button
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild className="">
+										<Button variant="ghost" size="icon-sm">
+											<IconDotsVertical className="size-4" />
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent>
+										<DropdownMenuLabel>
+											Operacje
+										</DropdownMenuLabel>
+										<DropdownMenuItem>
+											<IconEdit className="size-4" />
+											Zmienić dane
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<IconSparkles className="size-4" />
+											Zmienić plan
+										</DropdownMenuItem>
+										<DropdownMenuSeparator />
+										<DropdownMenuItem
+											variant="destructive"
+											onClick={(e) =>
+												handleDelete(e, org)
+											}
+											disabled={deletingId === org.id}
+										>
+											<Trash2 className="size-4" />
+											Usunąć firmę
+										</DropdownMenuItem>
+									</DropdownMenuContent>
+								</DropdownMenu>
+								{/* <button
 									onClick={(e) => handleDelete(e, org)}
 									disabled={deletingId === org.id}
 									className="ml-auto shrink-0 rounded p-1 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100 focus:opacity-100 disabled:cursor-not-allowed disabled:opacity-50"
 								>
 									<Trash2 className="size-3.5" />
-								</button>
+								</button> */}
 							</DropdownMenuItem>
 						))}
 						<DropdownMenuSeparator />

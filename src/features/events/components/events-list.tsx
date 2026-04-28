@@ -5,9 +5,14 @@ import { apiFetcher } from "@/app/api/fetcher";
 import { Button } from "@/components/shadcn/ui/button";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import EventItem from "./event";
-import { Event } from "@prisma/client";
+import { Event, EventCategoryOnEvent, EventCategory } from "@prisma/client";
 import { ApiResponse } from "@/types/api-pesponse";
+
+type EventWithCategory = Event & {
+	categories: (EventCategoryOnEvent & {
+		category: Pick<EventCategory, "id" | "name" | "slug" | "icon">;
+	})[];
+};
 import {
 	Table,
 	TableBody,
@@ -18,8 +23,11 @@ import {
 	TableRow,
 } from "@/components/shadcn/ui/table";
 import { useTranslations } from "next-intl";
+import EventItemRow from "./event";
+import EventItem from "@/components/events/event-item";
+import { EVENT_PAGE_ROUTE } from "@/consts/routes";
 
-const EventsList = () => {
+const EventsListOrg = () => {
 	const [sortField, setSortField] = useState("createdAt");
 	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 	const {
@@ -28,7 +36,7 @@ const EventsList = () => {
 		isLoading,
 		isFetching,
 		refetch,
-	} = useQuery<ApiResponse<Event[]>>({
+	} = useQuery<ApiResponse<EventWithCategory[]>>({
 		queryKey: ["events", sortField, sortOrder],
 		queryFn: () =>
 			apiFetcher(API_ROUTES.events.list, {
@@ -40,6 +48,8 @@ const EventsList = () => {
 	});
 
 	const tEventsTable = useTranslations(`EventsList.table`);
+
+	console.log(events);
 
 	if (isLoading || isFetching)
 		return (
@@ -68,7 +78,27 @@ const EventsList = () => {
 			<Button onClick={() => refetch()} disabled={isFetching}>
 				{isFetching ? "Refreshing..." : "Refresh events"}
 			</Button>
-			<Table>
+			<div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 justify-between items-start">
+				{events.data.map((event) => (
+					<EventItem
+						key={event.id}
+						event={{ ...event, startsAt: new Date(event.startsAt) }}
+						minPrice={event.minPrice}
+						category={event.categories[0]?.category ?? null}
+						href={`${EVENT_PAGE_ROUTE(event.id)}`}
+					/>
+				))}
+			</div>
+
+			{/* {events.data.map((event) => (
+				// <EventItem
+				// 	key={event.id}
+				// 	event={event}
+				// 	minPrice={0}
+				// 	category={[{}]}
+				// />
+			))} */}
+			{/* <Table>
 				<TableCaption>A list of your recent invoices.</TableCaption>
 				<TableHeader>
 					<TableRow>
@@ -80,15 +110,14 @@ const EventsList = () => {
 							{tEventsTable("header.action")}
 						</TableHead>
 					</TableRow>
-				</TableHeader>
-				<TableBody>
 					{events.data.map((event) => (
-						<EventItem key={event.id} event={event} />
+						<EventItemRow key={event.id} event={event} />
 					))}
-				</TableBody>
-			</Table>
+				</TableHeader>
+				<TableBody></TableBody>
+			</Table> */}
 		</div>
 	);
 };
 
-export default EventsList;
+export default EventsListOrg;

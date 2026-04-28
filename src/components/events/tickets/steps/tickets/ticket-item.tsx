@@ -25,6 +25,9 @@ const TicketItem = ({
 		<div className="flex items-center justify-between">
 			<div className="flex flex-col ">
 				<p className="font-medium">{ticket.name}</p>
+				{ticket.description && (
+					<p className="text-sm text-muted-foreground">{ticket.description}</p>
+				)}
 				<p className="text-base text-primary font-semibold">
 					{ticket.price === 0
 						? "Bezpłatny"

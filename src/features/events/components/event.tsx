@@ -5,18 +5,28 @@ import StatusBadge from "./status-badge";
 import { TableCell, TableRow } from "@/components/shadcn/ui/table";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/shadcn/ui/button";
-import { EVENT_EDIT_ADDITIONAL_ROUTE, EVENT_EDIT_ROUTE } from "@/consts/routes";
+import {
+	EVENT_EDIT_ROUTE,
+	EVENT_PAGE_ROUTE,
+	MAIN_PAGE_EVENT_ROUTE,
+} from "@/consts/routes";
 
-const EventItem = ({ event }: { event: Event }) => {
+const EventItemRow = ({ event }: { event: Event }) => {
 	return (
 		<>
 			<TableRow>
 				<TableCell className="font-medium w-1/2">
+					<Button variant="outline" asChild>
+						<Link href={MAIN_PAGE_EVENT_ROUTE(event.id)}>Page</Link>
+					</Button>
+					<Button variant="ghost" asChild>
+						<Link href={EVENT_PAGE_ROUTE(event.id)}>
+							{event.title}
+						</Link>
+					</Button>
 					<Button variant="link" asChild>
 						<Link href={EVENT_EDIT_ROUTE(event.id)}>Edit</Link>
 					</Button>
-
-					<Link href={`/events/${event.slug}`}>{event.title}</Link>
 				</TableCell>
 				<TableCell>
 					<StatusBadge status={event.status} />
@@ -56,4 +66,4 @@ const EventItem = ({ event }: { event: Event }) => {
 	);
 };
 
-export default EventItem;
+export default EventItemRow;

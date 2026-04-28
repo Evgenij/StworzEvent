@@ -1,15 +1,6 @@
 "use client";
 
 import {
-	BadgeCheck,
-	Bell,
-	ChevronsUpDown,
-	CreditCard,
-	LogOut,
-	Sparkles,
-} from "lucide-react";
-
-import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
@@ -38,7 +29,22 @@ import {
 } from "@/consts/routes";
 import { UserType } from "@/types/user";
 import { UserRole } from "@prisma/client";
-import { IconClipboardData } from "@tabler/icons-react";
+import {
+	IconChevronCompactUp,
+	IconClipboardData,
+	IconCrown,
+	IconInvoice,
+	IconLogout,
+	IconLogout2,
+	IconReceiptDollar,
+	IconSelector,
+	IconSettings,
+	IconSettings2,
+	IconSparkles,
+	IconSparkles2,
+	IconUser,
+	IconUserCircle,
+} from "@tabler/icons-react";
 
 export function NavUser({ user }: { user: UserType | null }) {
 	const { isMobile } = useSidebar();
@@ -73,7 +79,7 @@ export function NavUser({ user }: { user: UserType | null }) {
 									{user.email}
 								</span>
 							</div>
-							<ChevronsUpDown className="ml-auto size-4" />
+							<IconSelector className="ml-auto size-5" />
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
@@ -107,8 +113,8 @@ export function NavUser({ user }: { user: UserType | null }) {
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
 							<DropdownMenuItem>
-								<Sparkles />
-								Upgrade to Pro
+								<IconCrown />
+								Zmien plan subskrypcji
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
@@ -125,27 +131,28 @@ export function NavUser({ user }: { user: UserType | null }) {
 								</Link>
 							)}
 							<DropdownMenuItem>
-								<BadgeCheck />
-								Account
+								<IconUser />
+								Profil
 							</DropdownMenuItem>
 							<DropdownMenuItem>
-								<CreditCard />
-								Billing
+								<IconReceiptDollar />
+								Transakcje finansowe
 							</DropdownMenuItem>
 							<DropdownMenuItem>
-								<Bell />
-								Notifications
+								<IconSettings />
+								Ustawienia
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
+							variant="destructive"
 							onClick={() =>
 								signOutAction(() =>
 									router.push(MAIN_PAGE_ROUTE),
 								)
 							}
 						>
-							<LogOut />
+							<IconLogout />
 							Log out
 						</DropdownMenuItem>
 					</DropdownMenuContent>

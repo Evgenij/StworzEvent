@@ -6,7 +6,9 @@ const OrganizerEventsPage = () => {
 	return (
 		<>
 			<PageHeader />
-			<EventsList />
+			<div className="organizer-events-page">
+				<EventsList />
+			</div>
 		</>
 	);
 };

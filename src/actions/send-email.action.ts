@@ -14,6 +14,7 @@ import {
 	InvitationMailsProps,
 } from "@/helpers/mail-templates";
 import { TypeMail } from "@/types/enums";
+import { APP_CONFIG } from "@/config/app";
 
 type EmailPayload =
 	| { type: TypeMail.INVITATION; data: InvitationMailsProps }
@@ -30,19 +31,19 @@ export const sendEmailAction = safeAction(async (input: SendEmailInput) => {
 
 	// ─── Валидация входных данных ────────────────────────────────
 	if (!to || typeof to !== "string" || !to.includes("@")) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, 500, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 422, {
 			to: ["Nieprawidłowy lub brak adresu email odbiorcy"],
 		});
 	}
 
 	if (!subject || typeof subject !== "string" || subject.trim().length < 3) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, 500, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 422, {
 			subject: ["Temat wiadomości jest wymagany"],
 		});
 	}
 
 	if (!type || !Object.values(TypeMail).includes(type)) {
-		throw new ApiError(ErrorCode.VALIDATION_ERROR, 500, {
+		throw new ApiError(ErrorCode.VALIDATION_ERROR, 422, {
 			type: ["Nieprawidłowy typ wiadomości email"],
 		});
 	}
@@ -52,15 +53,15 @@ export const sendEmailAction = safeAction(async (input: SendEmailInput) => {
 
 	switch (type) {
 		case TypeMail.INVITATION:
-			htmlContent = invitationMail(data as InvitationMailsProps);
+			htmlContent = invitationMail(data);
 			break;
 
 		case TypeMail.CODE:
-			htmlContent = codeMail(data as CodeMailsProps);
+			htmlContent = codeMail(data);
 			break;
 
 		case TypeMail.AUTH:
-			htmlContent = authMail(data as AuthMailsProps);
+			htmlContent = authMail(data);
 			break;
 
 		default:
@@ -71,18 +72,22 @@ export const sendEmailAction = safeAction(async (input: SendEmailInput) => {
 
 	// ─── Отправка письма ─────────────────────────────────────────
 	const { error } = await resend.emails.send({
-		from: "StworzEvent.pl <no-reply@stworzevent.pl>",
+		from: APP_CONFIG.email.fullSender,
 		to,
 		subject,
 		html: htmlContent,
+		replyTo: APP_CONFIG.email.replyTo,
 	});
 
 	if (error) {
-		console.error("[sendEmailAction] failed", { to, subject, type, error });
+		// Детали — только в серверный лог, клиенту общее сообщение
+		console.error("[sendEmailAction] resend_failed", {
+			to: input.to,
+			type: input.type,
+			resendError: error,
+		});
 		throw new ApiError(ErrorCode.INTERNAL_ERROR, 500, {
-			general: [error.message],
+			general: ["Nieudana wysłanie email"],
 		});
 	}
-
-	return { success: true };
 });

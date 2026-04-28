@@ -548,21 +548,19 @@ export function StepBasicData({ eventId, onSuccess }: Props) {
 				</AccordionItem>
 			</Accordion>
 
-			<div className="navigation flex justify-end pt-4 border-t border-border">
-				<Button type="submit" disabled={isSubmitting}>
-					{isSubmitting ? (
-						<>
-							<IconLoader className="size-4 animate-spin" />
-							{t("saving")}
-						</>
-					) : (
-						<>
-							<IconDeviceFloppy className="size-4" />
-							{t("save")}
-						</>
-					)}
-				</Button>
-			</div>
+			<Button type="submit" disabled={isSubmitting} className="self-end">
+				{isSubmitting ? (
+					<>
+						<IconLoader className="size-4 animate-spin" />
+						{t("saving")}
+					</>
+				) : (
+					<>
+						<IconDeviceFloppy className="size-4" />
+						{t("save")}
+					</>
+				)}
+			</Button>
 		</form>
 	);
 }

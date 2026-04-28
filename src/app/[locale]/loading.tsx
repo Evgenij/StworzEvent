@@ -4,9 +4,9 @@ import { IconLoader } from "@tabler/icons-react";
 
 const loading = () => {
 	return (
-		<div className="loading flex flex-col gap-2 items-center justify-center h-screen text-muted-foreground">
+		<div className="loading flex flex-col gap-2 items-center justify-center h-screen ">
 			<IconLoader className="animate-spin" />
-			<p>Ladowanie...</p>
+			<p className="text-muted-foreground">Ladowanie...</p>
 		</div>
 	);
 };

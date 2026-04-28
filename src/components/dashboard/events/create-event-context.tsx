@@ -12,6 +12,8 @@ type CreateEventContextType = {
 	previewAsEventItem: EventItemData | null;
 	selectedCategory: CategoryOption | null;
 	setSelectedCategory: (category: CategoryOption | null) => void;
+	minPrice: number | null;
+	setMinPrice: (price: number | null) => void;
 };
 
 const CreateEventContext = createContext<CreateEventContextType | null>(null);
@@ -19,14 +21,17 @@ const CreateEventContext = createContext<CreateEventContextType | null>(null);
 export function CreateEventProvider({
 	children,
 	initialPreview = {},
+	initialMinPrice = null,
 }: {
 	children: React.ReactNode;
 	initialPreview?: Partial<CreateEventInput>;
+	initialMinPrice?: number | null;
 }) {
 	const [preview, setPreview] =
 		useState<Partial<CreateEventInput>>(initialPreview);
 	const [selectedCategory, setSelectedCategory] =
 		useState<CategoryOption | null>(null);
+	const [minPrice, setMinPrice] = useState<number | null>(initialMinPrice);
 	const previewAsEventItem: EventItemData | null = preview.title
 		? {
 				coverImage: preview.coverImage || null,
@@ -48,6 +53,8 @@ export function CreateEventProvider({
 				previewAsEventItem,
 				selectedCategory,
 				setSelectedCategory,
+				minPrice,
+				setMinPrice,
 			}}
 		>
 			{children}

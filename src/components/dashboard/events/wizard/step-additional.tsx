@@ -1,15 +1,11 @@
 // src/components/dashboard/events/wizard/step-additional.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
+import { useTranslations } from "next-intl";
 import { Separator } from "@/components/shadcn/ui/separator";
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { SectionsEditor } from "@/components/dashboard/events/sections/sections-editor";
 import { AgendaEditor } from "@/components/dashboard/events/agenda/agenda-editor";
 import { FaqEditor } from "@/components/dashboard/events/faq/faq-editor";
-import { EventMapEditor } from "@/components/dashboard/events/map/event-map-editor";
 import type { EventAdditionalData } from "@/actions/events/get-event-additional.action";
 import EditSectionWrapper from "../sections/edit-section-wrapper";
 import {
@@ -21,7 +17,6 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from "@/components/shadcn/ui/alert-dialog";
 import { useState } from "react";
 import { deleteAgendaItemAction } from "@/actions/events/agenda/delete-agenda-item.action";
@@ -32,8 +27,6 @@ type Props = {
 	data: EventAdditionalData;
 	eventStartDate?: Date | string;
 	eventEndDate?: Date | string;
-	onBack?: () => void;
-	onNext?: () => void;
 };
 
 export function StepAdditional({
@@ -41,22 +34,16 @@ export function StepAdditional({
 	data,
 	eventStartDate,
 	eventEndDate,
-	onBack,
-	onNext,
 }: Props) {
-	const router = useRouter();
-	const locale = useLocale();
 	const t = useTranslations("EventWizard");
 
-	const [agendaIsActive, setAgendaIsActive] = useState(true);
+	const [agendaIsActive, setAgendaIsActive] = useState(data.agenda.length > 0);
 	const [agendaIsDeliting, setAgendaIsDeliting] = useState(false);
 	const [showAgendaAlert, setShowAgendaAlert] = useState(false);
 
-	const [sectionsIsActive, setSectionsIsActive] = useState(true);
-	const [showSectionsAlert, setShowSectionsAlert] = useState(false);
+	const [sectionsIsActive, setSectionsIsActive] = useState(data.sections.length > 0);
 
-	const [faqIsActive, setFaqIsActive] = useState(true);
-	const [showFaqAlert, setShowFaqAlert] = useState(false);
+	const [faqIsActive, setFaqIsActive] = useState(data.faq.length > 0);
 
 	const handleChangeAgendaActive = (val: boolean) => {
 		// Отключают И есть элементы → показываем алерт
@@ -169,36 +156,6 @@ export function StepAdditional({
 				</AlertDialogContent>
 			</AlertDialog>
 
-			{/* Навигация */}
-			<div className="navigation flex gap-2 justify-end pt-4 border-t border-border">
-				<Button
-					type="button"
-					variant="outline"
-					onClick={() =>
-						onBack
-							? onBack()
-							: router.push(
-									`/${locale}/profile/events/new?eventId=${eventId}`,
-								)
-					}
-				>
-					<IconArrowLeft className="size-4" />
-					{t("tickets.back")}
-				</Button>
-				<Button
-					type="button"
-					onClick={() =>
-						onNext
-							? onNext()
-							: router.push(
-									`/${locale}/profile/events/${eventId}/edit/tickets`,
-								)
-					}
-				>
-					{t("tickets.next")}
-					<IconArrowRight className="size-4" />
-				</Button>
-			</div>
 		</div>
 	);
 }

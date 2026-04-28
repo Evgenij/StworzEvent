@@ -7,8 +7,8 @@ const EventsCatalogPage = async () => {
 	const { items, hasMore } = await getEventsPage(0);
 
 	return (
-		<div className="flex flex-col w-full h-full items-start gap-4 p-6 sm:p-0">
-			<PageHeader />
+		<div className="events-catalog flex flex-col gap-4 w-full h-full items-start p-4 pt-0">
+			<PageHeader padding />
 
 			{items.length === 0 ? (
 				<div className="flex flex-col items-center justify-center w-full py-20 gap-4">

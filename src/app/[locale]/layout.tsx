@@ -9,6 +9,7 @@ import "@/app/base.scss";
 import { QueryProvider } from "@/providers/query-provider";
 import { Toaster } from "@/components/shadcn/ui/sonner";
 import MobileMenu from "@/components/layout/menu/mobile-menu";
+import LocaleNotSupported from "@/components/layout/locale-not-supported";
 import { APP_CONFIG } from "@/config/app";
 
 const fontPoppins = Poppins({
@@ -49,7 +50,7 @@ export default async function RootLayout({
 				<QueryProvider>
 					<NextIntlClientProvider messages={messages}>
 						<Toaster />
-						{children}
+						{locale === "en" ? <LocaleNotSupported /> : children}
 					</NextIntlClientProvider>
 				</QueryProvider>
 				<SpeedInsights />

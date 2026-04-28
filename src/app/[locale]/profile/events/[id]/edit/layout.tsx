@@ -5,6 +5,8 @@ import { auth } from "@/lib/auth";
 import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
 import { headers } from "next/headers";
 import { Separator } from "@/components/shadcn/ui/separator";
+import { BackButton } from "@/components/shared/back-button";
+import { Typography } from "@/components/shared";
 
 type Props = {
 	children: React.ReactNode;
@@ -24,7 +26,16 @@ export default async function EditEventLayout({ children, params }: Props) {
 
 	return (
 		<div className="edit-event-layout flex w-full flex-col gap-4">
-			{event && <EditEventPageHeader eventTitle={event.title} />}
+			<header className="flex items-center gap-3">
+				<BackButton />
+
+				{event && (
+					<Typography variant="h2" className="line-clamp-1">
+						{event.title}
+					</Typography>
+				)}
+			</header>
+
 			<Separator />
 			{children}
 		</div>

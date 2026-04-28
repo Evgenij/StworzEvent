@@ -15,6 +15,7 @@ export const createEventSchema = (t: (key: string) => string) =>
 			publishImmediately: z.boolean().optional(),
 			ticketQuantity: z.number().int().nullable(),
 			coverImage: z.string().nullable(),
+			minPrice: z.number().min(0).nullable(),
 		})
 		.superRefine((data, ctx) => {
 			if (data.ticketType === "paid" && !data.ticketPrice) {

@@ -417,6 +417,9 @@ model Event {
   eventIsOffline Boolean     @default(false) @map("event_is_offline")
   payAtEntrance  Boolean     @default(false) @map("pay_at_entrance")
 
+  /// Минимальная цена билета в минимальных единицах валюты (денормализовано)
+  minPrice       Int?         @map("min_price")
+
   organizationId String       @map("organization_id")
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
@@ -503,15 +506,16 @@ model EventFaq {
 // ─────────────────────────────────────────────
 
 model Ticket {
-  id        String   @id @default(uuid())
-  eventId   String   @map("event_id")
-  name      String   @map("name")
+  id          String   @id @default(uuid())
+  eventId     String   @map("event_id")
+  name        String   @map("name")
+  description String?  @map("description")
   /// Цена в минимальных единицах валюты (гроши, центы)
-  price     Int      @map("price")
+  price       Int      @map("price")
   /// Общее количество билетов (null = безлимитно)
-  quantity  Int?     @map("quantity")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  quantity    Int?     @map("quantity")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   events     Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
   orderItems OrderItem[]

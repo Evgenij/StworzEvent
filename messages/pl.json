@@ -168,12 +168,18 @@
 		"organizer": {
 			"groups": {
 				"platform": "Platforma",
+				"account": "Konto",
 				"main": "Strona glowna"
 			},
 			"pages": {
 				"catalog": "Katalog wydarzen",
-				"dashboard": "Panel główny",
-				"events": "Wydarzenia"
+				"dashboard": "Dashboard",
+				"events": "Wydarzenia",
+				"organizations": "Moje firmy",
+				"participants": "Baza uczestników",
+				"statistics": "Ogolna statystyka",
+				"notifications": "Powiadomienia",
+				"settings": "Ustawienia"
 			},
 			"actionButton": "Utwórz wydarzenie",
 			"submenu": {
@@ -267,6 +273,8 @@
 			"ticketNumber": "Bilet #{number}",
 			"name": "Nazwa biletu",
 			"namePlaceholder": "np. Bilet standardowy",
+			"description": "Opis (opcjonalny)",
+			"descriptionPlaceholder": "np. Zawiera wstęp na scenę główną i backstage",
 			"price": "Cena (PLN)",
 			"quantity": "Liczba miejsc",
 			"quantityPlaceholder": "np. 100",
@@ -274,7 +282,13 @@
 			"addTicket": "Dodaj bilet",
 			"back": "Wstecz",
 			"next": "Dalej",
+			"save": "Zapisz",
 			"saving": "Zapisywanie...",
+			"saved": "Bilet zapisany",
+			"cancel": "Anuluj",
+			"free": "Bezpłatny",
+			"unlimited": "Nieograniczona",
+			"empty": "Brak biletów. Dodaj pierwszy bilet poniżej.",
 			"saveDraft": "Zapisz szkic",
 			"publish": "Opublikuj wydarzenie",
 			"successPublished": "Wydarzenie zostało opublikowane!",
@@ -471,6 +485,7 @@
 		"ticketsMin": "Dodaj co najmniej jeden bilet",
 		"priceMin": "Cena nie może być ujemna",
 		"quantityMin": "Minimalna liczba miejsc to 1",
+		"descriptionMax": "Opis nie może przekraczać 500 znaków",
 		"typeTicket": "Typ biletu",
 		"ticketPrice": "Cena biletu (PLN)",
 		"ticketQuantity": "Liczba miejsc",
@@ -573,6 +588,9 @@
 		"min5": "Adres musi mieć co najmniej 5 znaków",
 		"required": "To pole jest wymagane",
 		"invalidUrl": "Nieprawidłowy adres URL",
-		"endsAtAfterStartsAt": "Data zakończenia musi być późniejsza niż data rozpoczęcia"
+		"endsAtAfterStartsAt": "Data zakończenia musi być późniejsza niż data rozpoczęcia",
+		"ticketsMin": "Dodaj co najmniej jeden bilet",
+		"priceMin": "Cena nie może być ujemna",
+		"quantityMin": "Minimalna liczba miejsc to 1"
 	}
 }
