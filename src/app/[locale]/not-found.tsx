@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/shadcn/ui/button";
-import { Typography } from "@/components/shared";
+import { Button } from "@/components/ui/button";
+import { Typography } from "@/shared/components";
 import { useRouter } from "@/i18n/routing";
 import { IconChevronLeft } from "@tabler/icons-react";
 

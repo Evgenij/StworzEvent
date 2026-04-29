@@ -1,10 +1,8 @@
-// app/[locale]/(main)/events/[slug]/order/page.tsx
 import { redirect } from "next/navigation";
-import { getLocale } from "next-intl/server";
 import prisma from "@/lib/prisma";
-import { getActiveReservation } from "@/actions/reservations/get-active-reservation.action";
 import { OrderForm } from "./order-form";
-import { Typography } from "@/components/shared";
+import { getActiveReservation } from "@/features/reservations/actions/get-active-reservation.action";
+import { Typography } from "@/shared/components";
 
 type OrderPageProps = {
 	params: Promise<{ slug: string; locale: string }>;

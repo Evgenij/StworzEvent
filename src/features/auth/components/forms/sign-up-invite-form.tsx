@@ -1,19 +1,19 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { MIN_PASSWORD_LENGTH } from "@/consts/validation";
-import { Button } from "@/components/shadcn/ui/button";
+import { MIN_PASSWORD_LENGTH } from "@/config/validation";
+import { Button } from "@/components/ui/button";
 import {
 	Field,
 	FieldDescription,
 	FieldError,
 	FieldGroup,
 	FieldLabel,
-} from "@/components/shadcn/ui/field";
+} from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import {
 	IconAlertTriangleFilled,
 	IconCircleCheckFilled,
@@ -33,18 +33,17 @@ import {
 	CONDITIONALS_ROUTE,
 	DASHBOARD_ROUTE,
 	POLITICS_ROUTE,
-} from "@/consts/routes";
-import { Spinner } from "@/components/shadcn/ui/spinner";
+} from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/shadcn/ui/checkbox";
-import { acceptInvitationAction } from "@/actions/auth/accept-invitation.action";
 import { toast } from "sonner";
-import { Alert, AlertTitle } from "@/components/shadcn/ui/alert";
-import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
-import Typography from "@/components/shared/typography/typography";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { acceptInvitationAction } from "../../actions/accept-invitation.action";
+import { signInEmailAction } from "../../actions/sign-in-email.action";
+import { Typography } from "@/shared/components";
 
 export default function SignUpInviteForm({ token }: { token: string }) {
 	const t = useTranslations("SignUpInviteForm");

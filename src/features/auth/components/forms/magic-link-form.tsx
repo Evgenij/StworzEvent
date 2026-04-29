@@ -1,8 +1,7 @@
 "use client";
 
-import { DASHBOARD_ROUTE } from "@/consts/routes";
+import { DASHBOARD_ROUTE } from "@/config/routes";
 import { signIn } from "@/lib/auth-client";
-import { email } from "better-auth";
 import React, { useRef } from "react";
 import { toast } from "sonner";
 

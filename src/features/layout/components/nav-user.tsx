@@ -1,10 +1,6 @@
 "use client";
 
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-} from "@/components/shadcn/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,21 +9,21 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/shadcn/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/shadcn/ui/sidebar";
+} from "@/components/ui/sidebar";
 import { signOutAction } from "@/features/auth/actions/sign-out";
 import { Link, useRouter } from "@/i18n/routing";
 import {
 	ADMIN_DASHBOARD_ROUTE,
 	MAIN_PAGE_ROUTE,
 	SIGNIN_ROUTE,
-} from "@/consts/routes";
-import { UserType } from "@/types/user";
+} from "@/config/routes";
+import { UserType } from "@/features/user/types/user";
 import { UserRole } from "@prisma/client";
 import {
 	IconChevronCompactUp,

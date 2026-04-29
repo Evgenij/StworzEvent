@@ -1,13 +1,13 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { MIN_PASSWORD_LENGTH } from "@/consts/validation";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldGroup } from "@/components/shadcn/ui/field";
+import { MIN_PASSWORD_LENGTH } from "@/config/validation";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import {
 	IconEye,
 	IconEyeClosed,
@@ -22,18 +22,17 @@ import {
 	POLITICS_ROUTE,
 	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
-} from "@/consts/routes";
-import { Spinner } from "@/components/shadcn/ui/spinner";
-import { signUpEmailAction } from "@/actions/auth/sign-up-email.action";
+} from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import SignInOAuthBtn from "@/features/auth/components/sign-in-oauth-btn";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 import { ErrorCode } from "@/types/error-code";
 import { signIn } from "@/lib/auth-client";
-import { Typography } from "@/components/shared";
+import { Typography } from "@/shared/components";
+import { signUpEmailAction } from "../../actions/sign-up-email.action";
 
 export default function SignUpForm() {
 	const t = useTranslations("SignUpForm");

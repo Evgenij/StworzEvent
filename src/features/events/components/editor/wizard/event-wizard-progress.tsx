@@ -1,0 +1,155 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { IconLoader } from "@tabler/icons-react";
+import {
+	EVENT_EDIT_ROUTE,
+	EVENT_EDIT_ADDITIONAL_ROUTE,
+	EVENT_EDIT_TICKETS_ROUTE,
+} from "@/config/routes";
+
+type Step = {
+	number: number;
+	labelKey: string;
+	description: string;
+	path: (eventId: string) => string;
+};
+
+const STEPS: Step[] = [
+	{
+		number: 1,
+		labelKey: "basicInfo",
+		description: "Basic event information",
+		path: (id) => EVENT_EDIT_ROUTE(id),
+	},
+	{
+		number: 2,
+		labelKey: "additional",
+		description: "Additional event information",
+		// path: (id) => `/profile/events/${id}/edit/additional`,
+		path: (id) => EVENT_EDIT_ADDITIONAL_ROUTE(id),
+	},
+	{
+		number: 3,
+		labelKey: "tickets",
+		description: "Ticket configuration",
+		path: (id) => EVENT_EDIT_TICKETS_ROUTE(id),
+	},
+];
+
+type Props = {
+	currentStep: 1 | 2 | 3;
+	eventId?: string;
+	onStepClick?: (step: number) => void;
+	loadingStep?: number | null;
+	onNavigate?: (step: number) => void;
+};
+
+export function EventWizardProgress({
+	currentStep,
+	eventId,
+	onStepClick,
+	loadingStep,
+	onNavigate,
+}: Props) {
+	const t = useTranslations("EventWizard");
+	const locale = useLocale();
+
+	return (
+		<div className="flex items-end border-b border-border">
+			{STEPS.map((step) => {
+				const isDone = step.number < currentStep;
+				const isActive = step.number === currentStep;
+				const isLocked = !eventId && step.number > 1;
+				const isReachable = !isActive && !isLocked;
+
+				const href = eventId
+					? `/${locale}${step.path(eventId)}`
+					: step.number === 1
+						? `/${locale}/profile/events/new`
+						: null;
+
+				const label = (
+					<h5
+						className={cn(
+							"font-medium text-start leading-tight",
+							isActive && "text-foreground",
+							isLocked && "text-muted-foreground/70",
+						)}
+					>
+						{t(`steps.${step.labelKey}.title`)}
+					</h5>
+				);
+
+				const isLoading = loadingStep === step.number;
+
+				const description = (
+					<div
+						className={cn(
+							" text-start text-sm text-muted-foreground line-clamp-1",
+							isLocked && "text-muted-foreground/70",
+						)}
+					>
+						{isLoading ? (
+							<div className="flex gap-1 items-center">
+								<IconLoader className="animate-spin size-4"></IconLoader>{" "}
+								{t(`loading`)}
+							</div>
+						) : (
+							t(`steps.${step.labelKey}.description`)
+						)}
+					</div>
+				);
+
+				const inner = (
+					<div
+						className={cn(
+							"flex flex-1 border-b-3 border-transparent flex-col justify-start gap-0.5 p-3 rounded-t-xl w-full h-full items-center sm:items-start",
+							{
+								"border-b-3 border-primary ": isActive,
+								"hover:border-muted-foreground/20 cursor-pointer":
+									!isActive && !isLocked,
+								"hover:bg-muted/50": !isLocked,
+							},
+						)}
+					>
+						<div className="flex items-center gap-2 ">{label}</div>
+						<div className="hidden sm:block">{description}</div>
+					</div>
+				);
+
+				return (
+					<div
+						key={step.number}
+						className="flex flex-col items-center w-full h-full"
+					>
+						{isReachable && onStepClick ? (
+							<button
+								type="button"
+								onClick={() => {
+									onStepClick(step.number);
+								}}
+								className="flex w-full flex-col items-center text-left h-stretch"
+							>
+								{inner}
+							</button>
+						) : isReachable && href ? (
+							<Link
+								href={href}
+								onClick={() => onNavigate?.(step.number)}
+								className="flex flex-col items-center w-full h-stretch"
+							>
+								{inner}
+							</Link>
+						) : (
+							inner
+						)}
+					</div>
+				);
+			})}
+		</div>
+	);
+}

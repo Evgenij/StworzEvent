@@ -1,12 +1,12 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldGroup } from "@/components/shadcn/ui/field";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import { IconMail } from "@tabler/icons-react";
 import { startTransition, useState } from "react";
 import { Link, useRouter } from "@/i18n/routing";
@@ -16,14 +16,14 @@ import {
 	FORGOT_PASSWORD_SUCCESS_ROUTE,
 	RESET_PASSWORD_ROUTE,
 	SIGNIN_ROUTE,
-} from "@/consts/routes";
-import { Spinner } from "@/components/shadcn/ui/spinner";
+} from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Typography from "@/components/shared/typography/typography";
+import { Typography } from "@/shared/components";
 
 export default function ForgetPasswordForm() {
 	const t = useTranslations("ForgetPasswordForm");

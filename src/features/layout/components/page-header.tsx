@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography } from "@/components/shared";
+import { Typography } from "@/shared/components";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";

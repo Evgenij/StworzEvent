@@ -1,13 +1,13 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { MIN_PASSWORD_LENGTH } from "@/consts/validation";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldGroup } from "@/components/shadcn/ui/field";
+import { MIN_PASSWORD_LENGTH } from "@/config/validation";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import {
 	IconAlertTriangleFilled,
 	IconEye,
@@ -25,8 +25,8 @@ import {
 	FORGET_PASSWORD_ROUTE,
 	DASHBOARD_ROUTE,
 	SIGNIN_ROUTE,
-} from "@/consts/routes";
-import { Spinner } from "@/components/shadcn/ui/spinner";
+} from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import z from "zod";
@@ -38,8 +38,8 @@ import {
 	AlertAction,
 	AlertDescription,
 	AlertTitle,
-} from "@/components/shadcn/ui/alert";
-import Typography from "@/components/shared/typography/typography";
+} from "@/components/ui/alert";
+import { Typography } from "@/shared/components";
 
 export default function ResetPasswordForm({ token }: { token: string }) {
 	const t = useTranslations("ResetPasswordForm");

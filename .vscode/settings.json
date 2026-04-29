@@ -1,5 +1,6 @@
 {
 	"i18n-ally.localesPaths": ["messages", "src/i18n"],
 	"i18n-ally.keystyle": "nested",
-	"editor.fontSize": 12
+	"editor.fontSize": 12,
+	"postman.settings.dotenv-detection-notification-visibility": false
 }

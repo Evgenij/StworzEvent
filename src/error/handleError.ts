@@ -1,10 +1,10 @@
-import { ErrorCode } from "@/types/enums";
+import { ErrorCode } from "@/types/error-code";
 import { ApiError } from "./api-error";
 
 export function handleError(error: unknown) {
 	if (error instanceof ApiError) {
 		return {
-			status: error.status,
+			status: error.code,
 			body: {
 				message: error.message,
 				code: error.code,

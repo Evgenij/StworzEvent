@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
-import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "./consts/routes";
+import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "./config/routes";
 
 const intlMiddleware = createMiddleware(routing);
 

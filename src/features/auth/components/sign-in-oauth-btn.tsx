@@ -1,9 +1,9 @@
 "use client";
 
-import { AUTH_ERROR_ROUTE, DASHBOARD_ROUTE } from "@/consts/routes";
+import { DASHBOARD_ROUTE } from "@/config/routes";
 import { signIn } from "@/lib/auth-client";
-import { Button } from "@/components/shadcn/ui/button";
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { toast } from "sonner";
 import FacebookIcon from "@/assets/icons/facebook.svg";
 import GoogleIcon from "@/assets/icons/google.svg";

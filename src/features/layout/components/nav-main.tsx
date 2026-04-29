@@ -6,7 +6,7 @@ import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@/components/shadcn/ui/collapsible";
+} from "@/components/ui/collapsible";
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -16,7 +16,7 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
-} from "@/components/shadcn/ui/sidebar";
+} from "@/components/ui/sidebar";
 import { TablerIcon } from "@tabler/icons-react";
 
 export function NavMain({

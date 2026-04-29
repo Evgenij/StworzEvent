@@ -1,5 +1,5 @@
-import { Button } from "@/components/shadcn/ui/button";
-import { MAIN_PAGE_ROUTE } from "@/consts/routes";
+import { Button } from "@/components/ui/button";
+import { MAIN_PAGE_ROUTE } from "@/config/routes";
 import { Link } from "@/i18n/routing";
 import { IconChevronLeft } from "@tabler/icons-react";
 import type { Metadata } from "next";

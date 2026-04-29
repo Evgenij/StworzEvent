@@ -15,8 +15,6 @@ import {
 	IconSparkles,
 } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { deleteOrganizationAction } from "@/actions/organizations/delete-organization.action";
-import { MY_ORGANIZATIONS_QUERY_KEY } from "@/hooks/use-my-organizations";
 import { toast } from "sonner";
 
 import {
@@ -26,16 +24,18 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/shadcn/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/shadcn/ui/sidebar";
+} from "@/components/ui/sidebar";
 import { Link } from "@/i18n/routing";
-import { NEW_EVENT_ROUTE, NEW_ORGANIZATION_ROUTE } from "@/consts/routes";
-import { Button } from "@/components/shadcn/ui/button";
+import { NEW_EVENT_ROUTE, NEW_ORGANIZATION_ROUTE } from "@/config/routes";
+import { Button } from "@/components/ui/button";
+import { deleteOrganizationAction } from "@/features/organizations/actions/delete-organization.action";
+import { MY_ORGANIZATIONS_QUERY_KEY } from "@/features/organizations/hooks/use-my-organizations";
 
 type OrgInfo = {
 	id: string;

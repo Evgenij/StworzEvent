@@ -1,7 +1,7 @@
 "use client";
 
-import { CreateOrganizationForm } from "@/components/dashboard/organizations/create-organization-form";
-import { DASHBOARD_ROUTE } from "@/consts/routes";
+import { DASHBOARD_ROUTE } from "@/config/routes";
+import { CreateOrganizationForm } from "@/features/organizations/components/create-organization-form";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 

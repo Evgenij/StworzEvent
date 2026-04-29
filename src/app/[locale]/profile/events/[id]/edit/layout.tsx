@@ -1,12 +1,12 @@
-import { EditEventPageHeader } from "@/components/dashboard/events/wizard/edit-event-page-header";
-import { SIGNIN_ROUTE } from "@/consts/routes";
+import { EditEventPageHeader } from "@/features/events/components/editor/wizard/edit-event-page-header";
+import { SIGNIN_ROUTE } from "@/config/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
-import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
+import { getEventForEditAction } from "@/features/events/actions/get-event-for-edit.action";
 import { headers } from "next/headers";
-import { Separator } from "@/components/shadcn/ui/separator";
-import { BackButton } from "@/components/shared/back-button";
-import { Typography } from "@/components/shared";
+import { Separator } from "@/components/ui/separator";
+import { BackButton } from "@/shared/components/back-button";
+import { Typography } from "@/shared/components";
 
 type Props = {
 	children: React.ReactNode;

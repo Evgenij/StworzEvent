@@ -6,7 +6,7 @@ import {
 	NEW_EVENT_ROUTE,
 	ORGANIZATIONS_ROUTE,
 	SETTINGS_ROUTE,
-} from "@/consts/routes";
+} from "@/config/routes";
 import {
 	IconSmartHome,
 	IconCalendarEvent,

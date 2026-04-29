@@ -1,8 +1,6 @@
-import { FooterWebsite } from "@/components/layout/footer";
-import { HeaderWebsite } from "@/components/layout/header";
-import { MobileMenu } from "@/components/layout/menu";
+import { FooterWebsite, HeaderWebsite, MobileMenu } from "@/features/layout";
+import { UserType } from "@/features/user/types/user";
 import { auth } from "@/lib/auth";
-import { UserType } from "@/types/user";
 import { headers } from "next/headers";
 
 type MainLayoutProps = {

@@ -1,4 +1,4 @@
-import { SIGNIN_ROUTE } from "@/consts/routes";
+import { SIGNIN_ROUTE } from "@/config/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { Metadata } from "next";

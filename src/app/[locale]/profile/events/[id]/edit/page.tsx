@@ -1,7 +1,7 @@
-import { getEventAdditionalAction } from "@/actions/events/get-event-additional.action";
-import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
-import { getEventTickets } from "@/actions/tickets/get-event-tickets.action";
-import { EditEventTabs } from "@/components/dashboard/events/edit-event-tabs";
+import { getEventAdditionalAction } from "@/features/events/actions/get-event-additional.action";
+import { getEventForEditAction } from "@/features/events/actions/get-event-for-edit.action";
+import { EditEventTabs } from "@/features/events/components/editor/edit-event-tabs";
+import { getEventTickets } from "@/features/tickets/actions/get-event-tickets.action";
 import { notFound } from "next/navigation";
 
 type Props = {

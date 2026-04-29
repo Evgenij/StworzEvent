@@ -2,12 +2,12 @@
 "use client";
 
 import { Prisma } from "@prisma/client";
-import { StepParticipants } from "@/components/events/tickets/steps/participants/step-participants";
 import { useEffect, useState } from "react";
-import { OrderForm as OrderFormType } from "@/components/events/tickets/tickets-drawer";
+import { OrderForm as OrderFormType } from "@/features/events/components/tickets/tickets-drawer";
 import { useSession } from "@/lib/auth-client";
-import { StepOrderSummary } from "@/components/events/tickets/steps/confirmation/step-order-summary";
-import { StepOrderSuccess } from "@/components/events/tickets/steps/confirmation/step-order-success";
+import { StepParticipants } from "@/features/events/components/tickets/steps/participants/step-participants";
+import { StepOrderSummary } from "@/features/events/components/tickets/steps/confirmation/step-order-summary";
+import { StepOrderSuccess } from "@/features/events/components/tickets/steps/confirmation/step-order-success";
 
 type ReservationWithItems = Prisma.TicketReservationGetPayload<{
 	include: {
