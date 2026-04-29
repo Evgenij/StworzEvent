@@ -15,11 +15,10 @@ import {
 	AlertDialogMedia,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from "./ui/avatar";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { ButtonGroup } from "./ui/button-group";
+} from "./alert-dialog";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from "./avatar";
+import { Button } from "./button";
+import { ButtonGroup } from "./button-group";
 import {
 	Card,
 	CardAction,
@@ -28,8 +27,8 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "./ui/card";
-import { Checkbox } from "./ui/checkbox";
+} from "./card";
+import { Checkbox } from "./checkbox";
 import {
 	Combobox,
 	ComboboxContent,
@@ -37,7 +36,7 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-} from "./ui/combobox";
+} from "./combobox";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -54,7 +53,7 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "./dropdown-menu";
 import {
 	Empty,
 	EmptyContent,
@@ -62,7 +61,7 @@ import {
 	EmptyHeader,
 	EmptyMedia,
 	EmptyTitle,
-} from "./ui/empty";
+} from "./empty";
 import {
 	Field,
 	FieldContent,
@@ -73,8 +72,8 @@ import {
 	FieldSeparator,
 	FieldSet,
 	FieldTitle,
-} from "./ui/field";
-import { Input } from "./ui/input";
+} from "./field";
+import { Input } from "./input";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -82,7 +81,7 @@ import {
 	InputGroupInput,
 	InputGroupText,
 	InputGroupTextarea,
-} from "./ui/input-group";
+} from "./input-group";
 import {
 	Item,
 	ItemActions,
@@ -90,8 +89,8 @@ import {
 	ItemDescription,
 	ItemMedia,
 	ItemTitle,
-} from "./ui/item";
-import { Label } from "./ui/label";
+} from "./item";
+import { Label } from "./label";
 import {
 	Popover,
 	PopoverContent,
@@ -99,8 +98,8 @@ import {
 	PopoverHeader,
 	PopoverTitle,
 	PopoverTrigger,
-} from "./ui/popover";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+} from "./popover";
+import { RadioGroup, RadioGroupItem } from "./radio-group";
 import {
 	Select,
 	SelectContent,
@@ -108,8 +107,8 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "./ui/select";
-import { Separator } from "./ui/separator";
+} from "./select";
+import { Separator } from "./separator";
 import {
 	Sheet,
 	SheetClose,
@@ -119,12 +118,12 @@ import {
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-} from "./ui/sheet";
-import { Slider } from "./ui/slider";
-import { Spinner } from "./ui/spinner";
-import { Switch } from "./ui/switch";
-import { Textarea } from "./ui/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+} from "./sheet";
+import { Slider } from "./slider";
+import { Spinner } from "./spinner";
+import { Switch } from "./switch";
+import { Textarea } from "./textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 import {
 	IconMinus,
 	IconPlus,
@@ -171,6 +170,7 @@ import {
 	IconLogout,
 	IconShoppingBag,
 } from "@tabler/icons-react";
+import { Badge } from "./badge";
 
 export function CoverExample() {
 	return (

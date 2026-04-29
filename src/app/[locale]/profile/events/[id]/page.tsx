@@ -1,10 +1,10 @@
-import { getEventAction } from "@/actions/events/get-event.action";
-import { Button } from "@/components/shadcn/ui/button";
-import { Typography } from "@/components/shared";
-import { BackButton } from "@/components/shared/back-button";
-import { EVENT_EDIT_ROUTE } from "@/consts/routes";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
+import { Button } from "@/components/ui/button";
+import { EVENT_EDIT_ROUTE } from "@/config/routes";
+import { getEventAction } from "@/features/events/actions/get-event.action";
+import { DateTimeFormatter } from "@/helpers/date";
 import { Link } from "@/i18n/routing";
+import { Typography } from "@/shared/components";
+import { BackButton } from "@/shared/components/back-button";
 import {
 	IconCalendarEvent,
 	IconEdit,

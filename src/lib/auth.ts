@@ -12,10 +12,10 @@ import { normalizeName } from "./utils";
 import { UserRole } from "@prisma/client";
 import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
-import { DASHBOARD_ROUTE } from "@/config/routes";
 import { TypeMail } from "@/types/enums";
 import { hashPassword, verifyPassword } from "./hash-password";
 import { sendEmailAction } from "./email/send-email.action";
+import { DASHBOARD_ROUTE } from "@/config/routes";
 
 const BASE_URL =
 	process.env.BETTER_AUTH_URL ?? "https://stworzevent.vercel.app";
@@ -187,7 +187,7 @@ const options = {
 		nextCookies(),
 		admin({
 			defaultRole: UserRole.USER,
-			adminRoles: [UserRole.ADMIN],
+			adminRole: [UserRole.ADMIN],
 			ac,
 			roles,
 		}),
@@ -208,7 +208,7 @@ const options = {
 				});
 			},
 		}),
-	],
+	] as any[],
 	session: {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
 		cookieCache: {
@@ -251,15 +251,13 @@ export const auth = betterAuth({
 		...(options.plugins || []),
 
 		customSession(async ({ session, user }) => {
-			//console.log("customSession user:", JSON.stringify(user));
-			//console.log("customSession session:", JSON.stringify(session));
 			return {
 				session: {
 					...session,
 				},
 				user: {
 					...user,
-					role: user.role,
+					role: (user as any).role,
 				},
 			};
 		}, options),

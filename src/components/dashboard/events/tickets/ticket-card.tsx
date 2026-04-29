@@ -5,14 +5,6 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
-import { Textarea } from "@/components/shadcn/ui/textarea";
 import {
 	IconTrash,
 	IconLoader,
@@ -22,15 +14,26 @@ import {
 	IconUsers,
 	IconPencil,
 } from "@tabler/icons-react";
-import { ticketSchema, type TicketInput } from "@/schemas/event-tickets.schema";
-import { upsertTicketsAction } from "@/actions/tickets/upsert-tickets.action";
-import { deleteTicketAction } from "@/actions/tickets/delete-ticket.action";
 import { toast } from "sonner";
 import { EventStatus } from "@prisma/client";
-import { Separator } from "@/components/shadcn/ui/separator";
-import { TicketWrapper } from "@/components/events/tickets/steps/participants/ticket-wrapper";
-import { Typography } from "@/components/shared";
 import { formatCurrencyPln } from "@/lib/utils";
+import { upsertTicketsAction } from "@/features/tickets/actions/upsert-tickets.action";
+import { deleteTicketAction } from "@/features/tickets/actions/delete-ticket.action";
+import { TicketWrapper } from "@/features/events/components/tickets/ticket-wrapper";
+import { Button } from "@/components/ui/button";
+import { Typography } from "@/shared/components";
+import { Separator } from "@/components/ui/separator";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupInput,
+} from "@/components/ui/input-group";
+import { Textarea } from "@/components/ui/textarea";
+import {
+	TicketInput,
+	ticketSchema,
+} from "@/features/events/schemas/event-tickets.schema";
 
 export type LocalTicket = {
 	id: string; // "temp-{timestamp}" for unsaved, real UUID for saved
