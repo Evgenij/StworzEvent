@@ -12,20 +12,12 @@ import {
 	IconAlertTriangleFilled,
 	IconEye,
 	IconEyeClosed,
-	IconInfoCircleFilled,
 	IconLock,
 	IconLockCheck,
-	IconMail,
 } from "@tabler/icons-react";
 import { startTransition, useState } from "react";
 import { Link, useRouter } from "@/i18n/routing";
-import {
-	AUTH_VERIFY_ROUTE,
-	AUTH_VERIFY_SUCCESS_ROUTE,
-	FORGET_PASSWORD_ROUTE,
-	DASHBOARD_ROUTE,
-	SIGNIN_ROUTE,
-} from "@/config/routes";
+import { FORGET_PASSWORD_ROUTE, SIGNIN_ROUTE } from "@/config/routes";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";

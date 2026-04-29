@@ -12,7 +12,7 @@ const EventsCatalogPage = async () => {
 
 			{items.length === 0 ? (
 				<div className="flex flex-col items-center justify-center w-full py-20 gap-4">
-					<LottieAnimation />
+					{/* <LottieAnimation /> */}
 					<p className="text-muted-foreground">Brak wydarzeń</p>
 				</div>
 			) : (
