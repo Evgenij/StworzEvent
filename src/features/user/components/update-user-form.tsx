@@ -1,7 +1,7 @@
 "use client";
 
 import { updateUser } from "@/lib/auth-client";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconCheck } from "@tabler/icons-react";
 import React from "react";
 

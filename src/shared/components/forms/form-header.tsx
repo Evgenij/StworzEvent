@@ -1,6 +1,5 @@
 import { TablerIcon } from "@tabler/icons-react";
-import React from "react";
-import { Typography } from "../shared";
+import Typography from "../typography/typography";
 
 const FormHeader = ({
 	title,

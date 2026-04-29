@@ -1,7 +1,6 @@
 "use client";
 
 import { ReactNode } from "react";
-import MobileMenuItem, { MobileMenuItemProps } from "./mobile-menu-item";
 
 type MobileMenuNavProps = {
 	children: ReactNode;

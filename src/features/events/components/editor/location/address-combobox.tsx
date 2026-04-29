@@ -7,11 +7,11 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-} from "@/components/shadcn/ui/combobox";
-import { useAddressSearch } from "@/hooks/use-address-search";
-import type { NominatimPlace } from "@/types/nominatim";
+} from "@/components/ui/combobox";
 import { cn } from "@/lib/utils";
 import { IconLoader } from "@tabler/icons-react";
+import { NominatimPlace } from "@/lib/nominatim/nominatim.types";
+import { useAddressSearch } from "@/features/events/hooks/use-address-search";
 
 interface Props {
 	city: string;

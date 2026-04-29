@@ -1,4 +1,4 @@
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import React from "react";
 

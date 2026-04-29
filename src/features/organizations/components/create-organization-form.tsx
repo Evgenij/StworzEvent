@@ -4,27 +4,22 @@ import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import {
-	createOrganizationSchema,
-	type CreateOrganizationInput,
-} from "@/schemas/create-organization.schema";
-import { createOrganizationAction } from "@/actions/organizations/create-organization.action";
-import { Button } from "@/components/shadcn/ui/button";
-import { Input } from "@/components/shadcn/ui/input";
-import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupIMask,
 	InputGroupText,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/shadcn/ui/select";
+} from "@/components/ui/select";
 import {
 	IconBuildingSkyscraper,
 	IconLoader,
@@ -33,8 +28,13 @@ import {
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { PolishCityCombobox } from "../events/location/polish-city-combobox";
-import { FormGroup, FormRow, FormHeader } from "@/components/forms";
+import {
+	CreateOrganizationInput,
+	createOrganizationSchema,
+} from "../schemas/create-organization.schema";
+import { createOrganizationAction } from "../actions/create-organization.action";
+import { FormGroup, FormHeader, FormRow } from "@/shared/components/forms";
+import { PolishCityCombobox } from "@/features/events/components/editor/location/polish-city-combobox";
 
 export function CreateOrganizationForm({
 	header,

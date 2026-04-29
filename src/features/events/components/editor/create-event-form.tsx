@@ -4,24 +4,18 @@ import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import {
-	createEventSchema,
-	type CreateEventInput,
-} from "@/schemas/create-event.schema";
-import { createEventAction } from "@/actions/events/create-event.action";
-import { Button } from "@/components/shadcn/ui/button";
-import { Input } from "@/components/shadcn/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
 	Field,
 	FieldContent,
 	FieldDescription,
 	FieldError,
-	FieldGroup,
 	FieldLabel,
 	FieldTitle,
-} from "@/components/shadcn/ui/field";
-import { RadioGroup, RadioGroupItem } from "@/components/shadcn/ui/radio-group";
-import { DateTimePicker } from "@/components/shared/date-time-picker";
+} from "@/components/ui/field";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { DateTimePicker } from "@/shared/components/date-time-picker";
 import { EventCoverUpload } from "./event-cover-upload";
 import {
 	IconInfoCircle,
@@ -29,26 +23,26 @@ import {
 	IconMap2,
 	IconTicket,
 } from "@tabler/icons-react";
-import { Slider } from "@/components/shadcn/ui/slider";
+import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { PolishCityCombobox } from "./location/polish-city-combobox";
-import { Separator } from "@/components/shadcn/ui/separator";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
-import { FormGroup, FormRow } from "@/components/forms";
-import { Checkbox } from "@/components/shadcn/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
+import { DateTimeFormatter } from "@/helpers/date";
+import { Checkbox } from "@/components/ui/checkbox";
 import FutureFunctionWrapper from "@/features/layout/components/wrapper-future-function";
-import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@/components/shadcn/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from "@/components/shadcn/ui/popover";
+} from "@/components/ui/popover";
+import {
+	CreateEventInput,
+	createEventSchema,
+} from "../../schemas/create-event.schema";
+import { FormGroup, FormRow } from "@/shared/components/forms";
+import { createEventAction } from "../../actions/create-event.action";
 
 export function CreateEventForm() {
 	const router = useRouter();

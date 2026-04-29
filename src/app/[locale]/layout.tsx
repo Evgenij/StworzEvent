@@ -7,8 +7,7 @@ import { Poppins } from "next/font/google";
 import "../globals.css";
 import "@/app/base.scss";
 import { QueryProvider } from "@/providers/query-provider";
-import { Toaster } from "@/components/shadcn/ui/sonner";
-import MobileMenu from "@/components/layout/menu/mobile-menu";
+import { Toaster } from "@/components/ui/sonner";
 import { APP_CONFIG } from "@/config/app";
 
 const fontPoppins = Poppins({

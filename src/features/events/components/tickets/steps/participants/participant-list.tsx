@@ -1,10 +1,10 @@
 import { UseFormReturn } from "react-hook-form";
-import { OrderFormValues } from "@/schemas/order.schema";
-import { TicketWrapper } from "./ticket-wrapper";
+import { OrderFormValues } from "@/features/orders/schemas/order.schema";
+import { TicketWrapper } from "../../ticket-wrapper";
 import { ParticipantFormCard } from "./forms/participant-form";
 import { truncate } from "@/lib/utils";
 import { IconTicket, IconUserCheck } from "@tabler/icons-react";
-import { FlatParticipant } from "@/types/flat-participant";
+import { FlatParticipant } from "@/features/orders/types/flat-participant";
 
 type ParticipantListProps = {
 	form: UseFormReturn<OrderFormValues>;

@@ -2,13 +2,13 @@
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { createOrganizationServerSchema } from "@/schemas/create-organization.schema";
 import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { slugify } from "@/lib/slugify/slugify";
 import prisma from "@/lib/prisma";
 import { UserRole } from "@prisma/client";
+import { createOrganizationServerSchema } from "../schemas/create-organization.schema";
 
 async function generateUniqueOrgSlug(name: string): Promise<string> {
 	const base = slugify(name);

@@ -1,11 +1,7 @@
 "use client";
 
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-} from "@/components/shadcn/ui/avatar";
-import { Button } from "@/components/shadcn/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,27 +9,21 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/shadcn/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { signOutAction } from "@/features/auth/actions/sign-out";
 import {
 	DASHBOARD_ROUTE,
-	MAIN_PAGE_ROUTE,
 	NEW_EVENT_ROUTE,
 	SIGNIN_ROUTE,
 	SIGNUP_ROUTE,
-} from "@/consts/routes";
+} from "@/config/routes";
 import { Link, useRouter } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import { UserType } from "@/types/user";
+import { UserType } from "@/features/user/types/user";
 import {
-	IconChevronDown,
 	IconLayoutDashboard,
-	IconLogout,
 	IconLogout2,
 	IconPlus,
-	IconRocket,
-	IconSettings2,
-	IconUserPlus,
 } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 

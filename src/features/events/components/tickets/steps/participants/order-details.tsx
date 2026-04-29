@@ -1,7 +1,7 @@
-import { Typography } from "@/components/shared";
+import { Typography } from "@/shared/components";
 import { IconTicket } from "@tabler/icons-react";
 import { SelectedTicket } from "../../tickets-drawer";
-import { Separator } from "@/components/shadcn/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { cn, formatPlnFromGrosze } from "@/lib/utils";
 
 type OrderDetailsProps = {
@@ -44,9 +44,7 @@ const OrderDetails = ({ items, total, className }: OrderDetailsProps) => {
 				<div className="flex justify-between font-semibold text-sm">
 					<span>Razem</span>
 					<span>
-						{total === 0
-							? "Bezpłatne"
-							: formatPlnFromGrosze(total)}
+						{total === 0 ? "Bezpłatne" : formatPlnFromGrosze(total)}
 					</span>
 				</div>
 			</div>

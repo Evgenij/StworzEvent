@@ -15,7 +15,7 @@ export const getActiveReservation = async (eventId: string) => {
 	const reservation = await prisma.ticketReservation.findFirst({
 		where: {
 			eventId,
-			sessionId: session.id,
+			sessionId: session.session.id,
 			expiresAt: { gt: new Date() }, // только активные
 		},
 		include: {

@@ -20,7 +20,7 @@ export const cancelReservation = safeAction(async (eventId: string) => {
 	await prisma.ticketReservation.deleteMany({
 		where: {
 			eventId,
-			sessionId: session.id,
+			sessionId: session.session.id,
 		},
 	});
 });

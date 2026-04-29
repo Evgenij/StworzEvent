@@ -1,14 +1,12 @@
 "use client";
 
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
 import { IconBrandFacebook } from "@tabler/icons-react";
-import React, { ReactNode } from "react";
 import { APP_CONFIG } from "@/config/app";
 import NavLinks from "../header/nav-links";
 import { NavLink } from "@/types/nav-link";
-import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
+import { MAIN_PAGE_EVENTS_ROUTE } from "@/config/routes";
 
 type FooterWebsiteProps = {
 	locale: string;

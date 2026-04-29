@@ -2,14 +2,14 @@
 
 import { Link } from "@/i18n/routing";
 import { Event } from "@prisma/client";
-import { EventImagePlaceholder } from "../shared/event-image-placeholder";
-import { Typography } from "../shared";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
 import { IconMapPin } from "@tabler/icons-react";
-import { EVENT_PAGE_ROUTE } from "@/consts/routes";
+import { EVENT_PAGE_ROUTE } from "@/config/routes";
 import { cn, formatPlnFromGrosze } from "@/lib/utils";
-import { Badge } from "../shadcn/ui/badge";
-import { CategoryOption } from "@/actions/events/get-categories.action";
+import { CategoryOption } from "../../actions/get-categories.action";
+import { EventImagePlaceholder } from "../event-image-placeholder";
+import { Badge } from "@/components/ui/badge";
+import { Typography } from "@/shared/components";
+import { DateTimeFormatter } from "@/helpers/date";
 
 export type EventItemData = Pick<
 	Event,

@@ -1,5 +1,5 @@
+import { UserType } from "@/features/user/types/user";
 import { useSession } from "@/lib/auth-client";
-import { UserType } from "@/types/user";
 import { UserRole } from "@prisma/client";
 import { useMemo } from "react";
 

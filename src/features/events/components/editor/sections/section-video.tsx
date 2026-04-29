@@ -1,28 +1,28 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import {
 	IconBrandYoutube,
 	IconDeviceFloppy,
 	IconLoader,
 } from "@tabler/icons-react";
-import { updateSectionAction } from "@/actions/events/sections/update-section.action";
-import {
-	type SectionVideoInput,
-	sectionVideoSchema,
-} from "@/schemas/section.schema";
 import { SectionType } from "@prisma/client";
 import { toast } from "sonner";
 import type { SectionData } from "./section-card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import {
+	SectionVideoInput,
+	sectionVideoSchema,
+} from "@/features/events/schemas/section.schema";
+import { updateSectionAction } from "@/features/events/actions/sections/update-section.action";
 
 type Props = {
 	section: SectionData;

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Typography } from "@/components/shared";
+import { Typography } from "@/shared/components";
 
 type Props = {
 	eventTitle: string;

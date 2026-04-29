@@ -3,20 +3,19 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Ticket } from "@prisma/client";
 import {
 	Drawer,
 	DrawerContent,
 	DrawerHeader,
 	DrawerTitle,
-} from "@/components/shadcn/ui/drawer";
+} from "@/components/ui/drawer";
 import { StepSelectTickets } from "./steps/tickets/step-select-tickets";
-import { getActiveReservation } from "@/actions/reservations/get-active-reservation.action";
-import { createReservation } from "@/actions/reservations/create-reservation.action";
-import { TicketWithAvailability } from "@/types/ticket";
-import { cancelReservation } from "@/actions/reservations/cancel-reservation.action";
-import { getTicketsWithAvailability } from "@/actions/tickets/get-tickets-with-availability.action";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date";
+import { TicketWithAvailability } from "../../types/ticket";
+import { getActiveReservation } from "@/features/reservations/actions/get-active-reservation.action";
+import { createReservation } from "@/features/reservations/actions/create-reservation.action";
+import { cancelReservation } from "@/features/reservations/actions/cancel-reservation.action";
+import { getTicketsWithAvailability } from "@/features/tickets/actions/get-tickets-with-availability.action";
 
 export type SelectedTicket = {
 	ticket: TicketWithAvailability;

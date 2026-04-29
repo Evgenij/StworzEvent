@@ -1,7 +1,7 @@
 import React from "react";
 import ResetPasswordForm from "@/features/auth/components/forms/reset-password-form";
-import ReturnBtn from "@/features/routing/components/return-btn";
-import { SIGNIN_ROUTE } from "@/consts/routes";
+import { SIGNIN_ROUTE } from "@/config/routes";
+import ReturnBtn from "@/shared/components/navigation/return-btn";
 
 type PageProps = {
 	searchParams: Promise<{ token: string }>;
@@ -13,7 +13,7 @@ const ResetPasswordPage = async ({ searchParams }: PageProps) => {
 	if (!token) {
 		return (
 			<div>
-				<div>Invalid token</div>{" "}
+				<div>Invalid token</div>
 				<ReturnBtn href={SIGNIN_ROUTE} label="back" />
 			</div>
 		);

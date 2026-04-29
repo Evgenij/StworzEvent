@@ -1,5 +1,4 @@
-import React from "react";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { IconArrowLeft } from "@tabler/icons-react";
 

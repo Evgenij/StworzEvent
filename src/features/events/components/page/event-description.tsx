@@ -1,6 +1,5 @@
-import { RichTextRenderer } from "@/components/shared/rich-text-renderer";
+import { RichTextRenderer } from "@/shared/components/rich-text-renderer";
 import { Prisma } from "@prisma/client";
-import React from "react";
 
 type EventDescriptionSectionProps = {
 	description: Prisma.JsonValue | null;

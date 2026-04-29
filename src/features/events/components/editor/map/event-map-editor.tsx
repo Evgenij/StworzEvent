@@ -4,15 +4,15 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
-import { Label } from "@/components/shadcn/ui/label";
-import { Field } from "@/components/shadcn/ui/field";
-import { Switch } from "@/components/shadcn/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Field } from "@/components/ui/field";
+import { Switch } from "@/components/ui/switch";
 import { IconLoader, IconMapPin, IconSearch } from "@tabler/icons-react";
-import { updateEventMapAction } from "@/actions/events/update-event-map.action";
-import { geocodeAddress } from "@/lib/geocode";
 import { toast } from "sonner";
-import type { EventMapData } from "@/actions/events/map/get-event-map.action";
+import { EventMapData } from "@/features/events/actions/map/get-event-map.action";
+import { geocodeAddress } from "@/lib/nominatim/geocode";
+import { updateEventMapAction } from "@/features/events/actions/update-event-map.action";
 
 // Динамический импорт — Leaflet не работает на сервере
 const EventMapInner = dynamic(

@@ -1,22 +1,10 @@
 "use client";
 
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from "@/components/shadcn/ui/alert-dialog";
-import { Button } from "@/components/shadcn/ui/button";
-import { Label } from "@/components/shadcn/ui/label";
-import { Switch } from "@/components/shadcn/ui/switch";
-import { Typography } from "@/components/shared";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Typography } from "@/shared/components";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React from "react";
 
 type EditSectionWrapperProps = {
 	active: boolean;

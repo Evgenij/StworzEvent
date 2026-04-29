@@ -3,18 +3,18 @@ import { useTranslations } from "next-intl";
 import * as z from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	Field,
 	FieldDescription,
 	FieldError,
 	FieldGroup,
-} from "@/components/shadcn/ui/field";
+} from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import {
 	IconEye,
 	IconEyeClosed,
@@ -30,23 +30,22 @@ import {
 	DASHBOARD_ROUTE,
 	SIGNUP_ROUTE,
 	MAIN_PAGE_ROUTE,
-} from "@/consts/routes";
-import { Spinner } from "@/components/shadcn/ui/spinner";
+} from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
 import { Link } from "@/i18n/routing";
-import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 import { toast } from "sonner";
 import SignInOAuthBtn from "@/features/auth/components/sign-in-oauth-btn";
-import { Switch } from "@/components/shadcn/ui/switch";
+import { Switch } from "@/components/ui/switch";
 import { signIn } from "@/lib/auth-client";
 import { getBaseUrl } from "@/lib/utils";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-} from "@/components/shadcn/ui/tooltip";
+} from "@/components/ui/tooltip";
 import { ErrorCode } from "@/types/error-code";
-import { validateEmailAction } from "@/actions/auth/validate-email.action";
-import { Typography } from "@/components/shared";
+import { Typography } from "@/shared/components";
+import { validateEmailAction } from "../../actions/validate-email.action";
 
 export default function SignInForm() {
 	const router = useRouter();

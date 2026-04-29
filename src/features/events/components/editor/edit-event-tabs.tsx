@@ -6,12 +6,12 @@ import { StepTickets } from "./wizard/step-tickets";
 import { EventWizardProgress } from "./wizard/event-wizard-progress";
 import { CreateEventProvider } from "./create-event-context";
 import EventPreview from "./event-preview";
-import { Typography } from "@/components/shared";
-import { Separator } from "@/components/shadcn/ui/separator";
-import type { EventAdditionalData } from "@/actions/events/get-event-additional.action";
-import type { EventTicket } from "@/actions/tickets/get-event-tickets.action";
+import { Typography } from "@/shared/components";
+import { Separator } from "@/components/ui/separator";
 import { StepBasicData } from "./wizard/step-basic-data";
-import { CreateEventInput } from "@/schemas/create-event.schema";
+import { CreateEventInput } from "../../schemas/create-event.schema";
+import { EventTicket } from "@/features/tickets/actions/get-event-tickets.action";
+import { EventAdditionalData } from "../../actions/get-event-additional.action";
 
 type Props = {
 	eventId: string;

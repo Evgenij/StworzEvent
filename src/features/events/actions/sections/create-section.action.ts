@@ -7,7 +7,7 @@ import { headers } from "next/headers";
 import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
-import { type SectionInput } from "@/schemas/section.schema";
+import { type SectionInput } from "@/features/events/schemas/section.schema";
 import { Prisma } from "@prisma/client";
 import { verifyEventOwnership } from "@/lib/verify-ownership";
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { LINK_SERVICES } from "@/components/dashboard/events/sections/link-services";
 import { EventSection } from "@prisma/client";
 import { IconExternalLink, IconLink } from "@tabler/icons-react";
+import { LINK_SERVICES } from "../../editor/sections/link-services";
 
 type LinkItem = {
 	url: string;

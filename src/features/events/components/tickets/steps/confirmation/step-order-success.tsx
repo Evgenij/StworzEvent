@@ -2,14 +2,14 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/shadcn/ui/button";
-import { Input } from "@/components/shadcn/ui/input";
-import { Label } from "@/components/shadcn/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { useRouter } from "@/i18n/routing";
-import { signUpEmailAction } from "@/actions/auth/sign-up-email.action";
-import { signInEmailAction } from "@/actions/auth/sign-in-email.action";
 import { ErrorCode } from "@/types/error-code";
+import { signUpEmailAction } from "@/features/auth/actions/sign-up-email.action";
+import { signInEmailAction } from "@/features/auth/actions/sign-in-email.action";
 
 type StepOrderSuccessProps = {
 	orderId: string;

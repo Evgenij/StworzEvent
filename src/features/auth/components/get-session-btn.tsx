@@ -1,9 +1,9 @@
 "use client";
 
-import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/consts/routes";
+import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "@/config/routes";
 import { Link } from "@/i18n/routing";
 import { useSession } from "@/lib/auth-client";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconLoader, IconRocket } from "@tabler/icons-react";
 import React from "react";
 

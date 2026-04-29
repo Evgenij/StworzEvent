@@ -5,22 +5,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
 
 import { EventStatus } from "@prisma/client";
-import { Label } from "@/components/shadcn/ui/label";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
-import {
-	InputGroup,
-	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/shadcn/ui/select";
+} from "@/components/ui/select";
 import { EventCoverUpload } from "../event-cover-upload";
-import { RichTextEditor } from "@/components/shared/rich-text-editor";
 import {
 	IconCircleCheckFilled,
 	IconDeviceFloppy,
@@ -32,24 +28,28 @@ import {
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getMyOrganizations } from "@/actions/organizations/get-my-organizations.action";
-import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
-import { updateEventAction } from "@/actions/events/update-event.action";
 import { CategoryCombobox } from "../category-combobox";
-import QUERY_KEYS from "@/consts/query-keys";
+import QUERY_KEYS from "@/config/query-keys";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@/components/shadcn/ui/accordion";
+} from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import { DateTimePicker } from "@/components/shared/date-time-picker";
 import { useCreateEventPreview } from "../create-event-context";
 import { LocationPicker } from "../location/location-picker";
-import { Switch } from "@/components/shadcn/ui/switch";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
-import { CreateEventInput, createEventSchema } from "@/schemas/event.schema";
+import { Switch } from "@/components/ui/switch";
+import { DateTimePicker } from "@/shared/components/date-time-picker";
+import { DateTimeFormatter } from "@/helpers/date";
+import {
+	CreateEventInput,
+	createEventSchema,
+} from "@/features/events/schemas/event.schema";
+import { getMyOrganizations } from "@/features/organizations/actions/get-my-organizations.action";
+import { getEventForEditAction } from "@/features/events/actions/get-event-for-edit.action";
+import { updateEventAction } from "@/features/events/actions/update-event.action";
+import { RichTextEditor } from "@/shared/components/rich-text-editor";
 
 type Props = {
 	eventId: string;

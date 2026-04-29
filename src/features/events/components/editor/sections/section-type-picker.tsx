@@ -2,7 +2,7 @@
 "use client";
 
 import { SectionType } from "@prisma/client";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	IconPhoto,
 	IconVideo,

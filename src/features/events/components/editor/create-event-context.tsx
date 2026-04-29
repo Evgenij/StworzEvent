@@ -2,9 +2,9 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { type CreateEventInput } from "@/schemas/create-event.schema";
-import { EventItemData } from "@/components/events/event-item";
-import { type CategoryOption } from "@/actions/events/get-categories.action";
+import { CreateEventInput } from "../../schemas/create-event.schema";
+import { EventItemData } from "../catalog/event-item";
+import { CategoryOption } from "../../actions/get-categories.action";
 
 type CreateEventContextType = {
 	preview: Partial<CreateEventInput>;

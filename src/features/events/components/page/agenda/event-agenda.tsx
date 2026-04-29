@@ -1,22 +1,11 @@
 "use client";
 
 import { EventAgendaItem } from "@prisma/client";
-import React, { useRef, useState } from "react";
-import { Typography } from "@/components/shared";
-import {
-	IconChevronDown,
-	IconChevronUp,
-	IconListDetails,
-} from "@tabler/icons-react";
+import { useRef, useState } from "react";
+import { Typography } from "@/shared/components";
+import { IconListDetails } from "@tabler/icons-react";
 import EventAgendaList from "./event-agenda-list";
-import { Button } from "@/components/shadcn/ui/button";
-import { cn } from "@/lib/utils";
-import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@/components/shadcn/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AgendaToggleButton from "./agenda-toggle-button";
 
 // Группируем items по дате (YYYY-MM-DD)

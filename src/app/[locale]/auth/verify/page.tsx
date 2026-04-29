@@ -1,7 +1,6 @@
-import React from "react";
-import VerificationEmailForm from "@/components/shared/forms/verification-email-form";
 import { redirect } from "@/i18n/routing";
-import { DASHBOARD_ROUTE } from "@/consts/routes";
+import { DASHBOARD_ROUTE } from "@/config/routes";
+import VerificationEmailForm from "@/features/auth/components/forms/verification-email-form";
 
 interface Props {
 	searchParams: Promise<{ error: string }>;

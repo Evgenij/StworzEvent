@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/shadcn/ui/button";
-import { Separator } from "@/components/shadcn/ui/separator";
-import { Typography } from "@/components/shared";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Typography } from "@/shared/components";
 import { Link } from "@/i18n/routing";
 import { Event, Prisma } from "@prisma/client";
 import {
@@ -14,8 +14,8 @@ import React from "react";
 import EventMetaItem from "../event-meta-item";
 import { EventDateRange } from "../event-date-range";
 import { TicketsDrawer } from "../../tickets/tickets-drawer";
-import { TicketWithAvailability } from "@/types/ticket";
 import { useMobileMenuStore } from "@/stores/mobile-menu.store";
+import { TicketWithAvailability } from "@/features/events/types/ticket";
 
 type EventSidebarProps = {
 	organization: Prisma.OrganizationGetPayload<{

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { Portal, PortalBackdrop } from "./ui/portal";
 import { XIcon, MenuIcon } from "lucide-react";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import AuthButtons from "./auth-buttons";
 import { NavLink } from "@/types/nav-link";
 

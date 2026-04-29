@@ -3,11 +3,10 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@/components/shadcn/ui/accordion";
-import { Typography } from "@/components/shared";
+} from "@/components/ui/accordion";
+import { Typography } from "@/shared/components";
 import { EventFaq } from "@prisma/client";
 import { IconHelpHexagon } from "@tabler/icons-react";
-import React from "react";
 
 const EventFAQSection = ({ faqs }: { faqs: EventFaq[] }) => {
 	return (

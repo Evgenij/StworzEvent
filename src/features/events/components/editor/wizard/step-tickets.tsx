@@ -4,16 +4,9 @@ import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import {
-	eventTicketsSchema,
-	type EventTicketsInput,
-} from "@/schemas/event-tickets.schema";
-import { upsertTicketsAction } from "@/actions/tickets/upsert-tickets.action";
-import { deleteTicketAction } from "@/actions/tickets/delete-ticket.action";
-import { type EventTicket } from "@/actions/tickets/get-event-tickets.action";
 
-import { Label } from "@/components/shadcn/ui/label";
-import { Button } from "@/components/shadcn/ui/button";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
 	IconPlus,
 	IconTrash,
@@ -25,13 +18,20 @@ import {
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Field, FieldError } from "@/components/shadcn/ui/field";
+import { Field, FieldError } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import { EventStatus } from "@prisma/client";
+import { EventTicket } from "@/features/tickets/actions/get-event-tickets.action";
+import {
+	EventTicketsInput,
+	eventTicketsSchema,
+} from "@/features/events/schemas/event-tickets.schema";
+import { upsertTicketsAction } from "@/features/tickets/actions/upsert-tickets.action";
+import { deleteTicketAction } from "@/features/tickets/actions/delete-ticket.action";
 
 type Props = {
 	eventId: string;

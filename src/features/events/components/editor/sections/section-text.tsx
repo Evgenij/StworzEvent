@@ -1,24 +1,21 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { RichTextEditor } from "@/components/shared/rich-text-editor";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
-import {
-	InputGroup,
-	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
 import { IconDeviceFloppy, IconLoader } from "@tabler/icons-react";
-import { updateSectionAction } from "@/actions/events/sections/update-section.action";
 import { SectionType } from "@prisma/client";
 import { toast } from "sonner";
 import type { SectionData } from "./section-card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import {
-	type SectionTextInput,
+	SectionTextInput,
 	sectionTextSchema,
-} from "@/schemas/section.schema";
+} from "@/features/events/schemas/section.schema";
+import { updateSectionAction } from "@/features/events/actions/sections/update-section.action";
+import { RichTextEditor } from "@/shared/components/rich-text-editor";
 
 type Props = {
 	section: SectionData;

@@ -1,11 +1,11 @@
-import { formatDate } from "@/helpers/format-date";
 import { Event } from "@prisma/client";
 import React from "react";
 import StatusBadge from "./status-badge";
-import { TableCell, TableRow } from "@/components/shadcn/ui/table";
+import { TableCell, TableRow } from "@/components/ui/table";
 import { Link } from "@/i18n/routing";
-import { Button } from "@/components/shadcn/ui/button";
-import { EVENT_EDIT_ADDITIONAL_ROUTE, EVENT_EDIT_ROUTE } from "@/consts/routes";
+import { Button } from "@/components/ui/button";
+import { EVENT_EDIT_ADDITIONAL_ROUTE, EVENT_EDIT_ROUTE } from "@/config/routes";
+import { formatDate } from "@/helpers/date";
 
 const EventItem = ({ event }: { event: Event }) => {
 	return (

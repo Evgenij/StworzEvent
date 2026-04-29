@@ -3,13 +3,13 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconPlus, IconLoader } from "@tabler/icons-react";
 import { FaqItemCard } from "./faq-item-card";
-import { upsertFaqItemAction } from "@/actions/events/faq/upsert-faq-item.action";
 import { toast } from "sonner";
-import type { FaqItem } from "@/actions/events/faq/get-event-faq.action";
 import EmptySection from "../sections/empty-section";
+import { FaqItem } from "@/features/events/actions/faq/get-event-faq.action";
+import { upsertFaqItemAction } from "@/features/events/actions/faq/upsert-faq-item.action";
 
 type Props = {
 	eventId: string;

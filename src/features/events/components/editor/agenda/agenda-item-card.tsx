@@ -5,32 +5,22 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/shadcn/ui/collapsible";
-import { Button } from "@/components/shadcn/ui/button";
-import { Label } from "@/components/shadcn/ui/label";
+import { Button } from "@/components/ui/button";
 import {
 	Field,
 	FieldDescription,
 	FieldError,
-	FieldGroup,
 	FieldLabel,
 	FieldSet,
-} from "@/components/shadcn/ui/field";
+} from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import {
-	IconChevronDown,
-	IconChevronUp,
 	IconTrash,
 	IconLoader,
-	IconCalendar,
 	IconMapPin,
 	IconUser,
 	IconClock,
@@ -38,20 +28,17 @@ import {
 	IconCheck,
 	IconPencil,
 } from "@tabler/icons-react";
-import {
-	agendaItemSchema,
-	type AgendaItemInput,
-} from "@/schemas/agenda-item.schema";
-import { upsertAgendaItemAction } from "@/actions/events/agenda/upsert-agenda-item.action";
-import { deleteAgendaItemAction } from "@/actions/events/agenda/delete-agenda-item.action";
 import { toast } from "sonner";
-import { format } from "date-fns";
-import type { AgendaItem } from "@/actions/events/agenda/get-event-agenda.action";
-import { Input } from "@/components/shadcn/ui/input";
-import { Separator } from "@/components/shadcn/ui/separator";
-import { formatDayLabel } from "@/components/events/page/agenda/event-agenda";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
-import { Typography } from "@/components/shared";
+import { Separator } from "@/components/ui/separator";
+import { AgendaItem } from "@/features/events/actions/agenda/get-event-agenda.action";
+import {
+	AgendaItemInput,
+	agendaItemSchema,
+} from "@/features/events/schemas/agenda-item.schema";
+import { upsertAgendaItemAction } from "@/features/events/actions/agenda/upsert-agenda-item.action";
+import { deleteAgendaItemAction } from "@/features/events/actions/agenda/delete-agenda-item.action";
+import { formatDayLabel } from "../../page/agenda/event-agenda";
+import { DateTimeFormatter } from "@/helpers/date";
 
 type Props = {
 	eventId: string;

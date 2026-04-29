@@ -1,15 +1,14 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import { Button } from "@/components/shadcn/ui/button";
-import { MAIN_PAGE_EVENTS_ROUTE, MAIN_PAGE_ROUTE } from "@/consts/routes";
-import { useScroll } from "@/hooks/use-scroll";
+import { MAIN_PAGE_EVENTS_ROUTE, MAIN_PAGE_ROUTE } from "@/config/routes";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
 import AuthButtons from "./auth-buttons";
-import { UserType } from "@/types/user";
+import { UserType } from "@/features/user/types/user";
 import NavLinks from "./nav-links";
 import { NavLink } from "@/types/nav-link";
+import { useScroll } from "@/shared/hooks/use-scroll";
 
 type HeaderWebsiteProps = {
 	locale: string;

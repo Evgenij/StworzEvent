@@ -1,7 +1,7 @@
 // src/components/shared/event-date-range.tsx
 
-import { DateTimeFormatter } from "@/helpers/date-formatter";
-import EventMetaItem from "@/components/events/page/event-meta-item";
+import { DateTimeFormatter } from "@/helpers/date";
+import EventMetaItem from "./event-meta-item";
 
 type EventDateRangeProps = {
 	startsAt: Date;

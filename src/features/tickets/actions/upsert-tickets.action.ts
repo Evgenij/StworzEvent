@@ -6,8 +6,8 @@ import { headers } from "next/headers";
 import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
-import { type EventTicketsInput } from "@/schemas/event-tickets.schema";
 import { EventStatus } from "@prisma/client";
+import { EventTicketsInput } from "@/features/events/schemas/event-tickets.schema";
 
 type Input = {
 	eventId: string;

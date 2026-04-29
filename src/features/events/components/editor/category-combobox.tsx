@@ -2,12 +2,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-	getCategories,
-	type CategoryOption,
-} from "@/actions/events/get-categories.action";
 
-import QUERY_KEYS from "@/consts/query-keys";
+import QUERY_KEYS from "@/config/query-keys";
 import {
 	Combobox,
 	ComboboxContent,
@@ -15,10 +11,14 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-} from "@/components/shadcn/ui/combobox";
+} from "@/components/ui/combobox";
 import { useState } from "react";
-import { InputGroupAddon } from "@/components/shadcn/ui/input-group";
+import { InputGroupAddon } from "@/components/ui/input-group";
 import { IconLoader, IconTag } from "@tabler/icons-react";
+import {
+	CategoryOption,
+	getCategories,
+} from "../../actions/get-categories.action";
 
 interface Props {
 	value: string;

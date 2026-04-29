@@ -1,16 +1,16 @@
 "use client";
 
-import { sendEmailAction } from "@/actions/send-email.action";
 import { API_ROUTES } from "@/app/api/apiRoutes";
 import { apiFetcher } from "@/app/api/fetcher";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/features/layout";
-import { SIGNUP_INVITE_ROUTE } from "@/consts/routes";
-import { ApiResponse } from "@/types/api-pesponse";
+import { SIGNUP_INVITE_ROUTE } from "@/config/routes";
 import { TypeMail } from "@/types/enums";
-import { UserType } from "@/types/user";
 import { Invitation } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
+import { UserType } from "@/features/user/types/user";
+import { ApiResponse } from "@/types/api-response.types";
+import { sendEmailAction } from "@/lib/email/send-email.action";
 
 export function AdminDashboard({ user }: { user: UserType }) {
 	const {

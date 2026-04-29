@@ -1,5 +1,5 @@
 import { PageHeader } from "@/features/layout";
-import { UserType } from "@/types/user";
+import { UserType } from "@/features/user/types/user";
 
 export function OrganizerDashboard({ user }: { user: UserType }) {
 	return (

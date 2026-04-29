@@ -1,5 +1,5 @@
-import { Badge } from "@/components/shadcn/ui/badge";
-import { Typography } from "@/components/shared";
+import { Badge } from "@/components/ui/badge";
+import { Typography } from "@/shared/components";
 import { EventCategory } from "@prisma/client";
 import React from "react";
 import EventMetaSection from "./event-meta";

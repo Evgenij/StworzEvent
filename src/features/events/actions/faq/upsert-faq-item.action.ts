@@ -8,7 +8,7 @@ import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { verifyEventOwnership } from "@/lib/verify-ownership";
-import { type FaqItemInput } from "@/schemas/faq-item.schema";
+import { type FaqItemInput } from "@/features/events/schemas/faq-item.schema";
 
 type Input = {
 	eventId: string;

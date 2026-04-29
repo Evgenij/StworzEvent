@@ -1,9 +1,9 @@
-import { SIGNIN_ROUTE } from "@/consts/routes";
+import { SIGNIN_ROUTE } from "@/config/routes";
 import { Link } from "@/i18n/routing";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { getTranslations } from "next-intl/server";
-import Typography from "@/components/shared/typography/typography";
+import { Typography } from "@/shared/components";
 
 const SuccessPage = async () => {
 	const t = await getTranslations("ForgetPasswordForm");

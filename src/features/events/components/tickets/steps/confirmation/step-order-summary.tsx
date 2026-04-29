@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/shadcn/ui/button";
-import { Separator } from "@/components/shadcn/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { SelectedTicket, OrderForm } from "../../tickets-drawer";
-import { createOrder } from "@/actions/orders/create-order.action";
 import { formatPlnFromGrosze } from "@/lib/utils";
+import { createOrder } from "@/features/orders/actions/create-order.action";
 
 type StepOrderSummaryProps = {
 	items: SelectedTicket[];

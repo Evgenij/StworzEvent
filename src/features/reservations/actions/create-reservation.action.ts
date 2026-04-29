@@ -20,7 +20,7 @@ export const createReservation = async (input: CreateReservationInput) => {
 	});
 
 	// sessionId — берём из сессии если залогинен, иначе генерируем для гостя
-	const sessionId = session?.id ?? randomUUID();
+	const sessionId = session?.session.id ?? randomUUID();
 
 	// console.log("SESSION:", JSON.stringify(session, null, 2));
 

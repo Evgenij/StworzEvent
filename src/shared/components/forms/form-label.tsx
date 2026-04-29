@@ -1,6 +1,5 @@
 import { TablerIcon } from "@tabler/icons-react";
 import React from "react";
-import { Separator } from "../shadcn/ui/separator";
 
 const FormLabel = ({
 	children,

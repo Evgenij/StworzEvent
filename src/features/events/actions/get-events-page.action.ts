@@ -2,9 +2,9 @@
 
 import prisma from "@/lib/prisma";
 import { getMinTicketPrice } from "@/helpers/event";
-import { CategoryOption } from "@/actions/events/get-categories.action";
-import { EventItemData } from "@/components/events/event-item";
 import { EventStatus } from "@prisma/client";
+import { EventItemData } from "../components/catalog/event-item";
+import { CategoryOption } from "./get-categories.action";
 
 const PAGE_SIZE = 12;
 
@@ -31,7 +31,9 @@ export const getEventsPage = async (
 					orderItems: {
 						where: {
 							orders: {
-								status: { in: ["CONFIRMED", "PAID", "PENDING"] },
+								status: {
+									in: ["CONFIRMED", "PAID", "PENDING"],
+								},
 							},
 						},
 						select: { quantity: true },

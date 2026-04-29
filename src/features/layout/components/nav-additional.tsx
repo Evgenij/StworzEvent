@@ -8,8 +8,8 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarSeparator,
-} from "@/components/shadcn/ui/sidebar";
-import { Button } from "@/components/shadcn/ui/button";
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 
 export function NavAdditional({
 	items,

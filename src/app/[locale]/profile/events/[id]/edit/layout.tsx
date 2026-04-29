@@ -1,10 +1,10 @@
 import { EditEventPageHeader } from "@/components/dashboard/events/wizard/edit-event-page-header";
-import { SIGNIN_ROUTE } from "@/consts/routes";
+import { SIGNIN_ROUTE } from "@/config/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { getEventForEditAction } from "@/actions/events/get-event-for-edit.action";
 import { headers } from "next/headers";
-import { Separator } from "@/components/shadcn/ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 type Props = {
 	children: React.ReactNode;

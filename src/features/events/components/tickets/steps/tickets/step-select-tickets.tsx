@@ -1,8 +1,8 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from "react";
-import { Button } from "@/components/shadcn/ui/button";
-import { Separator } from "@/components/shadcn/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { IconClock, IconChevronRight, IconMapPin } from "@tabler/icons-react";
 import TicketItem from "./ticket-item";
 import { SelectedTicket } from "../../tickets-drawer";

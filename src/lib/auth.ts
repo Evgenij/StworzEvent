@@ -12,10 +12,10 @@ import { normalizeName } from "./utils";
 import { UserRole } from "@prisma/client";
 import { admin, customSession, magicLink } from "better-auth/plugins";
 import { ac, roles } from "@/lib/permissions";
-import { sendEmailAction } from "@/actions/send-email.action";
-import { DASHBOARD_ROUTE } from "@/consts/routes";
+import { DASHBOARD_ROUTE } from "@/config/routes";
 import { TypeMail } from "@/types/enums";
-import { hashPassword, verifyPassword } from "@/lib/hashPassword";
+import { hashPassword, verifyPassword } from "./hash-password";
+import { sendEmailAction } from "./email/send-email.action";
 
 const BASE_URL =
 	process.env.BETTER_AUTH_URL ?? "https://stworzevent.vercel.app";

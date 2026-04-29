@@ -8,11 +8,8 @@ import {
 	ComboboxItem,
 	ComboboxList,
 	ComboboxTrigger,
-} from "@/components/shadcn/ui/combobox";
-import {
-	InputGroupAddon,
-	InputGroupButton,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/combobox";
+import { InputGroupAddon, InputGroupButton } from "@/components/ui/input-group";
 import { IconBuildingSkyscraper, IconX } from "@tabler/icons-react";
 
 const POLISH_CITIES = [
@@ -142,7 +139,11 @@ export function PolishCityCombobox({
 							<IconX className="pointer-events-none" />
 						</InputGroupButton>
 					) : (
-						<InputGroupButton size="icon-xs" variant="ghost" asChild>
+						<InputGroupButton
+							size="icon-xs"
+							variant="ghost"
+							asChild
+						>
 							<ComboboxTrigger />
 						</InputGroupButton>
 					)}

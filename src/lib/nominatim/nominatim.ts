@@ -1,12 +1,17 @@
 // src/lib/nominatim.ts
 import { APP_CONFIG } from "@/config/app";
-import type { NominatimPlace } from "@/types/nominatim";
+import type { NominatimPlace } from "@/lib/nominatim/nominatim.types";
 import { userAgent } from "next/server";
 
 async function nominatimFetch(
 	params: Record<string, string>,
 ): Promise<NominatimPlace[]> {
-	const url = new URL("/api/nominatim", typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL ?? "");
+	const url = new URL(
+		"/api/nominatim",
+		typeof window !== "undefined"
+			? window.location.origin
+			: (process.env.NEXT_PUBLIC_APP_URL ?? ""),
+	);
 	Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
 	const res = await fetch(url.toString());
 	if (!res.ok) return [];
@@ -86,7 +91,12 @@ export async function reverseGeocode(
 	streetNumber: string;
 } | null> {
 	try {
-		const url = new URL("/api/nominatim/reverse", typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL ?? "");
+		const url = new URL(
+			"/api/nominatim/reverse",
+			typeof window !== "undefined"
+				? window.location.origin
+				: (process.env.NEXT_PUBLIC_APP_URL ?? ""),
+		);
 		url.searchParams.set("lat", lat.toString());
 		url.searchParams.set("lon", lng.toString());
 

@@ -1,7 +1,6 @@
-import { Badge } from "@/components/shadcn/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Event, EventStatus } from "@prisma/client";
 import { useTranslations } from "next-intl";
-import React from "react";
 
 const statusVariants: Record<
 	EventStatus,

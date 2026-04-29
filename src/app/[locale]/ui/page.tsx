@@ -1,4 +1,4 @@
-import { CoverExample } from "@/components/shadcn/preview";
+import { CoverExample } from "@/components/ui/preview";
 
 export default function Page() {
 	return <CoverExample />;

@@ -8,7 +8,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { IconPhoto, IconX, IconLoader } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface Props {
 	value?: string;

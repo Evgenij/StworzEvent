@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import {
 	createEventServerSchema,
 	type CreateEventInput,
-} from "@/schemas/create-event.schema";
+} from "@/features/events/schemas/create-event.schema";
 import { generateUniqueSlug } from "@/lib/slugify/generate-unique-slug";
 import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
@@ -32,7 +32,9 @@ export const createEventAction = safeAction(async (input: CreateEventInput) => {
 		data: {
 			title: data.title,
 			slug,
-			status: data.publishImmediately ? EventStatus.PUBLISHED : EventStatus.DRAFT,
+			status: data.publishImmediately
+				? EventStatus.PUBLISHED
+				: EventStatus.DRAFT,
 			startsAt: new Date(data.startsAt),
 			endsAt: data.endsAt ? new Date(data.endsAt) : null,
 			location: data.location,

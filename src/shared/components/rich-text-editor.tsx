@@ -15,7 +15,6 @@ import {
 	IconBold,
 	IconItalic,
 	IconStrikethrough,
-	IconCode,
 	IconUnderline,
 	IconHighlight,
 	IconLink,
@@ -24,7 +23,6 @@ import {
 	IconSubscript,
 	IconList,
 	IconListNumbers,
-	IconH1,
 	IconH2,
 	IconH3,
 	IconAlignLeft,
@@ -33,8 +31,6 @@ import {
 	IconAlignJustified,
 	IconArrowBack,
 	IconArrowForward,
-	IconClearFormatting,
-	IconIndentIncrease,
 } from "@tabler/icons-react";
 
 type Props = {

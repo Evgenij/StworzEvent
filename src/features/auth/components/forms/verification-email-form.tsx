@@ -1,17 +1,17 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
-import { FieldGroup } from "@/components/shadcn/ui/field";
+import { Button } from "@/components/ui/button";
+import { FieldGroup } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import { IconMail } from "@tabler/icons-react";
 import { useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import { AUTH_VERIFY_ROUTE, AUTH_VERIFY_SUCCESS_ROUTE } from "@/consts/routes";
-import { Spinner } from "@/components/shadcn/ui/spinner";
+import { AUTH_VERIFY_SUCCESS_ROUTE } from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { sendVerificationEmail } from "@/lib/auth-client";
 

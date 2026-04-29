@@ -9,7 +9,7 @@ import {
 	BreadcrumbList,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
-} from "@/components/shadcn/ui/breadcrumb";
+} from "@/components/ui/breadcrumb";
 import { Link } from "@/i18n/routing";
 import React from "react";
 

@@ -9,7 +9,7 @@ import {
 	EVENT_EDIT_ROUTE,
 	EVENT_EDIT_ADDITIONAL_ROUTE,
 	EVENT_EDIT_TICKETS_ROUTE,
-} from "@/consts/routes";
+} from "@/config/routes";
 
 type Step = {
 	number: number;

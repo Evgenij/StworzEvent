@@ -1,6 +1,4 @@
-// app/[locale]/(main)/events/[slug]/order/page.tsx
 import { redirect } from "next/navigation";
-import { getLocale } from "next-intl/server";
 import prisma from "@/lib/prisma";
 import { OrderForm } from "./order-form";
 import { getActiveReservation } from "@/features/reservations/actions/get-active-reservation.action";

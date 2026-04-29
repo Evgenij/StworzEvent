@@ -1,5 +1,5 @@
-import { Label } from "@/components/shadcn/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/shadcn/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SelectedTicket } from "../../tickets-drawer";
 
 type TicketTypePickerProps = {

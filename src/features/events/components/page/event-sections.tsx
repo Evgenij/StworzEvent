@@ -1,4 +1,4 @@
-import { Typography } from "@/components/shared";
+import { Typography } from "@/shared/components";
 import { EventSection, SectionType } from "@prisma/client";
 import React from "react";
 import EventTextSection from "./sections/text-section";

@@ -4,9 +4,9 @@ import * as React from "react";
 import { LifeBuoy, Send } from "lucide-react";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
-import { UserType } from "@/types/user";
+import { UserType } from "@/features/user/types/user";
 import { Link } from "@/i18n/routing";
-import { MAIN_PAGE_EVENTS_ROUTE } from "@/consts/routes";
+import { MAIN_PAGE_EVENTS_ROUTE } from "@/config/routes";
 import { NavUser } from "./nav-user";
 import { NavSecondary } from "./nav-secondary";
 import {
@@ -21,23 +21,23 @@ import {
 	SidebarGroupLabel,
 	SidebarGroupContent,
 	SidebarMenuAction,
-} from "@/components/shadcn/ui/sidebar";
+} from "@/components/ui/sidebar";
 import { getNavConfig } from "./nav-config"; // конфиг который я показывал
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/shadcn/ui/dropdown-menu";
-import { useIsMobile } from "@/hooks/use-mobile";
+} from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-} from "@/components/shadcn/ui/tooltip";
+} from "@/components/ui/tooltip";
 import { CompanySwitcher } from "./company-switcher";
-import { useMyOrganizations } from "@/hooks/use-my-organizations";
+import { useIsMobile } from "@/shared/hooks/use-mobile";
+import { useMyOrganizations } from "@/features/organizations/hooks/use-my-organizations";
 
 const navSecondary = [
 	{ title: "Support", url: "#", icon: LifeBuoy },

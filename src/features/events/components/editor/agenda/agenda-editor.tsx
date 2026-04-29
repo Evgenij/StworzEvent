@@ -3,19 +3,14 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconLoader, IconPlus } from "@tabler/icons-react";
 import { AgendaItemCard } from "./agenda-item-card";
-import type { AgendaItem } from "@/actions/events/agenda/get-event-agenda.action";
-import { formatDayLabel } from "@/components/events/page/agenda/event-agenda";
-import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@/components/shadcn/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import EmptySection from "../sections/empty-section";
+import { AgendaItem } from "@/features/events/actions/agenda/get-event-agenda.action";
+import { formatDayLabel } from "../../page/agenda/event-agenda";
 
 type Props = {
 	eventId: string;

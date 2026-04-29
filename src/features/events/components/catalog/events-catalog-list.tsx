@@ -2,12 +2,9 @@
 
 import { useState, useTransition } from "react";
 import EventItem from "./event-item";
-import { Button } from "@/components/shadcn/ui/button";
-import {
-	getEventsPage,
-	EventCatalogItem,
-} from "@/actions/events/get-events-page.action";
+import { Button } from "@/components/ui/button";
 import { IconLoader } from "@tabler/icons-react";
+import { EventCatalogItem, getEventsPage } from "../../actions/get-events-page.action";
 
 interface EventsCatalogListProps {
 	initialItems: EventCatalogItem[];

@@ -3,14 +3,9 @@
 
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Button } from "@/components/shadcn/ui/button";
-import { Separator } from "@/components/shadcn/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import { SectionsEditor } from "@/components/dashboard/events/sections/sections-editor";
-import { AgendaEditor } from "@/components/dashboard/events/agenda/agenda-editor";
-import { FaqEditor } from "@/components/dashboard/events/faq/faq-editor";
-import { EventMapEditor } from "@/components/dashboard/events/map/event-map-editor";
-import type { EventAdditionalData } from "@/actions/events/get-event-additional.action";
 import EditSectionWrapper from "../sections/edit-section-wrapper";
 import {
 	AlertDialog,
@@ -22,10 +17,14 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "@/components/shadcn/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { deleteAgendaItemAction } from "@/actions/events/agenda/delete-agenda-item.action";
 import { cn } from "@/lib/utils";
+import { EventAdditionalData } from "@/features/events/actions/get-event-additional.action";
+import { deleteAgendaItemAction } from "@/features/events/actions/agenda/delete-agenda-item.action";
+import { AgendaEditor } from "../agenda/agenda-editor";
+import { FaqEditor } from "../faq/faq-editor";
+import { SectionsEditor } from "../sections/sections-editor";
 
 type Props = {
 	eventId: string;

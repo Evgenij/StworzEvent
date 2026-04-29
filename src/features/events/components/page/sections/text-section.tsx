@@ -1,5 +1,4 @@
-import { Typography } from "@/components/shared";
-import { RichTextRenderer } from "@/components/shared/rich-text-renderer";
+import { RichTextRenderer } from "@/shared/components/rich-text-renderer";
 import { EventSection } from "@prisma/client";
 
 const EventTextSection = ({ section }: { section: EventSection }) => (

@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { searchStreets } from "@/lib/nominatim";
-import type { NominatimPlace } from "@/types/nominatim";
+import type { NominatimPlace } from "@/lib/nominatim/nominatim.types";
+import { searchStreets } from "@/lib/nominatim/nominatim";
 
 export function useAddressSearch(city: string) {
 	const [results, setResults] = useState<NominatimPlace[]>([]);

@@ -9,7 +9,10 @@ import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { Prisma } from "@prisma/client";
 import { verifySectionOwnership } from "@/lib/verify-ownership";
-import { sectionSchema, type SectionInput } from "@/schemas/section.schema";
+import {
+	sectionSchema,
+	type SectionInput,
+} from "@/features/events/schemas/section.schema";
 
 type Input = {
 	sectionId: string;

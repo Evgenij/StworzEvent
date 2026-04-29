@@ -11,13 +11,13 @@ import {
 import { SectionType } from "@prisma/client";
 import { SectionCard, type SectionData } from "./section-card";
 import { SectionTypePicker } from "./section-type-picker";
-import { createSectionAction } from "@/actions/events/sections/create-section.action";
-import { reorderSectionsAction } from "@/actions/events/sections/reorder-sections.action";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { IconLoader } from "@tabler/icons-react";
-import type { EventSection } from "@/actions/events/sections/get-event-sections.action";
 import EmptySection from "./empty-section";
+import { createSectionAction } from "@/features/events/actions/sections/create-section.action";
+import { reorderSectionsAction } from "@/features/events/actions/sections/reorder-sections.action";
+import { EventSection } from "@/features/events/actions/sections/get-event-sections.action";
 
 type Props = {
 	eventId: string;

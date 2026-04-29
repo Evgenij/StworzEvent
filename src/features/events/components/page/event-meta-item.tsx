@@ -1,5 +1,3 @@
-import React from "react";
-
 type EventMetaItemProps = {
 	label: { title: string; value: string | null };
 

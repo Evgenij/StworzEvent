@@ -1,22 +1,22 @@
 import { Controller, UseFormReturn } from "react-hook-form";
-import { OrderFormValues } from "@/schemas/order.schema";
 import {
 	Field,
 	Field as FieldRow,
 	FieldError,
 	FieldGroup,
-} from "@/components/shadcn/ui/field";
+} from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
 	InputGroupIMask,
 	InputGroupText,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import { IconMail, IconPhone, IconTicket, IconUser } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { Checkbox } from "@/components/shadcn/ui/checkbox";
-import { Label } from "@/components/shadcn/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { OrderFormValues } from "@/features/orders/schemas/order.schema";
 
 type ParticipantFormCardProps = {
 	form: UseFormReturn<OrderFormValues>;

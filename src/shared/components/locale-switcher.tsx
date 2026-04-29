@@ -3,10 +3,7 @@
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/routing"; // Важно: импорт из твоего файла routing!
 import { useParams } from "next/navigation";
-import {
-	ToggleGroup,
-	ToggleGroupItem,
-} from "@/components/shadcn/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 // import {
 // 	Select,
 // 	SelectContent,
@@ -23,10 +20,7 @@ export default function LocaleSwitcher() {
 
 	function onLocaleChange(nextLocale: string) {
 		// router.replace сохраняет текущий путь, но меняет префикс языка
-		router.replace(
-			{ pathname: pathname as never, params },
-			{ locale: nextLocale },
-		);
+		router.replace({ pathname: pathname as never }, { locale: nextLocale });
 	}
 
 	return (

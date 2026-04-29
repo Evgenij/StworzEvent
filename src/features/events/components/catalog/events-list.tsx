@@ -2,22 +2,21 @@
 
 import { API_ROUTES } from "@/app/api/apiRoutes";
 import { apiFetcher } from "@/app/api/fetcher";
-import { Button } from "@/components/shadcn/ui/button";
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import EventItem from "./event";
 import { Event } from "@prisma/client";
-import { ApiResponse } from "@/types/api-pesponse";
 import {
 	Table,
 	TableBody,
 	TableCaption,
-	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/shadcn/ui/table";
+} from "@/components/ui/table";
 import { useTranslations } from "next-intl";
+import { ApiResponse } from "@/types/api-response.types";
 
 const EventsList = () => {
 	const [sortField, setSortField] = useState("createdAt");

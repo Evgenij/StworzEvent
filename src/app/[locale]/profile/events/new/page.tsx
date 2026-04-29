@@ -1,15 +1,15 @@
 "use client";
 
-import { CreateEventForm } from "@/components/dashboard/events/create-event-form";
-import { CreateOrganizationForm } from "@/components/dashboard/organizations/create-organization-form";
-import { Typography } from "@/components/shared";
 import { IconBuildingSkyscraper, IconLoader } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-	useMyOrganizations,
 	MY_ORGANIZATIONS_QUERY_KEY,
-} from "@/hooks/use-my-organizations";
+	useMyOrganizations,
+} from "@/features/organizations/hooks/use-my-organizations";
+import { Typography } from "@/shared/components";
+import { CreateOrganizationForm } from "@/features/organizations/components/create-organization-form";
+import { CreateEventForm } from "@/features/events/components/editor/create-event-form";
 
 export default function NewEventPage() {
 	const t = useTranslations("CreateOrganization");

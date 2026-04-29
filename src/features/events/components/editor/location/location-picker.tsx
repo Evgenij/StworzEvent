@@ -9,22 +9,15 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 	InputGroupText,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import { IconLoader, IconMapPin, IconMapQuestion } from "@tabler/icons-react";
-import { reverseGeocode, searchAddressCoords } from "@/lib/nominatim";
-import type { NominatimPlace, LocationValue } from "@/types/nominatim";
-import {
-	Alert,
-	AlertDescription,
-	AlertTitle,
-} from "@/components/shadcn/ui/alert";
-import { AlertCircleIcon } from "lucide-react";
-import {
-	Field,
-	FieldDescription,
-	FieldError,
-	FieldLabel,
-} from "@/components/shadcn/ui/field";
+import type {
+	NominatimPlace,
+	LocationValue,
+} from "@/lib/nominatim/nominatim.types";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { reverseGeocode, searchAddressCoords } from "@/lib/nominatim/nominatim";
 
 const EventMapInner = dynamic(
 	() => import("../map/event-map-inner").then((mod) => mod.EventMapInner),

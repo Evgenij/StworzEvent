@@ -8,11 +8,11 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-} from "@/components/shadcn/ui/combobox";
-import { useCitySearch } from "@/hooks/use-city-search";
-import type { NominatimPlace } from "@/types/nominatim";
+} from "@/components/ui/combobox";
+import { useCitySearch } from "@/features/events/hooks/use-city-search";
+import type { NominatimPlace } from "@/lib/nominatim/nominatim.types";
 import { cn } from "@/lib/utils";
-import { InputGroupAddon } from "@/components/shadcn/ui/input-group";
+import { InputGroupAddon } from "@/components/ui/input-group";
 import { IconBuildingSkyscraper, IconLoader } from "@tabler/icons-react";
 import { spawn } from "node:child_process";
 

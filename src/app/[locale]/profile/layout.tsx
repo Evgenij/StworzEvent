@@ -1,19 +1,13 @@
-import { SIGNIN_ROUTE } from "@/consts/routes";
+import { SIGNIN_ROUTE } from "@/config/routes";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
-import {
-	SidebarInset,
-	SidebarProvider,
-	SidebarTrigger,
-} from "@/components/shadcn/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import React from "react";
 import { AppSidebar } from "@/features/layout";
 import { SiteHeader } from "@/features/layout";
 import { UserRole } from "@prisma/client";
-import { MobileMenu } from "@/components/layout/menu";
-import { Separator } from "@/components/shadcn/ui/separator";
 
 export const metadata: Metadata = {
 	title: "Profile",
@@ -31,7 +25,8 @@ const ProfileLayout = async ({
 
 	const h = await headers();
 
-	let sessionRaw: Awaited<ReturnType<typeof auth.api.getSession>> | null = null;
+	let sessionRaw: Awaited<ReturnType<typeof auth.api.getSession>> | null =
+		null;
 	try {
 		sessionRaw = await auth.api.getSession({ headers: h });
 	} catch (e) {

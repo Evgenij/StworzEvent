@@ -5,17 +5,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconArrowLeft, IconUsers } from "@tabler/icons-react";
 import { SelectedTicket, OrderForm } from "../../tickets-drawer";
-import { useCountdown } from "@/hooks/use-countdown";
-import { Typography } from "@/components/shared";
-import { orderFormSchema, OrderFormValues } from "@/schemas/order.schema";
+import { Typography } from "@/shared/components";
 import BuyerDetails from "./buyer-details";
 import OrderDetails from "./order-details";
 import ReservationTimer from "./reservation-timer";
 import { ParticipantList } from "./participant-list";
-import { FlatParticipant } from "@/types/flat-participant";
+import { useCountdown } from "@/shared/hooks/use-countdown";
+import {
+	orderFormSchema,
+	OrderFormValues,
+} from "@/features/orders/schemas/order.schema";
+import { FlatParticipant } from "@/features/orders/types/flat-participant";
 
 type StepParticipantsProps = {
 	items: SelectedTicket[];

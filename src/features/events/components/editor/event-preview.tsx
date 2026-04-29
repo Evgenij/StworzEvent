@@ -1,8 +1,7 @@
-import EventItem from "@/components/events/event-item";
 import { useCreateEventPreview } from "./create-event-context";
-import { EventImagePlaceholder } from "@/components/shared/event-image-placeholder";
-import { Skeleton } from "@/components/shadcn/ui/skeleton";
-import { IconMapPin } from "@tabler/icons-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EventImagePlaceholder } from "../event-image-placeholder";
+import EventItem from "../catalog/event-item";
 
 const EventPreview = () => {
 	const { previewAsEventItem, selectedCategory } = useCreateEventPreview();

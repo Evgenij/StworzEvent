@@ -1,7 +1,6 @@
 "use client";
 
 import { EventSection } from "@prisma/client";
-import React from "react";
 
 type VideoSectionContent = {
 	url: string;

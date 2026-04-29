@@ -1,11 +1,10 @@
-import { SIGNIN_ROUTE } from "@/consts/routes";
+import { SIGNIN_ROUTE } from "@/config/routes";
+import OrganizerEventsPage from "@/features/events/components/organizer-events";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
-import { UserType } from "@/types/user";
 import { UserRole } from "@prisma/client";
 import { Metadata } from "next";
 import { headers } from "next/headers";
-import OrganizerEventsPage from "./components/organizer-events";
 
 export const metadata: Metadata = {
 	title: "Profile",

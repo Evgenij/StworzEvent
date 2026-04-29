@@ -8,7 +8,7 @@ import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { verifyEventOwnership } from "@/lib/verify-ownership";
-import { type AgendaItemInput } from "@/schemas/agenda-item.schema";
+import { type AgendaItemInput } from "@/features/events/schemas/agenda-item.schema";
 
 type Input = {
 	eventId: string;

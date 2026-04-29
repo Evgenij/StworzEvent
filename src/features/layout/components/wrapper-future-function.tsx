@@ -2,7 +2,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-} from "@/components/shadcn/ui/tooltip";
+} from "@/components/ui/tooltip";
 import React from "react";
 
 const FutureFunctionWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -10,7 +10,9 @@ const FutureFunctionWrapper = ({ children }: { children: React.ReactNode }) => {
 		<Tooltip>
 			<TooltipTrigger asChild>
 				<span className="flex-1 flex cursor-not-allowed">
-					<span className="pointer-events-none flex-1 flex">{children}</span>
+					<span className="pointer-events-none flex-1 flex">
+						{children}
+					</span>
 				</span>
 			</TooltipTrigger>
 			<TooltipContent>

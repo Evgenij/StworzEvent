@@ -1,13 +1,13 @@
-import { Typography } from "@/components/shared";
+import { Typography } from "@/shared/components";
 import { IconUserHexagon } from "@tabler/icons-react";
 import { SelectedTicket } from "../../tickets-drawer";
-import { Label } from "@/components/shadcn/ui/label";
-import { Checkbox } from "@/components/shadcn/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { TicketTypePicker } from "./ticket-type-picker";
 import { BuyerForm } from "./forms/buyer-form";
-import { Field } from "@/components/shadcn/ui/field";
-import { OrderFormValues } from "@/schemas/order.schema";
+import { Field } from "@/components/ui/field";
 import { UseFormReturn } from "react-hook-form";
+import { OrderFormValues } from "@/features/orders/schemas/order.schema";
 
 type BuyerDetailsProps = {
 	form: UseFormReturn<OrderFormValues>;

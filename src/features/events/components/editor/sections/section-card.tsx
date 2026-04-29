@@ -7,8 +7,7 @@ import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@/components/shadcn/ui/collapsible";
-import { Button } from "@/components/shadcn/ui/button";
+} from "@/components/ui/collapsible";
 import {
 	IconChevronDown,
 	IconChevronUp,
@@ -28,7 +27,7 @@ import { SectionGallery } from "./section-gallery";
 import { SectionVideo } from "./section-video";
 import { SectionLinks } from "./section-links";
 import type { DraggableProvided } from "@hello-pangea/dnd";
-import { deleteSectionAction } from "@/actions/events/sections/delete-section.action";
+import { deleteSectionAction } from "@/features/events/actions/sections/delete-section.action";
 
 const SECTION_ICONS = {
 	[SectionType.TEXT]: IconAlignLeft,

@@ -1,12 +1,12 @@
 "use client";
 
-import { Typography } from "@/components/shared";
-import { IconLocation, IconMapPin, IconNavigation } from "@tabler/icons-react";
+import { Typography } from "@/shared/components";
+import { IconLocation, IconMapPin } from "@tabler/icons-react";
 import React, { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Separator } from "@/components/shadcn/ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 type EventMapSectionProps = {
 	location: string | null;

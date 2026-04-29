@@ -1,10 +1,14 @@
 "use client";
 
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { IconLink, IconPlus, IconShare, IconShare2 } from "@tabler/icons-react";
 import { toast } from "sonner";
-import { ButtonGroup } from "../shadcn/ui/button-group";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../shadcn/ui/tooltip";
 
 type ShareButtonProps = {
 	title: string;

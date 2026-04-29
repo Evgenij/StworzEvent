@@ -1,17 +1,17 @@
 // components/events/tickets/steps/buyer-form.tsx
 
 import { Controller, UseFormReturn } from "react-hook-form";
-import { OrderFormValues } from "@/schemas/order.schema";
-import { Field, FieldError, FieldGroup } from "@/components/shadcn/ui/field";
+import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupIMask,
 	InputGroupInput,
 	InputGroupText,
-} from "@/components/shadcn/ui/input-group";
+} from "@/components/ui/input-group";
 import { useTranslations } from "next-intl";
 import { IconMail, IconPhone, IconUser } from "@tabler/icons-react";
+import { OrderFormValues } from "@/features/orders/schemas/order.schema";
 
 type BuyerFormProps = {
 	form: UseFormReturn<OrderFormValues>;

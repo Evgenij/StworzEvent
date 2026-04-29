@@ -5,17 +5,17 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/shadcn/ui/button";
-import { Calendar } from "@/components/shadcn/ui/calendar";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from "@/components/shadcn/ui/popover";
-// import { ScrollArea, ScrollBar } from "@/components/shadcn/ui/scroll-area";
+} from "@/components/ui/popover";
+// import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { IconCalendar } from "@tabler/icons-react";
-import { ScrollArea } from "../shadcn/ui/scroll-area";
-import { DateTimeFormatter } from "@/helpers/date-formatter";
+import { DateTimeFormatter } from "@/helpers/date";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Props = {
 	value?: string; // ISO string "2024-03-21T14:30"

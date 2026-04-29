@@ -1,7 +1,7 @@
-import { TicketWithAvailability } from "@/types/ticket";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button } from "@/components/ui/button";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { formatPlnFromGrosze } from "@/lib/utils";
+import { TicketWithAvailability } from "@/features/events/types/ticket";
 
 type TicketItemProps = {
 	ticket: TicketWithAvailability;

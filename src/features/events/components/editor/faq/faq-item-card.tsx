@@ -8,14 +8,11 @@ import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@/components/shadcn/ui/collapsible";
-import { Button } from "@/components/shadcn/ui/button";
-import { Field, FieldError, FieldLabel } from "@/components/shadcn/ui/field";
-import {
-	InputGroup,
-	InputGroupInput,
-} from "@/components/shadcn/ui/input-group";
-import { Textarea } from "@/components/shadcn/ui/textarea";
+} from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
+import { Textarea } from "@/components/ui/textarea";
 import {
 	IconChevronDown,
 	IconChevronUp,
@@ -23,11 +20,14 @@ import {
 	IconLoader,
 	IconDeviceFloppy,
 } from "@tabler/icons-react";
-import { faqItemSchema, type FaqItemInput } from "@/schemas/faq-item.schema";
-import { upsertFaqItemAction } from "@/actions/events/faq/upsert-faq-item.action";
-import { deleteFaqItemAction } from "@/actions/events/faq/delete-faq-item.action";
 import { toast } from "sonner";
-import type { FaqItem } from "@/actions/events/faq/get-event-faq.action";
+import { FaqItem } from "@/features/events/actions/faq/get-event-faq.action";
+import {
+	FaqItemInput,
+	faqItemSchema,
+} from "@/features/events/schemas/faq-item.schema";
+import { upsertFaqItemAction } from "@/features/events/actions/faq/upsert-faq-item.action";
+import { deleteFaqItemAction } from "@/features/events/actions/faq/delete-faq-item.action";
 
 type Props = {
 	eventId: string;
