@@ -1,5 +1,6 @@
 import { getEventAdditionalAction } from "@/features/events/actions/get-event-additional.action";
 import { getEventForEditAction } from "@/features/events/actions/get-event-for-edit.action";
+import { getEventPaymentAction } from "@/features/events/actions/get-event-payment.action";
 import { EditEventTabs } from "@/features/events/components/editor/edit-event-tabs";
 import { getEventTickets } from "@/features/tickets/actions/get-event-tickets.action";
 import { notFound } from "next/navigation";
@@ -12,10 +13,11 @@ export default async function EditEventPage({ params }: Props) {
 	const { id } = await params;
 
 	try {
-		const [event, additionalData, tickets] = await Promise.all([
+		const [event, additionalData, tickets, payment] = await Promise.all([
 			getEventForEditAction(id),
 			getEventAdditionalAction(id),
 			getEventTickets(id),
+			getEventPaymentAction(id),
 		]);
 
 		return (
@@ -23,6 +25,7 @@ export default async function EditEventPage({ params }: Props) {
 				eventId={id}
 				initialAdditionalData={additionalData}
 				initialTickets={tickets}
+				initialPayment={payment}
 				initialPreview={{
 					title: event.title,
 					coverImage: event.coverImage ?? "",

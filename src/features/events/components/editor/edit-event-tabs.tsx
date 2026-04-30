@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { StepAdditional } from "./wizard/step-additional";
 import { StepTickets } from "./wizard/step-tickets";
+import { StepPayment } from "./wizard/step-payment";
 import { EventWizardProgress } from "./wizard/event-wizard-progress";
 import { CreateEventProvider } from "./create-event-context";
 import EventPreview from "./event-preview";
@@ -12,12 +13,14 @@ import { StepBasicData } from "./wizard/step-basic-data";
 import { CreateEventInput } from "../../schemas/create-event.schema";
 import { EventTicket } from "@/features/tickets/actions/get-event-tickets.action";
 import { EventAdditionalData } from "../../actions/get-event-additional.action";
+import type { EventPaymentData } from "../../actions/get-event-payment.action";
 
 type Props = {
 	eventId: string;
 	initialAdditionalData: EventAdditionalData;
 	initialTickets: EventTicket[];
 	initialPreview: Partial<CreateEventInput>;
+	initialPayment: EventPaymentData;
 	eventStartDate?: Date;
 	eventEndDate?: Date;
 };
@@ -27,10 +30,11 @@ export function EditEventTabs({
 	initialAdditionalData,
 	initialTickets,
 	initialPreview,
+	initialPayment,
 	eventStartDate,
 	eventEndDate,
 }: Props) {
-	const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
+	const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1);
 
 	const initialMinPrice =
 		initialTickets.length > 0
@@ -45,7 +49,7 @@ export function EditEventTabs({
 						currentStep={currentStep}
 						eventId={eventId}
 						onStepClick={(step) =>
-							setCurrentStep(step as 1 | 2 | 3)
+							setCurrentStep(step as 1 | 2 | 3 | 4)
 						}
 					/>
 
@@ -69,6 +73,13 @@ export function EditEventTabs({
 						<StepTickets
 							eventId={eventId}
 							initialTickets={initialTickets}
+						/>
+					)}
+
+					{currentStep === 4 && (
+						<StepPayment
+							eventId={eventId}
+							initialPayment={initialPayment}
 						/>
 					)}
 				</div>

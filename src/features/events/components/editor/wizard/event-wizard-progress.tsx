@@ -9,6 +9,7 @@ import {
 	EVENT_EDIT_ROUTE,
 	EVENT_EDIT_ADDITIONAL_ROUTE,
 	EVENT_EDIT_TICKETS_ROUTE,
+	EVENT_EDIT_PAYMENT_ROUTE,
 } from "@/config/routes";
 
 type Step = {
@@ -29,7 +30,6 @@ const STEPS: Step[] = [
 		number: 2,
 		labelKey: "additional",
 		description: "Additional event information",
-		// path: (id) => `/profile/events/${id}/edit/additional`,
 		path: (id) => EVENT_EDIT_ADDITIONAL_ROUTE(id),
 	},
 	{
@@ -38,10 +38,16 @@ const STEPS: Step[] = [
 		description: "Ticket configuration",
 		path: (id) => EVENT_EDIT_TICKETS_ROUTE(id),
 	},
+	{
+		number: 4,
+		labelKey: "payment",
+		description: "Payment configuration",
+		path: (id) => EVENT_EDIT_PAYMENT_ROUTE(id),
+	},
 ];
 
 type Props = {
-	currentStep: 1 | 2 | 3;
+	currentStep: 1 | 2 | 3 | 4;
 	eventId?: string;
 	onStepClick?: (step: number) => void;
 	loadingStep?: number | null;

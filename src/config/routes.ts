@@ -40,6 +40,8 @@ export const EVENT_EDIT_ADDITIONAL_ROUTE = (id: string) =>
 	`${EVENTS_ROUTE}/${id}/edit/additional`;
 export const EVENT_EDIT_TICKETS_ROUTE = (id: string) =>
 	`${EVENTS_ROUTE}/${id}/edit/tickets`;
+export const EVENT_EDIT_PAYMENT_ROUTE = (id: string) =>
+	`${EVENTS_ROUTE}/${id}/edit/payment`;
 
 // main page routes
 export const MAIN_PAGE_EVENTS_ROUTE = `${MAIN_PAGE_ROUTE}events`;
