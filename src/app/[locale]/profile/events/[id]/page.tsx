@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { EVENT_EDIT_ROUTE } from "@/config/routes";
+import { EVENT_EDIT_ROUTE, EVENT_ORDERS_ROUTE } from "@/config/routes";
 import { getEventAction } from "@/features/events/actions/get-event.action";
 import { DateTimeFormatter } from "@/helpers/date";
 import { Link } from "@/i18n/routing";
@@ -9,7 +9,7 @@ import {
 	IconCalendarEvent,
 	IconEdit,
 	IconMapPin,
-	IconShare,
+	IconReceipt,
 	IconShare2,
 } from "@tabler/icons-react";
 import { notFound } from "next/navigation";
@@ -27,8 +27,6 @@ const OrganizerEventPage = async ({
 	}
 
 	const event = await getEventAction(id);
-
-	console.log(event);
 
 	if (!event) {
 		return notFound();
@@ -116,6 +114,12 @@ const OrganizerEventPage = async ({
 						</div>
 					</div>
 					<div className="event-actions flex gap-2">
+						<Button variant="transparent" size="sm" asChild>
+							<Link href={EVENT_ORDERS_ROUTE(id)}>
+								<IconReceipt className="size-4" />
+								Zamowienia
+							</Link>
+						</Button>
 						<Button variant="transparent" size="sm" asChild>
 							<Link href={EVENT_EDIT_ROUTE(id)}>
 								<IconShare2 className="size-4" />

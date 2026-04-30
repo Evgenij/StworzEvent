@@ -2,9 +2,14 @@ import prisma from "@/lib/prisma";
 import { createUsers } from "./seeders/users";
 import { listOrganizers } from "@/mocks";
 import { createOrganizations } from "./seeders/organizations";
+import { PrismaClient } from "@prisma/client";
 
 async function main() {
 	console.info("🚀 Start seeding...");
+
+	await prisma.$executeRawUnsafe(`
+		ALTER TABLE "orders" ADD COLUMN IF NOT EXISTS "cancel_reason" TEXT
+	`);
 
 	// Очистка базы — TRUNCATE CASCADE обходит порядок FK автоматически
 	await prisma.$executeRawUnsafe(`
@@ -45,7 +50,7 @@ async function main() {
 		});
 	}
 
-	await createUsers(prisma);
+	await createUsers(prisma as unknown as PrismaClient);
 
 	console.info("✅ Seeding finished");
 }

@@ -14,7 +14,14 @@ export async function getMyOrganizations() {
 		select: {
 			memberRole: true,
 			organizations: {
-				select: { id: true, name: true, logo: true, slug: true },
+				select: {
+					id: true,
+					name: true,
+					logo: true,
+					slug: true,
+					nip: true,
+					legalForm: true,
+				},
 			},
 		},
 	});

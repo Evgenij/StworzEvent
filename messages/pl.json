@@ -132,13 +132,99 @@
 		"BLOCKED": "Zablokowany",
 		"UNPUBLISHED": "Wycofany z publikacji"
 	},
+	"OrganizerOrders": {
+		"unknownBuyer": "Brak danych kupującego",
+		"participants": "{count} uczestników",
+		"statuses": {
+			"PENDING": "Oczekuje na płatność",
+			"CONFIRMED": "Potwierdzone",
+			"PAID": "Opłacone online",
+			"CANCELLED": "Anulowane",
+			"EXPIRED": "Wygasłe"
+		},
+		"summary": {
+			"total": "Wszystkie zamówienia",
+			"pending": "Do potwierdzenia",
+			"confirmed": "Potwierdzone",
+			"cancelled": "Anulowane",
+			"revenue": "Potwierdzony przychód"
+		},
+		"filters": {
+			"searchPlaceholder": "Szukaj po numerze, emailu, imieniu lub telefonie",
+			"all": "Wszystkie statusy",
+			"loading": "Aktualizowanie zamówień..."
+		},
+		"table": {
+			"order": "Zamówienie",
+			"buyer": "Kupujący",
+			"tickets": "Bilety",
+			"total": "Suma",
+			"status": "Status",
+			"actions": "Akcje"
+		},
+		"actions": {
+			"confirm": "Otrzymałem płatność",
+			"cancel": "Anuluj",
+			"confirmed": "Zamówienie zostało potwierdzone",
+			"cancelled": "Zamówienie zostało anulowane",
+			"confirmFailed": "Nie udało się potwierdzić zamówienia",
+			"cancelFailed": "Nie udało się anulować zamówienia",
+			"cancelTitle": "Anulować zamówienie?",
+			"cancelDescription": "Podaj krótki powód anulowania. Będzie zapisany przy zamówieniu.",
+			"reasonPlaceholder": "Powód anulowania",
+			"cancelConfirm": "Anuluj zamówienie",
+			"close": "Wróć"
+		},
+		"empty": {
+			"title": "Brak zamówień",
+			"description": "Gdy uczestnicy kupią bilety, zamówienia pojawią się tutaj."
+		}
+	},
+	"Organizations": {
+		"empty": "Nie należysz jeszcze do żadnej organizacji",
+		"columns": {
+			"organization": "Organizacja",
+			"nip": "NIP",
+			"legalForm": "Forma prawna",
+			"role": "Rola"
+		},
+		"roles": {
+			"OWNER": "Właściciel",
+			"MANAGER": "Menedżer",
+			"FINANCE": "Finanse",
+			"STAFF": "Pracownik",
+			"VIEWER": "Widz",
+			"SUPPORT": "Wsparcie",
+			"MARKETING": "Marketing",
+			"API_CLIENT": "API"
+		},
+		"legalForms": {
+			"OSOBA_FIZYCZNA": "Osoba fizyczna",
+			"JEDNOOSOBOWA_DG": "Jednoosobowa DG",
+			"SP_ZOO": "Sp. z o.o.",
+			"SA": "S.A.",
+			"SP_JAWNA": "Sp. jawna",
+			"SP_PARTNERSKA": "Sp. partnerska",
+			"SP_KOMANDYTOWA": "Sp. komandytowa",
+			"SP_KOMANDYTOWO_AKCYJNA": "Sp. komandytowo-akcyjna",
+			"STOWARZYSZENIE": "Stowarzyszenie",
+			"FUNDACJA": "Fundacja",
+			"SPOLDZIELNIA": "Spółdzielnia",
+			"INNE": "Inne"
+		},
+		"actions": {
+			"edit": "Edytuj",
+			"new": "Nowa organizacja"
+		}
+	},
 	"PageTitles": {
 		"dashboard": "Panel główny",
 		"notifications": "Powiadomienia",
 		"settings": "Ustawienia",
 		"events": {
 			"title": "Wydarzenia",
-			"new": "Nowe wydarzenie"
+			"new": "Nowe wydarzenie",
+			"orders": "Zamówienia"
 		},
 		"organizations": {
 			"title": "Organizacje",

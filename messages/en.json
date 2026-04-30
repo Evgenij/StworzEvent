@@ -132,13 +132,99 @@
 		"BLOCKED": "Blocked",
 		"UNPUBLISHED": "Unpublished"
 	},
+	"OrganizerOrders": {
+		"unknownBuyer": "Missing buyer details",
+		"participants": "{count} participants",
+		"statuses": {
+			"PENDING": "Awaiting payment",
+			"CONFIRMED": "Confirmed",
+			"PAID": "Paid online",
+			"CANCELLED": "Cancelled",
+			"EXPIRED": "Expired"
+		},
+		"summary": {
+			"total": "All orders",
+			"pending": "To confirm",
+			"confirmed": "Confirmed",
+			"cancelled": "Cancelled",
+			"revenue": "Confirmed revenue"
+		},
+		"filters": {
+			"searchPlaceholder": "Search by number, email, name or phone",
+			"all": "All statuses",
+			"loading": "Updating orders..."
+		},
+		"table": {
+			"order": "Order",
+			"buyer": "Buyer",
+			"tickets": "Tickets",
+			"total": "Total",
+			"status": "Status",
+			"actions": "Actions"
+		},
+		"actions": {
+			"confirm": "I received payment",
+			"cancel": "Cancel",
+			"confirmed": "Order has been confirmed",
+			"cancelled": "Order has been cancelled",
+			"confirmFailed": "Failed to confirm order",
+			"cancelFailed": "Failed to cancel order",
+			"cancelTitle": "Cancel order?",
+			"cancelDescription": "Add a short cancellation reason. It will be saved with the order.",
+			"reasonPlaceholder": "Cancellation reason",
+			"cancelConfirm": "Cancel order",
+			"close": "Back"
+		},
+		"empty": {
+			"title": "No orders",
+			"description": "When attendees buy tickets, orders will appear here."
+		}
+	},
+	"Organizations": {
+		"empty": "You don't belong to any organization yet",
+		"columns": {
+			"organization": "Organization",
+			"nip": "Tax ID",
+			"legalForm": "Legal form",
+			"role": "Role"
+		},
+		"roles": {
+			"OWNER": "Owner",
+			"MANAGER": "Manager",
+			"FINANCE": "Finance",
+			"STAFF": "Staff",
+			"VIEWER": "Viewer",
+			"SUPPORT": "Support",
+			"MARKETING": "Marketing",
+			"API_CLIENT": "API"
+		},
+		"legalForms": {
+			"OSOBA_FIZYCZNA": "Sole person",
+			"JEDNOOSOBOWA_DG": "Sole proprietorship",
+			"SP_ZOO": "Ltd.",
+			"SA": "Joint-stock",
+			"SP_JAWNA": "General partnership",
+			"SP_PARTNERSKA": "Professional partnership",
+			"SP_KOMANDYTOWA": "Limited partnership",
+			"SP_KOMANDYTOWO_AKCYJNA": "Limited joint-stock",
+			"STOWARZYSZENIE": "Association",
+			"FUNDACJA": "Foundation",
+			"SPOLDZIELNIA": "Cooperative",
+			"INNE": "Other"
+		},
+		"actions": {
+			"edit": "Edit",
+			"new": "New organization"
+		}
+	},
 	"PageTitles": {
 		"dashboard": "Dashboard",
 		"notifications": "Notifications",
 		"settings": "Settings",
 		"events": {
 			"title": "Events",
-			"new": "New event"
+			"new": "New event",
+			"orders": "Orders"
 		},
 		"edit": {
 			"title": "Edit",

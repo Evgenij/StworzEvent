@@ -1,4 +1,4 @@
-import { hashPassword } from "@/lib/hashPassword";
+import { hashPassword } from "@/lib/hash-password";
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { createOrganizations } from "./organizations";

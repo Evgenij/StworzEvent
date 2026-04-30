@@ -32,9 +32,12 @@ export const EVENT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 
 // organizations routes
 export const NEW_ORGANIZATION_ROUTE = `${ORGANIZATIONS_ROUTE}/new`;
+export const ORGANIZATION_ROUTE = (id: string) => `${ORGANIZATIONS_ROUTE}/${id}`;
 
 export const EVENT_PAGE_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 export const EVENT_EDIT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}/edit`;
+export const EVENT_ORDERS_ROUTE = (id: string) =>
+	`${EVENTS_ROUTE}/${id}/orders`;
 
 export const EVENT_EDIT_ADDITIONAL_ROUTE = (id: string) =>
 	`${EVENTS_ROUTE}/${id}/edit/additional`;

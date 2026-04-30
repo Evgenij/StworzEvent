@@ -5,6 +5,7 @@ import { createSections } from "./event-sections";
 import { createEventFaqs } from "./event-faqs";
 import { createEventAgendaItems } from "./event-agenda";
 import { createTickets } from "./event-tickes";
+import { createOrders } from "./event-orders";
 
 export const createEvents = async (
 	organization: Organization,
@@ -134,6 +135,11 @@ export const createEvents = async (
 				title: `Test Event ${index + 1}`,
 				startsAt: new Date(),
 				status: randomStatus,
+				paymentMethod: "BANK_TRANSFER",
+				bankAccountNumber: "PL61109010140000071219812874",
+				bankAccountHolder: "UIXER company sp. z o.o.",
+				paymentInstructions:
+					"W tytule przelewu wpisz numer zamowienia.",
 			},
 		});
 		events.push(event);
@@ -144,4 +150,5 @@ export const createEvents = async (
 	await createSections(prisma, events);
 	await createEventFaqs(prisma, events);
 	await createTickets(prisma, events);
+	await createOrders(prisma, events);
 };
