@@ -12,6 +12,8 @@ import {
 	CodeMailsProps,
 	invitationMail,
 	InvitationMailsProps,
+	orderPaymentInstructionsMail,
+	OrderPaymentInstructionsMailProps,
 } from "@/helpers/mail-templates";
 import { TypeMail } from "@/types/enums";
 import { APP_CONFIG } from "@/config/app";
@@ -19,7 +21,11 @@ import { APP_CONFIG } from "@/config/app";
 type EmailPayload =
 	| { type: TypeMail.INVITATION; data: InvitationMailsProps }
 	| { type: TypeMail.AUTH; data: AuthMailsProps }
-	| { type: TypeMail.CODE; data: CodeMailsProps };
+	| { type: TypeMail.CODE; data: CodeMailsProps }
+	| {
+			type: TypeMail.ORDER_PAYMENT_INSTRUCTIONS;
+			data: OrderPaymentInstructionsMailProps;
+	  };
 
 type SendEmailInput = EmailPayload & {
 	to: string;
@@ -62,6 +68,10 @@ export const sendEmailAction = safeAction(async (input: SendEmailInput) => {
 
 		case TypeMail.AUTH:
 			htmlContent = authMail(data);
+			break;
+
+		case TypeMail.ORDER_PAYMENT_INSTRUCTIONS:
+			htmlContent = orderPaymentInstructionsMail(data);
 			break;
 
 		default:

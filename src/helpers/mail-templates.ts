@@ -1,3 +1,91 @@
+export type OrderPaymentInstructionsMailProps = {
+	buyerName: string;
+	eventTitle: string;
+	orderNumber: string;
+	paymentMethod: "BANK_TRANSFER" | "EXTERNAL_LINK" | "CASH_AT_ENTRANCE" | null;
+	bankAccount?: string | null;
+	bankHolder?: string | null;
+	paymentLink?: string | null;
+	paymentInstructions?: string | null;
+};
+
+export const orderPaymentInstructionsMail = (
+	data: OrderPaymentInstructionsMailProps,
+): string => {
+	const esc = (s: string) =>
+		s
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+
+	const formatIban = (raw: string) =>
+		raw.replace(/\s+/g, "").toUpperCase().replace(/(.{4})/g, "$1 ").trim();
+
+	let paymentBlock = "";
+
+	if (data.paymentMethod === "BANK_TRANSFER") {
+		paymentBlock = `
+			<p style="margin:0 0 8px 0;font-size:15px;font-weight:bold;color:#000">Dane do przelewu:</p>
+			${data.bankAccount ? `<p style="margin:0 0 4px 0;font-size:14px;color:#333">Numer konta: <strong>${esc(formatIban(data.bankAccount))}</strong></p>` : ""}
+			${data.bankHolder ? `<p style="margin:0 0 4px 0;font-size:14px;color:#333">Odbiorca: <strong>${esc(data.bankHolder)}</strong></p>` : ""}
+			<p style="margin:0 0 4px 0;font-size:14px;color:#333">Tytuł przelewu: <strong>${esc(data.orderNumber)}</strong></p>
+			${data.paymentInstructions ? `<p style="margin:12px 0 0 0;font-size:14px;color:#555;white-space:pre-line">${esc(data.paymentInstructions)}</p>` : ""}
+		`;
+	} else if (data.paymentMethod === "EXTERNAL_LINK" && data.paymentLink) {
+		paymentBlock = `
+			${data.paymentInstructions ? `<p style="margin:0 0 12px 0;font-size:14px;color:#555;white-space:pre-line">${esc(data.paymentInstructions)}</p>` : ""}
+			<a href="${esc(data.paymentLink)}" target="_blank" style="display:inline-block;padding:12px 20px;font-size:15px;font-weight:bold;color:#fff;background:#e86405;border-radius:12px;text-decoration:none">Przejdź do płatności</a>
+		`;
+	} else if (data.paymentMethod === "CASH_AT_ENTRANCE") {
+		paymentBlock = `<p style="margin:0;font-size:14px;color:#333">Płatność gotówką przy wejściu na wydarzenie.</p>`;
+	} else {
+		paymentBlock = `<p style="margin:0;font-size:14px;color:#333">Skontaktuj się z organizatorem w celu ustalenia szczegółów płatności.</p>`;
+	}
+
+	return `
+		<div style="background:#f5f5f5;padding:12px;font-family:Arial,sans-serif;text-align:center;box-sizing:border-box;width:100%">
+			<table style="box-sizing:border-box;margin:0 auto;max-width:500px;background:white;border-radius:30px;padding:40px;width:100%;text-align:left">
+				<tr>
+					<th style="text-align:left">
+						<img src="https://stworzevent.vercel.app/images/mails/logo_text_black.png" alt="logo" height="23" width="158" style="margin-bottom:32px" />
+					</th>
+				</tr>
+				<tr>
+					<td>
+						<h1 style="margin:0 0 8px 0;font-size:24px;font-weight:bold;color:#000">Zamówienie złożone!</h1>
+						<p style="margin:0 0 24px 0;font-size:15px;color:#555">Cześć ${esc(data.buyerName)}, dziękujemy za zakup biletów na <strong>${esc(data.eventTitle)}</strong>.</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px;margin-bottom:24px">
+							<tr>
+								<td>
+									<p style="margin:0 0 4px 0;font-size:13px;color:#777">Numer zamówienia</p>
+									<p style="margin:0;font-size:16px;font-weight:bold;font-family:monospace;color:#000">${esc(data.orderNumber)}</p>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px;margin-bottom:24px">
+							<tr><td>${paymentBlock}</td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:20px">
+						<span style="font-size:14px;color:#777">Z pozdrowieniami,<br/>zespół StworzEvent.pl</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	`;
+};
+
 export type AuthMailsProps = {
 	header: string;
 	subheader: string;

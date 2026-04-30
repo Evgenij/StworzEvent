@@ -9,6 +9,8 @@ import { OrderStatus } from "@prisma/client";
 import { headers } from "next/headers";
 import { resolvePayment } from "@/lib/payment/resolve-payment";
 import { generateOrderNumber } from "@/lib/payment/order-number";
+import { sendEmailAction } from "@/lib/email/send-email.action";
+import { TypeMail } from "@/types/enums";
 
 type ParticipantInput = {
 	name: string;
@@ -57,7 +59,7 @@ export const createOrder = async (input: CreateOrderInput) => {
 
 	const finalOrderNumber = orderNumber;
 
-	const order = await prisma.$transaction(async (tx) => {
+	const { order, eventTitle } = await prisma.$transaction(async (tx) => {
 		// 1. Load tickets and verify availability
 		const tickets = await tx.ticket.findMany({
 			where: { id: { in: input.items.map((i) => i.ticketId) } },
@@ -162,8 +164,26 @@ export const createOrder = async (input: CreateOrderInput) => {
 			where: { id: input.reservationId },
 		});
 
-		return order;
+		return { order, eventTitle: event.title };
 	});
+
+	if (order.paymentMethod !== null) {
+		void sendEmailAction({
+			to: input.email,
+			subject: `Zamówienie ${order.orderNumber} – szczegóły płatności`,
+			type: TypeMail.ORDER_PAYMENT_INSTRUCTIONS,
+			data: {
+				buyerName: input.buyerName,
+				eventTitle: eventTitle,
+				orderNumber: order.orderNumber!,
+				paymentMethod: order.paymentMethod,
+				bankAccount: order.paymentBankAccount,
+				bankHolder: order.paymentBankHolder,
+				paymentLink: order.paymentLink,
+				paymentInstructions: order.paymentInstructions,
+			},
+		});
+	}
 
 	return order;
 };
