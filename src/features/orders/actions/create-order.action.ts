@@ -1,10 +1,14 @@
-// src/actions/orders/create-order.action.ts
+// src/features/orders/actions/create-order.action.ts
 "use server";
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { ApiError } from "@/error/api-error";
+import { ErrorCode } from "@/types/error-code";
 import { OrderStatus } from "@prisma/client";
 import { headers } from "next/headers";
+import { resolvePayment } from "@/lib/payment/resolve-payment";
+import { generateOrderNumber } from "@/lib/payment/order-number";
 
 type ParticipantInput = {
 	name: string;
@@ -36,15 +40,32 @@ export const createOrder = async (input: CreateOrderInput) => {
 		headers: await headers(),
 	});
 
+	// Generate orderNumber with up to 3 retries on unique collision
+	let orderNumber: string | null = null;
+	for (let attempt = 0; attempt < 3; attempt++) {
+		const candidate = generateOrderNumber();
+		const existing = await prisma.order.findUnique({
+			where: { orderNumber: candidate },
+			select: { id: true },
+		});
+		if (!existing) {
+			orderNumber = candidate;
+			break;
+		}
+	}
+	if (!orderNumber) throw new ApiError(ErrorCode.INTERNAL_ERROR, 500);
+
+	const finalOrderNumber = orderNumber;
+
 	const order = await prisma.$transaction(async (tx) => {
-		// 1. Получаем билеты и проверяем доступность внутри транзакции
+		// 1. Load tickets and verify availability
 		const tickets = await tx.ticket.findMany({
 			where: { id: { in: input.items.map((i) => i.ticketId) } },
 		});
 
 		for (const item of input.items) {
 			const ticket = tickets.find((t) => t.id === item.ticketId);
-			if (!ticket) throw new Error("Ticket not found");
+			if (!ticket) throw new ApiError(ErrorCode.NOT_FOUND, 404);
 
 			if (ticket.quantity) {
 				const sold = await tx.orderItem.aggregate({
@@ -57,22 +78,37 @@ export const createOrder = async (input: CreateOrderInput) => {
 					_sum: { quantity: true },
 				});
 
-				const available = ticket.quantity - (sold._sum.quantity ?? 0);
+				const available =
+					ticket.quantity - (sold._sum.quantity ?? 0);
 				if (available < item.quantity) {
-					throw new Error(
-						`Niewystarczająca liczba biletów: ${ticket.name}`,
-					);
+					throw new ApiError(ErrorCode.VALIDATION_ERROR, 400);
 				}
 			}
 		}
 
-		// 2. Считаем итоговую сумму
+		// 2. Calculate total
 		const total = input.items.reduce((sum, item) => {
 			const ticket = tickets.find((t) => t.id === item.ticketId)!;
 			return sum + ticket.price * item.quantity;
 		}, 0);
 
-		// 3. Создаём заказ
+		// 3. Load event + organization for payment snapshot
+		const event = await tx.event.findUnique({
+			where: { id: input.eventId },
+			include: { organization: true },
+		});
+		if (!event) throw new ApiError(ErrorCode.NOT_FOUND, 404);
+
+		// 4. Resolve effective payment settings
+		const resolved = resolvePayment(event, event.organization);
+
+		// 5. Determine order status
+		const status =
+			total === 0 || resolved.method === "CASH_AT_ENTRANCE"
+				? OrderStatus.CONFIRMED
+				: OrderStatus.PENDING;
+
+		// 6. Create order with payment snapshot
 		const order = await tx.order.create({
 			data: {
 				eventId: input.eventId,
@@ -82,8 +118,13 @@ export const createOrder = async (input: CreateOrderInput) => {
 				buyerSurname: input.buyerSurname,
 				buyerPhone: input.buyerPhone,
 				total,
-				status:
-					total === 0 ? OrderStatus.CONFIRMED : OrderStatus.PENDING,
+				status,
+				orderNumber: finalOrderNumber,
+				paymentMethod: resolved.method,
+				paymentBankAccount: resolved.bankAccountNumber,
+				paymentBankHolder: resolved.bankAccountHolder,
+				paymentLink: resolved.paymentLink,
+				paymentInstructions: resolved.paymentInstructions,
 				orderItems: {
 					create: input.items.map((item) => {
 						const ticket = tickets.find(
@@ -98,14 +139,14 @@ export const createOrder = async (input: CreateOrderInput) => {
 							quantity: item.quantity,
 							price: ticket.price,
 							participants: {
-								create: (participantGroup?.items ?? []).map(
-									(p) => ({
-										name: p.name,
-										surname: p.surname,
-										email: p.email,
-										phone: p.phone,
-									}),
-								),
+								create: (
+									participantGroup?.items ?? []
+								).map((p) => ({
+									name: p.name,
+									surname: p.surname,
+									email: p.email,
+									phone: p.phone,
+								})),
 							},
 						};
 					}),
@@ -116,7 +157,7 @@ export const createOrder = async (input: CreateOrderInput) => {
 		//console.log("✅ Order created:", order.id);
 		//console.log("🗑 Deleting reservation:", input.reservationId);
 
-		// Удаляем резервацию — билеты теперь заняты заказом
+		// 7. Delete reservation — tickets are now locked by the order
 		await tx.ticketReservation.delete({
 			where: { id: input.reservationId },
 		});
