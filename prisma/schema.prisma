@@ -160,6 +160,13 @@ enum SectionType {
   VIDEO
 }
 
+enum PaymentMethod {
+  BANK_TRANSFER
+  EXTERNAL_LINK
+  CASH_AT_ENTRANCE
+  FREE
+}
+
 // ─────────────────────────────────────────────
 // AUTH MODELS (better-auth compatible)
 // ─────────────────────────────────────────────
@@ -300,6 +307,13 @@ model Organization {
   industry           String? // branża / PKD opisowo
   mainPkdCode        String? // np. "62.01.Z"
 
+  // ── płatności od uczestników (default dla wydarzeń tej organizacji) ──
+  defaultPaymentMethod       PaymentMethod? @map("default_payment_method")
+  defaultBankAccountNumber   String?        @map("default_bank_account_number")
+  defaultBankAccountHolder   String?        @map("default_bank_account_holder")
+  defaultPaymentLink         String?        @map("default_payment_link")
+  defaultPaymentInstructions String?        @map("default_payment_instructions") @db.Text
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -415,6 +429,13 @@ model Event {
   onlineUrl      String?     @map("online_url")
   eventIsOffline Boolean     @default(false) @map("event_is_offline")
   payAtEntrance  Boolean     @default(false) @map("pay_at_entrance")
+
+  // ── płatności od uczestników (override dla konkretnego wydarzenia) ──
+  paymentMethod       PaymentMethod? @map("payment_method")
+  bankAccountNumber   String?        @map("bank_account_number")
+  bankAccountHolder   String?        @map("bank_account_holder")
+  paymentLink         String?        @map("payment_link")
+  paymentInstructions String?        @map("payment_instructions") @db.Text
 
   /// Минимальная цена билета в минимальных единицах валюты (денормализовано)
   minPrice       Int?         @map("min_price")
@@ -569,6 +590,15 @@ model Order {
   /// Итоговая сумма в минимальных единицах валюты
   total    Int         @default(0) @map("total")
   currency Currency    @default(PLN) @map("currency")
+
+  // ── snapshot инструкций оплаты на момент создания заказа ──
+  paymentMethod       PaymentMethod? @map("payment_method")
+  paymentBankAccount  String?        @map("payment_bank_account")
+  paymentBankHolder   String?        @map("payment_bank_holder")
+  paymentLink         String?        @map("payment_link")
+  paymentInstructions String?        @map("payment_instructions") @db.Text
+  /// Уникальный человеко-читаемый номер заказа для названия перевода
+  orderNumber         String?        @unique @map("order_number")
 
   // Данные покупателя (денормализованы для истории)
   buyerName    String? @map("buyer_name")
