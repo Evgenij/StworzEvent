@@ -35,6 +35,26 @@ export const upsertTicketsAction = safeAction(
 
 		if (!event) throw new ApiError(ErrorCode.FORBIDDEN, 403);
 
+		// Block publishing when paid tickets exist but no payment method is configured
+		if (status === EventStatus.PUBLISHED) {
+			const hasPaidTickets = data.tickets.some((t) => t.price > 0);
+			if (hasPaidTickets) {
+				const eventWithPayment = await prisma.event.findUnique({
+					where: { id: eventId },
+					select: {
+						paymentMethod: true,
+						organization: { select: { paymentMethod: true } },
+					},
+				});
+				const hasPaymentMethod =
+					eventWithPayment?.paymentMethod !== null ||
+					eventWithPayment?.organization?.paymentMethod !== null;
+				if (!hasPaymentMethod) {
+					throw new ApiError(ErrorCode.PAYMENT_METHOD_REQUIRED, 400);
+				}
+			}
+		}
+
 		const upsertedTickets = await prisma.$transaction(async (tx) => {
 			const results = [];
 			for (const ticket of data.tickets) {
