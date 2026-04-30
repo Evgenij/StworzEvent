@@ -267,6 +267,43 @@
 			"tickets": {
 				"title": "Bilety",
 				"description": "Konfiguracja biletow"
+			},
+			"payment": {
+				"title": "Płatności",
+				"description": "Metoda płatności i dane do przelewu"
+			}
+		},
+		"payment": {
+			"saved": "Zapisano",
+			"usingDefaults": "Używa ustawień organizacji",
+			"overrideDefaults": "Nadpisz ustawienia organizacji",
+			"resetToDefaults": "Przywróć ustawienia organizacji",
+			"method": "Metoda płatności",
+			"methods": {
+				"BANK_TRANSFER": "Przelew bankowy",
+				"EXTERNAL_LINK": "Link zewnętrzny",
+				"CASH_AT_ENTRANCE": "Gotówka przy wejściu",
+				"FREE": "Bezpłatne"
+			},
+			"methodHints": {
+				"BANK_TRANSFER": "Podaj dane konta bankowego – uczestnicy wykonają przelew",
+				"EXTERNAL_LINK": "Podaj link do zewnętrznej strony płatności",
+				"CASH_AT_ENTRANCE": "Uczestnicy płacą gotówką przy wejściu na wydarzenie",
+				"FREE": "Wydarzenie bezpłatne – bilety potwierdzane automatycznie"
+			},
+			"bankAccountNumber": "Numer konta (IBAN)",
+			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
+			"bankAccountHolder": "Właściciel konta",
+			"bankAccountHolderPlaceholder": "np. Jan Kowalski",
+			"paymentLink": "Link do płatności",
+			"paymentLinkPlaceholder": "https://",
+			"paymentInstructions": "Instrukcje płatności (opcjonalne)",
+			"paymentInstructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
+			"paymentInstructionsHint": "Tekst będzie widoczny po złożeniu zamówienia",
+			"save": "Zapisz",
+			"errors": {
+				"default": "Wystąpił błąd. Spróbuj ponownie.",
+				"paymentMethodRequired": "Skonfiguruj metodę płatności przed opublikowaniem – wydarzenie zawiera płatne bilety."
 			}
 		},
 		"tickets": {

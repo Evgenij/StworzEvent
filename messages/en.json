@@ -257,6 +257,43 @@
 			"tickets": {
 				"title": "Tickets",
 				"description": "Ticket configuration"
+			},
+			"payment": {
+				"title": "Payment",
+				"description": "Payment method and transfer details"
+			}
+		},
+		"payment": {
+			"saved": "Saved",
+			"usingDefaults": "Using organisation defaults",
+			"overrideDefaults": "Override organisation defaults",
+			"resetToDefaults": "Reset to organisation defaults",
+			"method": "Payment method",
+			"methods": {
+				"BANK_TRANSFER": "Bank transfer",
+				"EXTERNAL_LINK": "External link",
+				"CASH_AT_ENTRANCE": "Cash at entrance",
+				"FREE": "Free"
+			},
+			"methodHints": {
+				"BANK_TRANSFER": "Provide bank account details – attendees will make a transfer",
+				"EXTERNAL_LINK": "Provide a link to an external payment page",
+				"CASH_AT_ENTRANCE": "Attendees pay cash at the event entrance",
+				"FREE": "Free event – tickets confirmed automatically"
+			},
+			"bankAccountNumber": "Account number (IBAN)",
+			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
+			"bankAccountHolder": "Account holder",
+			"bankAccountHolderPlaceholder": "e.g. John Smith",
+			"paymentLink": "Payment link",
+			"paymentLinkPlaceholder": "https://",
+			"paymentInstructions": "Payment instructions (optional)",
+			"paymentInstructionsPlaceholder": "Additional information for buyers...",
+			"paymentInstructionsHint": "This text will be shown after the order is placed",
+			"save": "Save",
+			"errors": {
+				"default": "Something went wrong. Please try again.",
+				"paymentMethodRequired": "Please configure a payment method before publishing – this event has paid tickets."
 			}
 		},
 		"tickets": {
