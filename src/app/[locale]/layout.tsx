@@ -45,7 +45,7 @@ export default async function RootLayout({
 
 	return (
 		<html lang={locale} className={`${fontPoppins.variable}`}>
-			<body className="antialiased min-h-screen flex flex-col relative">
+			<body className="antialiased h-screen flex flex-col">
 				<QueryProvider>
 					<NextIntlClientProvider messages={messages}>
 						<Toaster />

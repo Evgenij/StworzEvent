@@ -6,23 +6,51 @@ import { DASHBOARD_ROUTE, SIGNIN_ROUTE } from "./config/routes";
 
 const intlMiddleware = createMiddleware(routing);
 
-//some text
-
-/**
- * Path PREFIXES (without locale) that require an authenticated session.
- * Covers all sub-routes automatically (e.g. /profile/events, /profile/settings, …).
- */
 const PROTECTED_PREFIXES = ["/profile", "/admin"];
+
+const ALWAYS_ALLOW_PREFIXES = [
+	"/_next",
+	"/favicon",
+	"/images",
+	"/apple-touch-icon",
+	"/android-chrome",
+	"/site.webmanifest",
+	"/robots.txt",
+	"/sitemap",
+];
+
+const COMING_SOON_ALLOWED = ["/", "/unlock"];
 
 //--------------------------
 export async function proxy(req: NextRequest) {
 	const { nextUrl } = req;
+	const pathname = nextUrl.pathname;
+
+	// Static and technical routes — always pass through
+	const isAlwaysAllowed = ALWAYS_ALLOW_PREFIXES.some((prefix) =>
+		pathname.startsWith(prefix),
+	);
+	if (isAlwaysAllowed) return NextResponse.next();
+
+	// Check bypass cookie for owner access
+	const bypassToken = req.cookies.get("bypass_token")?.value;
+	const hasValidBypass =
+		bypassToken !== undefined && bypassToken === process.env.BYPASS_TOKEN;
+
+	if (!hasValidBypass) {
+		// Coming-soon mode: only / and /unlock are accessible
+		if (COMING_SOON_ALLOWED.includes(pathname)) {
+			return NextResponse.next();
+		}
+		return NextResponse.redirect(new URL("/", req.url));
+	}
+
+	// Owner bypass active — run normal auth + intl logic
 	const sessionCookie = getSessionCookie(req, { cookiePrefix: "se-auth-v1" });
 	const isLoggedIn = !!sessionCookie;
 
-	// Strip locale prefix to get the "clean" path for route matching
 	const pathWithoutLocale =
-		nextUrl.pathname.replace(
+		pathname.replace(
 			new RegExp(`^/(${routing.locales.join("|")})`),
 			"",
 		) || "/";
@@ -32,19 +60,17 @@ export async function proxy(req: NextRequest) {
 		pathWithoutLocale.startsWith(prefix),
 	);
 
-	const segments = nextUrl.pathname.split("/");
+	const segments = pathname.split("/");
 	const currentLocale = routing.locales.includes(segments[1] as any)
 		? segments[1]
 		: routing.defaultLocale;
 
-	// 1. Logged-in user trying to access /auth/* → redirect to dashboard
 	if (isLoggedIn && isAuthRoute) {
 		return NextResponse.redirect(
 			new URL(`/${currentLocale}${DASHBOARD_ROUTE}`, req.url),
 		);
 	}
 
-	// 2. Guest trying to access a protected route → redirect to sign-in
 	if (!isLoggedIn && isProtectedRoute) {
 		return NextResponse.redirect(
 			new URL(`/${currentLocale}${SIGNIN_ROUTE}`, req.url),
@@ -55,6 +81,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-	// Расширяем matcher, чтобы он ловил всё, что нам нужно
 	matcher: ["/", "/(pl|en)/:path*", "/((?!api|_next|_vercel|.*\\..*).*)"],
 };

@@ -51,7 +51,7 @@ const ProfileLayout = async ({
 			/>
 			<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg!">
 				<SiteHeader />
-				<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 min-h-screen  rounded-xl md:min-h-min">
+				<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 rounded-xl h-full overflow-y-auto">
 					{children}
 				</main>
 			</SidebarInset>

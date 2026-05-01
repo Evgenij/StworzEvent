@@ -830,6 +830,71 @@ export const orderReminderMail = (data: OrderReminderMailProps): string => {
   `;
 };
 
+export type BetaSignupNotificationMailProps = {
+	name: string;
+	surname: string;
+	email: string;
+	company?: string | null;
+};
+
+export const betaSignupNotificationMail = (
+	data: BetaSignupNotificationMailProps,
+): string => {
+	const esc = (s: string) =>
+		s
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+
+	return `
+    <div style="background:#f5f5f5;padding:12px;font-family:Arial,sans-serif;box-sizing:border-box;width:100%">
+      <table style="margin:0 auto;max-width:500px;background:white;border-radius:30px;padding:40px;width:100%">
+        <tr>
+          <td style="padding-bottom:32px">
+            <img src="https://stworzevent.vercel.app/images/mails/logo_text_black.png" alt="logo" height="23" width="158" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="margin:0 0 8px 0;font-size:22px;font-weight:bold;color:#000">Nowa rejestracja beta!</h1>
+            <p style="margin:0 0 24px 0;font-size:15px;color:#555">Ktoś zapisał się na listę beta-testerów StworzEvent.pl.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px">
+              <tr>
+                <td>
+                  <p style="margin:0 0 4px 0;font-size:13px;color:#777">Imię i nazwisko</p>
+                  <p style="margin:0 0 16px 0;font-size:16px;font-weight:bold;color:#000">${esc(data.name)} ${esc(data.surname)}</p>
+
+                  <p style="margin:0 0 4px 0;font-size:13px;color:#777">Email</p>
+                  <p style="margin:0 0 16px 0;font-size:15px;color:#000">
+                    <a href="mailto:${esc(data.email)}" style="color:#e86405;text-decoration:none">${esc(data.email)}</a>
+                  </p>
+
+                  ${
+										data.company
+											? `<p style="margin:0 0 4px 0;font-size:13px;color:#777">Firma</p>
+                         <p style="margin:0;font-size:15px;color:#000">${esc(data.company)}</p>`
+											: `<p style="margin:0;font-size:13px;color:#aaa">Firma: nie podano</p>`
+									}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top:20px">
+            <span style="font-size:13px;color:#aaa">StworzEvent.pl — powiadomienie automatyczne</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+};
+
 export const codeMail = (data: CodeMailsProps) => {
 	return `<div
 			style="

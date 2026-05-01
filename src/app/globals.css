@@ -257,3 +257,21 @@ body[style*="overflow: hidden"] {
 	float: left;
 	height: 0;
 }
+
+/* scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+	width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #ccccd0;
+	border-radius: 10px;
+}
