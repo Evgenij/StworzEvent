@@ -8,6 +8,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { OrderStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { sendEmailAction } from "@/lib/email/send-email.action";
+import { TypeMail } from "@/types/enums";
+import { buildTicketsEmailData } from "@/lib/email/build-tickets-email";
 
 type ConfirmOrderInput = {
 	orderId: string;
@@ -46,6 +49,27 @@ export const confirmOrderAction = safeAction(
 				cancelReason: null,
 			},
 		});
+
+		// Email #3 — покупателю: QR-билеты после ручного подтверждения
+		void (async () => {
+			try {
+				const payload = await buildTicketsEmailData(order.id);
+				if (payload) {
+					const evt = await prisma.event.findUnique({
+						where: { id: eventId },
+						select: { title: true },
+					});
+					await sendEmailAction({
+						to: payload.to,
+						subject: `Twoje bilety – ${evt?.title ?? "Wydarzenie"}`,
+						type: TypeMail.ORDER_TICKETS,
+						data: payload.data,
+					});
+				}
+			} catch {
+				// email failure must not fail the confirmation
+			}
+		})();
 
 		revalidatePath(`/profile/events/${eventId}/orders`);
 

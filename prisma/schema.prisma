@@ -604,7 +604,8 @@ model Order {
   buyerName    String? @map("buyer_name")
   buyerSurname String? @map("buyer_surname")
   buyerPhone   String? @map("buyer_phone")
-  cancelReason String? @map("cancel_reason") @db.Text
+  cancelReason   String?   @map("cancel_reason") @db.Text
+  reminderSentAt DateTime? @map("reminder_sent_at")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")

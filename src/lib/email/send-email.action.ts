@@ -14,6 +14,12 @@ import {
 	InvitationMailsProps,
 	orderPaymentInstructionsMail,
 	OrderPaymentInstructionsMailProps,
+	organizerNewOrderMail,
+	OrganizerNewOrderMailProps,
+	orderTicketsMail,
+	OrderTicketsMailProps,
+	orderReminderMail,
+	OrderReminderMailProps,
 } from "@/helpers/mail-templates";
 import { TypeMail } from "@/types/enums";
 import { APP_CONFIG } from "@/config/app";
@@ -25,7 +31,10 @@ type EmailPayload =
 	| {
 			type: TypeMail.ORDER_PAYMENT_INSTRUCTIONS;
 			data: OrderPaymentInstructionsMailProps;
-	  };
+	  }
+	| { type: TypeMail.ORDER_ORGANIZER_NOTIFY; data: OrganizerNewOrderMailProps }
+	| { type: TypeMail.ORDER_TICKETS; data: OrderTicketsMailProps }
+	| { type: TypeMail.ORDER_REMINDER; data: OrderReminderMailProps };
 
 type SendEmailInput = EmailPayload & {
 	to: string;
@@ -72,6 +81,18 @@ export const sendEmailAction = safeAction(async (input: SendEmailInput) => {
 
 		case TypeMail.ORDER_PAYMENT_INSTRUCTIONS:
 			htmlContent = orderPaymentInstructionsMail(data);
+			break;
+
+		case TypeMail.ORDER_ORGANIZER_NOTIFY:
+			htmlContent = organizerNewOrderMail(data);
+			break;
+
+		case TypeMail.ORDER_TICKETS:
+			htmlContent = orderTicketsMail(data);
+			break;
+
+		case TypeMail.ORDER_REMINDER:
+			htmlContent = orderReminderMail(data);
 			break;
 
 		default:

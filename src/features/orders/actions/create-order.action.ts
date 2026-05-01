@@ -11,6 +11,8 @@ import { resolvePayment } from "@/lib/payment/resolve-payment";
 import { generateOrderNumber } from "@/lib/payment/order-number";
 import { sendEmailAction } from "@/lib/email/send-email.action";
 import { TypeMail } from "@/types/enums";
+import { APP_CONFIG } from "@/config/app";
+import { buildTicketsEmailData } from "@/lib/email/build-tickets-email";
 
 type ParticipantInput = {
 	name: string;
@@ -59,7 +61,7 @@ export const createOrder = async (input: CreateOrderInput) => {
 
 	const finalOrderNumber = orderNumber;
 
-	const { order, eventTitle } = await prisma.$transaction(async (tx) => {
+	const { order, eventTitle, event } = await prisma.$transaction(async (tx) => {
 		// 1. Load tickets and verify availability
 		const tickets = await tx.ticket.findMany({
 			where: { id: { in: input.items.map((i) => i.ticketId) } },
@@ -97,7 +99,17 @@ export const createOrder = async (input: CreateOrderInput) => {
 		// 3. Load event + organization for payment snapshot
 		const event = await tx.event.findUnique({
 			where: { id: input.eventId },
-			include: { organization: true },
+			include: {
+				organization: {
+					include: {
+						organizationMembers: {
+							where: { memberRole: "OWNER" },
+							include: { user: { select: { email: true } } },
+							take: 1,
+						},
+					},
+				},
+			},
 		});
 		if (!event) throw new ApiError(ErrorCode.NOT_FOUND, 404);
 
@@ -164,9 +176,10 @@ export const createOrder = async (input: CreateOrderInput) => {
 			where: { id: input.reservationId },
 		});
 
-		return { order, eventTitle: event.title };
+		return { order, eventTitle: event.title, event };
 	});
 
+	// Email #1 — покупателю: реквизиты оплаты
 	if (order.paymentMethod !== null) {
 		void sendEmailAction({
 			to: input.email,
@@ -183,6 +196,51 @@ export const createOrder = async (input: CreateOrderInput) => {
 				paymentInstructions: order.paymentInstructions,
 			},
 		});
+	}
+
+	// Email #2 — организатору: новый заказ ждёт подтверждения
+	if (order.status === OrderStatus.PENDING) {
+		const org = event.organization;
+		const organizerEmail =
+			org.email ?? org.organizationMembers[0]?.user?.email;
+
+		if (organizerEmail) {
+			void sendEmailAction({
+				to: organizerEmail,
+				subject: `Nowe zamówienie ${order.orderNumber} – ${event.title}`,
+				type: TypeMail.ORDER_ORGANIZER_NOTIFY,
+				data: {
+					organizationName: org.name,
+					eventTitle: event.title,
+					orderNumber: order.orderNumber!,
+					buyerName: input.buyerName,
+					buyerSurname: input.buyerSurname,
+					buyerEmail: input.email,
+					total: order.total,
+					currency: "PLN",
+					ordersUrl: `${APP_CONFIG.url}/profile/events/${event.id}/orders`,
+				},
+			});
+		}
+	}
+
+	// Email #3 — покупателю: QR-билеты (только если статус сразу CONFIRMED)
+	if (order.status === OrderStatus.CONFIRMED) {
+		void (async () => {
+			try {
+				const payload = await buildTicketsEmailData(order.id);
+				if (payload) {
+					await sendEmailAction({
+						to: payload.to,
+						subject: `Twoje bilety – ${event.title}`,
+						type: TypeMail.ORDER_TICKETS,
+						data: payload.data,
+					});
+				}
+			} catch {
+				// email failure must not fail the order
+			}
+		})();
 	}
 
 	return order;

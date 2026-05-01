@@ -122,11 +122,8 @@ const participantFor = (
 	};
 };
 
-export const createOrders = async (
-	prisma: PrismaClient,
-	events: Event[],
-) => {
-	console.log("Creating event orders ---------------------");
+export const createOrders = async (prisma: PrismaClient, events: Event[]) => {
+	console.log("🔥 Creating event orders ---------------------");
 
 	const users = await prisma.user.findMany({
 		select: { id: true, email: true },
@@ -144,7 +141,7 @@ export const createOrders = async (
 			continue;
 		}
 
-		console.log("Adding orders for event with id: ", event.id);
+		console.log("➕ Adding orders for event with id: ", event.id);
 
 		for (const [orderIndex, blueprint] of orderBlueprints.entries()) {
 			const buyer = buyers[(eventIndex + orderIndex) % buyers.length];

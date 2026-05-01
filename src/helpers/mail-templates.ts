@@ -590,6 +590,246 @@ export const invitationMail = (data: InvitationMailsProps) => {
 		</div>`;
 };
 
+export type OrganizerNewOrderMailProps = {
+	organizationName: string;
+	eventTitle: string;
+	orderNumber: string;
+	buyerName: string;
+	buyerSurname: string;
+	buyerEmail: string;
+	total: number;
+	currency: string;
+	ordersUrl: string;
+};
+
+export const organizerNewOrderMail = (
+	data: OrganizerNewOrderMailProps,
+): string => {
+	const esc = (s: string) =>
+		s
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+
+	const formattedTotal = `${(data.total / 100).toFixed(2)} ${esc(data.currency)}`;
+
+	return `
+    <div style="background:#f5f5f5;padding:12px;font-family:Arial,sans-serif;text-align:center;box-sizing:border-box;width:100%">
+      <table style="box-sizing:border-box;margin:0 auto;max-width:500px;background:white;border-radius:30px;padding:40px;width:100%;text-align:left">
+        <tr>
+          <th style="text-align:left">
+            <img src="https://stworzevent.vercel.app/images/mails/logo_text_black.png" alt="logo" height="23" width="158" style="margin-bottom:32px" />
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="margin:0 0 8px 0;font-size:24px;font-weight:bold;color:#000">Nowe zamówienie!</h1>
+            <p style="margin:0 0 24px 0;font-size:15px;color:#555">Cześć <strong>${esc(data.organizationName)}</strong>, otrzymałeś nowe zamówienie na wydarzenie <strong>${esc(data.eventTitle)}</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px;margin-bottom:16px">
+              <tr>
+                <td>
+                  <p style="margin:0 0 4px 0;font-size:13px;color:#777">Numer zamówienia</p>
+                  <p style="margin:0;font-size:16px;font-weight:bold;font-family:monospace;color:#000">${esc(data.orderNumber)}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px;margin-bottom:24px">
+              <tr>
+                <td>
+                  <p style="margin:0 0 8px 0;font-size:13px;color:#777">Dane kupującego</p>
+                  <p style="margin:0 0 4px 0;font-size:14px;color:#333"><strong>${esc(data.buyerName)} ${esc(data.buyerSurname)}</strong></p>
+                  <p style="margin:0 0 12px 0;font-size:14px;color:#555">${esc(data.buyerEmail)}</p>
+                  <p style="margin:0 0 4px 0;font-size:13px;color:#777">Do zapłaty</p>
+                  <p style="margin:0;font-size:18px;font-weight:bold;color:#000">${esc(formattedTotal)}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center;padding-bottom:24px">
+            <a href="${esc(data.ordersUrl)}" target="_blank" style="display:inline-block;padding:12px 24px;font-size:15px;font-weight:bold;color:#fff;background:#e86405;border-radius:12px;text-decoration:none">
+              Przejdź do zamówień
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top:8px">
+            <span style="font-size:14px;color:#777">Z pozdrowieniami,<br/>zespół StworzEvent.pl</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+};
+
+export type OrderTicketParticipant = {
+	ticketName: string;
+	participantName: string;
+	participantSurname: string;
+	checkInCode: string;
+};
+
+export type OrderTicketsMailProps = {
+	buyerName: string;
+	eventTitle: string;
+	eventDate: string;
+	eventLocation: string | null;
+	orderNumber: string;
+	participants: OrderTicketParticipant[];
+};
+
+export const orderTicketsMail = (data: OrderTicketsMailProps): string => {
+	const esc = (s: string) =>
+		s
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+
+	const ticketsHtml = data.participants
+		.map(
+			(p) => `
+      <table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px;margin-bottom:12px">
+        <tr>
+          <td style="vertical-align:top;padding-right:16px">
+            <p style="margin:0 0 4px 0;font-size:13px;color:#777">${esc(p.ticketName)}</p>
+            <p style="margin:0;font-size:15px;font-weight:bold;color:#000">${esc(p.participantName)} ${esc(p.participantSurname)}</p>
+            <p style="margin:4px 0 0 0;font-size:11px;color:#999;font-family:monospace">${esc(p.checkInCode)}</p>
+          </td>
+          <td style="vertical-align:top;text-align:right;width:100px">
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(p.checkInCode)}"
+              alt="QR"
+              width="100"
+              height="100"
+              style="border-radius:8px"
+            />
+          </td>
+        </tr>
+      </table>
+    `,
+		)
+		.join("");
+
+	return `
+    <div style="background:#f5f5f5;padding:12px;font-family:Arial,sans-serif;text-align:center;box-sizing:border-box;width:100%">
+      <table style="box-sizing:border-box;margin:0 auto;max-width:500px;background:white;border-radius:30px;padding:40px;width:100%;text-align:left">
+        <tr>
+          <th style="text-align:left">
+            <img src="https://stworzevent.vercel.app/images/mails/logo_text_black.png" alt="logo" height="23" width="158" style="margin-bottom:32px" />
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="margin:0 0 8px 0;font-size:24px;font-weight:bold;color:#000">Twoje bilety!</h1>
+            <p style="margin:0 0 24px 0;font-size:15px;color:#555">Cześć <strong>${esc(data.buyerName)}</strong>, Twoje zamówienie na <strong>${esc(data.eventTitle)}</strong> zostało potwierdzone. Poniżej znajdziesz swoje bilety.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px;margin-bottom:24px">
+              <tr>
+                <td>
+                  <p style="margin:0 0 4px 0;font-size:13px;color:#777">Numer zamówienia</p>
+                  <p style="margin:0 0 12px 0;font-size:16px;font-weight:bold;font-family:monospace;color:#000">${esc(data.orderNumber)}</p>
+                  <p style="margin:0 0 4px 0;font-size:13px;color:#777">Wydarzenie</p>
+                  <p style="margin:0 0 4px 0;font-size:15px;font-weight:bold;color:#000">${esc(data.eventTitle)}</p>
+                  <p style="margin:0 0 4px 0;font-size:14px;color:#555">${esc(data.eventDate)}</p>
+                  ${data.eventLocation ? `<p style="margin:0;font-size:14px;color:#555">${esc(data.eventLocation)}</p>` : ""}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="margin:0 0 12px 0;font-size:15px;font-weight:bold;color:#000">Bilety wstępu:</p>
+            ${ticketsHtml}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top:20px">
+            <p style="margin:0 0 4px 0;font-size:13px;color:#999">Pokaż kod QR przy wejściu na wydarzenie.</p>
+            <span style="font-size:14px;color:#777">Z pozdrowieniami,<br/>zespół StworzEvent.pl</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+};
+
+export type OrderReminderMailProps = {
+	buyerName: string;
+	eventTitle: string;
+	eventDate: string;
+	eventLocation: string | null;
+	eventUrl: string;
+};
+
+export const orderReminderMail = (data: OrderReminderMailProps): string => {
+	const esc = (s: string) =>
+		s
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+
+	return `
+    <div style="background:#f5f5f5;padding:12px;font-family:Arial,sans-serif;text-align:center;box-sizing:border-box;width:100%">
+      <table style="box-sizing:border-box;margin:0 auto;max-width:500px;background:white;border-radius:30px;padding:40px;width:100%;text-align:left">
+        <tr>
+          <th style="text-align:left">
+            <img src="https://stworzevent.vercel.app/images/mails/logo_text_black.png" alt="logo" height="23" width="158" style="margin-bottom:32px" />
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="margin:0 0 8px 0;font-size:24px;font-weight:bold;color:#000">Jutro Twoje wydarzenie!</h1>
+            <p style="margin:0 0 24px 0;font-size:15px;color:#555">Cześć <strong>${esc(data.buyerName)}</strong>, przypominamy że już jutro odbędzie się wydarzenie, na które masz bilet.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%" style="background:#f3f3f3;border-radius:16px;padding:20px;margin-bottom:24px">
+              <tr>
+                <td>
+                  <p style="margin:0 0 4px 0;font-size:13px;color:#777">Wydarzenie</p>
+                  <p style="margin:0 0 8px 0;font-size:17px;font-weight:bold;color:#000">${esc(data.eventTitle)}</p>
+                  <p style="margin:0 0 4px 0;font-size:14px;color:#555">${esc(data.eventDate)}</p>
+                  ${data.eventLocation ? `<p style="margin:0;font-size:14px;color:#555">${esc(data.eventLocation)}</p>` : ""}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center;padding-bottom:24px">
+            <a href="${esc(data.eventUrl)}" target="_blank" style="display:inline-block;padding:12px 24px;font-size:15px;font-weight:bold;color:#fff;background:#e86405;border-radius:12px;text-decoration:none">
+              Szczegóły wydarzenia
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="margin:0 0 4px 0;font-size:13px;color:#999">Nie zapomnij zabrać ze sobą potwierdzenia z kodem QR.</p>
+            <span style="font-size:14px;color:#777">Z pozdrowieniami,<br/>zespół StworzEvent.pl</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+};
+
 export const codeMail = (data: CodeMailsProps) => {
 	return `<div
 			style="
