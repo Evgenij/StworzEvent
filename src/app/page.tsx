@@ -315,7 +315,7 @@ export default function ComingSoonPage() {
 									className={`flex items-center gap-2 text-sm md:text-base ${tone}`}
 								>
 									<span
-										className={`w-2.5 h-2.5 rounded-full ${dot} flex-shrink-0`}
+										className={`w-2.5 h-2.5 rounded-full ${dot} shrink-0`}
 									/>
 									<span
 										dangerouslySetInnerHTML={{
