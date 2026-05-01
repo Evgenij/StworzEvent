@@ -247,8 +247,8 @@ export default function ComingSoonPage() {
 					</h2>
 					<p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto mt-4">
 						Część funkcji wejdzie do bety na start, pozostałe
-						powstają na bieżąco — i to Ty współdecydujesz, co trafia
-						na pierwsze miejsce.
+						powstają na bieżąco — <br />i to Ty współdecydujesz, co
+						trafia na pierwsze miejsce.
 					</p>
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
