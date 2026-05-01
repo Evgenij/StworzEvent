@@ -1,4 +1,5 @@
 import { SIGNIN_ROUTE } from "@/config/routes";
+import { GridBg } from "@/features/layout";
 import { redirect } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { Metadata } from "next";
@@ -26,7 +27,7 @@ const NewOrgLayout = async ({
 	}
 	return (
 		<div className="new-org-layout">
-			<div
+			{/* <div
 				style={{
 					position: "absolute",
 					top: -1,
@@ -44,7 +45,9 @@ const NewOrgLayout = async ({
 					maskImage:
 						"linear-gradient(to right, #000 0%, transparent 30%, transparent 70%, #000 100%)",
 				}}
-			/>
+			/> */}
+			<GridBg />
+
 			{children}
 		</div>
 	);

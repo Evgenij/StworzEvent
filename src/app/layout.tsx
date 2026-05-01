@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import "@/app/base.scss";
 import { APP_CONFIG } from "@/config/app";
+import { GridBg } from "@/features/layout";
 
 const fontPoppins = Poppins({
 	subsets: ["latin"],
@@ -30,8 +31,11 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="pl" className={fontPoppins.variable}>
-			<body className="antialiased h-screen flex flex-col">
-				{children}
+			<body className="coming-soon-layout antialiased flex flex-col relative">
+				<GridBg />
+				<div className="container max-w-7xl z-10 px-4 sm:px-10 mx-auto">
+					{children}
+				</div>
 			</body>
 		</html>
 	);
