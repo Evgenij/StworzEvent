@@ -5,7 +5,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import React from "react";
-import { AppSidebar } from "@/features/layout";
+import { AppSidebar, GridBg } from "@/features/layout";
 import { SiteHeader } from "@/features/layout";
 import { UserRole } from "@prisma/client";
 
@@ -52,7 +52,10 @@ const ProfileLayout = async ({
 			<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg!">
 				<SiteHeader />
 				<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 rounded-xl h-full overflow-y-auto">
-					{children}
+					<GridBg className="opacity-0 xl:opacity-50 2xl:opacity-100" />
+					<div className="container max-w-6xl mx-auto z-10">
+						{children}
+					</div>
 				</main>
 			</SidebarInset>
 		</SidebarProvider>

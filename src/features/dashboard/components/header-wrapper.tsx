@@ -11,7 +11,7 @@ const HeaderWrapper = ({
 	return (
 		<div
 			className={cn(
-				"header-wrapper overflow-hidden relative px-6 py-5 bg-black text-white rounded-2xl",
+				"header-wrapper overflow-hidden relative px-6 py-5 bg-black text-white rounded-3xl",
 				className,
 			)}
 		>
