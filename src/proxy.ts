@@ -19,7 +19,7 @@ const ALWAYS_ALLOW_PREFIXES = [
 	"/sitemap",
 ];
 
-const COMING_SOON_ALLOWED = ["/", "/unlock"];
+const COMING_SOON_ALLOWED = ["/pl", "/pl/unlock"];
 
 //--------------------------
 export async function proxy(req: NextRequest) {
@@ -38,11 +38,11 @@ export async function proxy(req: NextRequest) {
 		bypassToken !== undefined && bypassToken === process.env.BYPASS_TOKEN;
 
 	if (!hasValidBypass) {
-		// Coming-soon mode: only / and /unlock are accessible
+		// Coming-soon mode: only /pl and /unlock are accessible
 		if (COMING_SOON_ALLOWED.includes(pathname)) {
 			return NextResponse.next();
 		}
-		return NextResponse.redirect(new URL("/", req.url));
+		return NextResponse.redirect(new URL("/pl", req.url));
 	}
 
 	// Owner bypass active — run normal auth + intl logic

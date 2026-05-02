@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BetaSignupForm } from "@/features/beta/components/beta-signup-form";
@@ -8,11 +10,9 @@ import {
 	IconDeviceMobileMessage,
 	IconLayout,
 	IconMail,
-	IconMailFilled,
 	IconSquareRoundedCheckFilled,
 	IconSquareRoundedXFilled,
 	IconTicket,
-	IconTicketFilled,
 	IconUsersGroup,
 } from "@tabler/icons-react";
 
@@ -49,7 +49,6 @@ const FEATURES = [
 	},
 	{
 		icon: <IconChartBar className="size-6  " />,
-
 		title: "Dane, które naprawdę pomagają",
 		text: "Sprzedaż w czasie rzeczywistym, źródła ruchu, kupujący. Wiesz, co działa — i powtarzasz to na kolejnym evencie.",
 	},
@@ -117,9 +116,16 @@ const ROADMAP = [
 	{ status: "planned", label: "Program lojalnościowy dla uczestników" },
 ];
 
-export default function ComingSoonPage() {
+export default async function BetaPage() {
+	const cookieStore = await cookies();
+	const bypassToken = cookieStore.get("bypass_token")?.value;
+	if (bypassToken && bypassToken === process.env.BYPASS_TOKEN) {
+		redirect("/pl/events");
+	}
+
 	return (
 		<main className="coming-soon-page flex flex-col gap-14 sm:gap-20 py-6">
+			<GridBg />
 			{/* 1. HERO */}
 			<section className="flex flex-col items-center text-center">
 				<img

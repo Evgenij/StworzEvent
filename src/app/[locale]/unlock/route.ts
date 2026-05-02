@@ -4,10 +4,10 @@ export async function GET(request: NextRequest) {
 	const token = request.nextUrl.searchParams.get("token");
 
 	if (!token || token !== process.env.BYPASS_TOKEN) {
-		return NextResponse.redirect(new URL("/", request.url));
+		return NextResponse.redirect(new URL("/pl", request.url));
 	}
 
-	const response = NextResponse.redirect(new URL("/pl", request.url));
+	const response = NextResponse.redirect(new URL("/pl/events", request.url));
 
 	response.cookies.set("bypass_token", token, {
 		httpOnly: true,
