@@ -3,10 +3,10 @@ import { headers } from "next/headers";
 import { redirect } from "@/i18n/routing";
 import { SIGNIN_ROUTE } from "@/config/routes";
 import { UserRole } from "@prisma/client";
-import { AdminDashboard } from "@/features/dashboard/components/admin-dashboard";
+import { AdminDashboard } from "@/features/dashboard/pages/admin-dashboard";
 import { UserType } from "@/features/user/types/user";
-import { OrganizerDashboard } from "@/features/dashboard/components/organizer-dashboard";
-import { ParticipantDashboard } from "@/features/dashboard/components/participant-dashboard";
+import { OrganizerDashboard } from "@/features/dashboard/pages/organizer-dashboard";
+import { ParticipantDashboard } from "@/features/dashboard/pages/participant-dashboard";
 
 export default async function DashboardPage({
 	params,

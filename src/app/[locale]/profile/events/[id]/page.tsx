@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { EVENT_EDIT_ROUTE, EVENT_ORDERS_ROUTE } from "@/config/routes";
+import { HeaderWrapper } from "@/features/dashboard";
 import { getEventAction } from "@/features/events/actions/get-event.action";
 import { DateTimeFormatter } from "@/helpers/date";
 import { Link } from "@/i18n/routing";
@@ -34,25 +35,7 @@ const OrganizerEventPage = async ({
 
 	return (
 		<div className="event-page">
-			<div className="header-wrapper overflow-hidden relative px-6 pb-5 pt-25 bg-black text-white rounded-2xl">
-				<div
-					className="opacity-5"
-					style={{
-						position: "absolute",
-						top: -1,
-						right: 0,
-						bottom: 0,
-						left: -1,
-						zIndex: 0,
-						backgroundImage: `
-        linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)
-      `,
-						backgroundSize: "80px 80px",
-					}}
-				></div>
-				<div className="absolute opacity-80 -top-2/3 left-0 bg-primary w-1/2 h-full blur-[180px] rounded-full"></div>
-				<div className="absolute opacity-50 -bottom-2/3 right-20 bg-purple-400 w-1/3 h-full blur-[150px] rounded-full"></div>
+			<HeaderWrapper className="pt-25">
 				<BackButton
 					variant="transparent"
 					className="absolute top-6 left-6"
@@ -134,7 +117,7 @@ const OrganizerEventPage = async ({
 						</Button>
 					</div>
 				</header>
-			</div>
+			</HeaderWrapper>
 		</div>
 	);
 };
