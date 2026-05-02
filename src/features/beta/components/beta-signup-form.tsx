@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldLabel } from "@/components/ui/field";
-import { success } from "zod";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 
 export function BetaSignupForm() {
