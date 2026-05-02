@@ -124,10 +124,10 @@ export default async function BetaPage() {
 	}
 
 	return (
-		<main className="coming-soon-page flex flex-col gap-14 sm:gap-20 py-6">
+		<main className="coming-soon-page relative flex flex-col gap-14 sm:gap-20 py-6">
 			<GridBg />
 			{/* 1. HERO */}
-			<section className="flex flex-col items-center text-center">
+			<section className="flex flex-col items-center text-center z-10">
 				<img
 					src="/logos/logo_white.svg"
 					alt="StworzEvent.pl"
@@ -190,7 +190,7 @@ export default async function BetaPage() {
 			</section>
 
 			{/* 2. PAIN → PROMISE */}
-			<section className="max-w-5xl mx-auto w-full">
+			<section className="max-w-5xl mx-auto w-full z-10">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
 					<div className="px-4 sm:p-0">
 						<p className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">
@@ -242,7 +242,7 @@ export default async function BetaPage() {
 			</section>
 
 			{/* 3. FEATURES */}
-			<section id="dlaczego" className="max-w-6xl mx-auto w-full">
+			<section id="dlaczego" className="max-w-6xl mx-auto w-full z-10">
 				<div className="text-center mb-12 md:mb-16">
 					<p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
 						Wizja platformy
@@ -337,7 +337,7 @@ export default async function BetaPage() {
 			</section>
 
 			{/* 4. BETA PERKS */}
-			<section className="max-w-5xl mx-auto w-full">
+			<section className="max-w-5xl mx-auto w-full z-10">
 				<div className="bg-black rounded-3xl p-8 md:p-14 text-white relative overflow-hidden">
 					<div className="absolute -top-20 -right-10 w-72 h-72 bg-primary/70 rounded-full blur-[140px]" />
 					<div className="absolute -bottom-30 -left-10 w-96 h-96 bg-white/20 rounded-full blur-[140px]" />
@@ -379,7 +379,10 @@ export default async function BetaPage() {
 			</section>
 
 			{/* 5. FINAL CTA + FORM */}
-			<section id="beta" className="max-w-xl mx-auto w-full scroll-mt-12">
+			<section
+				id="beta"
+				className="max-w-xl mx-auto w-full scroll-mt-12 z-10"
+			>
 				<div className="relative bg-linear-to-br from-black to-black/90 rounded-3xl p-8 md:p-12 text-white shadow-2xl">
 					<GridBg className="opacity-10" />
 					<div className="text-center mb-8">
