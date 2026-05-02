@@ -231,10 +231,11 @@ export default async function BetaPage() {
 								</li>
 							))}
 						</ul>
-						<p className="mt-6 text-xs text-white/70 italic">
-							To kierunek, w którym idziemy. Część funkcji wejdzie
-							na start bety, reszta powstanie na bieżąco — z
-							udziałem beta-testerów.
+						<p className="mt-6 text-sm italic">
+							*To kierunek, w którym idziemy. <br />
+							<br />
+							Część funkcji wejdzie na start bety, reszta
+							powstanie na bieżąco — z udziałem beta-testerów.
 						</p>
 					</div>
 				</div>

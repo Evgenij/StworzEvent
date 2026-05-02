@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldLabel } from "@/components/ui/field";
+import { IconCircleCheckFilled } from "@tabler/icons-react";
 
 export function BetaSignupForm() {
 	const [form, setForm] = useState<BetaSignupInput>({
@@ -39,8 +40,8 @@ export function BetaSignupForm() {
 
 	if (status === "success") {
 		return (
-			<div className="text-center py-8 z-10">
-				<div className="text-4xl mb-4">✓</div>
+			<div className="flex flex-col items-center justify-center text-center py-8 z-10">
+				<IconCircleCheckFilled className="size-12 text-green-500 mb-5" />
 				<h3 className="text-xl font-bold text-white mb-2">
 					Dziękujemy za rejestrację!
 				</h3>
