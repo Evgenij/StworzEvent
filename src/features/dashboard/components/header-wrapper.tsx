@@ -33,7 +33,7 @@ const HeaderWrapper = ({
 			></div>
 			<div className="absolute opacity-80 -top-2/3 left-0 bg-primary w-1/2 h-full blur-[180px] rounded-full"></div>
 			<div className="absolute opacity-50 -bottom-2/3 right-20 bg-purple-400 w-1/3 h-full blur-[150px] rounded-full"></div>
-			<div className="content relative z-10">{children}</div>
+			<div className="content relative z-10 h-full">{children}</div>
 		</div>
 	);
 };

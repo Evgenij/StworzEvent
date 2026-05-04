@@ -5,3 +5,4 @@ export { default as FooterWebsite } from "./components/footer/footer";
 export { default as HeaderWebsite } from "./components/header/header";
 export { default as MobileMenu } from "./components/menu/mobile-menu";
 export { default as GridBg } from "./components/grid-bg";
+export { default as WrapperFutureSection } from "./components/wrapper-future-section";

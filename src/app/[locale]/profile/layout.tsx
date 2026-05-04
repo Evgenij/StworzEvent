@@ -53,7 +53,7 @@ const ProfileLayout = async ({
 				<SiteHeader />
 				<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 rounded-xl h-full overflow-y-auto">
 					<GridBg className="opacity-0 xl:opacity-50 2xl:opacity-100" />
-					<div className="container max-w-6xl mx-auto z-10">
+					<div className="container max-w-7xl mx-auto z-10">
 						{children}
 					</div>
 				</main>

@@ -1,15 +1,29 @@
+"use client";
+
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import React from "react";
 
-const FutureFunctionWrapper = ({ children }: { children: React.ReactNode }) => {
+const WrapperFutureFunction = ({
+	children,
+	className,
+}: {
+	children: React.ReactNode;
+	className?: string;
+}) => {
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
-				<span className="flex-1 flex cursor-not-allowed">
+				<span
+					className={cn(
+						"flex-1 flex cursor-not-allowed opacity-50",
+						className,
+					)}
+				>
 					<span className="pointer-events-none flex-1 flex">
 						{children}
 					</span>
@@ -25,4 +39,4 @@ const FutureFunctionWrapper = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-export default FutureFunctionWrapper;
+export default WrapperFutureFunction;
