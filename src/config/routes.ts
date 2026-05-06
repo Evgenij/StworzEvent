@@ -25,6 +25,7 @@ export const EVENTS_ROUTE = `${PROFILE_ROUTE}/events`;
 export const NOTIFICATIONS_ROUTE = `${PROFILE_ROUTE}/notifications`;
 export const SETTINGS_ROUTE = `${PROFILE_ROUTE}/settings`;
 export const ORGANIZATIONS_ROUTE = `${PROFILE_ROUTE}/organizations`;
+export const TICKETS_ROUTE = `${PROFILE_ROUTE}/tickets`;
 
 // events routes
 export const NEW_EVENT_ROUTE = `${EVENTS_ROUTE}/new`;
@@ -32,7 +33,8 @@ export const EVENT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 
 // organizations routes
 export const NEW_ORGANIZATION_ROUTE = `${ORGANIZATIONS_ROUTE}/new`;
-export const ORGANIZATION_ROUTE = (id: string) => `${ORGANIZATIONS_ROUTE}/${id}`;
+export const ORGANIZATION_ROUTE = (id: string) =>
+	`${ORGANIZATIONS_ROUTE}/${id}`;
 
 export const EVENT_PAGE_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 export const EVENT_EDIT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}/edit`;

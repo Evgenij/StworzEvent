@@ -230,6 +230,9 @@
 			"title": "Organizacje",
 			"new": "Nowa organizacja"
 		},
+		"tickets": {
+			"title": "Bilety"
+		},
 		"edit": {
 			"title": "Edycja",
 			"additional": "Informacje dodatkowe",
@@ -241,12 +244,13 @@
 		"user": {
 			"groups": {
 				"platform": "Platforma",
-				"main": "Strona glowna"
+				"account": "Konto"
 			},
 			"pages": {
 				"catalog": "Katalog wydarzen",
-				"dashboard": "Panel główny",
-				"events": "Wydarzenia"
+				"tickets": "Moje bilety",
+				"favoritres": "Obserwowane",
+				"settings": "Ustawienia"
 			},
 			"dashboard": "Panel główny",
 			"notifications": "Powiadomienia"
@@ -255,6 +259,7 @@
 			"groups": {
 				"platform": "Platforma",
 				"account": "Konto",
+				"participant": "Uczestnik",
 				"main": "Strona glowna"
 			},
 			"pages": {
@@ -264,6 +269,7 @@
 				"organizations": "Moje firmy",
 				"participants": "Baza uczestników",
 				"statistics": "Ogolna statystyka",
+				"tickets": "Moje bilety",
 				"notifications": "Powiadomienia",
 				"settings": "Ustawienia"
 			},

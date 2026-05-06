@@ -6,6 +6,7 @@ import {
 	NEW_EVENT_ROUTE,
 	ORGANIZATIONS_ROUTE,
 	SETTINGS_ROUTE,
+	TICKETS_ROUTE,
 } from "@/config/routes";
 import {
 	IconSmartHome,
@@ -16,6 +17,7 @@ import {
 	IconUsers,
 	IconChartBar,
 	IconBell,
+	IconTicket,
 } from "@tabler/icons-react";
 import { UserRole } from "@prisma/client";
 
@@ -127,6 +129,17 @@ export const getNavConfig = (
 				],
 			},
 			{
+				title: t("groups.participant"),
+				items: [
+					{
+						title: t("pages.tickets"),
+						url: TICKETS_ROUTE,
+						icon: IconTicket,
+						active: true,
+					},
+				],
+			},
+			{
 				title: t("groups.account"),
 				items: [
 					{
@@ -152,25 +165,6 @@ export const getNavConfig = (
 					// },
 				],
 			},
-			// {
-			// 	title: t("groups.main"),
-			// 	items: [
-			// 		{
-			// 			title: t("pages.catalog"),
-			// 			url: MAIN_PAGE_ROUTE,
-			// 			icon: IconListDetails,
-			// 		},
-			// 		// {
-			// 		// 	title: t("pages.events"),
-			// 		// 	url: EVENTS_ROUTE,
-			// 		// 	icon: IconCalendarEvent,
-			// 		// 	actionButton: {
-			// 		// 		label: t("actionButton"),
-			// 		// 		href: NEW_EVENT_ROUTE,
-			// 		// 	},
-			// 		// },
-			// 	],
-			// },
 		],
 
 		[UserRole.USER]: [
@@ -178,40 +172,22 @@ export const getNavConfig = (
 				title: t("groups.platform"),
 				items: [
 					{
-						title: t("pages.dashboard"),
-						url: DASHBOARD_ROUTE,
-						icon: IconSmartHome,
+						title: t("pages.tickets"),
+						url: TICKETS_ROUTE,
+						icon: IconTicket,
 						active: true,
 					},
-					// {
-					// 	title: t("pages.events"),
-					// 	url: EVENTS_ROUTE,
-					// 	icon: IconCalendarEvent,
-					// 	actionButton: {
-					// 		label: t("actionButton"),
-					// 		href: NEW_EVENT_ROUTE,
-					// 	},
-					// },
 				],
 			},
 			{
-				title: t("groups.main"),
+				title: t("groups.account"),
 				items: [
 					{
-						title: t("pages.catalog"),
+						title: t("pages.settings"),
 						url: MAIN_PAGE_ROUTE,
-						icon: IconListDetails,
+						icon: IconSettings,
 						active: true,
 					},
-					// {
-					// 	title: t("pages.events"),
-					// 	url: EVENTS_ROUTE,
-					// 	icon: IconCalendarEvent,
-					// 	actionButton: {
-					// 		label: t("actionButton"),
-					// 		href: NEW_EVENT_ROUTE,
-					// 	},
-					// },
 				],
 			},
 		],
