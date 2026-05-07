@@ -37,14 +37,38 @@ enum MemberRole {
 }
 
 enum FeatureKey {
-  CREATE_EVENTS
-  SELL_TICKETS
+  QR_TICKETS
+  TICKET_SCANNER
+  SELF_CHECK_IN
+  RECEIPT_COLLECTION
+  CUSTOM_FIELDS
+  PROMO_CODES
+  EXPORT_DATA
+  WAITLIST
+  RECURRING_EVENTS
+  EMAIL_CAMPAIGNS
   ANALYTICS
-  CUSTOM_BRANDING
   TEAM_MEMBERS
+  WHITE_LABEL
   API_ACCESS
-  NO_PLATFORM_FEE
-  IMPORT_DB_USERS
+  EMBED_WIDGET
+  PRIORITY_SUPPORT
+  DEDICATED_MANAGER
+}
+
+// TODO(spark): добавить модель CoinTransaction когда система будет готова к реализации
+// Модель привязана к Organization, amount — знаковый Int (+ начисление / − списание)
+// expiresAt — сгорание через 12 мес без активности
+enum CoinTxType {
+  EARNED_EVENT_CREATED
+  EARNED_PARTICIPANT
+  EARNED_ORDER_PAID
+  EARNED_SUBSCRIPTION_RENEWED
+  EARNED_REFERRAL
+  EARNED_FEATURE_USED
+  EARNED_PROFILE_COMPLETED
+  SPENT_ADDON
+  EXPIRED
 }
 
 enum EventStatus {
@@ -756,8 +780,9 @@ model Plan {
   lsVariantYearly  String? @map("ls_variant_yearly") // variant для yearly
 
   /// Лимиты включённые в тариф
-  maxEvents      Int? @map("max_events") // null = безлимитно
-  maxTeamMembers Int? @map("max_team_members")
+  maxEvents               Int? @map("max_events")                 // null = безлимитно
+  maxTeamMembers          Int? @map("max_team_members")
+  maxParticipantsPerEvent Int? @map("max_participants_per_event") // null = безлимитно
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

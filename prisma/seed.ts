@@ -1,8 +1,11 @@
 import prisma from "@/lib/prisma";
 import { createUsers } from "./seeders/users";
 import { listOrganizers } from "@/mocks";
-import { createOrganizations } from "./seeders/organizations";
 import { PrismaClient } from "@prisma/client";
+import { createExtraUsers } from "./seeders/extra-users";
+import { createPlans } from "./seeders/billing/plans";
+import { createSubscriptions } from "./seeders/billing/subscriptions";
+import { createOrganizationAddresses } from "./seeders/organization-addresses";
 
 async function main() {
 	console.info("🚀 Start seeding...");
@@ -33,6 +36,9 @@ async function main() {
 			organization_members,
 			addresses,
 			organizations,
+			plan_features,
+			features,
+			plans,
 			sessions,
 			accounts,
 			verifications,
@@ -50,7 +56,20 @@ async function main() {
 		});
 	}
 
+	// Regular USER accounts — создаются до событий, чтобы заказы на них ссылались
+	await createExtraUsers(prisma as unknown as PrismaClient);
+
+	// Admin + Organizer + Organizations + Events + Orders (+ всё связанное)
 	await createUsers(prisma as unknown as PrismaClient);
+
+	// Billing: Plans, Features, PlanFeatures
+	await createPlans(prisma as unknown as PrismaClient);
+
+	// Subscriptions и à-la-carte features для организаций
+	await createSubscriptions(prisma as unknown as PrismaClient);
+
+	// Адреса организаций
+	await createOrganizationAddresses(prisma as unknown as PrismaClient);
 
 	console.info("✅ Seeding finished");
 }

@@ -231,7 +231,7 @@
 			"new": "Nowa organizacja"
 		},
 		"tickets": {
-			"title": "Bilety"
+			"title": "Twój portfel"
 		},
 		"edit": {
 			"title": "Edycja",
@@ -251,9 +251,7 @@
 				"tickets": "Moje bilety",
 				"favoritres": "Obserwowane",
 				"settings": "Ustawienia"
-			},
-			"dashboard": "Panel główny",
-			"notifications": "Powiadomienia"
+			}
 		},
 		"organizer": {
 			"groups": {
@@ -721,5 +719,12 @@
 		"ticketsMin": "Dodaj co najmniej jeden bilet",
 		"priceMin": "Cena nie może być ujemna",
 		"quantityMin": "Minimalna liczba miejsc to 1"
+	},
+	"OrderTicketStatus": {
+		"PENDING": "Oczekuje płatności",
+		"CONFIRMED": "Bilet potwierdzony",
+		"PAID": "Opłacone - oczekiwanie potwierdzenia od organizatora",
+		"CANCELLED": "Anulowane",
+		"EXPIRED": "Wygasłe"
 	}
 }

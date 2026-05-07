@@ -7,6 +7,7 @@ import { AdminDashboard } from "@/features/dashboard/pages/admin-dashboard";
 import { UserType } from "@/features/user/types/user";
 import { OrganizerDashboard } from "@/features/dashboard/pages/organizer-dashboard";
 import { ParticipantDashboard } from "@/features/dashboard/pages/participant-dashboard";
+import UsersTickets from "@/features/tickets/pages/users-tickets";
 
 export default async function DashboardPage({
 	params,
@@ -28,9 +29,7 @@ export default async function DashboardPage({
 		[UserRole.ORGANIZER]: (
 			<OrganizerDashboard user={session.user as UserType} />
 		),
-		[UserRole.USER]: (
-			<ParticipantDashboard user={session.user as UserType} />
-		),
+		[UserRole.USER]: <UsersTickets />,
 	};
 
 	return (
