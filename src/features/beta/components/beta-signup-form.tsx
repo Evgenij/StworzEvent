@@ -28,8 +28,7 @@ export function BetaSignupForm() {
 		setStatus("loading");
 		setErrorMsg("");
 
-		// const result = await betaSignupAction(form);
-		const result = { success: true, error: "" };
+		const result = await betaSignupAction(form);
 
 		if (result.success) {
 			setStatus("success");
