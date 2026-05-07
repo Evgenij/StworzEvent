@@ -338,7 +338,7 @@ export default async function BetaPage() {
 
 			{/* 4. BETA PERKS */}
 			<section className="max-w-5xl mx-auto w-full z-10">
-				<div className="bg-black rounded-3xl p-8 md:p-14 text-white relative overflow-hidden">
+				<div className="bg-black rounded-none lg:rounded-3xl p-8 md:p-14 text-white relative overflow-hidden">
 					<div className="absolute -top-20 -right-10 w-72 h-72 bg-primary/70 rounded-full blur-[140px]" />
 					<div className="absolute -bottom-30 -left-10 w-96 h-96 bg-white/20 rounded-full blur-[140px]" />
 					<div className="relative">
