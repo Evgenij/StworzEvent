@@ -114,7 +114,7 @@ const ConfirmationUpload = ({ value, onChange, onClear, className }: Props) => {
 							lub PDF z banku.
 						</p>
 						<p className="text-xs text-muted-foreground mt-3">
-							PNG · JPG · HEIC &nbsp; PDF &nbsp; do 10 MB
+							PNG · JPG · HEIC · PDF · do 8 MB
 						</p>
 					</div>
 				</div>
