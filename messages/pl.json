@@ -393,7 +393,12 @@
 			"save": "Zapisz",
 			"errors": {
 				"default": "Wystąpił błąd. Spróbuj ponownie.",
-				"paymentMethodRequired": "Skonfiguruj metodę płatności przed opublikowaniem – wydarzenie zawiera płatne bilety."
+				"paymentMethodRequired": "Skonfiguruj metodę płatności przed opublikowaniem – wydarzenie zawiera płatne bilety.",
+				"max40": "Maksymalna długość to 40 znaków",
+				"max120": "Maksymalna długość to 120 znaków",
+				"max500": "Maksymalna długość to 500 znaków",
+				"max2000": "Maksymalna długość to 2000 znaków",
+				"invalidUrl": "Nieprawidłowy adres URL"
 			}
 		},
 		"tickets": {
@@ -726,5 +731,113 @@
 		"PAID": "Weryfikacja od organizatora",
 		"CANCELLED": "Anulowane",
 		"EXPIRED": "Wygasłe"
+	},
+	"OrganizationSettings": {
+		"saved": "Zapisano",
+		"general": {
+			"title": "Dane organizacji",
+			"description": "Podstawowe informacje o organizacji",
+			"save": "Zapisz dane",
+			"name": "Nazwa",
+			"namePlaceholder": "np. ACME Sp. z o.o.",
+			"nip": "NIP",
+			"nipPlaceholder": "1234567890",
+			"regon": "REGON",
+			"regonPlaceholder": "123456789",
+			"krs": "KRS",
+			"krsPlaceholder": "0000000000",
+			"legalForm": "Forma prawna",
+			"legalFormCode": "Kod GUS formy prawnej",
+			"legalFormCodePlaceholder": "np. 019",
+			"vatStatus": "Status VAT",
+			"ksefEnabled": "Wystawianie faktur przez KSeF",
+			"vatId": "VAT-ID",
+			"vatIdPlaceholder": "PL1234567890",
+			"website": "Strona internetowa",
+			"websitePlaceholder": "https://",
+			"phone": "Telefon",
+			"phonePlaceholder": "+48 000 000 000",
+			"email": "E-mail firmowy",
+			"emailPlaceholder": "kontakt@firma.pl",
+			"industry": "Branża",
+			"industryPlaceholder": "np. Technologia",
+			"mainPkdCode": "Główny kod PKD",
+			"mainPkdCodePlaceholder": "np. 62.01.Z",
+			"employeeCountRange": "Wielkość firmy",
+			"legalForms": {
+				"OSOBA_FIZYCZNA": "Osoba fizyczna",
+				"JEDNOOSOBOWA_DG": "Jednoosobowa DG",
+				"SP_ZOO": "Sp. z o.o.",
+				"SA": "S.A.",
+				"SP_JAWNA": "Sp. jawna",
+				"SP_PARTNERSKA": "Sp. partnerska",
+				"SP_KOMANDYTOWA": "Sp. komandytowa",
+				"SP_KOMANDYTOWO_AKCYJNA": "Sp. komandytowo-akcyjna",
+				"STOWARZYSZENIE": "Stowarzyszenie",
+				"FUNDACJA": "Fundacja",
+				"SPOLDZIELNIA": "Spółdzielnia",
+				"INNE": "Inne"
+			},
+			"vatStatuses": {
+				"ACTIVE": "Czynny podatnik VAT",
+				"EXEMPT": "Zwolniony z VAT",
+				"UNREGISTERED": "Niezarejestrowany",
+				"CANCELLED": "Wyrejestrowany"
+			},
+			"employeeCountRanges": {
+				"MICRO": "Mikro (< 10 osób)",
+				"SMALL": "Małe (10–49)",
+				"MEDIUM": "Średnie (50–249)",
+				"LARGE": "Duże (250+)"
+			},
+			"errors": {
+				"default": "Wystąpił błąd. Spróbuj ponownie.",
+				"nameRequired": "Nazwa jest wymagana",
+				"nameMin": "Nazwa musi mieć co najmniej 2 znaki",
+				"nameMax": "Nazwa może mieć maksymalnie 200 znaków",
+				"nipFormat": "NIP musi składać się z 10 cyfr",
+				"regonFormat": "REGON musi składać się z 9 lub 14 cyfr",
+				"krsFormat": "KRS musi składać się z 10 cyfr",
+				"invalidUrl": "Nieprawidłowy adres URL",
+				"invalidEmail": "Nieprawidłowy adres e-mail"
+			}
+		},
+		"payment": {
+			"title": "Metody płatności",
+			"description": "Domyślna metoda płatności dla wydarzeń tej organizacji",
+			"active": "Aktywna",
+			"save": "Zapisz",
+			"paymentInstructions": "Instrukcje płatności (opcjonalne)",
+			"paymentInstructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
+			"paymentInstructionsHint": "Tekst będzie widoczny po złożeniu zamówienia",
+			"methods": {
+				"BANK_TRANSFER": "Przelew bankowy",
+				"EXTERNAL_LINK": "Link zewnętrzny",
+				"CASH_AT_ENTRANCE": "Gotówka przy wejściu",
+				"FREE": "Bezpłatne"
+			},
+			"methodDescriptions": {
+				"BANK_TRANSFER": "Uczestnicy wykonają przelew na podane konto bankowe",
+				"EXTERNAL_LINK": "Uczestnicy zostaną przekierowani do zewnętrznej strony płatności",
+				"CASH_AT_ENTRANCE": "Uczestnicy płacą gotówką przy wejściu na wydarzenie",
+				"FREE": "Wydarzenie bezpłatne – bilety potwierdzane automatycznie"
+			},
+			"bankAccountNumber": "Numer konta (IBAN)",
+			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
+			"bankAccountHolder": "Właściciel konta",
+			"bankAccountHolderPlaceholder": "np. Jan Kowalski",
+			"paymentLink": "Link do płatności",
+			"paymentLinkPlaceholder": "https://",
+			"errors": {
+				"default": "Wystąpił błąd. Spróbuj ponownie.",
+				"required": "To pole jest wymagane",
+				"invalidIban": "Nieprawidłowy numer IBAN",
+				"invalidUrl": "Nieprawidłowy adres URL",
+				"max40": "Maksymalna długość to 40 znaków",
+				"max120": "Maksymalna długość to 120 znaków",
+				"max500": "Maksymalna długość to 500 znaków",
+				"max2000": "Maksymalna długość to 2000 znaków"
+			}
+		}
 	}
 }

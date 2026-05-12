@@ -3,7 +3,7 @@ import { PaymentMethod } from "@prisma/client";
 import { isValidPolishIban } from "@/lib/payment/iban";
 
 export const paymentFieldsShape = (t: (key: string) => string) => ({
-	paymentMethod: z.nativeEnum(PaymentMethod).nullable(),
+	paymentMethod: z.enum(PaymentMethod).nullable(),
 	bankAccountNumber: z
 		.string()
 		.trim()
@@ -21,8 +21,8 @@ export const paymentFieldsShape = (t: (key: string) => string) => ({
 	paymentLink: z
 		.string()
 		.trim()
-		.url(t("invalidUrl"))
 		.max(500, t("max500"))
+		.refine((v) => URL.canParse(v), { message: t("invalidUrl") })
 		.nullable()
 		.optional()
 		.or(z.literal("").transform(() => null)),

@@ -8,14 +8,9 @@ import {
 export const organizationPaymentSchema = (t: (key: string) => string) =>
 	z
 		.object({
-			defaultPaymentMethod: z
-				.nativeEnum(PaymentMethod)
-				.nullable()
-				.optional(),
-			defaultBankAccountNumber:
-				paymentFieldsShape(t).bankAccountNumber,
-			defaultBankAccountHolder:
-				paymentFieldsShape(t).bankAccountHolder,
+			defaultPaymentMethod: z.enum(PaymentMethod).nullable().optional(),
+			defaultBankAccountNumber: paymentFieldsShape(t).bankAccountNumber,
+			defaultBankAccountHolder: paymentFieldsShape(t).bankAccountHolder,
 			defaultPaymentLink: paymentFieldsShape(t).paymentLink,
 			defaultPaymentInstructions:
 				paymentFieldsShape(t).paymentInstructions,
@@ -34,6 +29,10 @@ export const organizationPaymentSchema = (t: (key: string) => string) =>
 		});
 
 export type OrganizationPaymentInput = z.infer<
+	ReturnType<typeof organizationPaymentSchema>
+>;
+
+export type OrganizationPaymentFormValues = z.input<
 	ReturnType<typeof organizationPaymentSchema>
 >;
 
