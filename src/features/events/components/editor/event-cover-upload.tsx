@@ -9,6 +9,7 @@ import { IconPhoto, IconX, IconLoader } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { deleteUploadAction } from "@/lib/delete-upload.action";
 
 interface Props {
 	value?: string;
@@ -18,6 +19,7 @@ interface Props {
 
 export function EventCoverUpload({ value, onChange, onClear }: Props) {
 	const [isUploading, setIsUploading] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	const { startUpload, routeConfig } = useUploadThing("eventCover", {
 		onClientUploadComplete: (res) => {
@@ -44,6 +46,15 @@ export function EventCoverUpload({ value, onChange, onClear }: Props) {
 		disabled: isUploading,
 	});
 
+	const handleClear = async () => {
+		if (value) {
+			setIsDeleting(true);
+			await deleteUploadAction(value);
+			setIsDeleting(false);
+		}
+		onClear();
+	};
+
 	if (value) {
 		return (
 			<div className="relative aspect-video w-full overflow-hidden rounded-2xl border">
@@ -54,11 +65,16 @@ export function EventCoverUpload({ value, onChange, onClear }: Props) {
 					className="object-cover"
 				/>
 				<Button
-					onClick={onClear}
+					onClick={handleClear}
+					disabled={isDeleting}
 					variant={"outline"}
 					className="absolute right-3 top-3 rounded-lg bg-black/40 border-white/10 text-white hover:bg-black hover:text-white"
 				>
-					<IconX className="size-4" />
+					{isDeleting ? (
+						<IconLoader className="size-4 animate-spin" />
+					) : (
+						<IconX className="size-4" />
+					)}
 				</Button>
 			</div>
 		);

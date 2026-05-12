@@ -723,7 +723,7 @@
 	"OrderTicketStatus": {
 		"PENDING": "Oczekuje płatności",
 		"CONFIRMED": "Bilet potwierdzony",
-		"PAID": "Opłacone - oczekiwanie potwierdzenia od organizatora",
+		"PAID": "Weryfikacja od organizatora",
 		"CANCELLED": "Anulowane",
 		"EXPIRED": "Wygasłe"
 	}

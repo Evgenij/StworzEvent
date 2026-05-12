@@ -9,7 +9,9 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Typography } from "@/shared/components";
 import { IconDownload, IconMapPin, IconShieldCheck } from "@tabler/icons-react";
-import TicketOrderStatus from "./order-status";
+
+import { PaymentMethod } from "@prisma/client";
+import OrderTicketStatus from "./order-ticket-status";
 
 export type TicketData = {
 	event: {
@@ -146,7 +148,10 @@ const Ticket = ({
 					</main>
 					<Separator />
 					<footer className="data-actions">
-						<TicketOrderStatus status="PENDING" />
+						<OrderTicketStatus
+							status="PENDING"
+							paymentMethod={PaymentMethod.BANK_TRANSFER}
+						/>
 					</footer>
 				</div>
 				<div className="code w-1/4 p-4 px-5">3</div>

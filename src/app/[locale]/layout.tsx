@@ -3,7 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { Poppins } from "next/font/google";
+import { Fira_Code, Poppins } from "next/font/google";
 import "../globals.css";
 import "@/app/base.scss";
 import { QueryProvider } from "@/providers/query-provider";
@@ -15,6 +15,12 @@ const fontPoppins = Poppins({
 	subsets: ["latin"],
 	variable: "--font-sans",
 	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const fontFiraCode = Fira_Code({
+	subsets: ["latin"],
+	variable: "--font-mono",
+	weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -44,7 +50,7 @@ export default async function RootLayout({
 	const messages = await getMessages();
 
 	return (
-		<html lang={locale} className={`${fontPoppins.variable}`}>
+		<html lang={locale} className={`${fontPoppins.variable} ${fontFiraCode.variable}`}>
 			<body className="antialiased h-screen flex flex-col">
 				<QueryProvider>
 					<NextIntlClientProvider messages={messages}>

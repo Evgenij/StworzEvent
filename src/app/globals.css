@@ -70,6 +70,7 @@
 }
 
 :root {
+	--font-mono: "Fira Code", monospace;
 	--background: oklch(100% 0.00011 271.152);
 	--foreground: oklch(0.141 0.005 285.823);
 	--card: oklch(1 0 0);
