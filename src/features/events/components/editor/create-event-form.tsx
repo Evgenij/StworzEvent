@@ -41,7 +41,7 @@ import {
 	CreateEventInput,
 	createEventSchema,
 } from "../../schemas/create-event.schema";
-import { FormGroup, FormRow } from "@/shared/components/forms";
+import { FormGroup, FormRow } from "@/shared/components/form";
 import { createEventAction } from "../../actions/create-event.action";
 
 export function CreateEventForm() {

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { EVENT_EDIT_ROUTE, EVENT_ORDERS_ROUTE } from "@/config/routes";
-import { HeaderWrapper } from "@/features/dashboard";
+import { HeaderWrapper } from "@/features/layout";
 import { getEventAction } from "@/features/events/actions/get-event.action";
 import { DateTimeFormatter } from "@/helpers/date";
 import { Link } from "@/i18n/routing";

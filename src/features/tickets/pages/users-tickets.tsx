@@ -6,7 +6,7 @@ import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HeaderWrapper } from "@/features/dashboard";
+import { HeaderWrapper } from "@/features/layout";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Typography } from "@/shared/components";

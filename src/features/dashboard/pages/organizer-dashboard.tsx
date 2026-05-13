@@ -1,6 +1,6 @@
 import { PageHeader, WrapperFutureSection } from "@/features/layout";
 import { UserType } from "@/features/user/types/user";
-import HeaderWrapper from "../components/header-wrapper";
+import HeaderWrapper from "../../layout/components/header-wrapper";
 import { Typography } from "@/shared/components";
 import { Button } from "@/components/ui/button";
 import {

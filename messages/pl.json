@@ -228,7 +228,9 @@
 		},
 		"organizations": {
 			"title": "Organizacje",
-			"new": "Nowa organizacja"
+			"new": "Nowa organizacja",
+			"data": "Dane organizacji",
+			"plan": "Plan"
 		},
 		"tickets": {
 			"title": "Twój portfel"

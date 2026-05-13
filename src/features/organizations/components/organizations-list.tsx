@@ -10,13 +10,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "@/i18n/routing";
-import { ORGANIZATION_ROUTE } from "@/config/routes";
+import { ORGANIZATION_DATA_ROUTE } from "@/config/routes";
 import { MyOrganization } from "../actions/get-my-organizations.action";
 import { MemberRole } from "@prisma/client";
 import { useTranslations } from "next-intl";
@@ -77,7 +73,9 @@ export function OrganizationsList({ organizations }: Props) {
 											<IconBuilding className="size-3.5" />
 										</AvatarFallback>
 									</Avatar>
-									<span className="font-medium">{org.name}</span>
+									<span className="font-medium">
+										{org.name}
+									</span>
 								</div>
 							</TableCell>
 							<TableCell className="text-muted-foreground">
@@ -95,7 +93,9 @@ export function OrganizationsList({ organizations }: Props) {
 							</TableCell>
 							<TableCell className="text-right">
 								<Button variant="outline" size="sm" asChild>
-									<Link href={ORGANIZATION_ROUTE(org.id)}>
+									<Link
+										href={ORGANIZATION_DATA_ROUTE(org.id)}
+									>
 										<IconPencil className="size-3.5" />
 										{t("actions.edit")}
 									</Link>

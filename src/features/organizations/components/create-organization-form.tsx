@@ -33,7 +33,7 @@ import {
 	createOrganizationSchema,
 } from "../schemas/create-organization.schema";
 import { createOrganizationAction } from "../actions/create-organization.action";
-import { FormGroup, FormHeader, FormRow } from "@/shared/components/forms";
+import { FormGroup, FormHeader, FormRow } from "@/shared/components/form";
 import { PolishCityCombobox } from "@/features/events/components/editor/location/polish-city-combobox";
 
 export function CreateOrganizationForm({

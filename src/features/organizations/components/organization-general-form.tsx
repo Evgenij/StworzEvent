@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { LegalForm, VatStatus, EmployeeCountRange } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -14,8 +13,18 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { Field, FieldError } from "@/components/ui/field";
-import { IconLoader } from "@tabler/icons-react";
+import {
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
+import {
+	IconClipboardList,
+	IconFileInfo,
+	IconLoader,
+	IconReceiptDollar,
+} from "@tabler/icons-react";
 import { toast } from "sonner";
 import {
 	organizationGeneralSchema,
@@ -23,6 +32,7 @@ import {
 	type OrganizationGeneralFormValues,
 } from "@/features/organizations/schemas/organization-general.schema";
 import { updateOrganizationGeneralAction } from "@/features/organizations/actions/update-organization-general.action";
+import { FormGroup, FormRow } from "@/shared/components/form";
 
 type Props = {
 	organizationId: string;
@@ -84,25 +94,24 @@ export function OrganizationGeneralForm({
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
 			{/* Podstawowe dane */}
-			<div className="flex flex-col gap-4">
-				<p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-					Dane podstawowe
-				</p>
-
-				<Field>
-					<Label>{t("name")}</Label>
-					<Input
-						{...register("name")}
-						placeholder={t("namePlaceholder")}
-					/>
-					{formState.errors.name && (
-						<FieldError>{formState.errors.name.message}</FieldError>
-					)}
-				</Field>
-
-				<div className="grid grid-cols-2 gap-4">
+			<FormGroup label="Dane podstawowe" icon={IconClipboardList}>
+				<FormRow>
 					<Field>
-						<Label>{t("phone")}</Label>
+						<FieldLabel>{t("name")}</FieldLabel>
+						<Input
+							{...register("name")}
+							placeholder={t("namePlaceholder")}
+						/>
+						{formState.errors.name && (
+							<FieldError>
+								{formState.errors.name.message}
+							</FieldError>
+						)}
+					</Field>
+				</FormRow>
+				<FormRow className="">
+					<Field>
+						<FieldLabel>{t("phone")}</FieldLabel>
 						<Input
 							{...register("phone")}
 							placeholder={t("phonePlaceholder")}
@@ -115,7 +124,7 @@ export function OrganizationGeneralForm({
 					</Field>
 
 					<Field>
-						<Label>{t("email")}</Label>
+						<FieldLabel>{t("email")}</FieldLabel>
 						<Input
 							type="email"
 							{...register("email")}
@@ -127,36 +136,33 @@ export function OrganizationGeneralForm({
 							</FieldError>
 						)}
 					</Field>
-				</div>
-
-				<Field>
-					<Label>{t("website")}</Label>
-					<Input
-						type="url"
-						{...register("website")}
-						placeholder={t("websitePlaceholder")}
-					/>
-					{formState.errors.website && (
-						<FieldError>
-							{formState.errors.website.message}
-						</FieldError>
-					)}
-				</Field>
-			</div>
-
-			{/* Dane prawne */}
-			<div className="flex flex-col gap-4">
-				<p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-					Dane prawne
-				</p>
-
-				<div className="grid grid-cols-3 gap-4">
+				</FormRow>
+				<FormRow>
 					<Field>
-						<Label>{t("nip")}</Label>
+						<FieldLabel>{t("website")}</FieldLabel>
+						<Input
+							type="url"
+							{...register("website")}
+							placeholder={t("websitePlaceholder")}
+						/>
+						{formState.errors.website && (
+							<FieldError>
+								{formState.errors.website.message}
+							</FieldError>
+						)}
+					</Field>
+				</FormRow>
+			</FormGroup>
+
+			<FormGroup label="Dane prawne" icon={IconFileInfo}>
+				<FormRow>
+					<Field>
+						<FieldLabel>{t("nip")}</FieldLabel>
 						<Input
 							{...register("nip")}
 							placeholder={t("nipPlaceholder")}
 						/>
+						<FieldDescription>Zweryfikowano w GUS</FieldDescription>
 						{formState.errors.nip && (
 							<FieldError>
 								{formState.errors.nip.message}
@@ -165,7 +171,7 @@ export function OrganizationGeneralForm({
 					</Field>
 
 					<Field>
-						<Label>{t("regon")}</Label>
+						<FieldLabel>{t("regon")}</FieldLabel>
 						<Input
 							{...register("regon")}
 							placeholder={t("regonPlaceholder")}
@@ -178,7 +184,7 @@ export function OrganizationGeneralForm({
 					</Field>
 
 					<Field>
-						<Label>{t("krs")}</Label>
+						<FieldLabel>{t("krs")}</FieldLabel>
 						<Input
 							{...register("krs")}
 							placeholder={t("krsPlaceholder")}
@@ -189,15 +195,14 @@ export function OrganizationGeneralForm({
 							</FieldError>
 						)}
 					</Field>
-				</div>
-
-				<div className="grid grid-cols-2 gap-4">
+				</FormRow>
+				<FormRow>
 					<Controller
 						control={control}
 						name="legalForm"
 						render={({ field }) => (
 							<Field>
-								<Label>{t("legalForm")}</Label>
+								<FieldLabel>{t("legalForm")}</FieldLabel>
 								<Select
 									value={field.value ?? ""}
 									onValueChange={(v) =>
@@ -207,9 +212,7 @@ export function OrganizationGeneralForm({
 									}
 								>
 									<SelectTrigger className="w-full">
-										<SelectValue
-											placeholder="Wybierz formę"
-										/>
+										<SelectValue placeholder="Wybierz formę" />
 									</SelectTrigger>
 									<SelectContent>
 										{LEGAL_FORMS.map((lf) => (
@@ -224,28 +227,26 @@ export function OrganizationGeneralForm({
 					/>
 
 					<Field>
-						<Label>{t("legalFormCode")}</Label>
+						<FieldLabel>{t("legalFormCode")}</FieldLabel>
 						<Input
 							{...register("legalFormCode")}
 							placeholder={t("legalFormCodePlaceholder")}
 						/>
+						<FieldDescription>
+							Trzycyfrowy kod z klasyfikacji GUS
+						</FieldDescription>
 					</Field>
-				</div>
-			</div>
+				</FormRow>
+			</FormGroup>
 
-			{/* VAT */}
-			<div className="flex flex-col gap-4">
-				<p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-					VAT
-				</p>
-
-				<div className="grid grid-cols-2 gap-4">
+			<FormGroup label="VAT" icon={IconReceiptDollar}>
+				<FormRow>
 					<Controller
 						control={control}
 						name="vatStatus"
 						render={({ field }) => (
 							<Field>
-								<Label>{t("vatStatus")}</Label>
+								<FieldLabel>{t("vatStatus")}</FieldLabel>
 								<Select
 									value={field.value ?? ""}
 									onValueChange={(v) =>
@@ -270,25 +271,18 @@ export function OrganizationGeneralForm({
 					/>
 
 					<Field>
-						<Label>{t("vatId")}</Label>
+						<FieldLabel>{t("vatId")}</FieldLabel>
 						<Input
 							{...register("vatId")}
 							placeholder={t("vatIdPlaceholder")}
 						/>
 					</Field>
-				</div>
-
-			</div>
-
-			{/* Dane branżowe */}
-			<div className="flex flex-col gap-4">
-				<p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-					Dane branżowe
-				</p>
-
-				<div className="grid grid-cols-2 gap-4">
+				</FormRow>
+			</FormGroup>
+			<FormGroup label="Dane branżowe" icon={IconReceiptDollar}>
+				<FormRow>
 					<Field>
-						<Label>{t("industry")}</Label>
+						<FieldLabel>{t("industry")}</FieldLabel>
 						<Input
 							{...register("industry")}
 							placeholder={t("industryPlaceholder")}
@@ -296,43 +290,48 @@ export function OrganizationGeneralForm({
 					</Field>
 
 					<Field>
-						<Label>{t("mainPkdCode")}</Label>
+						<FieldLabel>{t("mainPkdCode")}</FieldLabel>
 						<Input
 							{...register("mainPkdCode")}
 							placeholder={t("mainPkdCodePlaceholder")}
 						/>
 					</Field>
-				</div>
-
-				<Controller
-					control={control}
-					name="employeeCountRange"
-					render={({ field }) => (
-						<Field>
-							<Label>{t("employeeCountRange")}</Label>
-							<Select
-								value={field.value ?? ""}
-								onValueChange={(v) =>
-									field.onChange(
-										v ? (v as EmployeeCountRange) : null,
-									)
-								}
-							>
-								<SelectTrigger className="w-full">
-									<SelectValue placeholder="Wybierz wielkość" />
-								</SelectTrigger>
-								<SelectContent>
-									{EMPLOYEE_COUNT_RANGES.map((ecr) => (
-										<SelectItem key={ecr} value={ecr}>
-											{t(`employeeCountRanges.${ecr}`)}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						</Field>
-					)}
-				/>
-			</div>
+					<Controller
+						control={control}
+						name="employeeCountRange"
+						render={({ field }) => (
+							<Field>
+								<FieldLabel>
+									{t("employeeCountRange")}
+								</FieldLabel>
+								<Select
+									value={field.value ?? ""}
+									onValueChange={(v) =>
+										field.onChange(
+											v
+												? (v as EmployeeCountRange)
+												: null,
+										)
+									}
+								>
+									<SelectTrigger className="w-full">
+										<SelectValue placeholder="Wybierz wielkość" />
+									</SelectTrigger>
+									<SelectContent>
+										{EMPLOYEE_COUNT_RANGES.map((ecr) => (
+											<SelectItem key={ecr} value={ecr}>
+												{t(
+													`employeeCountRanges.${ecr}`,
+												)}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</Field>
+						)}
+					/>
+				</FormRow>
+			</FormGroup>
 
 			<Button
 				type="submit"

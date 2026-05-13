@@ -33,8 +33,10 @@ export const EVENT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 
 // organizations routes
 export const NEW_ORGANIZATION_ROUTE = `${ORGANIZATIONS_ROUTE}/new`;
-export const ORGANIZATION_ROUTE = (id: string) =>
-	`${ORGANIZATIONS_ROUTE}/${id}`;
+export const ORGANIZATION_DATA_ROUTE = (id: string) =>
+	`${ORGANIZATIONS_ROUTE}/${id}/data`;
+export const ORGANIZATION_PLAN_ROUTE = (id: string) =>
+	`${ORGANIZATIONS_ROUTE}/${id}/plan`;
 
 export const EVENT_PAGE_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 export const EVENT_EDIT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}/edit`;

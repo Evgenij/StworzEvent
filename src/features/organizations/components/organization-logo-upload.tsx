@@ -101,7 +101,7 @@ export function OrganizationLogoUpload({
 						? "border-primary bg-primary/10"
 						: logo
 							? "border-transparent"
-							: "border-muted-foreground/30 bg-muted hover:border-muted-foreground/60",
+							: "border-white/10 bg-white/10 hover:border-white/30",
 					busy && "pointer-events-none opacity-70",
 				)}
 			>
@@ -116,8 +116,8 @@ export function OrganizationLogoUpload({
 					/>
 				) : busy ? null : (
 					<div className="flex flex-col items-center gap-1">
-						<IconCamera className="size-6 text-muted-foreground" />
-						<span className="text-[10px] text-muted-foreground leading-tight text-center px-1">
+						<IconCamera className="size-6 text-white/30" />
+						<span className="text-[10px] text-white/30 leading-tight text-center px-1">
 							Logo
 						</span>
 					</div>
@@ -130,7 +130,7 @@ export function OrganizationLogoUpload({
 				)}
 
 				{logo && !busy && (
-					<div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/0 hover:bg-black/40 transition-colors group">
+					<div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/0 hover:bg-black/60 transition-colors group">
 						<IconCamera className="size-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
 					</div>
 				)}
@@ -140,10 +140,10 @@ export function OrganizationLogoUpload({
 				<button
 					type="button"
 					onClick={handleDelete}
-					className="absolute -top-1 -right-1 size-6 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center shadow hover:bg-destructive/80 transition-colors"
+					className="absolute top-0 right-0 size-6 rounded-full bg-white/20 bg-blur-sm backdrop-blur-sm text-destructive-foreground flex items-center justify-center shadow hover:bg-destructive/80 transition-colors cursor-pointer"
 					aria-label="Usuń logo"
 				>
-					<IconX className="size-3.5" />
+					<IconX className="size-3.5 text-white" />
 				</button>
 			)}
 		</div>
