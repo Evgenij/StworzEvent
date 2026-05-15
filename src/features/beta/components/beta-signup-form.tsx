@@ -32,6 +32,9 @@ export function BetaSignupForm() {
 
 		if (result.success) {
 			setStatus("success");
+			if (typeof window !== "undefined" && typeof (window as any).fbq === "function") {
+				(window as any).fbq("track", "Lead");
+			}
 		} else {
 			setStatus("error");
 			setErrorMsg(result.error);
