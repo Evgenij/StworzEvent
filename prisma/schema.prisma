@@ -332,11 +332,16 @@ model Organization {
   mainPkdCode        String? // np. "62.01.Z"
 
   // ── płatności od uczestników (default dla wydarzeń tej organizacji) ──
-  defaultPaymentMethod       PaymentMethod? @map("default_payment_method")
-  defaultBankAccountNumber   String?        @map("default_bank_account_number")
-  defaultBankAccountHolder   String?        @map("default_bank_account_holder")
-  defaultPaymentLink         String?        @map("default_payment_link")
-  defaultPaymentInstructions String?        @map("default_payment_instructions") @db.Text
+  enabledPaymentMethods      PaymentMethod[] @default([]) @map("enabled_payment_methods")
+  defaultPaymentMethod       PaymentMethod?  @map("default_payment_method")
+  defaultBankAccountNumber   String?         @map("default_bank_account_number")
+  defaultBankAccountHolder   String?         @map("default_bank_account_holder")
+  defaultBankName            String?         @map("default_bank_name")
+  bankTransferInstructions   String?         @map("bank_transfer_instructions") @db.Text
+  defaultPaymentLink         String?         @map("default_payment_link")
+  externalLinkInstructions   String?         @map("external_link_instructions") @db.Text
+  cashAtEntranceInstructions String?         @map("cash_at_entrance_instructions") @db.Text
+  freeInstructions           String?         @map("free_instructions") @db.Text
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

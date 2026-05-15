@@ -11,6 +11,7 @@ export const organizationPaymentSchema = (t: (key: string) => string) =>
 			defaultPaymentMethod: z.enum(PaymentMethod).nullable().optional(),
 			defaultBankAccountNumber: paymentFieldsShape(t).bankAccountNumber,
 			defaultBankAccountHolder: paymentFieldsShape(t).bankAccountHolder,
+			defaultBankName: paymentFieldsShape(t).bankName,
 			defaultPaymentLink: paymentFieldsShape(t).paymentLink,
 			defaultPaymentInstructions:
 				paymentFieldsShape(t).paymentInstructions,

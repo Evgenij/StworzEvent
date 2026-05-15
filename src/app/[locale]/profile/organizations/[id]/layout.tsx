@@ -57,11 +57,16 @@ const OrganizationDataLayout = async ({
 			industry: true,
 			mainPkdCode: true,
 			employeeCountRange: true,
+			enabledPaymentMethods: true,
 			defaultPaymentMethod: true,
 			defaultBankAccountNumber: true,
 			defaultBankAccountHolder: true,
+			defaultBankName: true,
+			bankTransferInstructions: true,
 			defaultPaymentLink: true,
-			defaultPaymentInstructions: true,
+			externalLinkInstructions: true,
+			cashAtEntranceInstructions: true,
+			freeInstructions: true,
 		},
 	});
 
@@ -85,10 +90,7 @@ const OrganizationDataLayout = async ({
 								<Typography variant="h1" className="w-max">
 									{org.name}
 								</Typography>
-								<div className="flex items-center gap-2 mt-4 text-sm">
-									{/* <Badge variant="secondary">
-										PLan - Free
-									</Badge> */}
+								<div className="flex items-center gap-2 mt-3 text-sm">
 									<Badge
 										variant="success"
 										className="bg-green-800"

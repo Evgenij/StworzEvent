@@ -1,9 +1,10 @@
 "use client";
 
 import { OrganizationGeneralForm } from "@/features/organizations/components/organization-general-form";
+import { OrganizationPaymentForm } from "@/features/organizations/components/organization-payment-form";
 import { useOrganization } from "@/features/organizations/context/organization-context";
 import { Typography } from "@/shared/components";
-import { IconClock } from "@tabler/icons-react";
+import { IconBuilding, IconCashRegister, IconClock } from "@tabler/icons-react";
 
 export default async function OrganizationDataPage() {
 	const org = useOrganization();
@@ -11,40 +12,95 @@ export default async function OrganizationDataPage() {
 	console.log(org);
 
 	return (
-		<section className="organization-data-page  border border-border rounded-2xl bg-background">
-			<header className="flex justify-between items-start px-6 py-5 border-b border-border sticky -top-5 bg-background rounded-t-2xl">
-				<div>
-					<Typography variant="h2">Dane organizacji</Typography>
-					<p className="text-sm text-muted-foreground">
-						Podstawowe informacje, dane prawne i kontaktowe
-					</p>
-				</div>
-				<div className="text-xs text-muted-foreground flex items-center gap-1">
-					<IconClock className="size-4" />
-					<span>Zmieniono 4 lutego 2026</span>
-				</div>
-			</header>
-			<main className="p-5">
-				<OrganizationGeneralForm
-					organizationId={org.id}
-					initialData={{
-						name: org.name,
-						nip: org.nip,
-						regon: org.regon,
-						krs: org.krs,
-						legalForm: org.legalForm,
-						legalFormCode: org.legalFormCode,
-						vatStatus: org.vatStatus,
-						vatId: org.vatId,
-						website: org.website,
-						phone: org.phone,
-						email: org.email,
-						industry: org.industry,
-						mainPkdCode: org.mainPkdCode,
-						employeeCountRange: org.employeeCountRange,
-					}}
-				/>
-			</main>
+		<section className="organization-data-page flex flex-col gap-4">
+			<section className="main-data border border-border rounded-2xl bg-background">
+				<header className="flex justify-between items-start px-6 py-5 border-b border-border sticky -top-5 bg-background rounded-t-2xl">
+					<div className="content flex items-center gap-3">
+						<div className="content__icon p-3 text-primary bg-primary/20 rounded-lg">
+							<IconBuilding />
+						</div>
+
+						<div className="content__data	">
+							<Typography variant="h2">
+								Dane organizacji
+							</Typography>
+							<p className="text-sm text-muted-foreground">
+								Podstawowe informacje, dane prawne i kontaktowe
+							</p>
+						</div>
+					</div>
+					<div className="text-xs text-muted-foreground flex items-center gap-1">
+						<IconClock className="size-4" />
+						<span>Zmieniono 4 lutego 2026</span>
+					</div>
+				</header>
+				<main className="p-5">
+					<OrganizationGeneralForm
+						organizationId={org.id}
+						initialData={{
+							name: org.name,
+							nip: org.nip,
+							regon: org.regon,
+							krs: org.krs,
+							legalForm: org.legalForm,
+							legalFormCode: org.legalFormCode,
+							vatStatus: org.vatStatus,
+							vatId: org.vatId,
+							website: org.website,
+							phone: org.phone,
+							email: org.email,
+							industry: org.industry,
+							mainPkdCode: org.mainPkdCode,
+							employeeCountRange: org.employeeCountRange,
+						}}
+					/>
+				</main>
+			</section>
+			<section className="payment-data border border-border rounded-2xl bg-background">
+				<header className="flex justify-between items-start px-6 py-5 border-b border-border sticky -top-5 bg-background rounded-t-2xl">
+					<div className="content flex items-center gap-3">
+						<div className="content__icon p-3 text-primary bg-primary/20 rounded-lg">
+							<IconCashRegister />
+						</div>
+
+						<div className="content__data	">
+							<Typography variant="h2">
+								Metody płatności
+							</Typography>
+							<p className="text-sm text-muted-foreground">
+								Włącz metody i ustaw jedną jako domyślną dla
+								nowych wydarzeń
+							</p>
+						</div>
+					</div>
+					<div className="text-xs text-muted-foreground flex items-center gap-1">
+						<IconClock className="size-4" />
+						<span>Zmieniono 4 lutego 2026</span>
+					</div>
+				</header>
+				<main className="p-5">
+					<OrganizationPaymentForm
+						organizationId={org.id}
+						initialData={{
+							enabledPaymentMethods:
+								org.enabledPaymentMethods as any,
+							defaultPaymentMethod:
+								org.defaultPaymentMethod as any,
+							bankAccountNumber: org.defaultBankAccountNumber,
+							bankAccountHolder: org.defaultBankAccountHolder,
+							bankName: org.defaultBankName,
+							bankTransferInstructions:
+								org.bankTransferInstructions,
+							paymentLink: org.defaultPaymentLink,
+							externalLinkInstructions:
+								org.externalLinkInstructions,
+							cashAtEntranceInstructions:
+								org.cashAtEntranceInstructions,
+							freeInstructions: org.freeInstructions,
+						}}
+					/>
+				</main>
+			</section>
 		</section>
 	);
 }

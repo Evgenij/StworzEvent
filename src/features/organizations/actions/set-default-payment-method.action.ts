@@ -6,15 +6,16 @@ import prisma from "@/lib/prisma";
 import { safeAction } from "@/lib/safe-action";
 import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
-import {
-	organizationPaymentServerSchema,
-	type OrganizationPaymentInput,
-} from "@/features/organizations/schemas/payment.schema";
+import { PaymentMethod } from "@prisma/client";
+import { z } from "zod";
 
-type Input = { organizationId: string; data: OrganizationPaymentInput };
+const schema = z.object({
+	organizationId: z.string(),
+	method: z.enum(PaymentMethod).nullable(),
+});
 
-export const updateOrganizationPaymentAction = safeAction(
-	async ({ organizationId, data }: Input) => {
+export const setDefaultPaymentMethodAction = safeAction(
+	async ({ organizationId, method }: z.infer<typeof schema>) => {
 		const session = await auth.api.getSession({
 			headers: await headers(),
 		});
@@ -30,21 +31,9 @@ export const updateOrganizationPaymentAction = safeAction(
 		});
 		if (!member) throw new ApiError(ErrorCode.FORBIDDEN, 403);
 
-		const parsed = organizationPaymentServerSchema.parse(data);
-
 		await prisma.organization.update({
 			where: { id: organizationId },
-			data: {
-				defaultPaymentMethod: parsed.defaultPaymentMethod ?? null,
-				defaultBankAccountNumber:
-					parsed.defaultBankAccountNumber ?? null,
-				defaultBankAccountHolder:
-					parsed.defaultBankAccountHolder ?? null,
-				defaultBankName: parsed.defaultBankName ?? null,
-				defaultPaymentLink: parsed.defaultPaymentLink ?? null,
-				bankTransferInstructions:
-					parsed.defaultPaymentInstructions ?? null,
-			},
+			data: { defaultPaymentMethod: method },
 		});
 
 		return { success: true };

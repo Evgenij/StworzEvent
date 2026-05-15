@@ -18,6 +18,13 @@ export const paymentFieldsShape = (t: (key: string) => string) => ({
 		.nullable()
 		.optional()
 		.transform((v) => (v === "" ? null : (v ?? null))),
+	bankName: z
+		.string()
+		.trim()
+		.max(120, t("max120"))
+		.nullable()
+		.optional()
+		.transform((v) => (v === "" ? null : (v ?? null))),
 	paymentLink: z
 		.string()
 		.trim()

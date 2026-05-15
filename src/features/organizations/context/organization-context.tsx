@@ -24,11 +24,16 @@ export type OrganizationData = {
 	industry: string | null;
 	mainPkdCode: string | null;
 	employeeCountRange: EmployeeCountRange | null;
+	enabledPaymentMethods: string[];
 	defaultPaymentMethod: string | null;
 	defaultBankAccountNumber: string | null;
 	defaultBankAccountHolder: string | null;
+	defaultBankName: string | null;
+	bankTransferInstructions: string | null;
 	defaultPaymentLink: string | null;
-	defaultPaymentInstructions: string | null;
+	externalLinkInstructions: string | null;
+	cashAtEntranceInstructions: string | null;
+	freeInstructions: string | null;
 };
 
 const OrganizationContext = createContext<OrganizationData | null>(null);
