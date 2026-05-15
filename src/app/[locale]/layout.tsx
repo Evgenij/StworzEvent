@@ -10,6 +10,8 @@ import { QueryProvider } from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import LocaleNotSupported from "@/features/layout/components/locale-not-supported";
 import { APP_CONFIG } from "@/config/app";
+import { GoogleAnalytics } from "@/shared/components";
+import { MetaPixel } from "@/shared/components/seo-analytics/meta-pixel";
 
 const fontPoppins = Poppins({
 	subsets: ["latin"],
@@ -44,8 +46,10 @@ export default async function RootLayout({
 	const messages = await getMessages();
 
 	return (
-		<html lang={locale} className={`${fontPoppins.variable}`}>
+		<html lang={locale} className={fontPoppins.variable}>
 			<body className="antialiased h-screen flex flex-col">
+				<GoogleAnalytics />
+				<MetaPixel />
 				<QueryProvider>
 					<NextIntlClientProvider messages={messages}>
 						<Toaster />
