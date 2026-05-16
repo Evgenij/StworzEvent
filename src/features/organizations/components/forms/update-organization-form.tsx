@@ -45,10 +45,7 @@ const EMPLOYEE_COUNT_RANGES = Object.values(
 	EmployeeCountRange,
 ) as EmployeeCountRange[];
 
-export function OrganizationGeneralForm({
-	organizationId,
-	initialData,
-}: Props) {
+export function UpdateOrganizationForm({ organizationId, initialData }: Props) {
 	const t = useTranslations("OrganizationSettings.general");
 	const tErrors = useTranslations("OrganizationSettings.general.errors");
 	const tRoot = useTranslations("OrganizationSettings");

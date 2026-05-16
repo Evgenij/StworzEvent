@@ -74,7 +74,11 @@ const OrganizationPageNavigation = ({ className }: { className?: string }) => {
 	const activeLink = links.find((l) => pathname.endsWith(l.href)) ?? links[1];
 
 	return (
-		<Tabs value={activeLink.name} className="navigation">
+		<Tabs
+			value={activeLink.name}
+			className={cn("navigation", className)}
+			orientation="vertical"
+		>
 			<TabsList>
 				{links.map((link) => {
 					const Icon = link.icon;

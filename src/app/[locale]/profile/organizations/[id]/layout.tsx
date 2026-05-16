@@ -13,6 +13,7 @@ import React from "react";
 import { Typography } from "@/shared/components";
 import { Badge } from "@/components/ui/badge";
 import { IconArrowsUpRight, IconArrowUpRight } from "@tabler/icons-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
 	title: "StworzEvent.pl - Dane organizacji",
@@ -24,10 +25,9 @@ const OrganizationDataLayout = async ({
 	params,
 }: {
 	children: React.ReactNode;
-	params: { locale: string; id: string };
+	params: Promise<{ locale: string; id: string }>;
 }) => {
-	const { locale } = await params;
-	const { id } = await params;
+	const { locale, id } = await params;
 	const session = await auth.api.getSession({ headers: await headers() });
 
 	if (!session) {
@@ -138,9 +138,12 @@ const OrganizationDataLayout = async ({
 					</div>
 				</HeaderWrapper>
 
-				<div className="container flex flex-col max-w-4xl mx-auto">
-					<OrganizationPageNavigation />
-					<div className="page-content py-6 flex flex-col">
+				<div className="container flex justify-center gap-4 max-w-5xl mx-auto">
+					<aside className="relative">
+						<OrganizationPageNavigation className="sticky top-0" />
+					</aside>
+
+					<div className="page-content flex flex-col w-full">
 						{children}
 					</div>
 				</div>

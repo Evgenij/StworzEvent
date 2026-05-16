@@ -8,7 +8,7 @@ import {
 	useMyOrganizations,
 } from "@/features/organizations/hooks/use-my-organizations";
 import { Typography } from "@/shared/components";
-import { CreateOrganizationForm } from "@/features/organizations/components/create-organization-form";
+import { CreateOrganizationForm } from "@/features/organizations/components/forms/create-organization-form";
 import { CreateEventForm } from "@/features/events/components/editor/create-event-form";
 
 export default function NewEventPage() {

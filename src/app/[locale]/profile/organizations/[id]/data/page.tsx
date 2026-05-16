@@ -1,15 +1,14 @@
 "use client";
 
-import { OrganizationGeneralForm } from "@/features/organizations/components/organization-general-form";
-import { OrganizationPaymentForm } from "@/features/organizations/components/organization-payment-form";
+import { UpdateOrganizationForm } from "@/features/organizations/components/forms/update-organization-form";
+import PaymentMethods from "@/features/organizations/components/payment-methods/payment-methods";
 import { useOrganization } from "@/features/organizations/context/organization-context";
 import { Typography } from "@/shared/components";
+import { PaymentMethod } from "@prisma/client";
 import { IconBuilding, IconCashRegister, IconClock } from "@tabler/icons-react";
 
-export default async function OrganizationDataPage() {
+export default function OrganizationDataPage() {
 	const org = useOrganization();
-
-	console.log(org);
 
 	return (
 		<section className="organization-data-page flex flex-col gap-4">
@@ -35,7 +34,7 @@ export default async function OrganizationDataPage() {
 					</div>
 				</header>
 				<main className="p-5">
-					<OrganizationGeneralForm
+					<UpdateOrganizationForm
 						organizationId={org.id}
 						initialData={{
 							name: org.name,
@@ -79,7 +78,12 @@ export default async function OrganizationDataPage() {
 					</div>
 				</header>
 				<main className="p-5">
-					<OrganizationPaymentForm
+					<PaymentMethods
+						enabledPaymentMethods={
+							org.enabledPaymentMethods as PaymentMethod[]
+						}
+					/>
+					{/* <OrganizationPaymentForm
 						organizationId={org.id}
 						initialData={{
 							enabledPaymentMethods:
@@ -98,7 +102,7 @@ export default async function OrganizationDataPage() {
 								org.cashAtEntranceInstructions,
 							freeInstructions: org.freeInstructions,
 						}}
-					/>
+					/> */}
 				</main>
 			</section>
 		</section>

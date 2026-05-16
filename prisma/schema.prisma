@@ -143,18 +143,18 @@ enum VatStatus {
 }
 
 enum LegalForm {
-  OSOBA_FIZYCZNA            // Osoba fizyczna
-  JEDNOOSOBOWA_DG           // Jednoosobowa działalność gospodarcza
-  SP_ZOO                    // Sp. z o.o.
-  SA                        // S.A.
-  SP_JAWNA                  // Sp. jawna
-  SP_PARTNERSKA             // Sp. partnerska
-  SP_KOMANDYTOWA            // Sp. komandytowa
-  SP_KOMANDYTOWO_AKCYJNA    // Sp. komandytowo-akcyjna
-  STOWARZYSZENIE            // Stowarzyszenie
-  FUNDACJA                  // Fundacja
-  SPOLDZIELNIA              // Spółdzielnia
-  INNE                      // Inne
+  OSOBA_FIZYCZNA // Osoba fizyczna
+  JEDNOOSOBOWA_DG // Jednoosobowa działalność gospodarcza
+  SP_ZOO // Sp. z o.o.
+  SA // S.A.
+  SP_JAWNA // Sp. jawna
+  SP_PARTNERSKA // Sp. partnerska
+  SP_KOMANDYTOWA // Sp. komandytowa
+  SP_KOMANDYTOWO_AKCYJNA // Sp. komandytowo-akcyjna
+  STOWARZYSZENIE // Stowarzyszenie
+  FUNDACJA // Fundacja
+  SPOLDZIELNIA // Spółdzielnia
+  INNE // Inne
 }
 
 enum EmployeeCountRange {
@@ -314,7 +314,7 @@ model Organization {
 
   // ── forma prawna (kluczowe przy fakturach, KSeF, umowach B2B) ─────────
   legalForm     LegalForm? // enum: OSOBA_FIZYCZNA, SP_ZOO, SA, ...
-  legalFormCode String?    // np. kod GUS / REGON: "019", "091", "092"...
+  legalFormCode String? // np. kod GUS / REGON: "019", "091", "092"...
 
   // ── status VAT i KSeF (obowiązkowy B2B od 2026/2027) ──────────────────
   vatStatus   VatStatus? @default(ACTIVE)
@@ -332,16 +332,22 @@ model Organization {
   mainPkdCode        String? // np. "62.01.Z"
 
   // ── płatności od uczestników (default dla wydarzeń tej organizacji) ──
-  enabledPaymentMethods      PaymentMethod[] @default([]) @map("enabled_payment_methods")
-  defaultPaymentMethod       PaymentMethod?  @map("default_payment_method")
-  defaultBankAccountNumber   String?         @map("default_bank_account_number")
-  defaultBankAccountHolder   String?         @map("default_bank_account_holder")
-  defaultBankName            String?         @map("default_bank_name")
-  bankTransferInstructions   String?         @map("bank_transfer_instructions") @db.Text
-  defaultPaymentLink         String?         @map("default_payment_link")
-  externalLinkInstructions   String?         @map("external_link_instructions") @db.Text
-  cashAtEntranceInstructions String?         @map("cash_at_entrance_instructions") @db.Text
-  freeInstructions           String?         @map("free_instructions") @db.Text
+  enabledPaymentMethods PaymentMethod[] @default([]) @map("enabled_payment_methods")
+  defaultPaymentMethod  PaymentMethod?  @map("default_payment_method")
+
+  // bank transfer
+  defaultBankAccountNumber String? @map("default_bank_account_number")
+  defaultBankAccountHolder String? @map("default_bank_account_holder")
+  defaultBankName          String? @map("default_bank_name")
+  bankTransferInstructions String? @map("bank_transfer_instructions") @db.Text
+
+  // payment link
+  defaultPaymentLink       String? @map("default_payment_link")
+  externalLinkInstructions String? @map("external_link_instructions") @db.Text
+
+  // cash at entrance
+  cashAtEntranceInstructions String? @map("cash_at_entrance_instructions") @db.Text
+  freeInstructions           String? @map("free_instructions") @db.Text
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -467,7 +473,7 @@ model Event {
   paymentInstructions String?        @map("payment_instructions") @db.Text
 
   /// Минимальная цена билета в минимальных единицах валюты (денормализовано)
-  minPrice       Int?         @map("min_price")
+  minPrice Int? @map("min_price")
 
   organizationId String       @map("organization_id")
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -630,9 +636,9 @@ model Order {
   orderNumber         String?        @unique @map("order_number")
 
   // Данные покупателя (денормализованы для истории)
-  buyerName    String? @map("buyer_name")
-  buyerSurname String? @map("buyer_surname")
-  buyerPhone   String? @map("buyer_phone")
+  buyerName      String?   @map("buyer_name")
+  buyerSurname   String?   @map("buyer_surname")
+  buyerPhone     String?   @map("buyer_phone")
   cancelReason   String?   @map("cancel_reason") @db.Text
   reminderSentAt DateTime? @map("reminder_sent_at")
 
@@ -785,7 +791,7 @@ model Plan {
   lsVariantYearly  String? @map("ls_variant_yearly") // variant для yearly
 
   /// Лимиты включённые в тариф
-  maxEvents               Int? @map("max_events")                 // null = безлимитно
+  maxEvents               Int? @map("max_events") // null = безлимитно
   maxTeamMembers          Int? @map("max_team_members")
   maxParticipantsPerEvent Int? @map("max_participants_per_event") // null = безлимитно
 
