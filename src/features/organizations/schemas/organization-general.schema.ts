@@ -12,11 +12,7 @@ const optionalString = (max: number) =>
 
 export const organizationGeneralSchema = (t: (key: string) => string) =>
 	z.object({
-		name: z
-			.string()
-			.trim()
-			.min(2, t("nameMin"))
-			.max(200, t("nameMax")),
+		name: z.string().trim().min(2, t("nameMin")).max(200, t("nameMax")),
 		nip: z
 			.string()
 			.trim()
@@ -39,28 +35,52 @@ export const organizationGeneralSchema = (t: (key: string) => string) =>
 			.optional()
 			.or(z.literal("").transform(() => null)),
 		legalForm: z.nativeEnum(LegalForm).nullable().optional(),
-		legalFormCode: optionalString(10),
-		vatStatus: z.nativeEnum(VatStatus).nullable().optional(),
-		vatId: optionalString(20),
-		website: z
+		legalFormCode: z
 			.string()
 			.trim()
-			.max(500)
-			.refine((v) => !v || URL.canParse(v), { message: t("invalidUrl") })
+			.regex(/^\d{3}$/, t("legalFormCodeFormat"))
 			.nullable()
 			.optional()
 			.or(z.literal("").transform(() => null)),
-		phone: optionalString(20),
-		email: z
+		vatStatus: z.nativeEnum(VatStatus).nullable().optional(),
+		vatId: z
 			.string()
 			.trim()
+			.regex(/^PL\d{10}$/, t("vatIdFormat"))
+			.nullable()
+			.optional()
+			.or(z.literal("").transform(() => null)),
+		website: z
+			.string()
+			.trim()
+			.url(t("invalidUrl"))
+			.nullable()
+			.optional()
+			.or(z.literal("").transform(() => null)),
+		phone: z
+			.string()
+			.trim()
+			.refine((v) => !v || v.length >= 11, { message: t("phoneInvalid") })
+			.nullable()
+			.optional()
+			.or(z.literal("").transform(() => null)),
+		email: z
 			.email(t("invalidEmail"))
 			.nullable()
 			.optional()
 			.or(z.literal("").transform(() => null)),
 		industry: optionalString(100),
-		mainPkdCode: optionalString(10),
-		employeeCountRange: z.nativeEnum(EmployeeCountRange).nullable().optional(),
+		mainPkdCode: z
+			.string()
+			.trim()
+			.max(20, t("mainPkdCodeInvalid"))
+			.nullable()
+			.optional()
+			.or(z.literal("").transform(() => null)),
+		employeeCountRange: z
+			.nativeEnum(EmployeeCountRange)
+			.nullable()
+			.optional(),
 	});
 
 export type OrganizationGeneralInput = z.infer<

@@ -13,7 +13,7 @@ export default function OrganizationDataPage() {
 	return (
 		<section className="organization-data-page flex flex-col gap-4">
 			<section className="main-data border border-border rounded-2xl bg-background">
-				<header className="flex justify-between items-start px-6 py-5 border-b border-border sticky -top-5 bg-background rounded-t-2xl">
+				<header className="flex justify-between items-start px-6 py-5 border-b border-border sticky -top-5 bg-background rounded-t-2xl z-10">
 					<div className="content flex items-center gap-3">
 						<div className="content__icon p-3 text-primary bg-primary/20 rounded-lg">
 							<IconBuilding />

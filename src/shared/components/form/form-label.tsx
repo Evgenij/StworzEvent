@@ -9,7 +9,7 @@ const FormLabel = ({
 	icon?: TablerIcon;
 }) => {
 	return (
-		<div className="text-muted-foreground flex items-center gap-2 text-sm ml-2">
+		<div className="text-muted-foreground flex items-center gap-1 text-sm ml-2">
 			{Icon && <Icon className="size-5 text-primary" />}
 			{children}
 		</div>

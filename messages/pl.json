@@ -736,119 +736,78 @@
 		"EXPIRED": "Wygasłe"
 	},
 	"OrganizationSettings": {
-		"saved": "Zapisano",
-		"general": {
-			"title": "Dane organizacji",
-			"description": "Podstawowe informacje o organizacji",
-			"save": "Zapisz dane",
-			"name": "Nazwa",
-			"namePlaceholder": "np. ACME Sp. z o.o.",
-			"nip": "NIP",
-			"nipPlaceholder": "1234567890",
-			"regon": "REGON",
-			"regonPlaceholder": "123456789",
-			"krs": "KRS",
-			"krsPlaceholder": "0000000000",
-			"legalForm": "Forma prawna",
-			"legalFormCode": "Kod GUS formy prawnej",
-			"legalFormCodePlaceholder": "np. 019",
-			"vatStatus": "Status VAT",
-			"ksefEnabled": "Wystawianie faktur przez KSeF",
-			"vatId": "VAT-ID",
-			"vatIdPlaceholder": "PL1234567890",
-			"website": "Strona internetowa",
-			"websitePlaceholder": "https://",
-			"phone": "Telefon",
-			"phonePlaceholder": "+48 000 000 000",
-			"email": "E-mail firmowy",
-			"emailPlaceholder": "kontakt@firma.pl",
-			"industry": "Branża",
-			"industryPlaceholder": "np. Technologia",
-			"mainPkdCode": "Główny kod PKD",
-			"mainPkdCodePlaceholder": "np. 62.01.Z",
-			"employeeCountRange": "Wielkość firmy",
-			"legalForms": {
-				"OSOBA_FIZYCZNA": "Osoba fizyczna",
-				"JEDNOOSOBOWA_DG": "Jednoosobowa DG",
-				"SP_ZOO": "Sp. z o.o.",
-				"SA": "S.A.",
-				"SP_JAWNA": "Sp. jawna",
-				"SP_PARTNERSKA": "Sp. partnerska",
-				"SP_KOMANDYTOWA": "Sp. komandytowa",
-				"SP_KOMANDYTOWO_AKCYJNA": "Sp. komandytowo-akcyjna",
-				"STOWARZYSZENIE": "Stowarzyszenie",
-				"FUNDACJA": "Fundacja",
-				"SPOLDZIELNIA": "Spółdzielnia",
-				"INNE": "Inne"
-			},
-			"vatStatuses": {
-				"ACTIVE": "Czynny podatnik VAT",
-				"EXEMPT": "Zwolniony z VAT",
-				"UNREGISTERED": "Niezarejestrowany",
-				"CANCELLED": "Wyrejestrowany"
-			},
-			"employeeCountRanges": {
-				"MICRO": "Mikro (< 10 osób)",
-				"SMALL": "Małe (10–49)",
-				"MEDIUM": "Średnie (50–249)",
-				"LARGE": "Duże (250+)"
-			},
-			"errors": {
-				"default": "Wystąpił błąd. Spróbuj ponownie.",
-				"nameRequired": "Nazwa jest wymagana",
-				"nameMin": "Nazwa musi mieć co najmniej 2 znaki",
-				"nameMax": "Nazwa może mieć maksymalnie 200 znaków",
-				"nipFormat": "NIP musi składać się z 10 cyfr",
-				"regonFormat": "REGON musi składać się z 9 lub 14 cyfr",
-				"krsFormat": "KRS musi składać się z 10 cyfr",
-				"invalidUrl": "Nieprawidłowy adres URL",
-				"invalidEmail": "Nieprawidłowy adres e-mail"
-			}
+		"title": "Dane organizacji",
+		"description": "Podstawowe informacje o organizacji",
+		"name": "Nazwa",
+		"namePlaceholder": "np. ACME Sp. z o.o.",
+		"nip": "NIP",
+		"nipPlaceholder": "10 cyfr",
+		"regon": "REGON",
+		"regonPlaceholder": "9 lub 14 cyfr",
+		"krs": "KRS",
+		"krsPlaceholder": "10 cyfr",
+		"legalForm": "Forma prawna",
+		"legalFormCode": "Kod GUS formy prawnej",
+		"legalFormCodePlaceholder": "np. 019",
+		"vatStatus": "Status VAT",
+		"ksefEnabled": "Wystawianie faktur przez KSeF",
+		"vatId": "VAT-ID",
+		"vatIdPlaceholder": "PL1234567890",
+		"website": "Strona internetowa",
+		"websitePlaceholder": "https://",
+		"phone": "Telefon",
+		"phonePlaceholder": "000-000-000",
+		"email": "E-mail firmowy",
+		"emailPlaceholder": "kontakt@firma.pl",
+		"industry": "Branża",
+		"industryPlaceholder": "np. Technologia",
+		"mainPkdCode": "Główny kod PKD",
+		"mainPkdCodePlaceholder": "np. 62.01.Z",
+		"employeeCountRange": "Wielkość firmy",
+		"legalForms": {
+			"OSOBA_FIZYCZNA": "Osoba fizyczna",
+			"JEDNOOSOBOWA_DG": "Jednoosobowa DG",
+			"SP_ZOO": "Sp. z o.o.",
+			"SA": "S.A.",
+			"SP_JAWNA": "Sp. jawna",
+			"SP_PARTNERSKA": "Sp. partnerska",
+			"SP_KOMANDYTOWA": "Sp. komandytowa",
+			"SP_KOMANDYTOWO_AKCYJNA": "Sp. komandytowo-akcyjna",
+			"STOWARZYSZENIE": "Stowarzyszenie",
+			"FUNDACJA": "Fundacja",
+			"SPOLDZIELNIA": "Spółdzielnia",
+			"INNE": "Inne"
 		},
-		"payment": {
-			"title": "Metody płatności",
-			"description": "Domyślna metoda płatności dla wydarzeń tej organizacji. Można włączyć kilka — uczestnik wybierze w kasie.",
-			"active": "Aktywna",
-			"activeDefault": "Aktywna · domyślna",
-			"disabled": "Wyłączona",
-			"auto": "Auto",
-			"optional": "opcjonalne",
-			"save": "Zapisz",
-			"cancel": "Anuluj",
-			"setAsDefault": "Ustaw jako domyślną",
-			"activeCount": "{count} aktywne",
-			"paymentInstructions": "Instrukcje płatności",
-			"freeInstructionsLabel": "Instrukcje",
-			"paymentInstructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
-			"cashInstructionsPlaceholder": "Np. Akceptujemy tylko gotówkę, prosimy o odliczoną kwotę...",
-			"freeInstructionsPlaceholder": "Np. Zabierz ze sobą identyfikator...",
-			"paymentInstructionsHint": "Tekst będzie widoczny po złożeniu zamówienia",
-			"methods": {
-				"BANK_TRANSFER": "Przelew bankowy",
-				"EXTERNAL_LINK": "Link zewnętrzny",
-				"CASH_AT_ENTRANCE": "Gotówka",
-				"FREE": "Bezpłatne"
-			},
-			"methodDescriptions": {
-				"BANK_TRANSFER": "Uczestnicy wykonają przelew na podane konto bankowe — bilet aktywuje się po Twojej weryfikacji.",
-				"EXTERNAL_LINK": "Uczestnicy zostaną przekierowani do zewnętrznej strony płatności (np. Stripe, PayPal, własna bramka).",
-				"CASH_AT_ENTRANCE": "Uczestnicy płacą gotówką przy wejściu na wydarzenie. Bilet otrzymują od razu po rejestracji.",
-				"FREE": "Włącza się automatycznie dla wydarzeń bez biletów płatnych — uczestnik otrzymuje bilet od razu po wypełnieniu formularza."
-			},
-
-			"paymentLink": "Link do płatności",
-			"paymentLinkPlaceholder": "https://",
-			"errors": {
-				"default": "Wystąpił błąd. Spróbuj ponownie.",
-				"required": "To pole jest wymagane",
-				"invalidIban": "Nieprawidłowy numer IBAN",
-				"invalidUrl": "Nieprawidłowy adres URL",
-				"max40": "Maksymalna długość to 40 znaków",
-				"max120": "Maksymalna długość to 120 znaków",
-				"max500": "Maksymalna długość to 500 znaków",
-				"max2000": "Maksymalna długość to 2000 znaków"
-			}
-		}
+		"vatStatuses": {
+			"ACTIVE": "Czynny podatnik VAT",
+			"EXEMPT": "Zwolniony z VAT",
+			"UNREGISTERED": "Niezarejestrowany",
+			"CANCELLED": "Wyrejestrowany"
+		},
+		"employeeCountRanges": {
+			"MICRO": "Mikro (< 10 osób)",
+			"SMALL": "Małe (10–49)",
+			"MEDIUM": "Średnie (50–249)",
+			"LARGE": "Duże (250+)"
+		},
+		"errors": {
+			"default": "Wystąpił błąd. Spróbuj ponownie.",
+			"phoneInvalid": "Podaj prawidłowy numer telefonu",
+			"nameRequired": "Nazwa jest wymagana",
+			"nameMin": "Nazwa musi mieć co najmniej 2 znaki",
+			"nameMax": "Nazwa może mieć maksymalnie 200 znaków",
+			"nipFormat": "NIP musi składać się z 10 cyfr",
+			"regonFormat": "REGON musi składać się z 9 lub 14 cyfr",
+			"krsFormat": "KRS musi składać się z 10 cyfr",
+			"invalidUrl": "Nieprawidłowy adres URL",
+			"invalidEmail": "Nieprawidłowy adres e-mail",
+			"legalFormCodeFormat": "Kod GUS formy prawnej musi składać się z 3 cyfr",
+			"vatIdFormat": "VAT-ID musi miec format PL + 10 cyfr",
+			"mainPkdCodeInvalid": "Główny kod PKD musi mieć maksymalnie 20 znaków"
+		},
+		"save": "Zapisz dane",
+		"saving": "Zapisuje",
+		"saved": "Zapisano"
 	},
 	"PaymentMethods": {
 		"save": "Zapisz",
@@ -875,8 +834,8 @@
 		},
 		"externalLink": {
 			"paymentLink": "Link do płatności",
+			"paymentLinkHint": "Podaj link do płatności, np. https://www.example.com/payment",
 			"paymentLinkPlaceholder": "https://",
-			"paymentLinkHint": "Uczestnicy zostaną przekierowani pod ten adres, aby dokończyć płatność",
 			"instructions": "Instrukcje płatności",
 			"instructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
 			"errors": {
@@ -886,14 +845,14 @@
 		},
 		"cashAtEntrance": {
 			"instructions": "Instrukcje płatności",
-			"instructionsPlaceholder": "Np. Akceptujemy tylko gotówkę, prosimy o odliczoną kwotę...",
+			"instructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
 			"errors": {
 				"required": "To pole jest wymagane"
 			}
 		},
 		"free": {
-			"instructions": "Instrukcje dla uczestników",
-			"instructionsPlaceholder": "Np. Zabierz ze sobą identyfikator...",
+			"instructions": "Instrukcje płatności",
+			"instructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
 			"errors": {
 				"required": "To pole jest wymagane"
 			}
