@@ -873,6 +873,31 @@
 				"invalidIban": "Nieprawidłowy numer IBAN"
 			}
 		},
+		"externalLink": {
+			"paymentLink": "Link do płatności",
+			"paymentLinkPlaceholder": "https://",
+			"paymentLinkHint": "Uczestnicy zostaną przekierowani pod ten adres, aby dokończyć płatność",
+			"instructions": "Instrukcje płatności",
+			"instructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
+			"errors": {
+				"required": "To pole jest wymagane",
+				"invalidUrl": "Nieprawidłowy adres URL"
+			}
+		},
+		"cashAtEntrance": {
+			"instructions": "Instrukcje płatności",
+			"instructionsPlaceholder": "Np. Akceptujemy tylko gotówkę, prosimy o odliczoną kwotę...",
+			"errors": {
+				"required": "To pole jest wymagane"
+			}
+		},
+		"free": {
+			"instructions": "Instrukcje dla uczestników",
+			"instructionsPlaceholder": "Np. Zabierz ze sobą identyfikator...",
+			"errors": {
+				"required": "To pole jest wymagane"
+			}
+		},
 		"errors": {
 			"default": "Wystąpił błąd. Spróbuj ponownie.",
 			"required": "To pole jest wymagane"

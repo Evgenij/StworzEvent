@@ -1,9 +1,7 @@
 import PaymentMethods from "@/features/organizations/components/payment-methods/payment-methods";
-import { useOrganization } from "@/features/organizations/context/organization-context";
 import { cn } from "@/lib/utils";
 import { Typography } from "@/shared/components";
-import { PaymentMethod } from "@prisma/client";
-import { IconCashRegister, IconClock } from "@tabler/icons-react";
+import { IconCashRegister } from "@tabler/icons-react";
 
 const PaymentMethodsPage = () => {
 	return (

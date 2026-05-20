@@ -95,7 +95,7 @@ export function OrganizationLogoUpload({
 			<div
 				{...getRootProps()}
 				className={cn(
-					"size-24 rounded-full border-2 border-dashed cursor-pointer overflow-hidden",
+					"relative size-24 rounded-full border-2 border-dashed cursor-pointer overflow-hidden",
 					"flex items-center justify-center transition-colors select-none",
 					isDragActive
 						? "border-primary bg-primary/10"

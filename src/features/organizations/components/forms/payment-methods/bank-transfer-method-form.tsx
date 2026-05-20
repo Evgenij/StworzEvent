@@ -6,19 +6,34 @@ import {
 	FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { updateBankTransferMethodAction } from "@/features/organizations/actions/payment-methods/update-bank-transfer-method.action";
 import {
 	BankTransferMethodSchema,
 	BankTransferMethodSchemaInput,
 } from "@/features/organizations/schemas/payment/bank-transfer-method.schema";
+import { PaymentMethodData } from "@/features/organizations/components/payment-methods/payment-methods";
+import { PaymentMethod } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { FormRow } from "@/shared/components/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import PaymentMethodToggleItem from "../../payment-methods/payment-methods-toggle-item";
 
-const BankTransferMethodForm = ({ className }: { className?: string }) => {
+const BankTransferMethodForm = ({
+	data,
+	className,
+	toggleMethod,
+}: {
+	organizationId: string;
+	data: PaymentMethodData;
+	className?: string;
+	toggleMethod: (method: PaymentMethod, enabled: boolean) => Promise<void>;
+}) => {
 	const t = useTranslations("PaymentMethods");
 
 	const form = useForm<BankTransferMethodSchemaInput>({
@@ -28,20 +43,46 @@ const BankTransferMethodForm = ({ className }: { className?: string }) => {
 		mode: "onBlur",
 		reValidateMode: "onChange",
 		defaultValues: {
-			organizationId: "",
-			bankAccountNumber: "",
-			bankAccountHolder: "",
-			bankName: "",
-			instructions: "",
+			organizationId: data.data.organizationId,
+			bankAccountNumber: data.data.config.bankTransfer.bankAccountNumber ?? "",
+			bankAccountHolder: data.data.config.bankTransfer.bankAccountHolder ?? "",
+			bankName: data.data.config.bankTransfer.bankName ?? "",
+			instructions: data.data.config.bankTransfer.instructions ?? "",
 		},
 	});
 
-	const { handleSubmit, control, register, formState } = form;
+	const router = useRouter();
+	const { handleSubmit, control, formState, trigger, reset } = form;
+
+	const bankTransfer = data.data.config.bankTransfer;
+	useEffect(() => {
+		reset({
+			organizationId: data.data.organizationId,
+			bankAccountNumber: bankTransfer.bankAccountNumber ?? "",
+			bankAccountHolder: bankTransfer.bankAccountHolder ?? "",
+			bankName: bankTransfer.bankName ?? "",
+			instructions: bankTransfer.instructions ?? "",
+		});
+	}, [
+		data.data.organizationId,
+		bankTransfer.bankAccountNumber,
+		bankTransfer.bankAccountHolder,
+		bankTransfer.bankName,
+		bankTransfer.instructions,
+	]);
+
+	const handleToggle = async (method: PaymentMethod, enabled: boolean) => {
+		if (enabled) {
+			const isValid = await trigger();
+			if (!isValid) throw new Error("validation_failed");
+		}
+		await toggleMethod(method, enabled);
+	};
 
 	const onSubmit: SubmitHandler<BankTransferMethodSchemaInput> = async (
-		data,
+		formData,
 	) => {
-		const result = await updateBankTransferMethodAction(data);
+		const result = await updateBankTransferMethodAction(formData);
 
 		if (!result.success) {
 			toast.error(t("errors.default"));
@@ -49,8 +90,7 @@ const BankTransferMethodForm = ({ className }: { className?: string }) => {
 		}
 
 		toast.success(t("saved"));
-
-		// router.refresh();
+		router.refresh();
 	};
 
 	return (
@@ -61,6 +101,10 @@ const BankTransferMethodForm = ({ className }: { className?: string }) => {
 				className,
 			)}
 		>
+			<PaymentMethodToggleItem
+				method={data}
+				toggleMethod={handleToggle}
+			/>
 			<FormRow>
 				<Field>
 					<FieldLabel htmlFor="bankAccountNumber">
@@ -82,7 +126,6 @@ const BankTransferMethodForm = ({ className }: { className?: string }) => {
 							/>
 						)}
 					/>
-
 					<FieldError errors={[formState.errors.bankAccountNumber]} />
 					<FieldDescription>
 						{t("bankTransfer.bankAccountNumberHint")}
@@ -142,7 +185,7 @@ const BankTransferMethodForm = ({ className }: { className?: string }) => {
 						control={control}
 						name="instructions"
 						render={({ field }) => (
-							<Input
+							<Textarea
 								id="instructions"
 								{...field}
 								placeholder={t(

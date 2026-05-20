@@ -623,5 +623,58 @@
 		"required": "This field is required",
 		"invalidUrl": "Invalid URL",
 		"endsAtAfterStartsAt": "End date must be after start date"
+	},
+	"PaymentMethods": {
+		"save": "Save",
+		"saving": "Saving...",
+		"saved": "Saved",
+		"bankTransfer": {
+			"bankAccountNumber": "Account number (IBAN)",
+			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
+			"bankAccountNumberHint": "Format: PL + 26 digits",
+			"bankAccountHolder": "Account holder",
+			"bankAccountHolderPlaceholder": "e.g. John Smith",
+			"bankName": "Bank name",
+			"bankNamePlaceholder": "e.g. mBank S.A.",
+			"instructions": "Payment instructions",
+			"instructionsPlaceholder": "Additional information for buyers...",
+			"errors": {
+				"required": "This field is required",
+				"bankAccountHolderMin": "Account holder must be at least 2 characters",
+				"bankAccountHolderMax": "Account holder must be at most 120 characters",
+				"bankNameMax": "Bank name must be at most 120 characters",
+				"bankNameMin": "Bank name must be at least 2 characters",
+				"invalidIban": "Invalid IBAN number"
+			}
+		},
+		"externalLink": {
+			"paymentLink": "Payment link",
+			"paymentLinkPlaceholder": "https://",
+			"paymentLinkHint": "Participants will be redirected to this address to complete the payment",
+			"instructions": "Payment instructions",
+			"instructionsPlaceholder": "Additional information for buyers...",
+			"errors": {
+				"required": "This field is required",
+				"invalidUrl": "Invalid URL"
+			}
+		},
+		"cashAtEntrance": {
+			"instructions": "Payment instructions",
+			"instructionsPlaceholder": "E.g. We only accept cash, please bring the exact amount...",
+			"errors": {
+				"required": "This field is required"
+			}
+		},
+		"free": {
+			"instructions": "Instructions for participants",
+			"instructionsPlaceholder": "E.g. Bring your ID...",
+			"errors": {
+				"required": "This field is required"
+			}
+		},
+		"errors": {
+			"default": "An error occurred. Please try again.",
+			"required": "This field is required"
+		}
 	}
 }

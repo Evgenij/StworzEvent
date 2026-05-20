@@ -1,30 +1,53 @@
-import { cn } from "@/lib/utils";
 import { PaymentMethod } from "@prisma/client";
 import BankTransferMethodForm from "../forms/payment-methods/bank-transfer-method-form";
-import PaymentMethodToggleItem from "./toggle-item";
-import { PaymentMethodsTabsItemType } from "./tabs/payment-methods-tabs-item";
+import ExternalLinkMethodForm from "../forms/payment-methods/external-link-method-form";
+import CashAtEntranceMethodForm from "../forms/payment-methods/cash-at-entrance-method-form";
+import FreeMethodForm from "../forms/payment-methods/free-method-form";
+import { PaymentMethodData } from "./payment-methods";
 
 const PaymentFormController = ({
 	method,
 	className,
+	toggleMethod,
 }: {
-	method: PaymentMethodsTabsItemType;
+	method: PaymentMethodData;
 	className?: string;
+	toggleMethod: (method: PaymentMethod, enabled: boolean) => Promise<void>;
 }) => {
-	const methods = {
-		[PaymentMethod.BANK_TRANSFER]: <BankTransferMethodForm />,
-		[PaymentMethod.EXTERNAL_LINK]: <div>external link</div>,
-		[PaymentMethod.CASH_AT_ENTRANCE]: <div>cash at entrance</div>,
-		[PaymentMethod.FREE]: <div>free</div>,
+	const forms = {
+		[PaymentMethod.BANK_TRANSFER]: (
+			<BankTransferMethodForm
+				organizationId={method.data.organizationId}
+				data={method}
+				toggleMethod={toggleMethod}
+			/>
+		),
+		[PaymentMethod.EXTERNAL_LINK]: (
+			<ExternalLinkMethodForm
+				organizationId={method.data.organizationId}
+				data={method}
+				toggleMethod={toggleMethod}
+			/>
+		),
+		[PaymentMethod.CASH_AT_ENTRANCE]: (
+			<CashAtEntranceMethodForm
+				organizationId={method.data.organizationId}
+				data={method}
+				toggleMethod={toggleMethod}
+			/>
+		),
+		[PaymentMethod.FREE]: (
+			<FreeMethodForm
+				organizationId={method.data.organizationId}
+				data={method}
+				toggleMethod={toggleMethod}
+			/>
+		),
 	};
 
 	return (
 		<section className="payment-method-form-controller flex flex-col gap-5">
-			<PaymentMethodToggleItem
-				method={method}
-				isEnabled={method.isEnabled}
-			/>
-			{methods[method.data.methodName]}
+			{forms[method.meta.methodName]}
 		</section>
 	);
 };

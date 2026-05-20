@@ -1,10 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import PaymentMethodsTabsItem, {
-	PaymentMethodsTabsItemType,
-} from "./payment-methods-tabs-item";
-import { PaymentMethodMeta } from "../payment-methods";
+import PaymentMethodsTabsItem from "./payment-methods-tabs-item";
+import { PaymentMethodData, PaymentMethodTabMetaType } from "../payment-methods";
 import { PaymentMethod } from "@prisma/client";
 
 const PaymentMethodsTabs = ({
@@ -15,10 +13,10 @@ const PaymentMethodsTabs = ({
 	onMethodChange,
 }: {
 	className?: string;
-	paymentMethods: PaymentMethodMeta[];
+	paymentMethods: PaymentMethodTabMetaType[];
 	enabledPaymentMethods: PaymentMethod[];
-	activeMethod: PaymentMethodsTabsItemType;
-	onMethodChange: (item: PaymentMethodsTabsItemType) => void;
+	activeMethod: PaymentMethodData;
+	onMethodChange: (item: PaymentMethodData) => void;
 }) => {
 	return (
 		<div
@@ -28,25 +26,31 @@ const PaymentMethodsTabs = ({
 			)}
 		>
 			{paymentMethods.map((method) => {
-				const isEnabled = enabledPaymentMethods.includes(
-					method.methodName,
-				);
+				const isEnabled = enabledPaymentMethods.includes(method.methodName);
 				return (
 					<PaymentMethodsTabsItem
 						key={method.methodName}
-						data={method}
-						isActive={
-							activeMethod.data.methodName === method.methodName
-						}
-						isEnabled={isEnabled}
-						onSelect={() =>
-							onMethodChange({
-								data: method,
-								isActive: true,
+						data={{
+							meta: method,
+							data: {
+								organizationId: activeMethod.data.organizationId,
+								isActive:
+									activeMethod.meta.methodName === method.methodName,
 								isEnabled,
-								onSelect: () => {},
-							})
-						}
+								config: activeMethod.data.config,
+								onSelect: () =>
+									onMethodChange({
+										meta: method,
+										data: {
+											organizationId: activeMethod.data.organizationId,
+											isActive: true,
+											isEnabled,
+											onSelect: () => {},
+											config: activeMethod.data.config,
+										},
+									}),
+							},
+						}}
 					/>
 				);
 			})}
