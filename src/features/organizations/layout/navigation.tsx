@@ -59,24 +59,24 @@ const OrganizationPageNavigation = ({ className }: { className?: string }) => {
 			icon: IconCrown,
 			active: false,
 		},
-		// {
-		// 	href: ORGANIZATION_PLAN_ROUTE(id),
-		// 	name: "Powiadomienia",
-		// 	icon: IconBell,
-		// 	active: false,
-		// },
-		// {
-		// 	href: ORGANIZATION_PLAN_ROUTE(id),
-		// 	name: "Bezpieczeństwo",
-		// 	icon: IconShield,
-		// 	active: false,
-		// },
-		// {
-		// 	href: ORGANIZATION_PLAN_ROUTE(id),
-		// 	name: "Integracje",
-		// 	icon: IconPlug,
-		// 	active: false,
-		// },
+		{
+			href: ORGANIZATION_PLAN_ROUTE(id),
+			name: "Powiadomienia",
+			icon: IconBell,
+			active: false,
+		},
+		{
+			href: ORGANIZATION_PLAN_ROUTE(id),
+			name: "Bezpieczeństwo",
+			icon: IconShield,
+			active: false,
+		},
+		{
+			href: ORGANIZATION_PLAN_ROUTE(id),
+			name: "Integracje",
+			icon: IconPlug,
+			active: false,
+		},
 	];
 
 	const activeLink = links.find((l) => pathname.endsWith(l.href)) ?? links[1];
