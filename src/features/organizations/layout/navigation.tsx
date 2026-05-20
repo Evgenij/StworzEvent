@@ -57,7 +57,7 @@ const OrganizationPageNavigation = ({ className }: { className?: string }) => {
 			href: ORGANIZATION_PLAN_ROUTE(id),
 			name: "Plan",
 			icon: IconCrown,
-			active: true,
+			active: false,
 		},
 		// {
 		// 	href: ORGANIZATION_PLAN_ROUTE(id),

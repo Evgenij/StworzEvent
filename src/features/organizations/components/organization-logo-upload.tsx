@@ -100,7 +100,7 @@ export function OrganizationLogoUpload({
 					isDragActive
 						? "border-primary bg-primary/10"
 						: logo
-							? "border-transparent"
+							? "border border-white/10 border-solid"
 							: "border-white/10 bg-white/10 hover:border-white/30",
 					busy && "pointer-events-none opacity-70",
 				)}
