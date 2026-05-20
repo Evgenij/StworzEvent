@@ -230,6 +230,7 @@
 			"title": "Organizacje",
 			"new": "Nowa organizacja",
 			"data": "Dane organizacji",
+			"payment-methods": "Metody płatności",
 			"plan": "Plan"
 		},
 		"tickets": {
@@ -834,13 +835,7 @@
 				"CASH_AT_ENTRANCE": "Uczestnicy płacą gotówką przy wejściu na wydarzenie. Bilet otrzymują od razu po rejestracji.",
 				"FREE": "Włącza się automatycznie dla wydarzeń bez biletów płatnych — uczestnik otrzymuje bilet od razu po wypełnieniu formularza."
 			},
-			"bankAccountNumber": "Numer konta (IBAN)",
-			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
-			"bankAccountNumberHint": "Format: PL + 26 cyfr",
-			"bankAccountHolder": "Właściciel konta",
-			"bankAccountHolderPlaceholder": "np. Jan Kowalski",
-			"bankName": "Nazwa banku",
-			"bankNamePlaceholder": "np. mBank S.A.",
+
 			"paymentLink": "Link do płatności",
 			"paymentLinkPlaceholder": "https://",
 			"errors": {
@@ -853,6 +848,34 @@
 				"max500": "Maksymalna długość to 500 znaków",
 				"max2000": "Maksymalna długość to 2000 znaków"
 			}
+		}
+	},
+	"PaymentMethods": {
+		"save": "Zapisz",
+		"saving": "Zapisuje...",
+		"saved": "Zapisano",
+		"bankTransfer": {
+			"bankAccountNumber": "Numer konta (IBAN)",
+			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
+			"bankAccountNumberHint": "Format: PL + 26 cyfr",
+			"bankAccountHolder": "Właściciel konta",
+			"bankAccountHolderPlaceholder": "np. Jan Kowalski",
+			"bankName": "Nazwa banku",
+			"bankNamePlaceholder": "np. mBank S.A.",
+			"instructions": "Instrukcje płatności",
+			"instructionsPlaceholder": "Dodatkowe informacje dla kupujących...",
+			"errors": {
+				"required": "To pole jest wymagane",
+				"bankAccountHolderMin": "Właściciel musi mieć co najmniej 2 znaki",
+				"bankAccountHolderMax": "Właściciel musi mieć co najwyżej 120 znaków",
+				"bankNameMax": "Nazwa banku może mieć co najwyżej 120 znaków",
+				"bankNameMin": "Nazwa banku musi mieć co najmniej 2 znaki",
+				"invalidIban": "Nieprawidłowy numer IBAN"
+			}
+		},
+		"errors": {
+			"default": "Wystąpił błąd. Spróbuj ponownie.",
+			"required": "To pole jest wymagane"
 		}
 	}
 }

@@ -31,10 +31,10 @@ import { cn } from "@/lib/utils";
 import {
 	CreateOrganizationInput,
 	createOrganizationSchema,
-} from "../schemas/create-organization.schema";
-import { createOrganizationAction } from "../actions/create-organization.action";
+} from "../../schemas/create-organization.schema";
 import { FormGroup, FormHeader, FormRow } from "@/shared/components/form";
 import { PolishCityCombobox } from "@/features/events/components/editor/location/polish-city-combobox";
+import { createOrganizationAction } from "../../actions/create-organization.action";
 
 export function CreateOrganizationForm({
 	header,

@@ -14,6 +14,7 @@ import {
 	IconFreeRights,
 } from "@tabler/icons-react";
 import { PaymentMethodsTabsItemType } from "./tabs/payment-methods-tabs-item";
+import PaymentFormController from "./payment-form-controller";
 
 export type PaymentMethodMeta = {
 	method: PaymentMethod;
@@ -71,14 +72,18 @@ const PaymentMethods = ({
 		});
 
 	return (
-		<div className={cn("payment-methods flex flex-col gap-2", className)}>
-			<PaymentMethodsTabs
-				paymentMethods={paymentMethodsList}
-				enabledPaymentMethods={enabledPaymentMethods}
-				activeMethod={activeMethod}
-				onMethodChange={setActiveMethod}
-			/>
-			<PaymentMethodToggleItem activeMethod={activeMethod} />
+		<div className={cn("payment-methods flex flex-col gap-5", className)}>
+			<div className="payment-methods__buttons flex flex-col gap-2">
+				<PaymentMethodsTabs
+					paymentMethods={paymentMethodsList}
+					enabledPaymentMethods={enabledPaymentMethods}
+					activeMethod={activeMethod}
+					onMethodChange={setActiveMethod}
+				/>
+				<PaymentMethodToggleItem activeMethod={activeMethod} />
+			</div>
+
+			<PaymentFormController method={activeMethod.data.method} />
 		</div>
 	);
 };

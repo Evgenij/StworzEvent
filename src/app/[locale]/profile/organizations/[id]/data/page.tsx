@@ -55,7 +55,7 @@ export default function OrganizationDataPage() {
 					/>
 				</main>
 			</section>
-			<section className="payment-data border border-border rounded-2xl bg-background">
+			{/* <section className="payment-data border border-border rounded-2xl bg-background">
 				<header className="flex justify-between items-start px-6 py-5 border-b border-border sticky -top-5 bg-background rounded-t-2xl">
 					<div className="content flex items-center gap-3">
 						<div className="content__icon p-3 text-primary bg-primary/20 rounded-lg">
@@ -83,28 +83,9 @@ export default function OrganizationDataPage() {
 							org.enabledPaymentMethods as PaymentMethod[]
 						}
 					/>
-					{/* <OrganizationPaymentForm
-						organizationId={org.id}
-						initialData={{
-							enabledPaymentMethods:
-								org.enabledPaymentMethods as any,
-							defaultPaymentMethod:
-								org.defaultPaymentMethod as any,
-							bankAccountNumber: org.defaultBankAccountNumber,
-							bankAccountHolder: org.defaultBankAccountHolder,
-							bankName: org.defaultBankName,
-							bankTransferInstructions:
-								org.bankTransferInstructions,
-							paymentLink: org.defaultPaymentLink,
-							externalLinkInstructions:
-								org.externalLinkInstructions,
-							cashAtEntranceInstructions:
-								org.cashAtEntranceInstructions,
-							freeInstructions: org.freeInstructions,
-						}}
-					/> */}
+					
 				</main>
-			</section>
+			</section> */}
 		</section>
 	);
 }

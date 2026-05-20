@@ -76,7 +76,7 @@ const OrganizationDataLayout = async ({
 		<OrganizationProvider organization={org}>
 			<div className="organization-data-layout flex flex-col gap-5">
 				<HeaderWrapper>
-					<div className="container max-w-4xl flex gap-20 justify-between items-center mx-auto sm:pt-10">
+					<div className="container max-w-5xl flex gap-20 justify-between items-center mx-auto sm:pt-10">
 						<div className="main-data flex items-center gap-5">
 							<OrganizationLogoUpload
 								organizationId={org.id}

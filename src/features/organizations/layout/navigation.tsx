@@ -2,6 +2,7 @@
 
 import {
 	ORGANIZATION_DATA_ROUTE,
+	ORGANIZATION_PAYMENT_METHODS_ROUTE,
 	ORGANIZATION_PLAN_ROUTE,
 } from "@/config/routes";
 import { useOrganization } from "@/features/organizations/context/organization-context";
@@ -9,6 +10,7 @@ import { cn } from "@/lib/utils";
 import {
 	IconBell,
 	IconBuilding,
+	IconCreditCard,
 	IconCrown,
 	IconNotification,
 	IconPlug,
@@ -37,6 +39,12 @@ const OrganizationPageNavigation = ({ className }: { className?: string }) => {
 			href: ORGANIZATION_DATA_ROUTE(id),
 			name: "Dane organizacji",
 			icon: IconBuilding,
+			active: true,
+		},
+		{
+			href: ORGANIZATION_PAYMENT_METHODS_ROUTE(id),
+			name: "Metody płatności",
+			icon: IconCreditCard,
 			active: true,
 		},
 		{
