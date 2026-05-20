@@ -1,12 +1,14 @@
 import { cn } from "@/lib/utils";
 import { PaymentMethod } from "@prisma/client";
 import BankTransferMethodForm from "../forms/payment-methods/bank-transfer-method-form";
+import PaymentMethodToggleItem from "./toggle-item";
+import { PaymentMethodsTabsItemType } from "./tabs/payment-methods-tabs-item";
 
 const PaymentFormController = ({
 	method,
 	className,
 }: {
-	method: PaymentMethod;
+	method: PaymentMethodsTabsItemType;
 	className?: string;
 }) => {
 	const methods = {
@@ -16,7 +18,15 @@ const PaymentFormController = ({
 		[PaymentMethod.FREE]: <div>free</div>,
 	};
 
-	return methods[method];
+	return (
+		<section className="payment-method-form-controller flex flex-col gap-5">
+			<PaymentMethodToggleItem
+				method={method}
+				isEnabled={method.isEnabled}
+			/>
+			{methods[method.data.methodName]}
+		</section>
+	);
 };
 
 export default PaymentFormController;

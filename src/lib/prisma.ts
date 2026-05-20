@@ -2,10 +2,6 @@ import { PrismaClient } from "@prisma/client";
 // import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const adapter = new PrismaPg({
-	connectionString: process.env.DATABASE_URL!,
-});
-
 const globalForPrisma = global as unknown as {
 	prisma: ReturnType<typeof createPrismaClient>;
 };
@@ -19,6 +15,9 @@ function addSoftDeleteFilter(args: Record<string, unknown>) {
 }
 
 function createPrismaClient() {
+	const adapter = new PrismaPg({
+		connectionString: process.env.DATABASE_URL!,
+	});
 	const client = new PrismaClient({ adapter });
 
 	return client.$extends({

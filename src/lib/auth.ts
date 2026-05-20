@@ -207,7 +207,6 @@ const options = {
 				});
 			},
 		}),
-		nextCookies(),
 	] as any[],
 	session: {
 		expiresIn: 30 * 24 * 60 * 60, // 30 days
@@ -261,6 +260,7 @@ export const auth = betterAuth({
 				},
 			};
 		}, options),
+		nextCookies(),
 	],
 });
 

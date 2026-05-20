@@ -1,5 +1,3 @@
-"use client";
-
 import PaymentMethods from "@/features/organizations/components/payment-methods/payment-methods";
 import { useOrganization } from "@/features/organizations/context/organization-context";
 import { cn } from "@/lib/utils";
@@ -8,8 +6,6 @@ import { PaymentMethod } from "@prisma/client";
 import { IconCashRegister, IconClock } from "@tabler/icons-react";
 
 const PaymentMethodsPage = () => {
-	const org = useOrganization();
-
 	return (
 		<div
 			className={cn(
@@ -30,17 +26,9 @@ const PaymentMethodsPage = () => {
 						</p>
 					</div>
 				</div>
-				<div className="text-xs text-muted-foreground flex items-center gap-1">
-					<IconClock className="size-4" />
-					<span>Zmieniono 4 lutego 2026</span>
-				</div>
 			</header>
 			<main className="p-5">
-				<PaymentMethods
-					enabledPaymentMethods={
-						org.enabledPaymentMethods as PaymentMethod[]
-					}
-				/>
+				<PaymentMethods />
 			</main>
 		</div>
 	);

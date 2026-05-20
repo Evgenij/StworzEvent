@@ -28,12 +28,16 @@ const PaymentMethodsTabs = ({
 			)}
 		>
 			{paymentMethods.map((method) => {
-				const isEnabled = enabledPaymentMethods.includes(method.method);
+				const isEnabled = enabledPaymentMethods.includes(
+					method.methodName,
+				);
 				return (
 					<PaymentMethodsTabsItem
-						key={method.method}
+						key={method.methodName}
 						data={method}
-						isActive={activeMethod.data.method === method.method}
+						isActive={
+							activeMethod.data.methodName === method.methodName
+						}
 						isEnabled={isEnabled}
 						onSelect={() =>
 							onMethodChange({
