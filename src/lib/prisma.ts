@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-// import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
 import ws from "ws";
@@ -19,7 +18,9 @@ function addSoftDeleteFilter(args: Record<string, unknown>) {
 }
 
 function createPrismaClient() {
-	const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
+	const adapter = new PrismaNeon({
+		connectionString: process.env.DATABASE_URL!,
+	});
 	const client = new PrismaClient({ adapter });
 
 	return client.$extends({
@@ -105,6 +106,8 @@ export async function softRestore(
 }
 
 // Helper: query including soft-deleted records (e.g. for admin panel)
-export function withDeleted<T extends object>(args: T): T & { where: { deletedAt?: unknown } } {
+export function withDeleted<T extends object>(
+	args: T,
+): T & { where: { deletedAt?: unknown } } {
 	return args as T & { where: { deletedAt?: unknown } };
 }

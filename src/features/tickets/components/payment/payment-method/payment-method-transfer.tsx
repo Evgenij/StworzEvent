@@ -51,10 +51,7 @@ const PaymentMethodTransfer = ({ className }: { className?: string }) => {
 				<div className="row py-2 pb-0 flex gap-5 items-start justify-between">
 					<span className="min-w-max">Dodatkowa informacja</span>
 					<p className=" text-sm text-black text-right">
-						hjfj fhgf hfgjfgjgj fghgfh fghgfjfgj fgjgfhdfh gfjfhgfh
-						ffghfghfg fghfghfgh hgfh fgh gh gfhhgfhfghfgh gfhgfh
-						fjfgj fgjgfhdfh gfjfhgfh ffghfghfg fghfghfgh hgfh fgh gh
-						gfhhgfhfghfgh gfhgfh
+						Dodatkowa informacja o przelewu
 					</p>
 				</div>
 			</div>
