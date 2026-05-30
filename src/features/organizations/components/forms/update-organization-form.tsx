@@ -26,7 +26,6 @@ import {
 	IconFileDigit,
 	IconFileInfo,
 	IconLoader,
-	IconPhone,
 	IconReceiptDollar,
 	IconWorld,
 } from "@tabler/icons-react";

@@ -23,6 +23,12 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import PaymentMethodToggleItem from "../../payment-methods/payment-methods-toggle-item";
+import { IconDeviceFloppy, IconLoader } from "@tabler/icons-react";
+import {
+	InputGroup,
+	InputGroupInput,
+	InputGroupTextarea,
+} from "@/components/ui/input-group";
 
 const ExternalLinkMethodForm = ({
 	data,
@@ -102,53 +108,83 @@ const ExternalLinkMethodForm = ({
 				toggleMethod={handleToggle}
 			/>
 			<FormRow>
-				<Field>
-					<FieldLabel htmlFor="paymentLink">
-						{t("externalLink.paymentLink")}
-					</FieldLabel>
-					<Controller
-						control={control}
-						name="paymentLink"
-						render={({ field }) => (
-							<Input
-								id="paymentLink"
-								{...field}
-								placeholder={t("externalLink.paymentLinkPlaceholder")}
-								aria-invalid={!!formState.errors.paymentLink}
-							/>
-						)}
-					/>
-					<FieldError errors={[formState.errors.paymentLink]} />
-					<FieldDescription>
-						{t("externalLink.paymentLinkHint")}
-					</FieldDescription>
-				</Field>
+				<Controller
+					control={control}
+					name="paymentLink"
+					render={({ field, fieldState }) => (
+						<Field>
+							<FieldLabel htmlFor="paymentLink">
+								{t("externalLink.paymentLink")}
+							</FieldLabel>
+							<InputGroup>
+								<InputGroupInput
+									{...field}
+									id="paymentLink"
+									type="url"
+									placeholder={t(
+										"externalLink.paymentLinkPlaceholder",
+									)}
+									aria-invalid={fieldState.invalid}
+								/>
+							</InputGroup>
+
+							{fieldState.invalid ? (
+								<FieldError errors={[fieldState.error]} />
+							) : (
+								<FieldDescription>
+									{t("externalLink.paymentLinkHint")}
+								</FieldDescription>
+							)}
+						</Field>
+					)}
+				/>
 			</FormRow>
 			<FormRow>
-				<Field>
-					<FieldLabel htmlFor="externalLinkInstructions">
-						{t("externalLink.instructions")}
-					</FieldLabel>
-					<Controller
-						control={control}
-						name="instructions"
-						render={({ field }) => (
-							<Textarea
-								id="externalLinkInstructions"
-								{...field}
-								value={field.value ?? ""}
-								placeholder={t(
-									"externalLink.instructionsPlaceholder",
-								)}
-								aria-invalid={!!formState.errors.instructions}
-							/>
-						)}
-					/>
-					<FieldError errors={[formState.errors.instructions]} />
-				</Field>
+				<Controller
+					control={control}
+					name="instructions"
+					render={({ field, fieldState }) => (
+						<Field>
+							<FieldLabel htmlFor="externalLinkInstructions">
+								{t("externalLink.instructions")}
+							</FieldLabel>
+							<InputGroup>
+								<InputGroupTextarea
+									{...field}
+									id="externalLinkInstructions"
+									value={field.value ?? ""}
+									placeholder={t(
+										"externalLink.instructionsPlaceholder",
+									)}
+									aria-invalid={fieldState.invalid}
+								/>
+							</InputGroup>
+
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
 			</FormRow>
 			<FormRow className="flex justify-end">
-				<Button type="submit">{t("save")}</Button>
+				<Button
+					type="submit"
+					disabled={formState.isSubmitting}
+					className="w-fit"
+				>
+					{formState.isSubmitting ? (
+						<>
+							<IconLoader className="size-4 animate-spin" />
+							{t("saving")}
+						</>
+					) : (
+						<>
+							<IconDeviceFloppy className="size-4" />
+							{t("save")}
+						</>
+					)}
+				</Button>
 			</FormRow>
 		</form>
 	);

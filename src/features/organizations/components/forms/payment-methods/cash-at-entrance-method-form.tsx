@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-	Field,
-	FieldError,
-	FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { updateCashAtEntranceMethodAction } from "@/features/organizations/actions/payment-methods/update-cash-at-entrance-method.action";
 import {
@@ -21,6 +17,8 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import PaymentMethodToggleItem from "../../payment-methods/payment-methods-toggle-item";
+import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group";
+import { IconDeviceFloppy, IconLoader } from "@tabler/icons-react";
 
 const CashAtEntranceMethodForm = ({
 	data,
@@ -92,30 +90,54 @@ const CashAtEntranceMethodForm = ({
 				toggleMethod={handleToggle}
 			/>
 			<FormRow>
-				<Field>
-					<FieldLabel htmlFor="cashInstructions">
-						{t("cashAtEntrance.instructions")}
-					</FieldLabel>
-					<Controller
-						control={control}
-						name="instructions"
-						render={({ field }) => (
-							<Textarea
-								id="cashInstructions"
-								{...field}
-								value={field.value ?? ""}
-								placeholder={t(
-									"cashAtEntrance.instructionsPlaceholder",
-								)}
-								aria-invalid={!!formState.errors.instructions}
-							/>
-						)}
-					/>
-					<FieldError errors={[formState.errors.instructions]} />
-				</Field>
+				<Controller
+					control={control}
+					name="instructions"
+					render={({ field, fieldState }) => (
+						<Field>
+							<FieldLabel htmlFor="cashInstructions">
+								{t("cashAtEntrance.instructions")}
+							</FieldLabel>
+							<InputGroup>
+								<InputGroupTextarea
+									{...field}
+									id="cashInstructions"
+									value={field.value ?? ""}
+									placeholder={t(
+										"cashAtEntrance.instructionsPlaceholder",
+									)}
+									aria-invalid={fieldState.invalid}
+								/>
+							</InputGroup>
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+
+							{fieldState.invalid && (
+								<FieldError errors={[fieldState.error]} />
+							)}
+						</Field>
+					)}
+				/>
 			</FormRow>
 			<FormRow className="flex justify-end">
-				<Button type="submit">{t("save")}</Button>
+				<Button
+					type="submit"
+					disabled={formState.isSubmitting}
+					className="w-fit"
+				>
+					{formState.isSubmitting ? (
+						<>
+							<IconLoader className="size-4 animate-spin" />
+							{t("saving")}
+						</>
+					) : (
+						<>
+							<IconDeviceFloppy className="size-4" />
+							{t("save")}
+						</>
+					)}
+				</Button>
 			</FormRow>
 		</form>
 	);

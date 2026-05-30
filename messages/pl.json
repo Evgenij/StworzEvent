@@ -815,7 +815,7 @@
 		"saved": "Zapisano",
 		"bankTransfer": {
 			"bankAccountNumber": "Numer konta (IBAN)",
-			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
+			"bankAccountNumberPlaceholder": "PL__ ____ ____ ____ ____ ____ ____",
 			"bankAccountNumberHint": "Format: PL + 26 cyfr",
 			"bankAccountHolder": "Właściciel konta",
 			"bankAccountHolderPlaceholder": "np. Jan Kowalski",
