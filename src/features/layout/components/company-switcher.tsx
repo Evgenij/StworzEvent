@@ -36,6 +36,7 @@ import { NEW_EVENT_ROUTE, NEW_ORGANIZATION_ROUTE } from "@/config/routes";
 import { Button } from "@/components/ui/button";
 import { deleteOrganizationAction } from "@/features/organizations/actions/delete-organization.action";
 import { MY_ORGANIZATIONS_QUERY_KEY } from "@/features/organizations/hooks/use-my-organizations";
+import { useActiveOrganization } from "@/features/organizations/context/active-organization-context";
 
 type OrgInfo = {
 	id: string;
@@ -52,9 +53,8 @@ export function CompanySwitcher({
 	const { isMobile } = useSidebar();
 	const queryClient = useQueryClient();
 	const router = useRouter();
-	const [active, setActive] = useState<OrgInfo | null>(
-		organizations[0] ?? null,
-	);
+	const { activeOrganization: active, setActiveOrganization: setActive } =
+		useActiveOrganization();
 	const [deletingId, setDeletingId] = useState<string | null>(null);
 	const [, startTransition] = useTransition();
 

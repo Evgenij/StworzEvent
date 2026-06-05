@@ -3,7 +3,7 @@ import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { MemberRole, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
 export const GET = withApiHandler(async (req: Request) => {
@@ -27,25 +27,18 @@ export const GET = withApiHandler(async (req: Request) => {
 		: "createdAt";
 	const order = searchParams.get("order") === "asc" ? "asc" : "desc";
 
-	const organizationId = await prisma.organizationMember.findFirst({
-		where: {
-			userId: session.user.id,
-			memberRole: MemberRole.OWNER,
-		},
+	const organizationId = searchParams.get("organizationId");
+
+	const memberOrg = await prisma.organizationMember.findFirst({
+		where: { userId: session.user.id, organizationId: organizationId ?? undefined },
 		select: { organizationId: true },
 	});
 
-	const where: Prisma.EventWhereInput = {
-		organization: {
-			organizationMembers: {
-				some: { userId: session.user.id, memberRole: MemberRole.OWNER },
-			},
-		},
-	};
+	if (!memberOrg) throw new ApiError(ErrorCode.FORBIDDEN);
 
-	if (organizationId) {
-		where.organizationId = organizationId.organizationId;
-	}
+	const where: Prisma.EventWhereInput = {
+		organizationId: memberOrg.organizationId,
+	};
 
 	const events = await prisma.event.findMany({
 		where,
@@ -54,7 +47,12 @@ export const GET = withApiHandler(async (req: Request) => {
 			categories: {
 				include: {
 					category: {
-						select: { id: true, name: true, slug: true, icon: true },
+						select: {
+							id: true,
+							name: true,
+							slug: true,
+							icon: true,
+						},
 					},
 				},
 			},

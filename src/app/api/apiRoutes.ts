@@ -4,5 +4,6 @@ export const API_ROUTES = {
 		list: "/events",
 		create: "/events/create",
 		listById: (id: string) => `/events/${id}`,
+		listByUser: "/events/user",
 	},
 };

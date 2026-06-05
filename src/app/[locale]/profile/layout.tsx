@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import React from "react";
 import { AppSidebar, GridBg } from "@/features/layout";
 import { SiteHeader } from "@/features/layout";
+import { ActiveOrganizationProvider } from "@/features/organizations/context/active-organization-context";
 import { UserRole } from "@prisma/client";
 
 export const metadata: Metadata = {
@@ -42,43 +43,25 @@ const ProfileLayout = async ({
 	}
 
 	return (
-		<SidebarProvider>
-			<AppSidebar
-				user={{
-					...sessionRaw.user,
-					role: sessionRaw.user.role ?? UserRole.USER,
-				}}
-			/>
-			<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg!">
-				<SiteHeader />
-				<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 rounded-xl h-full overflow-y-auto">
-					<GridBg className="opacity-0 xl:opacity-50 2xl:opacity-100" />
-					<div className="container max-w-7xl mx-auto z-10">
-						{children}
-					</div>
-				</main>
-			</SidebarInset>
-		</SidebarProvider>
-		// <div className="[--header-height:calc(--spacing(14))]">
-		// 	<SidebarProvider className="flex flex-col">
-		// 		<div className="flex flex-1">
-		// 			<AppSidebar
-		// 				user={{
-		// 					...sessionRaw.user,
-		// 					role: sessionRaw.user.role ?? UserRole.USER,
-		// 				}}
-		// 			/>
-		// 			<SidebarInset className="h-full overflow-hidden">
-		// 				<SiteHeader />
-		// 				<main className="profile-layout flex flex-1 flex-col gap-4 p-4 px-5">
-		// 					{children}
-		// 				</main>
-		// 			</SidebarInset>
-		// 		</div>
-		// 	</SidebarProvider>
-
-		// 	<MobileMenu />
-		// </div>
+		<ActiveOrganizationProvider>
+			<SidebarProvider>
+				<AppSidebar
+					user={{
+						...sessionRaw.user,
+						role: sessionRaw.user.role ?? UserRole.USER,
+					}}
+				/>
+				<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg!">
+					<SiteHeader />
+					<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 rounded-xl h-full overflow-y-auto">
+						<GridBg className="opacity-0 xl:opacity-50 2xl:opacity-100" />
+						<div className="container max-w-7xl mx-auto z-10">
+							{children}
+						</div>
+					</main>
+				</SidebarInset>
+			</SidebarProvider>
+		</ActiveOrganizationProvider>
 	);
 };
 

@@ -22,10 +22,10 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from "@/i18n/routing";
 import { NEW_EVENT_ROUTE } from "@/config/routes";
 import ActionPanel from "../components/action-panel";
-import FutureEventItem from "../components/future-events/future-event-item";
-import FutureEventsList from "../components/future-events/future-events-list";
+import FutureEventItem from "../components/organizer/future-events/future-event-item";
+import FutureEventsList from "../components/organizer/future-events/future-events-list";
 import WrapperFutureFunction from "@/features/layout/components/wrapper-future-function";
-import LiveActionList from "../components/live-actions/live-action-list";
+import LiveActionList from "../components/organizer/live-actions/live-action-list";
 
 export function OrganizerDashboard({ user }: { user: UserType }) {
 	return (
