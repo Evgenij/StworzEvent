@@ -5,12 +5,12 @@ import { apiFetcher } from "@/app/api/fetcher";
 import QUERY_KEYS from "@/config/query-keys";
 import { useActiveOrganization } from "@/features/organizations/context/active-organization-context";
 import { ApiResponse } from "@/types/api-response.types";
-import { Event } from "@prisma/client";
+import { EventWithCategories } from "@/types/event";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, ReactNode } from "react";
 
 interface EventsListContextType {
-	events: Event[];
+	events: EventWithCategories[];
 	isLoading: boolean;
 }
 
@@ -20,16 +20,13 @@ const EventsListContext = createContext<EventsListContextType | undefined>(
 
 interface EventsListProviderProps {
 	children: ReactNode;
-	events?: Event[];
+	events?: EventWithCategories[];
 }
 
 export const EventsListProvider = ({ children }: { children: ReactNode }) => {
 	const { activeOrganization } = useActiveOrganization();
 	const organizationId = activeOrganization?.id;
-
-	const { data, isLoading } = useQuery<
-		ApiResponse<Event[]>
-	>({
+	const { data, isLoading } = useQuery<ApiResponse<EventWithCategories[]>>({
 		queryKey: [QUERY_KEYS.USER_DATA.EVENTS, organizationId],
 		queryFn: () =>
 			apiFetcher(API_ROUTES.events.list, {

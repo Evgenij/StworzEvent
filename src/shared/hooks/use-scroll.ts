@@ -1,28 +1,38 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, RefObject } from "react";
 
-export function useScroll(downThreshold: number, upThreshold?: number) {
+export function useScroll(
+	downThreshold: number,
+	upThreshold?: number,
+	container?: RefObject<HTMLElement | null> | string,
+) {
 	const [scrolled, setScrolled] = useState(false);
 	const scrollUpThreshold = upThreshold ?? downThreshold / 2;
 
 	useEffect(() => {
+		const resolveTarget = (): HTMLElement | Window => {
+			if (!container) return window;
+			if (typeof container === "string")
+				return document.querySelector<HTMLElement>(container) ?? window;
+			return container.current ?? window;
+		};
+
+		const target = resolveTarget();
+
 		const handleScroll = () => {
-			const y = window.scrollY;
+			const y = target instanceof Window ? target.scrollY : target.scrollTop;
+
 			// Hysteresis: different thresholds for up/down to prevent flickering
 			setScrolled((prev) => {
-				if (prev) {
-					// Currently scrolled - only unscroll when below lower threshold
-					return y > scrollUpThreshold;
-				}
-				// Currently not scrolled - only scroll when above higher threshold
+				if (prev) return y > scrollUpThreshold;
 				return y > downThreshold;
 			});
 		};
 
-		window.addEventListener("scroll", handleScroll, { passive: true });
+		target.addEventListener("scroll", handleScroll, { passive: true });
 		handleScroll();
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, [downThreshold, scrollUpThreshold]);
+		return () => target.removeEventListener("scroll", handleScroll);
+	}, [downThreshold, scrollUpThreshold, container]);
 
 	return scrolled;
 }

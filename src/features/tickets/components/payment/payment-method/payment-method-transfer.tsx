@@ -18,7 +18,7 @@ const PaymentMethodTransfer = ({ className }: { className?: string }) => {
 				<div className="row py-2 pt-0 flex items-center justify-between">
 					<span>Odbiorca</span>
 					<p className="text-black group font-medium text-sm flex items-center gap-1 cursor-pointer">
-						Jan Kowalski
+						Mateusz Pacerowski
 						<IconCopy className="size-4 text-muted-foreground group-hover:text-primary" />
 					</p>
 				</div>

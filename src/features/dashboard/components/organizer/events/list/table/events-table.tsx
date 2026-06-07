@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import EventsTableRow from "./events-table-row";
-import { Event } from "@prisma/client";
+import { EventWithCategories } from "@/types/event";
 import { IconLoader } from "@tabler/icons-react";
 
 const EventsTable = ({
@@ -17,7 +17,7 @@ const EventsTable = ({
 	isLoading,
 }: {
 	className?: string;
-	events: Event[] | null;
+	events: EventWithCategories[] | null;
 	isLoading?: boolean;
 }) => {
 	return (
@@ -27,10 +27,13 @@ const EventsTable = ({
 
 				<TableHeader className="bg-muted rounded-tr-xl">
 					<TableRow>
-						<TableHead>Wydarzenie</TableHead>
+						<TableHead className="max-w-[300px]">
+							Wydarzenie
+						</TableHead>
 						<TableHead>Status</TableHead>
-						<TableHead>Method</TableHead>
-						<TableHead className="text-right">Amount</TableHead>
+						<TableHead>Termin</TableHead>
+						<TableHead>Sprzedaz</TableHead>
+						<TableHead className="text-right"></TableHead>
 					</TableRow>
 				</TableHeader>
 
@@ -49,7 +52,7 @@ const EventsTable = ({
 						</TableRow>
 					) : (
 						events &&
-						events.map((event: Event) => (
+						events.map((event) => (
 							<EventsTableRow key={event.id} data={event} />
 						))
 					)}

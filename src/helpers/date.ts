@@ -1,3 +1,5 @@
+type locale = "pl" | "en";
+
 export const formatDate = (date: string | Date) => {
 	return new Date(date).toLocaleString("ru-RU", {
 		day: "2-digit",
@@ -13,29 +15,29 @@ export class DateTimeFormatter {
 		return date.getDate();
 	}
 
-	static weekday(date: Date, locale: string) {
+	static weekday(date: Date, locale: locale) {
 		return new Intl.DateTimeFormat(locale, {
 			weekday: "long",
 		}).format(date);
 	}
 
-	static month(date: Date, locale: string) {
+	static month(date: Date, locale: locale) {
 		return new Intl.DateTimeFormat(locale, { month: "long" }).format(date);
 	}
-	static year(date: Date, locale: string) {
+	static year(date: Date, locale: locale) {
 		return new Intl.DateTimeFormat(locale, { year: "numeric" }).format(
 			date,
 		);
 	}
 
-	static date(date: Date, locale: string) {
+	static date(date: Date, locale: locale) {
 		return new Intl.DateTimeFormat(locale, {
 			day: "numeric",
 			month: "long",
 		}).format(date);
 	}
 
-	static time(date: Date | null, locale: string) {
+	static time(date: Date | null, locale: locale) {
 		return date
 			? new Intl.DateTimeFormat(locale, {
 					hour: "2-digit",

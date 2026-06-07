@@ -72,7 +72,7 @@ export function BetaSignupForm() {
 						onChange={(e) =>
 							setForm({ ...form, name: e.target.value })
 						}
-						placeholder="Jan"
+						placeholder="Mateusz"
 						required
 						className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-[#e86405]"
 					/>
@@ -90,7 +90,7 @@ export function BetaSignupForm() {
 						onChange={(e) =>
 							setForm({ ...form, surname: e.target.value })
 						}
-						placeholder="Kowalski"
+						placeholder="Pacerowski"
 						required
 						className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-[#e86405]"
 					/>
@@ -108,7 +108,7 @@ export function BetaSignupForm() {
 					onChange={(e) =>
 						setForm({ ...form, email: e.target.value })
 					}
-					placeholder="jan@firma.pl"
+					placeholder="Mateusz@firma.pl"
 					required
 					className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-[#e86405]"
 				/>

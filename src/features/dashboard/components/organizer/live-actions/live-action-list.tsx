@@ -6,7 +6,7 @@ const mockActions: LiveActionItemType[] = [
 	{
 		id: "1",
 		type: "ORDER_PAID",
-		participant: "Marek Kowalski",
+		participant: "Marek Pacerowski",
 		ticketCount: 2,
 		ticketType: "Standard",
 		event: "Warsaw Jazz Night",

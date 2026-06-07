@@ -26,8 +26,7 @@ import { EventStatus } from "@prisma/client";
 import { CalendarRange } from "@/components/ui/calendar-range";
 import { type DateRange } from "react-day-picker";
 import { useTranslations } from "next-intl";
-
-// const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
+import { useScroll } from "@/shared/hooks/use-scroll";
 
 type Status = {
 	label: string;
@@ -35,6 +34,8 @@ type Status = {
 };
 
 const EventsListSearch = ({ className }: { className?: string }) => {
+	const scrolled = useScroll(100, undefined, ".profile-layout");
+
 	const t = useTranslations("EventStatus");
 	const [statuses, setStatuses] = useState<Status[]>([]);
 	const today = new Date(
@@ -99,6 +100,10 @@ const EventsListSearch = ({ className }: { className?: string }) => {
 			className={cn(
 				// "events-list-search flex flex-col gap-3 p-2 border border-border rounded-2xl bg-background",
 				"events-list-search flex flex-col gap-3",
+				{
+					"bg-white sticky -top-4 left-0 right-0 z-10 p-2 border-b border-r border-l border-border":
+						scrolled,
+				},
 				className,
 			)}
 		>

@@ -76,7 +76,7 @@ const orderBlueprints = [
 ] as const;
 
 const participantNames = [
-	["Jan", "Kowalski"],
+	["Mateusz", "Pacerowski"],
 	["Ewa", "Nowak"],
 	["Pawel", "Mazur"],
 	["Magda", "Kaczmarek"],

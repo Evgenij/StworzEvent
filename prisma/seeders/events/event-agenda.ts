@@ -16,7 +16,7 @@ const agendaItemsData = [
 		startsAt: new Date("2026-03-15T10:00:00"),
 		endsAt: new Date("2026-03-15T10:30:00"),
 		location: "Sala główna",
-		speakerName: "Jan Kowalski",
+		speakerName: "Mateusz Pacerowski",
 		order: 2,
 	},
 	{

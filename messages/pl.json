@@ -36,8 +36,8 @@
 	"Auth": {
 		"divider": "lub",
 		"placeholders": {
-			"name": "Jan",
-			"surname": "Kowalski",
+			"name": "Mateusz",
+			"surname": "Pacerowski",
 			"mail": "poczta@example.com",
 			"password": "wpisz haslo",
 			"phone": "111 222 333"
@@ -387,7 +387,7 @@
 			"bankAccountNumber": "Numer konta (IBAN)",
 			"bankAccountNumberPlaceholder": "PL00 0000 0000 0000 0000 0000 0000",
 			"bankAccountHolder": "Właściciel konta",
-			"bankAccountHolderPlaceholder": "np. Jan Kowalski",
+			"bankAccountHolderPlaceholder": "np. Mateusz Pacerowski",
 			"paymentLink": "Link do płatności",
 			"paymentLinkPlaceholder": "https://",
 			"paymentInstructions": "Instrukcje płatności (opcjonalne)",
@@ -515,7 +515,7 @@
 			"location": "Sala / Scena",
 			"locationPlaceholder": "np. Sala A",
 			"speakerName": "Prelegent",
-			"speakerNamePlaceholder": "np. Jan Kowalski",
+			"speakerNamePlaceholder": "np. Mateusz Pacerowski",
 			"save": "Zapisz",
 			"saving": "Zapisywanie...",
 			"saved": "Zapisano",
@@ -818,7 +818,7 @@
 			"bankAccountNumberPlaceholder": "PL__ ____ ____ ____ ____ ____ ____",
 			"bankAccountNumberHint": "Format: PL + 26 cyfr",
 			"bankAccountHolder": "Właściciel konta",
-			"bankAccountHolderPlaceholder": "np. Jan Kowalski",
+			"bankAccountHolderPlaceholder": "np. Mateusz Pacerowski",
 			"bankName": "Nazwa banku",
 			"bankNamePlaceholder": "np. mBank S.A.",
 			"instructions": "Instrukcje płatności",

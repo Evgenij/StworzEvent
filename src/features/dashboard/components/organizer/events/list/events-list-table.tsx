@@ -14,6 +14,8 @@ import { useEventsListContext } from "./context/event-list-context";
 const EventsListTable = ({ className }: { className?: string }) => {
 	const { events, isLoading } = useEventsListContext();
 
+	console.log(events);
+
 	return (
 		<div
 			className={cn(
@@ -22,11 +24,14 @@ const EventsListTable = ({ className }: { className?: string }) => {
 			)}
 		>
 			<div className="table-actions flex justify-between items-center p-3 px-4">
-				<span className="text-muted-foreground text-sm">
-					Znaleziono {events.length} wydarzeń
-				</span>
+				<p className="text-muted-foreground text-xs">
+					Znaleziono{" "}
+					<span className="font-semibold text-black">
+						{events.length} wydarzeń
+					</span>
+				</p>
 			</div>
-			<div className="table-container rounded-xl overflow-hidden m-2 mt-0">
+			<div className="table-container">
 				<EventsTable events={events} isLoading={isLoading} />
 			</div>
 		</div>
