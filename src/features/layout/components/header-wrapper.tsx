@@ -11,7 +11,7 @@ const HeaderWrapper = ({
 	return (
 		<div
 			className={cn(
-				"header-wrapper overflow-hidden relative px-6 py-5 bg-black text-white rounded-3xl",
+				"header-wrapper relative overflow-hidden px-6 py-5 bg-black text-white rounded-3xl",
 				className,
 			)}
 		>
@@ -31,9 +31,9 @@ const HeaderWrapper = ({
 					backgroundSize: "80px 80px",
 				}}
 			></div>
-			<div className="absolute opacity-80 -top-2/3 left-0 bg-primary w-1/2 h-full blur-[180px] rounded-full"></div>
+			<div className="absolute opacity-80 -top-2/3 left-0 bg-primary w-1/2 h-full blur-[180px] rounded-full "></div>
 			<div className="absolute opacity-50 -bottom-2/3 right-20 bg-purple-400 w-1/3 h-full blur-[150px] rounded-full"></div>
-			<div className="content relative z-10 h-full">{children}</div>
+			<div className="content z-10 h-full relative">{children}</div>
 		</div>
 	);
 };

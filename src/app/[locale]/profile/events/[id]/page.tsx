@@ -35,12 +35,9 @@ const OrganizerEventPage = async ({
 
 	return (
 		<div className="event-page">
-			<HeaderWrapper className="pt-25">
-				<BackButton
-					variant="transparent"
-					className="absolute top-6 left-6"
-				/>
-				<header className="relative z-10 flex justify-between items-end">
+			<HeaderWrapper>
+				<BackButton variant="transparent" />
+				<header className="z-10 flex justify-between items-end mt-16">
 					<div className="title-event flex flex-col gap-2">
 						<div className="badges flex gap-1">
 							<div className="badge flex items-center gap-1 bg-green-500/20 w-fit text-sm text-green-300 px-3 pl-2 py-1 rounded-full backdrop-blur-[2px]">

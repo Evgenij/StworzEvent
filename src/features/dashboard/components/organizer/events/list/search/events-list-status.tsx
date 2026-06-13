@@ -17,7 +17,6 @@ const EventsListStatus = ({
 			)}
 		>
 			{status}
-			<Badge variant="outline">1</Badge>
 		</div>
 	);
 };

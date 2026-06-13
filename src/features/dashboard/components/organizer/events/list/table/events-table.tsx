@@ -7,24 +7,72 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import EventsTableRow from "./events-table-row";
+import EventsTableRow from "./row/events-table-row";
 import { EventWithCategories } from "@/types/event";
-import { IconLoader } from "@tabler/icons-react";
+import { IconLoader, IconCalendarOff } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+
+const COLSPAN = 5;
 
 const EventsTable = ({
 	className,
 	events,
 	isLoading,
+	refetch,
 }: {
 	className?: string;
 	events: EventWithCategories[] | null;
 	isLoading?: boolean;
+	refetch: () => void;
 }) => {
+	const renderBody = () => {
+		if (isLoading || events === null) {
+			return (
+				<TableRow>
+					<TableCell
+						colSpan={COLSPAN}
+						className="py-12 text-center text-muted-foreground"
+					>
+						<div className="flex flex-col gap-2 items-center justify-center">
+							<IconLoader className="animate-spin size-5" />
+							<span>Ładowanie wydarzeń...</span>
+						</div>
+					</TableCell>
+				</TableRow>
+			);
+		}
+
+		if (events.length === 0) {
+			return (
+				<TableRow>
+					<TableCell
+						colSpan={COLSPAN}
+						className="py-12 text-center text-muted-foreground"
+					>
+						<div className="flex flex-col gap-2 items-center justify-center">
+							<IconCalendarOff className="size-8 opacity-40" />
+							<span>Nie znaleziono wydarzeń</span>
+							<Button
+								variant="outline"
+								size="xs"
+								onClick={refetch}
+							>
+								Odszukaj ponownie
+							</Button>
+						</div>
+					</TableCell>
+				</TableRow>
+			);
+		}
+
+		return events.map((event) => (
+			<EventsTableRow key={event.id} data={event} />
+		));
+	};
+
 	return (
 		<div className={cn("events-table", className)}>
 			<Table>
-				{/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-
 				<TableHeader className="bg-muted rounded-tr-xl">
 					<TableRow>
 						<TableHead className="max-w-[300px]">
@@ -37,26 +85,7 @@ const EventsTable = ({
 					</TableRow>
 				</TableHeader>
 
-				<TableBody>
-					{isLoading ? (
-						<TableRow className={cn("events-table-row", className)}>
-							<TableCell
-								className="text-muted-foreground text-center"
-								colSpan={4}
-							>
-								<div className="flex gap-1 items-center justify-center py-2">
-									<IconLoader className="animate-spin" />
-									Ladowanie
-								</div>
-							</TableCell>
-						</TableRow>
-					) : (
-						events &&
-						events.map((event) => (
-							<EventsTableRow key={event.id} data={event} />
-						))
-					)}
-				</TableBody>
+				<TableBody>{renderBody()}</TableBody>
 			</Table>
 		</div>
 	);

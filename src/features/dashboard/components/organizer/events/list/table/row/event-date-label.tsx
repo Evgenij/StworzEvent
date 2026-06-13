@@ -62,14 +62,19 @@ const EventDateLabel = ({
 			<div className="time flex flex-col gap-0.5 text-xs ">
 				<p className="capitalize font-medium">
 					{DateTimeFormatter.weekday(new Date(date), "pl")}
-					{" · "}
+					{/* {" · "}
 					<span className="opacity-80">
 						{DateTimeFormatter.time(new Date(date), "pl")}
-					</span>
+					</span> */}
 				</p>
-				{!lastDate && (
-					<span className="text-primary font-medium">za 3 dni</span>
-				)}
+				{/* {!lastDate && (
+					<span className="text-primary font-medium bg-red-500">
+						za 3 dni
+					</span>
+				)} */}
+				<span className="opacity-80">
+					{DateTimeFormatter.time(new Date(date), "pl")}
+				</span>
 			</div>
 		</div>
 	);

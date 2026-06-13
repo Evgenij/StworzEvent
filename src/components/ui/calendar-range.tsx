@@ -21,10 +21,9 @@ export function CalendarRange({ value, onChange, className }: CalendarRangeProps
 	// 	new Date().getMonth(),
 	// 	new Date().getDate(),
 	// );
-	const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
-		from: value?.from,
-		to: value?.to,
-	});
+	const [dateRange, setDateRange] = React.useState<DateRange | undefined>(
+		value?.from || value?.to ? { from: value?.from, to: value?.to } : undefined,
+	);
 
 	const handleDatesChange = (dateRange: DateRange | undefined) => {
 		setDateRange(dateRange);
@@ -47,12 +46,12 @@ export function CalendarRange({ value, onChange, className }: CalendarRangeProps
 						placeholder="Wybierz termin"
 						readOnly
 						value={
-							dateRange
-								? `${dateRange?.from?.toLocaleDateString()} - ${dateRange?.to?.toLocaleDateString()}`
+							dateRange?.from || dateRange?.to
+								? `${dateRange?.from?.toLocaleDateString() ?? ""} - ${dateRange?.to?.toLocaleDateString() ?? ""}`
 								: ""
 						}
 					/>
-					{dateRange && (
+					{(dateRange?.from || dateRange?.to) && (
 						<InputGroupAddon
 							align="inline-end"
 							onClick={(e) => {

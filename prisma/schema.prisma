@@ -72,18 +72,19 @@ enum CoinTxType {
 }
 
 enum EventStatus {
-  DRAFT
-  REVIEW
-  PUBLISHED
-  SALES_OPEN
-  SALES_PAUSED
-  SALES_CLOSED
-  LIVE
-  COMPLETED
-  CANCELLED
-  ARCHIVED
-  BLOCKED
-  UNPUBLISHED
+  DRAFT // not full data event
+  //REVIEW // does not require review - for future use (moderator review)
+  //REVIEWED // for future use (moderator review)
+  //BLOCKED// for future use (moderator review)
+  UNPUBLISHED // data event is full, but not published
+  PUBLISHED // data event is full, published
+  SALES_OPEN // participants can register for the event
+  SALES_PAUSED // sales are paused, participants can register for the event, but not pay for tickets
+  SALES_CLOSED // sales are closed, participants can register for the event, but not pay for tickets, and cannot cancel the event
+  LIVE // event is live, participants can check in, pay for tickets, and can not cancel the event
+  COMPLETED // event is completed 
+  CANCELLED // event is cancelled, participants must refund the tickets
+  ARCHIVED // event is archived
 }
 
 enum OrderStatus {

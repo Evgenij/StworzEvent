@@ -120,17 +120,15 @@
 	},
 	"EventStatus": {
 		"DRAFT": "Szkic",
-		"REVIEW": "W trakcie weryfikacji",
+		"UNPUBLISHED": "Nie opublikowane",
 		"PUBLISHED": "Opublikowany",
 		"SALES_OPEN": "Sprzedaż otwarta",
 		"SALES_PAUSED": "Sprzedaż wstrzymana",
 		"SALES_CLOSED": "Sprzedaż zamknięta",
-		"LIVE": "Live",
-		"COMPLETED": "Zakończony",
-		"CANCELLED": "Anulowany",
-		"ARCHIVED": "Zarchiwizowany",
-		"BLOCKED": "Zablokowany",
-		"UNPUBLISHED": "Wycofany z publikacji"
+		"LIVE": "Aktywne",
+		"COMPLETED": "Zakończone",
+		"CANCELLED": "Anulowane",
+		"ARCHIVED": "Zarchiwizowane"
 	},
 	"OrganizerOrders": {
 		"unknownBuyer": "Brak danych kupującego",

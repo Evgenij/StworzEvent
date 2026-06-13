@@ -2,28 +2,14 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Typography } from "@/shared/components";
 import { EventWithCategories } from "@/types/event";
-import {
-	IconDots,
-	IconEdit,
-	IconMapPin,
-	IconShare,
-	IconTrash,
-} from "@tabler/icons-react";
+import { IconMapPin } from "@tabler/icons-react";
 import Image from "next/image";
 import EventStatusBadge from "./event-status-badge";
-import { Button } from "@/components/ui/button";
 import EventDateLabel from "./event-date-label";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "@/i18n/routing";
-import { EVENT_ROUTE, MAIN_PAGE_EVENT_ROUTE } from "@/config/routes";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { EVENT_PAGE_ROUTE } from "@/config/routes";
+import EventActions from "./event-actions";
 
 type EventsTableRowType = {
 	data: EventWithCategories;
@@ -34,7 +20,7 @@ const EventsTableRow = ({ className, data }: EventsTableRowType) => {
 	return (
 		<TableRow className={cn("events-table-row group", className)}>
 			{/* nazwa */}
-			<TableCell className="font-medium max-w-[300px] overflow-hidden group">
+			<TableCell className="font-medium max-w-[400px] overflow-hidden group">
 				<div className="name flex gap-3 items-center min-w-0 relative">
 					<Image
 						src={data.coverImage || "/placeholder.jpg"}
@@ -52,7 +38,7 @@ const EventsTableRow = ({ className, data }: EventsTableRowType) => {
 							</span>
 						)}
 						<Link
-							href={MAIN_PAGE_EVENT_ROUTE(data.slug)}
+							href={EVENT_PAGE_ROUTE(data.id)}
 							className="no-underline"
 						>
 							<Typography
@@ -86,7 +72,7 @@ const EventsTableRow = ({ className, data }: EventsTableRowType) => {
 			</TableCell>
 
 			{/* sprzedaz */}
-			<TableCell>
+			<TableCell className="bg-red-500">
 				<div className="count-participants">
 					<div className="flex justify-between mb-1">
 						<div className="counts text-muted-foreground gap-0.5 flex items-baseline items-baseaseline">
@@ -104,38 +90,12 @@ const EventsTableRow = ({ className, data }: EventsTableRowType) => {
 			</TableCell>
 
 			{/* akcje */}
-			<TableCell className="text-right">
-				<div className="flex justify-end">
-					<Button variant="ghost" size="icon-sm">
-						<IconEdit />
-					</Button>
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" size="icon-sm">
-								<IconDots />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent>
-							<DropdownMenuGroup>
-								<DropdownMenuItem>
-									<IconEdit />
-									Edit
-								</DropdownMenuItem>
-								<DropdownMenuItem>
-									<IconShare />
-									Share
-								</DropdownMenuItem>
-							</DropdownMenuGroup>
-							<DropdownMenuSeparator />
-							<DropdownMenuGroup>
-								<DropdownMenuItem variant="destructive">
-									<IconTrash />
-									Delete
-								</DropdownMenuItem>
-							</DropdownMenuGroup>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
+			<TableCell className="text-right alig">
+				<EventActions
+					status={data.status}
+					slug={data.slug}
+					eventId={data.id}
+				/>
 			</TableCell>
 		</TableRow>
 	);

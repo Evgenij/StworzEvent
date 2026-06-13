@@ -9,13 +9,23 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import EventsTable from "./table/events-table";
-import { useEventsListContext } from "./context/event-list-context";
+import { EventWithCategories } from "@/types/event";
+import { Button } from "@/components/ui/button";
+import { IconRefresh } from "@tabler/icons-react";
 
-const EventsListTable = ({ className }: { className?: string }) => {
-	const { events, isLoading } = useEventsListContext();
-
-	console.log(events);
-
+const EventsListTable = ({
+	className,
+	events,
+	isLoading,
+	isFetching,
+	onRefresh,
+}: {
+	className?: string;
+	events: EventWithCategories[] | null;
+	isLoading: boolean;
+	isFetching?: boolean;
+	onRefresh: () => void;
+}) => {
 	return (
 		<div
 			className={cn(
@@ -24,15 +34,23 @@ const EventsListTable = ({ className }: { className?: string }) => {
 			)}
 		>
 			<div className="table-actions flex justify-between items-center p-3 px-4">
-				<p className="text-muted-foreground text-xs">
+				<p className="text-muted-foreground text-sm">
 					Znaleziono{" "}
 					<span className="font-semibold text-black">
-						{events.length} wydarzeń
+						{events?.length ?? 0} wydarzeń
 					</span>
 				</p>
+				<Button onClick={onRefresh} variant="ghost" size="sm" disabled={isFetching}>
+					<IconRefresh className={cn(isFetching && "animate-spin")} />
+					Odswież
+				</Button>
 			</div>
 			<div className="table-container">
-				<EventsTable events={events} isLoading={isLoading} />
+				<EventsTable
+					events={events}
+					isLoading={isLoading}
+					refetch={onRefresh}
+				/>
 			</div>
 		</div>
 	);

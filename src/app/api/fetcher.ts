@@ -1,6 +1,8 @@
+type ParamValue = string | number | boolean | string[] | undefined;
+
 type FetcherOptions = {
 	method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-	params?: Record<string, string | number | boolean | undefined>;
+	params?: Record<string, ParamValue>;
 	body?: unknown;
 	headers?: HeadersInit;
 };
@@ -12,11 +14,18 @@ export async function apiFetcher<T>(
 	const { method = "GET", params, body, headers } = options || {};
 
 	const query = params
-		? `?${new URLSearchParams(
-				Object.entries(params)
-					.filter(([, v]) => v !== undefined)
-					.map(([k, v]) => [k, String(v)]),
-			).toString()}`
+		? (() => {
+				const p = new URLSearchParams();
+				for (const [k, v] of Object.entries(params)) {
+					if (v === undefined) continue;
+					if (Array.isArray(v)) {
+						v.forEach((item) => p.append(k, item));
+					} else {
+						p.set(k, String(v));
+					}
+				}
+				return `?${p.toString()}`;
+			})()
 		: "";
 
 	//const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/api${url}${query}`;

@@ -50,6 +50,22 @@ export class DateTimeFormatter {
 		return date?.toISOString() ?? "";
 	}
 
+	// toISOString() конвертирует в UTC и смещает дату в часовых поясах UTC+N.
+	// Этот метод использует локальные компоненты даты.
+	static toLocalDateString(date: Date) {
+		const y = date.getFullYear();
+		const m = String(date.getMonth() + 1).padStart(2, "0");
+		const d = String(date.getDate()).padStart(2, "0");
+		return `${y}-${m}-${d}`;
+	}
+
+	// new Date("2026-07-05") парсит как UTC-полночь и смещает дату.
+	// Конструктор с числами создаёт локальную дату без смещения.
+	static parseLocalDate(dateStr: string): Date {
+		const [y, m, d] = dateStr.split("-").map(Number);
+		return new Date(y, m - 1, d);
+	}
+
 	static isSameDay(date1: Date, date2: Date): boolean {
 		return (
 			date1.getFullYear() === date2.getFullYear() &&

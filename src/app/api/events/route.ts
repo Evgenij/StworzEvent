@@ -3,7 +3,7 @@ import { ApiError } from "@/error/api-error";
 import { ErrorCode } from "@/types/error-code";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { Prisma } from "@prisma/client";
+import { EventStatus, Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
 export const GET = withApiHandler(async (req: Request) => {
@@ -36,8 +36,30 @@ export const GET = withApiHandler(async (req: Request) => {
 
 	if (!memberOrg) throw new ApiError(ErrorCode.FORBIDDEN);
 
+	const search = searchParams.get("search") ?? "";
+	const statusValues = searchParams.getAll("status") as EventStatus[];
+	const from = searchParams.get("from");
+	const to = searchParams.get("to");
+
+	// Парсим как локальную дату (без UTC-смещения) и берём конец дня для to
+	const parseLocalDate = (dateStr: string) => {
+		const [y, m, d] = dateStr.split("-").map(Number);
+		return new Date(y, m - 1, d);
+	};
+	const fromDate = from ? parseLocalDate(from) : undefined;
+	const toDate = to ? parseLocalDate(to) : undefined;
+	if (toDate) toDate.setHours(23, 59, 59, 999);
+
 	const where: Prisma.EventWhereInput = {
 		organizationId: memberOrg.organizationId,
+		...(search && { title: { contains: search, mode: "insensitive" } }),
+		...(statusValues.length > 0 && { status: { in: statusValues } }),
+		...((fromDate || toDate) && {
+			startsAt: {
+				...(fromDate && { gte: fromDate }),
+				...(toDate && { lte: toDate }),
+			},
+		}),
 	};
 
 	const events = await prisma.event.findMany({
