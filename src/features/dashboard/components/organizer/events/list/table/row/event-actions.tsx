@@ -20,11 +20,11 @@ import {
 	IconArchive,
 	IconArrowBack,
 	IconBroadcast,
+	IconCancel,
 	IconCircleCheck,
 	IconDots,
 	IconEdit,
 	IconExternalLink,
-	IconLock,
 	IconPlayerPause,
 	IconPlayerPlay,
 	IconPlayerStop,
@@ -83,6 +83,27 @@ const getEventsActions = (
 		},
 	],
 
+	[EventStatus.UNPUBLISHED]: [
+		{
+			label: "Opublikuj",
+			icon: IconPlayerPlay,
+			callback: changeStatus(deps, EventStatus.PUBLISHED),
+		},
+		null,
+		{
+			label: "Archiwizuj",
+			icon: IconArchive,
+			callback: changeStatus(deps, EventStatus.ARCHIVED),
+		},
+		null,
+		{
+			label: "Usuń wydarzenie",
+			icon: IconTrash,
+			callback: deleteEvent(deps),
+			variant: "destructive",
+		},
+	],
+
 	[EventStatus.PUBLISHED]: [
 		{
 			label: "Otwórz sprzedaż",
@@ -111,7 +132,7 @@ const getEventsActions = (
 		},
 		{
 			label: "Zamknij sprzedaż",
-			icon: IconPlayerStop,
+			icon: IconCancel,
 			callback: changeStatus(deps, EventStatus.SALES_CLOSED),
 		},
 		null,
@@ -120,6 +141,7 @@ const getEventsActions = (
 			icon: IconTrash,
 			callback: deleteEvent(deps),
 			variant: "destructive",
+			disabled: true,
 		},
 	],
 
@@ -140,6 +162,7 @@ const getEventsActions = (
 			icon: IconTrash,
 			callback: deleteEvent(deps),
 			variant: "destructive",
+			disabled: true,
 		},
 	],
 
@@ -156,26 +179,33 @@ const getEventsActions = (
 		},
 		null,
 		{
-			label: "Zarchiwizuj wydarzenie",
-			icon: IconTrash,
-			callback: deleteEvent(deps),
-			disabled: true,
-			variant: "destructive",
+			label: "Odwolaj wydarzenie",
+			icon: IconCancel,
+			callback: changeStatus(deps, EventStatus.CANCELLED),
 		},
-	],
-
-	[EventStatus.LIVE]: [
-		// {
-		// 	label: "Zakończ wydarzenie",
-		// 	icon: IconCircleCheck,
-		// 	callback: changeStatus(deps, EventStatus.COMPLETED),
-		// },
-		// null,
+		null,
 		{
 			label: "Usuń wydarzenie",
 			icon: IconTrash,
 			callback: deleteEvent(deps),
 			variant: "destructive",
+			disabled: true,
+		},
+	],
+
+	[EventStatus.LIVE]: [
+		{
+			label: "Zakończ wydarzenie",
+			icon: IconCircleCheck,
+			callback: changeStatus(deps, EventStatus.COMPLETED),
+		},
+		null,
+		{
+			label: "Usuń wydarzenie",
+			icon: IconTrash,
+			callback: deleteEvent(deps),
+			variant: "destructive",
+			disabled: true,
 		},
 	],
 
@@ -191,6 +221,7 @@ const getEventsActions = (
 			icon: IconTrash,
 			callback: deleteEvent(deps),
 			variant: "destructive",
+			disabled: true,
 		},
 	],
 
@@ -206,29 +237,23 @@ const getEventsActions = (
 			icon: IconTrash,
 			callback: deleteEvent(deps),
 			variant: "destructive",
+			disabled: true,
 		},
 	],
 
 	[EventStatus.ARCHIVED]: [
 		{
-			label: "Przywróć",
+			label: "Przywróć do szkicu",
 			icon: IconArrowBack,
 			callback: changeStatus(deps, EventStatus.DRAFT),
 		},
-	],
-
-	[EventStatus.UNPUBLISHED]: [
-		{
-			label: "Opublikuj",
-			icon: IconPlayerPlay,
-			callback: changeStatus(deps, EventStatus.PUBLISHED),
-		},
 		null,
 		{
-			label: "Archiwizuj",
+			label: "Usuń wydarzenie",
 			icon: IconTrash,
-			callback: changeStatus(deps, EventStatus.ARCHIVED),
+			callback: deleteEvent(deps),
 			variant: "destructive",
+			disabled: true,
 		},
 	],
 });

@@ -20,6 +20,7 @@ export interface EventListFilters {
 	searchText: string;
 	statuses: EventStatus[];
 	dateRange: DateRange | undefined;
+	dateSort?: "asc" | "desc";
 }
 
 interface EventsListContextType {
@@ -41,6 +42,7 @@ const DEFAULT_FILTERS: EventListFilters = {
 	searchText: "",
 	statuses: [],
 	dateRange: undefined,
+	dateSort: "desc",
 };
 
 export const EventsListProvider = ({ children }: { children: ReactNode }) => {
@@ -71,7 +73,9 @@ export const EventsListProvider = ({ children }: { children: ReactNode }) => {
 							filters.dateRange.to,
 						),
 					}),
-					order: "asc",
+					...(filters.dateSort
+						? { sort: "startsAt", order: filters.dateSort }
+						: { sort: "createdAt", order: "desc" }),
 				},
 			}),
 		enabled: !!organizationId,
@@ -81,7 +85,14 @@ export const EventsListProvider = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<EventsListContext.Provider
-			value={{ events, isLoading, isFetching, filters, setFilters, refetch }}
+			value={{
+				events,
+				isLoading,
+				isFetching,
+				filters,
+				setFilters,
+				refetch,
+			}}
 		>
 			{children}
 		</EventsListContext.Provider>

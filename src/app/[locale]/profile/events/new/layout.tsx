@@ -27,7 +27,7 @@ const NewEventLayout = async ({
 
 	return (
 		<div className="new-event-layout flex w-full flex-col gap-6">
-			<div
+			{/* <div
 				style={{
 					position: "absolute",
 					top: -1,
@@ -45,7 +45,7 @@ const NewEventLayout = async ({
 					maskImage:
 						"linear-gradient(to right, #000 0%, transparent 30%, transparent 70%, #000 100%)",
 				}}
-			/>
+			/> */}
 			{children}
 		</div>
 	);

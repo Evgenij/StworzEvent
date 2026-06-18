@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	Table,
 	TableBody,
@@ -9,10 +11,22 @@ import {
 import { cn } from "@/lib/utils";
 import EventsTableRow from "./row/events-table-row";
 import { EventWithCategories } from "@/types/event";
-import { IconLoader, IconCalendarOff } from "@tabler/icons-react";
+import {
+	IconLoader,
+	IconCalendarOff,
+	IconSortAscending2,
+	IconSortDescending2,
+	IconRefresh,
+} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { useEventsListContext } from "../context/event-list-context";
 
 const COLSPAN = 5;
+
+const NEXT_SORT = {
+	asc: "desc",
+	desc: "asc",
+} as const;
 
 const EventsTable = ({
 	className,
@@ -25,6 +39,19 @@ const EventsTable = ({
 	isLoading?: boolean;
 	refetch: () => void;
 }) => {
+	const { filters, setFilters } = useEventsListContext();
+	const dateSort = filters.dateSort;
+
+	const handleDateSort = () => {
+		setFilters({
+			...filters,
+			dateSort: NEXT_SORT[(dateSort ?? "desc") as keyof typeof NEXT_SORT],
+		});
+	};
+
+	const DateSortIcon =
+		dateSort === "desc" ? IconSortDescending2 : IconSortAscending2;
+
 	const renderBody = () => {
 		if (isLoading || events === null) {
 			return (
@@ -45,18 +72,24 @@ const EventsTable = ({
 		if (events.length === 0) {
 			return (
 				<TableRow>
-					<TableCell
-						colSpan={COLSPAN}
-						className="py-12 text-center text-muted-foreground"
-					>
-						<div className="flex flex-col gap-2 items-center justify-center">
+					<TableCell colSpan={COLSPAN} className="py-12 text-center">
+						<div className="flex flex-col gap-4 items-center justify-center">
 							<IconCalendarOff className="size-8 opacity-40" />
-							<span>Nie znaleziono wydarzeń</span>
+							<div className="flex flex-col gap-1">
+								<p className="font-medium">
+									Nie znaleziono wydarzeń
+								</p>
+								<span className="text-muted-foreground text-xs">
+									Spróbuj zmienić kryteria wyszukiwanania
+								</span>
+							</div>
+
 							<Button
 								variant="outline"
 								size="xs"
 								onClick={refetch}
 							>
+								<IconRefresh className="size-3" />
 								Odszukaj ponownie
 							</Button>
 						</div>
@@ -75,11 +108,21 @@ const EventsTable = ({
 			<Table>
 				<TableHeader className="bg-muted rounded-tr-xl">
 					<TableRow>
-						<TableHead className="max-w-[300px]">
+						<TableHead className="max-w-[500px]">
 							Wydarzenie
 						</TableHead>
 						<TableHead>Status</TableHead>
-						<TableHead>Termin</TableHead>
+						<TableHead>
+							Termin
+							<Button
+								variant="ghost"
+								size="sm"
+								className="ml-0"
+								onClick={handleDateSort}
+							>
+								<DateSortIcon />
+							</Button>
+						</TableHead>
 						<TableHead>Sprzedaz</TableHead>
 						<TableHead className="text-right"></TableHead>
 					</TableRow>

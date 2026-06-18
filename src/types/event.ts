@@ -14,6 +14,21 @@ const eventWithCategoriesArgs = Prisma.validator<Prisma.EventDefaultArgs>()({
 				},
 			},
 		},
+		tickets: {
+			select: {
+				name: true,
+				quantity: true,
+				orderItems: {
+					where: {
+						orders: {
+							status: { in: ["CONFIRMED", "PAID"] },
+							deletedAt: null,
+						},
+					},
+					select: { quantity: true },
+				},
+			},
+		},
 	},
 });
 

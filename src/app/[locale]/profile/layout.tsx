@@ -51,11 +51,11 @@ const ProfileLayout = async ({
 						role: sessionRaw.user.role ?? UserRole.USER,
 					}}
 				/>
-				<div className="p-0 md:p-2 w-full h-svh overflow-hidden">
-					<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg!">
+				<div className="p-0 md:p-2 w-full h-svh overflow-hidden flex">
+					<SidebarInset className="sidebar-inset rounded-none md:rounded-2xl! overflow-clip border border-border shadow-lg! flex-1 min-h-0">
 						<SiteHeader />
-						<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 rounded-xl h-full overflow-y-auto">
-							<GridBg className="opacity-0 xl:opacity-50 2xl:opacity-100" />
+						<GridBg className="opacity-0 xl:opacity-50 2xl:opacity-100" />
+						<main className="profile-layout relative flex flex-1 flex-col gap-4 p-4 px-5 rounded-xl min-h-0 overflow-y-auto">
 							<div className="container max-w-7xl mx-auto z-10">
 								{children}
 							</div>

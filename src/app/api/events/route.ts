@@ -78,6 +78,21 @@ export const GET = withApiHandler(async (req: Request) => {
 					},
 				},
 			},
+			tickets: {
+				select: {
+					name: true,
+					quantity: true,
+					orderItems: {
+						where: {
+							orders: {
+								status: { in: ["CONFIRMED", "PAID"] },
+								deletedAt: null,
+							},
+						},
+						select: { quantity: true },
+					},
+				},
+			},
 		},
 	});
 

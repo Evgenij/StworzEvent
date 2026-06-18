@@ -10,7 +10,6 @@ import {
 	IconClipboardCheck,
 	IconExternalLink,
 } from "@tabler/icons-react";
-import React from "react";
 import EventMetaItem from "../event-meta-item";
 import { EventDateRange } from "../event-date-range";
 import { TicketsDrawer } from "../../tickets/tickets-drawer";

@@ -7,8 +7,8 @@ type EventMetaItemProps = {
 
 const EventMetaItem = ({ label, header, subheader }: EventMetaItemProps) => {
 	return (
-		<div className="flex items-center gap-3">
-			<div className="flex flex-col items-center border-2 border-gray-200 rounded-md overflow-hidden">
+		<div className="event-meta-item flex items-center gap-3">
+			<div className="event-meta-item_calendar min-w-13 flex flex-col items-center border-2 border-gray-200 rounded-md overflow-hidden">
 				<div className="px-1.5 py-1 bg-gray-200 w-full">
 					<p className="text-xs text-muted-foreground text-center">
 						{label.title}

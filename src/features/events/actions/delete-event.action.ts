@@ -16,7 +16,7 @@ export const deleteEventAction = safeAction(
 		const event = await prisma.event.findFirst({
 			where: {
 				id: eventId,
-				status: EventStatus.DRAFT,
+				status: { in: [EventStatus.DRAFT, EventStatus.UNPUBLISHED, EventStatus.PUBLISHED] },
 				organization: {
 					organizationMembers: {
 						some: { userId: session.user.id },
