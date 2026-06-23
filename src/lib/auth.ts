@@ -240,6 +240,8 @@ const options = {
 		...(process.env.VERCEL_BRANCH_URL
 			? [`https://${process.env.VERCEL_BRANCH_URL}`]
 			: []),
+		"https://stworzevent.pl",
+		"https://www.stworzevent.pl",
 	],
 	secret: AUTH_SECRET,
 } satisfies BetterAuthOptions;

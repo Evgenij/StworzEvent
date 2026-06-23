@@ -38,6 +38,16 @@ const nextConfig = {
 			},
 		];
 	},
+	async redirects() {
+  return [
+    {
+      source: "/:path*",
+      has: [{ type: "host", value: "www.stworzevent.pl" }],
+      destination: "https://stworzevent.pl/:path*",
+      permanent: true,
+    },
+  ];
+},
 };
 
 //export default nextConfig;
