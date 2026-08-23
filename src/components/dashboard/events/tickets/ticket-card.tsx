@@ -16,7 +16,7 @@ import {
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { EventStatus } from "@prisma/client";
-import { formatCurrencyPln } from "@/lib/utils";
+import { formatCurrencyPLN } from "@/lib/utils";
 import { upsertTicketsAction } from "@/features/tickets/actions/upsert-tickets.action";
 import { deleteTicketAction } from "@/features/tickets/actions/delete-ticket.action";
 import { TicketWrapper } from "@/features/events/components/tickets/ticket-wrapper";
@@ -192,7 +192,7 @@ export function TicketCard({
 						<span className="flex items-center gap-1">
 							{ticket.price === 0
 								? t("free")
-								: formatCurrencyPln(ticket.price * 100)}
+								: formatCurrencyPLN(ticket.price * 100)}
 						</span>
 						<span className="flex items-center gap-1">
 							<IconUsers className="size-4" />

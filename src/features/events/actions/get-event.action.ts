@@ -40,6 +40,7 @@ export async function getEventAction(eventId: string) {
 			},
 			eventIsOffline: true,
 			onlineUrl: true,
+			minPrice: true,
 		},
 	});
 

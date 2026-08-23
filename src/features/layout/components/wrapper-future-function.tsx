@@ -30,10 +30,7 @@ const WrapperFutureFunction = ({
 				</span>
 			</TooltipTrigger>
 			<TooltipContent>
-				<p>
-					Ta funkcja jest w budowaniu. Bedzie dostepna w nastepnej
-					wersji.
-				</p>
+				<p>Ta funkcja jest w budowaniu</p>
 			</TooltipContent>
 		</Tooltip>
 	);

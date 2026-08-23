@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Typography } from "@/shared/components";
-import { Link } from "@/i18n/routing";
+import { Link, localeType } from "@/i18n/routing";
 import { Event, Prisma } from "@prisma/client";
 import {
 	IconBasket,
@@ -15,6 +15,7 @@ import { EventDateRange } from "../event-date-range";
 import { TicketsDrawer } from "../../tickets/tickets-drawer";
 import { useMobileMenuStore } from "@/stores/mobile-menu.store";
 import { TicketWithAvailability } from "@/features/events/types/ticket";
+import { formatCurrencyPLN } from "@/lib/utils";
 
 type EventSidebarProps = {
 	organization: Prisma.OrganizationGetPayload<{
@@ -51,11 +52,12 @@ const EventSidebar = ({
 			(min, ticket) => (ticket.price < min.price ? ticket : min),
 			tickets[0],
 		);
-		price = cheapestTicket.price / 100;
+		// price = cheapestTicket.price / 100;
+		price = cheapestTicket.price;
 	}
 
 	return (
-		<aside className="hidden sm:block sm:fixed bottom-0 left-0 h-fit lg:sticky lg:shadow-2xl shadow-black/10 bg-white lg:top-22 w-full rounded-2xl rounded-bl-none rounded-br-none lg:rounded-xl overflow-hidden lg:border border-border border-t shadow-[0_-10px_16px_-5px_rgb(0,0,0,0.05)]">
+		<aside className="hidden sm:block sm:fixed bottom-0 left-0 h-fit lg:sticky lg:shadow-2xl shadow-black/10 bg-white lg:top-18 w-full rounded-2xl rounded-bl-none rounded-br-none lg:rounded-xl overflow-hidden lg:border border-border border-t shadow-[0_-10px_16px_-5px_rgb(0,0,0,0.05)]">
 			<header className="hidden bg-sidebar border-b border-border lg:flex items-start justify-between px-4 py-3 text-foreground">
 				<div className="company-info flex items-center gap-3">
 					<img
@@ -127,7 +129,8 @@ const EventSidebar = ({
 										variant="h2"
 										className="text-primary"
 									>
-										{price} zl
+										{formatCurrencyPLN(price)}
+										{/* {price} zl */}
 									</Typography>
 									<Typography
 										variant="h4"
@@ -167,7 +170,7 @@ const EventSidebar = ({
 			</main>
 
 			<TicketsDrawer
-				locale={locale}
+				locale={locale as localeType}
 				eventSlug={event.slug}
 				eventId={event.id}
 				open={ticketDrawerOpen}

@@ -18,6 +18,7 @@ import { OrderActions } from "@/features/orders/components/order-actions";
 import { OrderStatusBadge } from "@/features/orders/components/order-status-badge";
 import { OrdersTableFrame } from "@/features/orders/components/orders-table-frame";
 import type { OrganizerOrder } from "@/features/orders/types/organizer-order";
+import { formatCurrencyPLN } from "@/lib/utils";
 import { ReceiptText } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
@@ -111,8 +112,7 @@ export async function OrdersTable({ eventId, orders }: OrdersTableProps) {
 												key={`${order.id}-${ticket.id}`}
 												variant="secondary"
 											>
-												{ticket.name} x
-												{ticket.quantity}
+												{ticket.name} x{ticket.quantity}
 											</Badge>
 										))}
 									</div>
@@ -122,8 +122,8 @@ export async function OrdersTable({ eventId, orders }: OrdersTableProps) {
 										})}
 									</div>
 								</TableCell>
-								<TableCell>
-									{formatMoney(order.total, order.currency)}
+								<TableCell className="font-medium">
+									{formatCurrencyPLN(order.total)}
 								</TableCell>
 								<TableCell>
 									<div className="flex flex-col items-start gap-2">

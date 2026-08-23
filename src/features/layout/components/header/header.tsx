@@ -25,14 +25,14 @@ const HeaderWebsite = ({ locale, user }: HeaderWebsiteProps) => {
 	return (
 		<header
 			className={cn("sticky top-0 z-50 w-full border-b border-border", {
-				"md:p-4 pb-0 p-2 border-transparent": scrolled,
+				"md:p-4 pb-0 p-2 md:pt-0 border-transparent": scrolled,
 			})}
 		>
 			<nav
 				className={cn(
 					"max-w-7xl mx-auto flex h-14 w-full transition-all items-center justify-between px-3 bg-white ",
 					{
-						"border border-border rounded-full ": scrolled,
+						"border border-border rounded-b-3xl ": scrolled,
 					},
 					// {
 					// 	"border border-border rounded-full  backdrop-blur-sm supports-backdrop-filter:bg-white/90":

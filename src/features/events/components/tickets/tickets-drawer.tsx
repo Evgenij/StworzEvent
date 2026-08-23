@@ -16,6 +16,7 @@ import { getActiveReservation } from "@/features/reservations/actions/get-active
 import { createReservation } from "@/features/reservations/actions/create-reservation.action";
 import { cancelReservation } from "@/features/reservations/actions/cancel-reservation.action";
 import { getTicketsWithAvailability } from "@/features/tickets/actions/get-tickets-with-availability.action";
+import { localeType } from "@/i18n/routing";
 
 export type SelectedTicket = {
 	ticket: TicketWithAvailability;
@@ -40,7 +41,7 @@ export type OrderForm = {
 };
 
 type TicketsDrawerProps = {
-	locale: string;
+	locale: localeType;
 	open: boolean;
 	onClose: () => void;
 	tickets: TicketWithAvailability[];

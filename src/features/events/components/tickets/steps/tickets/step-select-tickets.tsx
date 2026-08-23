@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { IconClock, IconChevronRight, IconMapPin } from "@tabler/icons-react";
 import TicketItem from "./ticket-item";
 import { SelectedTicket } from "../../tickets-drawer";
-import { formatPlnFromGrosze } from "@/lib/utils";
+import { formatCurrencyPLN, formatGroszeToPLN } from "@/lib/utils";
 
 type StepSelectTicketsProps = {
 	items: SelectedTicket[];
@@ -102,7 +102,7 @@ export const StepSelectTickets = ({
 						<p className="text-xl font-bold">
 							{total === 0
 								? "Bezpłatne"
-								: formatPlnFromGrosze(total)}
+								: formatCurrencyPLN(total)}
 						</p>
 					</div>
 					<div className="bg-muted rounded-lg p-3 text-sm text-muted-foreground">

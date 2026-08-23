@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { SelectedTicket, OrderForm } from "../../tickets-drawer";
-import { formatPlnFromGrosze } from "@/lib/utils";
+import { formatGroszeToPLN } from "@/lib/utils";
 import { createOrder } from "@/features/orders/actions/create-order.action";
 
 type StepOrderSummaryProps = {
@@ -91,7 +91,7 @@ export const StepOrderSummary = ({
 						<span className="font-medium">
 							{item.ticket.price === 0
 								? "Bezpłatny"
-								: formatPlnFromGrosze(
+								: formatGroszeToPLN(
 										item.ticket.price * item.quantity,
 									)}
 						</span>
@@ -104,7 +104,7 @@ export const StepOrderSummary = ({
 			<div className="flex justify-between font-bold">
 				<span>Razem</span>
 				<span>
-					{total === 0 ? "Bezpłatne" : formatPlnFromGrosze(total)}
+					{total === 0 ? "Bezpłatne" : formatGroszeToPLN(total)}
 				</span>
 			</div>
 

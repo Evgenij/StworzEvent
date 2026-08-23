@@ -4,7 +4,7 @@ import { Link } from "@/i18n/routing";
 import { Event } from "@prisma/client";
 import { IconMapPin } from "@tabler/icons-react";
 import { MAIN_PAGE_EVENT_ROUTE } from "@/config/routes";
-import { cn, formatPlnFromGrosze } from "@/lib/utils";
+import { cn, formatCurrencyPLN, formatGroszeToPLN } from "@/lib/utils";
 import { CategoryOption } from "../../actions/get-categories.action";
 import { EventImagePlaceholder } from "../event-image-placeholder";
 import { Badge } from "@/components/ui/badge";
@@ -109,7 +109,7 @@ const EventItem = ({
 								od
 							</span>
 							<p className="font-semibold text-primary text-base">
-								{formatPlnFromGrosze(minPrice)}
+								{formatCurrencyPLN(minPrice)}
 							</p>
 						</>
 					) : minPrice === 0 ? (

@@ -23,24 +23,22 @@ import { ComponentType } from "react";
 
 type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
-type StatusConfig = {
+export type StatusConfig = {
 	variant: BadgeVariant;
 	icon: ComponentType<{ className?: string }>;
 };
 
-const statuses: Record<EventStatus, StatusConfig> = {
-	[EventStatus.DRAFT]: { variant: "secondary", icon: IconFile },
-	[EventStatus.REVIEW]: { variant: "outline", icon: IconEye },
+const dataStatuses: Record<EventStatus, StatusConfig> = {
+	[EventStatus.DRAFT]: { variant: "outline", icon: IconFile },
 	[EventStatus.PUBLISHED]: { variant: "outline", icon: IconCheck },
 	[EventStatus.SALES_OPEN]: { variant: "success", icon: IconFlame },
-	[EventStatus.SALES_PAUSED]: { variant: "secondary", icon: IconPlayerPause },
+	[EventStatus.SALES_PAUSED]: { variant: "outline", icon: IconPlayerPause },
 	[EventStatus.SALES_CLOSED]: { variant: "outline", icon: IconLock },
 	[EventStatus.LIVE]: { variant: "default", icon: IconBroadcast },
 	[EventStatus.COMPLETED]: { variant: "success", icon: IconCheck },
 	[EventStatus.CANCELLED]: { variant: "destructive", icon: IconCancel },
-	[EventStatus.ARCHIVED]: { variant: "ghost", icon: IconArchive },
-	[EventStatus.BLOCKED]: { variant: "destructive", icon: IconBan },
-	[EventStatus.UNPUBLISHED]: { variant: "secondary", icon: IconEyeOff },
+	[EventStatus.ARCHIVED]: { variant: "outline", icon: IconArchive },
+	[EventStatus.UNPUBLISHED]: { variant: "outline", icon: IconEyeOff },
 };
 
 const EventStatusBadge = ({
@@ -51,7 +49,7 @@ const EventStatusBadge = ({
 	status: EventStatus;
 }) => {
 	const t = useTranslations("EventStatus");
-	const { variant, icon: Icon } = statuses[status];
+	const { variant, icon: Icon } = dataStatuses[status];
 
 	return (
 		<Badge

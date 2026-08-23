@@ -3,6 +3,7 @@ import { getEventOrdersAction } from "@/features/orders/actions/get-event-orders
 import { OrdersFilters } from "@/features/orders/components/orders-filters";
 import { OrdersSummary } from "@/features/orders/components/orders-summary";
 import { OrdersTable } from "@/features/orders/components/orders-table";
+import { BackButton } from "@/shared/components/back-button";
 import { OrderStatus } from "@prisma/client";
 import { notFound } from "next/navigation";
 
@@ -21,10 +22,7 @@ const parseStatus = (status?: string): OrderStatus | "ALL" => {
 		: "ALL";
 };
 
-export default async function EventOrdersPage({
-	params,
-	searchParams,
-}: Props) {
+export default async function EventOrdersPage({ params, searchParams }: Props) {
 	const [{ id }, filters] = await Promise.all([params, searchParams]);
 	const query = filters.q ?? "";
 	const status = parseStatus(filters.status);
@@ -38,11 +36,9 @@ export default async function EventOrdersPage({
 
 		return (
 			<div className="space-y-6">
-				<div className="space-y-2">
-					<PageHeader />
-					<p className="text-muted-foreground text-sm">
-						{data.event.title}
-					</p>
+				<div className="flex gap-2 items-center">
+					<BackButton />
+					<p className="text-sm font-medium">{data.event.title}</p>
 				</div>
 				<OrdersSummary summary={data.summary} />
 				<OrdersFilters query={query} status={status} />

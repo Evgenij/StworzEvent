@@ -1,4 +1,4 @@
-type locale = "pl" | "en";
+import { localeType } from "@/i18n/routing";
 
 export const formatDate = (date: string | Date) => {
 	return new Date(date).toLocaleString("ru-RU", {
@@ -15,29 +15,29 @@ export class DateTimeFormatter {
 		return date.getDate();
 	}
 
-	static weekday(date: Date, locale: locale) {
+	static weekday(date: Date, locale: localeType) {
 		return new Intl.DateTimeFormat(locale, {
 			weekday: "long",
 		}).format(date);
 	}
 
-	static month(date: Date, locale: locale) {
+	static month(date: Date, locale: localeType) {
 		return new Intl.DateTimeFormat(locale, { month: "long" }).format(date);
 	}
-	static year(date: Date, locale: locale) {
+	static year(date: Date, locale: localeType) {
 		return new Intl.DateTimeFormat(locale, { year: "numeric" }).format(
 			date,
 		);
 	}
 
-	static date(date: Date, locale: locale) {
+	static date(date: Date, locale: localeType) {
 		return new Intl.DateTimeFormat(locale, {
 			day: "numeric",
 			month: "long",
 		}).format(date);
 	}
 
-	static time(date: Date | null, locale: locale) {
+	static time(date: Date | null, locale: localeType) {
 		return date
 			? new Intl.DateTimeFormat(locale, {
 					hour: "2-digit",

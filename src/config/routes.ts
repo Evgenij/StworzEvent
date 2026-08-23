@@ -44,6 +44,9 @@ export const EVENT_PAGE_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 export const EVENT_EDIT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}/edit`;
 export const EVENT_ORDERS_ROUTE = (id: string) =>
 	`${EVENTS_ROUTE}/${id}/orders`;
+export const EVENT_DATA_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}/data`;
+export const EVENT_PARTICIPANTS_ROUTE = (id: string) =>
+	`${EVENTS_ROUTE}/${id}/participants`;
 
 export const EVENT_EDIT_ADDITIONAL_ROUTE = (id: string) =>
 	`${EVENTS_ROUTE}/${id}/edit/additional`;
@@ -55,7 +58,7 @@ export const EVENT_EDIT_PAYMENT_ROUTE = (id: string) =>
 // main page routes
 export const MAIN_PAGE_EVENTS_ROUTE = `${MAIN_PAGE_ROUTE}events`;
 export const MAIN_PAGE_EVENT_ROUTE = (id: string) =>
-	`${MAIN_PAGE_ROUTE}events/${id}`;
+	`${MAIN_PAGE_ROUTE}e/${id}`;
 
 export const UI_ROUTE = "/ui";
 export const ADMIN_DASHBOARD_ROUTE = `${ADMIN_ROUTE}/dashboard`;

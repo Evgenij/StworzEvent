@@ -1,11 +1,11 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { EventWithCategories } from "@/types/event";
-import EventStatusBadge from "./event-status-badge";
 import EventDateLabel from "./event-date-label";
 import TicketSalesStats from "./event-sales-stats";
 import EventActions from "./event-actions";
 import EventName from "./event-name";
+import { EventStatusBadge } from "@/shared/components";
 
 type EventsTableRowType = {
 	data: EventWithCategories;

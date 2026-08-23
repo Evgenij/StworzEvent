@@ -31,7 +31,9 @@ export const getBaseUrl = () => {
 export const truncate = (str: string, length: number) =>
 	str.length > length ? `${str.slice(0, length)}...` : str;
 
-export const formatPlnFromGrosze = (amount: number) => amount / 100;
+// grosze to PLN
+
+export const formatGroszeToPLN = (amount: number) => amount / 100;
 
 const currencyFormatter = new Intl.NumberFormat("pl-PL", {
 	style: "currency",
@@ -41,5 +43,5 @@ const currencyFormatter = new Intl.NumberFormat("pl-PL", {
 });
 
 /** Formats grosze amount as PLN string, e.g. 5000 → "50 zł" */
-export const formatCurrencyPln = (grosze: number) =>
+export const formatCurrencyPLN = (grosze: number) =>
 	currencyFormatter.format(grosze / 100);

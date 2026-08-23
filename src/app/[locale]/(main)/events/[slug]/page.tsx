@@ -23,7 +23,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { MAIN_PAGE_EVENTS_ROUTE } from "@/config/routes";
-import { Link } from "@/i18n/routing";
+import { Link, localeType } from "@/i18n/routing";
 import prisma from "@/lib/prisma";
 import { truncate } from "@/lib/utils";
 import { IconBookmark } from "@tabler/icons-react";
@@ -35,7 +35,7 @@ import { ShareButton } from "@/shared/components/share-button";
 const EventPage = async ({
 	params,
 }: {
-	params: Promise<{ slug: string; locale: string }>;
+	params: Promise<{ slug: string; locale: localeType }>;
 }) => {
 	const { slug, locale } = await params;
 
@@ -69,8 +69,6 @@ const EventPage = async ({
 
 	if (!event) {
 		notFound();
-	} else {
-		// console.log(event);
 	}
 
 	const categories = event?.categories?.map((item) => item.category) || [];
@@ -123,7 +121,7 @@ const EventPage = async ({
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<BreadcrumbPage>
-										{truncate(event.title, 10)}
+										{truncate(event.title, 20)}
 									</BreadcrumbPage>
 								</TooltipTrigger>
 								<TooltipContent>

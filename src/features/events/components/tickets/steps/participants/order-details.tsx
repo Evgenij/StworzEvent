@@ -2,7 +2,7 @@ import { Typography } from "@/shared/components";
 import { IconTicket } from "@tabler/icons-react";
 import { SelectedTicket } from "../../tickets-drawer";
 import { Separator } from "@/components/ui/separator";
-import { cn, formatPlnFromGrosze } from "@/lib/utils";
+import { cn, formatGroszeToPLN } from "@/lib/utils";
 
 type OrderDetailsProps = {
 	items: SelectedTicket[];
@@ -33,7 +33,7 @@ const OrderDetails = ({ items, total, className }: OrderDetailsProps) => {
 							<span className="font-medium text-foreground">
 								{item.ticket.price === 0
 									? "Bezpłatny"
-									: formatPlnFromGrosze(
+									: formatGroszeToPLN(
 											item.ticket.price * item.quantity,
 										)}
 							</span>
@@ -44,7 +44,7 @@ const OrderDetails = ({ items, total, className }: OrderDetailsProps) => {
 				<div className="flex justify-between font-semibold text-sm">
 					<span>Razem</span>
 					<span>
-						{total === 0 ? "Bezpłatne" : formatPlnFromGrosze(total)}
+						{total === 0 ? "Bezpłatne" : formatGroszeToPLN(total)}
 					</span>
 				</div>
 			</div>

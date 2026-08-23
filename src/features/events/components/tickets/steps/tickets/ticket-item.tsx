@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
-import { formatPlnFromGrosze } from "@/lib/utils";
+import { formatCurrencyPLN, formatGroszeToPLN } from "@/lib/utils";
 import { TicketWithAvailability } from "@/features/events/types/ticket";
 
 type TicketItemProps = {
@@ -26,12 +26,14 @@ const TicketItem = ({
 			<div className="flex flex-col ">
 				<p className="font-medium">{ticket.name}</p>
 				{ticket.description && (
-					<p className="text-sm text-muted-foreground">{ticket.description}</p>
+					<p className="text-sm text-muted-foreground">
+						{ticket.description}
+					</p>
 				)}
 				<p className="text-base text-primary font-semibold">
 					{ticket.price === 0
 						? "Bezpłatny"
-						: formatPlnFromGrosze(ticket.price)}
+						: formatCurrencyPLN(ticket.price)}
 				</p>
 				{ticket.available !== null && (
 					<p className="text-xs text-muted-foreground">
