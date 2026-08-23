@@ -285,6 +285,11 @@ const EventActions = ({
 					<IconExternalLink />
 				</Link>
 			</Button>
+			<Button size="icon-sm" variant="outline" asChild>
+				<Link href={EVENT_EDIT_ROUTE(eventId)}>
+					<IconEdit />
+				</Link>
+			</Button>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button variant="outline" size="icon-sm">

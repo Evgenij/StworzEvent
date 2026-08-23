@@ -57,8 +57,8 @@ export const EVENT_EDIT_PAYMENT_ROUTE = (id: string) =>
 
 // main page routes
 export const MAIN_PAGE_EVENTS_ROUTE = `${MAIN_PAGE_ROUTE}events`;
-export const MAIN_PAGE_EVENT_ROUTE = (id: string) =>
-	`${MAIN_PAGE_ROUTE}e/${id}`;
+export const MAIN_PAGE_EVENT_ROUTE = (slug: string) =>
+	`${MAIN_PAGE_ROUTE}events/${slug}`;
 
 export const UI_ROUTE = "/ui";
 export const ADMIN_DASHBOARD_ROUTE = `${ADMIN_ROUTE}/dashboard`;
