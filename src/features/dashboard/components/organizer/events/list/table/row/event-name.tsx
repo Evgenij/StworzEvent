@@ -1,4 +1,4 @@
-import { EVENT_PAGE_ROUTE } from "@/config/routes";
+import { EVENT_DATA_ROUTE, EVENT_PAGE_ROUTE } from "@/config/routes";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Typography } from "@/shared/components";
@@ -35,7 +35,7 @@ const EventName = ({
 				height={0}
 			/>
 			<div className="flex flex-col gap-1 min-w-0 overflow-hidden">
-				<Link href={EVENT_PAGE_ROUTE(data.id)} className="no-underline">
+				<Link href={EVENT_DATA_ROUTE(data.id)} className="no-underline">
 					<Typography
 						variant="h4"
 						className="text-sm font-medium line-clamp-1 hover:underline"

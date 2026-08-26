@@ -44,8 +44,6 @@ export async function getEventAction(eventId: string) {
 		},
 	});
 
-	console.log(event);
-
 	if (!event) return null;
 
 	return {

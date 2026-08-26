@@ -24,7 +24,7 @@ export function resolvePayment(
 		| "defaultBankAccountNumber"
 		| "defaultBankAccountHolder"
 		| "defaultPaymentLink"
-		| "defaultPaymentInstructions"
+		| "bankTransferInstructions"
 	>,
 ): ResolvedPayment {
 	if (event.paymentMethod) {
@@ -43,7 +43,7 @@ export function resolvePayment(
 			bankAccountNumber: organization.defaultBankAccountNumber,
 			bankAccountHolder: organization.defaultBankAccountHolder,
 			paymentLink: organization.defaultPaymentLink,
-			paymentInstructions: organization.defaultPaymentInstructions,
+			paymentInstructions: organization.bankTransferInstructions,
 			source: "organization",
 		};
 	}

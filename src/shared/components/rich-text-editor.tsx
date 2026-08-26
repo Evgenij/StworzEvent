@@ -92,8 +92,8 @@ export const RichTextEditor = ({
 		<div
 			data-invalid={invalid || undefined}
 			className={cn(
-				"rounded-md border focus-within:ring-1 focus-within:ring-ring",
-				"data-[invalid]:border-destructive data-[invalid]:focus-within:ring-destructive",
+				"rich-text-editor bg-white rounded-md border focus-within:ring-1 focus-within:ring-ring",
+				"data-invalid:border-destructive data-invalid:focus-within:ring-destructive",
 				className,
 			)}
 		>

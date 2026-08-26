@@ -4,7 +4,7 @@
 
 ### Added
 
--
+- Added context for event page for org dashboard
 
 ### Changed
 

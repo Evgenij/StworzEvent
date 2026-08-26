@@ -31,7 +31,7 @@ export async function getEventPaymentAction(eventId: string) {
 					defaultBankAccountNumber: true,
 					defaultBankAccountHolder: true,
 					defaultPaymentLink: true,
-					defaultPaymentInstructions: true,
+					bankTransferInstructions: true,
 				},
 			},
 		},

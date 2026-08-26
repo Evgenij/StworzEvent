@@ -40,8 +40,10 @@ export const ORGANIZATION_PAYMENT_METHODS_ROUTE = (id: string) =>
 export const ORGANIZATION_PLAN_ROUTE = (id: string) =>
 	`${ORGANIZATIONS_ROUTE}/${id}/plan`;
 
+// events routes
 export const EVENT_PAGE_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}`;
 export const EVENT_EDIT_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}/edit`;
+
 export const EVENT_ORDERS_ROUTE = (id: string) =>
 	`${EVENTS_ROUTE}/${id}/orders`;
 export const EVENT_DATA_ROUTE = (id: string) => `${EVENTS_ROUTE}/${id}/data`;
